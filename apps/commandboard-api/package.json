@@ -6,7 +6,9 @@
   "main": "./dist/index.js",
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "dev": "tsx src/index.ts"
+    "dev": "tsx src/index.ts",
+    "test": "vitest run src",
+    "test:contract": "vitest run src/contract.test.ts"
   },
   "dependencies": {
     "@logicsrc/plugin-core": "file:../../packages/plugin-core",
@@ -16,6 +18,7 @@
     "@logicsrc/validators": "file:../../packages/validators"
   },
   "devDependencies": {
-    "tsx": "^4.21.0"
+    "tsx": "^4.21.0",
+    "vitest": "^4.0.8"
   }
 }

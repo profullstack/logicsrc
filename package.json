@@ -15,7 +15,9 @@
     "build": "npm --workspace @logicsrc/schemas run build && npm --workspace @logicsrc/validators run build && npm --workspace @logicsrc/plugin-core run build && npm --workspace @logicsrc/plugin-coinpay run build && npm --workspace @logicsrc/plugin-ugig run build && npm --workspace @logicsrc/plugin-sh1pt run build && npm --workspace @logicsrc/tui run build && npm --workspace @logicsrc/cli run build && npm --workspace @logicsrc/commandboard-api run build && npm --workspace @logicsrc/commandboard-web run build",
     "test": "npm run test --workspaces --if-present",
     "check": "npm run build && npm run test",
-    "schemas:validate": "npm --workspace @logicsrc/validators run validate:fixtures"
+    "schemas:validate": "npm --workspace @logicsrc/validators run validate:fixtures",
+    "test:contract": "npm --workspace @logicsrc/commandboard-api run test:contract",
+    "test:e2e": "npm --workspace @logicsrc/commandboard-web run test:e2e"
   },
   "devDependencies": {
     "@types/node": "^24.10.1",

@@ -1,7 +1,3 @@
-# Managed by sh1pt Actions Fleet
-# pack: node-pnpm-ci@1.0.0
-# install: sh1pt-actions-store
-# hash: sha256:aa7aeaf3bddaf7bf324ceb02f46ab421bb229d5f5917fdb6f7a1a948a4a9fcce
 name: CI
 
 on:
@@ -19,21 +15,31 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          version: 9
+          node-version: 24
+          cache: npm
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-          cache: pnpm
+      - name: Install dependencies
+        run: npm ci
 
-      - run: pnpm install --frozen-lockfile
+      - name: Build and unit tests
+        run: npm run check
 
-      - run: pnpm typecheck
+      - name: Validate schema fixtures
+        run: npm run schemas:validate
 
-      - run: pnpm test
+      - name: API contract tests
+        run: npm run test:contract
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Playwright E2E
+        run: npm run test:e2e

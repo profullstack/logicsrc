@@ -1,4 +1,5 @@
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
+import { pathToFileURL } from "node:url";
 import { createPluginRegistry } from "@logicsrc/plugin-core";
 import { coinPayPlugin } from "@logicsrc/plugin-coinpay";
 import { sh1ptPlugin } from "@logicsrc/plugin-sh1pt";
@@ -40,13 +41,15 @@ const sh1ptActions = [
   { id: "action_deploy_preview", title: "Deploy preview", publishable: true }
 ];
 
-const server = createServer(async (request, response) => {
-  try {
-    await route(request, response);
-  } catch (error) {
-    json(response, 500, { error: error instanceof Error ? error.message : String(error) });
-  }
-});
+export function createCommandBoardServer() {
+  return createServer(async (request, response) => {
+    try {
+      await route(request, response);
+    } catch (error) {
+      json(response, 500, { error: error instanceof Error ? error.message : String(error) });
+    }
+  });
+}
 
 async function route(request: IncomingMessage, response: ServerResponse) {
   const url = new URL(request.url ?? "/", "http://localhost");
@@ -141,7 +144,14 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
-const port = Number(process.env.PORT ?? 4010);
-server.listen(port, () => {
-  console.log(`CommandBoard.run API listening on http://localhost:${port}`);
-});
+export function startCommandBoardServer(port = Number(process.env.PORT ?? 4010)) {
+  const server = createCommandBoardServer();
+  server.listen(port, () => {
+    console.log(`CommandBoard.run API listening on http://localhost:${port}`);
+  });
+  return server;
+}
+
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  startCommandBoardServer();
+}

@@ -5,12 +5,15 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/check-assets.js",
-    "dev": "vite --host 0.0.0.0"
+    "dev": "vite --host 0.0.0.0",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@vitejs/plugin-react": "^5.1.1",
     "vite": "^7.2.6",
     "typescript": "^5.9.3"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@playwright/test": "^1.57.0"
+  }
 }
