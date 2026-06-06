@@ -23,6 +23,13 @@ const implementations = [
   { name: "Plugins", detail: "CoinPay, uGig, and sh1pt adapters prove the plugin manifest shape." }
 ];
 
+const upcoming = [
+  { name: "Model routing", detail: "Switch across major AI model providers from one open spec interface." },
+  { name: "Cost controls", detail: "Prefer the cheapest capable model, or rotate providers by price, latency, and task fit." },
+  { name: "Agent workflows", detail: "Fan out a bug report into scoped agents for reproduction, patching, review, and evidence." },
+  { name: "GitHub integration", detail: "Target Profullstack repos, create issues and branches, and keep task history auditable." }
+];
+
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   <main class="shell">
     <aside class="rail">
@@ -36,6 +43,7 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
       <nav aria-label="LogicSRC sections">
         <a class="active" href="#overview">Overview</a>
         <a href="#schemas">Schemas</a>
+        <a href="/agent-swarm">Soon</a>
         <a href="#cli">CLI</a>
         <a href="#reference">Reference</a>
       </nav>
@@ -66,6 +74,32 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
               <p>${item.detail}</p>
             </article>
           `).join("")}
+        </div>
+      </section>
+
+      <section id="agent-swarm" class="band coming-soon">
+        <div class="section-head">
+          <h2>Agent Swarm</h2>
+          <p>An open spec AI agent platform for routing work across models, tools, providers, and repositories.</p>
+        </div>
+        <div class="soon-layout">
+          <article class="soon-lead">
+            <span>slug: agent-swarm</span>
+            <h3>Provider-neutral agent orchestration</h3>
+            <p>LogicSRC is adding model-provider integration primitives so a CLI or agent runtime can switch between major AI models, choose the cheapest capable option, or rotate models automatically for resilience and cost control.</p>
+            <pre><code>logicsrc run bug-report \\
+  --repo profullstack/logicsrc \\
+  --route cheapest-capable \\
+  --agents reproduce,patch,review</code></pre>
+          </article>
+          <div class="soon-grid">
+            ${upcoming.map((item) => `
+              <article>
+                <h3>${item.name}</h3>
+                <p>${item.detail}</p>
+              </article>
+            `).join("")}
+          </div>
         </div>
       </section>
 
@@ -118,4 +152,8 @@ if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker.register("/service-worker.js").catch(() => undefined);
   });
+}
+
+if (window.location.pathname === "/agent-swarm") {
+  document.querySelector("#agent-swarm")?.scrollIntoView();
 }

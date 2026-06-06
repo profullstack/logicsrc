@@ -182,6 +182,8 @@ h1 {
 .tile,
 .schema-list article,
 .cli-panel,
+.soon-lead,
+.soon-grid article,
 .implementation-list article {
   border: 1px solid #d6ddd2;
   border-radius: 8px;
@@ -210,6 +212,64 @@ h1 {
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(20rem, 0.9fr);
   gap: 1rem;
+}
+
+.coming-soon {
+  padding-top: 1.2rem;
+}
+
+.soon-layout {
+  display: grid;
+  grid-template-columns: minmax(20rem, 0.95fr) minmax(0, 1.05fr);
+  gap: 1rem;
+}
+
+.soon-lead {
+  padding: 1rem;
+  background: #eef7f3;
+}
+
+.soon-lead span {
+  display: inline-block;
+  margin-bottom: 0.75rem;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid #a8d9c9;
+  border-radius: 999px;
+  color: #2d6f60;
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.soon-lead h3 {
+  margin-bottom: 0.45rem;
+  font-size: 1.25rem;
+}
+
+.soon-lead p {
+  color: #39443e;
+  line-height: 1.5;
+}
+
+.soon-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.soon-grid article {
+  min-height: 8.5rem;
+  padding: 0.85rem;
+}
+
+.soon-grid h3 {
+  margin-bottom: 0.35rem;
+  font-size: 1rem;
+}
+
+.soon-grid p {
+  margin-bottom: 0;
+  color: #58615b;
+  line-height: 1.45;
 }
 
 .schema-list {
@@ -271,6 +331,7 @@ pre {
   }
 
   .hero,
+  .soon-layout,
   .two-col {
     grid-template-columns: 1fr;
   }
@@ -305,6 +366,7 @@ pre {
 
   .status-grid,
   .primitive-grid,
+  .soon-grid,
   .implementation-list {
     grid-template-columns: 1fr;
   }
