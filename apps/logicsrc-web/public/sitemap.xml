@@ -26,6 +26,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://logicsrc.com/credential-sharing</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://logicsrc.com/hire-us</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>

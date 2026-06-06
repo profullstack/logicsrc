@@ -11,7 +11,12 @@ beforeAll(async () => {
   accessSync(new URL("../dist/index.html", import.meta.url));
   server = spawn(process.execPath, ["server.js"], {
     cwd: new URL("..", import.meta.url),
-    env: { ...process.env, PORT: String(port) }
+    env: {
+      ...process.env,
+      PORT: String(port),
+      COINPAY_API_KEY: "",
+      COINPAY_API_URL: "https://coinpayportal.example"
+    }
   });
 
   await waitForServer();
@@ -23,7 +28,7 @@ afterAll(() => {
 
 describe("LogicSRC web contracts", () => {
   it("serves SPA routes from the built app shell", async () => {
-    for (const route of ["/", "/openspec", "/docs", "/blog", "/hire-us", "/about", "/terms", "/privacy"]) {
+    for (const route of ["/", "/openspec", "/credential-sharing", "/docs", "/blog", "/hire-us", "/about", "/terms", "/privacy"]) {
       const response = await fetch(`${baseUrl}${route}`);
       const text = await response.text();
 
@@ -41,6 +46,7 @@ describe("LogicSRC web contracts", () => {
     expect(response.headers.get("content-type")).toContain("application/xml");
     expect(response.headers.get("cache-control")).toBe("no-store");
     expect(text).toContain("<loc>https://logicsrc.com/openspec</loc>");
+    expect(text).toContain("<loc>https://logicsrc.com/credential-sharing</loc>");
     expect(text).toContain("<loc>https://logicsrc.com/hire-us</loc>");
     expect(text).toContain("<loc>https://logicsrc.com/blog</loc>");
   });
@@ -54,6 +60,20 @@ describe("LogicSRC web contracts", () => {
     expect(response.headers.get("cache-control")).toBe("no-store");
     expect(text).toContain("<rss version=\"2.0\"");
     expect(text).toContain("<title>LogicSRC OpenSpec Compatibility</title>");
+    expect(text).toContain("<title>LogicSRC Credential Sharing OpenSpec</title>");
+  });
+
+  it("does not create CoinPay checkout without server credentials", async () => {
+    const response = await fetch(`${baseUrl}/api/hire-us/coinpay-checkout`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: "{}"
+    });
+    const body = await response.json();
+
+    expect(response.status).toBe(503);
+    expect(response.headers.get("cache-control")).toBe("no-store");
+    expect(body).toEqual({ success: false, error: "CoinPay checkout is not configured" });
   });
 });
 

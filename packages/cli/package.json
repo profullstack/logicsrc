@@ -6,9 +6,7 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "bin": {
-    "logicsrc": "./dist/index.js",
-    "commandboard": "./dist/index.js",
-    "cb": "./dist/index.js"
+    "logicsrc": "./dist/index.js"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
@@ -18,7 +16,6 @@
   "dependencies": {
     "@logicsrc/plugin-core": "file:../plugin-core",
     "@logicsrc/plugin-coinpay": "file:../../plugins/coinpay",
-    "@logicsrc/plugin-sh1pt": "file:../../plugins/sh1pt",
     "@logicsrc/plugin-ugig": "file:../../plugins/ugig",
     "@logicsrc/tui": "file:../tui",
     "@logicsrc/validators": "file:../validators",

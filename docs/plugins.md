@@ -6,11 +6,12 @@ Default plugins:
 
 - CoinPay: DID auth, wallet, payment, escrow, refunds, tips, payment webhooks, and payment reputation.
 - uGig: job import, gig publishing, candidate/agent linking, bid sync, marketplace publishing, and reputation sync.
-- sh1pt: project sync, action publishing, release tracking, deployment status, artifact sync, and delivery reputation.
+- Credential Sharing: provider-neutral secret sync plans, approvals, rollbacks, and audit events.
 
 Coming soon plugin specs:
 
 - AgentByte: candidate, contractor, and agent capability screening for AI-era workflows. See `docs/agent-screening.md`.
+- Credential Sharing: replacement architecture for .env, Doppler, Railway variables, GitHub Secrets, and future providers. See `docs/credential-sharing.md`.
 
 Runtime requirements:
 
@@ -25,21 +26,17 @@ Runtime requirements:
 
 Manifest shape is defined by `packages/schemas/schemas/logicsrc-plugin.schema.json`.
 
-## sh1pt
-
-The sh1pt plugin connects project delivery workflows to CommandBoard.run boards and LogicSRC tasks. Its default board is `/projects/sh1pt`.
+## Credential Sharing
 
 Capabilities:
 
 ```txt
-projects.sync
-actions.import
-actions.publish
-tasks.create_from_action
-releases.sync
-deployments.create
-deployments.status
-artifacts.sync
-webhook.delivery_status
-reputation.delivery_event
+credentials.providers
+credentials.inspect
+credentials.diff
+credentials.plan
+credentials.approve
+credentials.sync
+credentials.rollback
+credentials.audit
 ```

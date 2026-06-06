@@ -17,12 +17,11 @@ const schemas = [
 ];
 
 const implementations = [
-  { name: "CommandBoard.run", detail: "Hosted reference product implementing the LogicSRC primitives." },
-  { name: "CLI and TUI", detail: "`logicsrc` is the standards CLI; `commandboard` and `cb` remain compatible product aliases." },
+  { name: "LogicSRC CLI", detail: "`logicsrc` is the canonical OpenStandards CLI for schemas, specs, plugins, and audits." },
+  { name: "TUI and PWA", detail: "Terminal and browser reference surfaces mirror the same open contracts." },
   { name: "SDKs", detail: "`@logicsrc/sdk` defines contract types now; Rust, Bun, Node, Python, and curl surfaces mirror the same resources." },
-  { name: "sh1pt CLI", detail: "`sh1pt logicsrc ...` lets sh1pt users choose LogicSRC OpenSpec-only workflows." },
   { name: "Reference API", detail: "Sample REST API available under `/api/*` for contract testing." },
-  { name: "Plugins", detail: "CoinPay, uGig, and sh1pt adapters prove the plugin manifest shape." }
+  { name: "Plugins", detail: "Open plugin contracts let external products consume LogicSRC without LogicSRC calling proprietary tools." }
 ];
 
 const upcoming = [
@@ -39,9 +38,23 @@ const agentByteSurfaces = [
   { name: "PWA", detail: "Plan builder, candidate intake, live screening room, artifact review, and decision packet." }
 ];
 
+const credentialProviders = [
+  { name: ".env", detail: "Parse, diff, redact, and write local env files without leaking values into logs." },
+  { name: "Doppler", detail: "Sync project/config scoped secrets through provider adapters and auditable key fingerprints." },
+  { name: "Railway", detail: "Read and write service variables as a deployment target with explicit approval gates." },
+  { name: "GitHub Secrets", detail: "Manage repo, organization, and environment secrets through provider-neutral operations." }
+];
+
+const credentialSurfaces = [
+  { name: "CLI", detail: "`logicsrc credentials` for provider listing, dry-run plans, diffs, approvals, sync, and audit exports." },
+  { name: "TUI", detail: "Review key diffs, target providers, approval prompts, fingerprints, and failure states without showing raw secrets." },
+  { name: "SDKs", detail: "Rust, Bun, Node, Python, and curl APIs share the same credential source, target, policy, and audit objects." },
+  { name: "PWA", detail: "Provider connection health, dry-run previews, approval history, and redacted sync evidence." }
+];
+
 const hireUsWork = [
   { name: "AI agent workflow specs", detail: "Open schemas, repo-local plans, AgentSwarm flows, AgentByte screening contracts, and MCP resources." },
-  { name: "Reference implementations", detail: "CLI, TUI, SDK, PWA, API, curl, and sh1pt-compatible surfaces that prove the spec can be used." },
+  { name: "Reference implementations", detail: "CLI, TUI, SDK, PWA, API, curl, and provider-neutral plugin surfaces that prove the spec can be used." },
   { name: "Integration hardening", detail: "GitHub, CoinPay, model providers, webhooks, audit logs, permissions, and deployment-ready contracts." },
   { name: "Open infrastructure", detail: "Portable code and specs first: no closed workflow lock-in, no one-off agent scripts that cannot be audited." }
 ];
@@ -50,6 +63,7 @@ const pages = [
   { id: "docs", title: "Docs", detail: "Specification guides, CLI conventions, schemas, plugin contracts, SDK conventions, and MCP resources." },
   { id: "blog", title: "Blog", detail: "Project notes for LogicSRC, AgentSwarm, AgentByte, OpenSpec workflows, and reference implementations." },
   { id: "openspec", title: "OpenSpec", detail: "Comparison and compatibility notes for OpenSpec.dev-style repo-local specs, proposals, tasks, and deltas." },
+  { id: "credential-sharing", title: "Credential Sharing", detail: "Open replacement architecture for portable secret sync across .env, Doppler, Railway variables, GitHub Secrets, and future providers." },
   { id: "hire-us", title: "Hire Us", detail: "$500/week LogicSRC work on open infrastructure, specs, AI agent workflows, and reference implementations paid through CoinPay." },
   { id: "about", title: "About", detail: "LogicSRC is the Profullstack open specification project for human and AI agent coordination." },
   { id: "terms", title: "Terms", detail: "Draft terms will cover acceptable use, reference implementation boundaries, and hosted-product responsibilities." },
@@ -74,7 +88,7 @@ const comparisonRows = [
   },
   {
     area: "CLI",
-    logicsrc: "`logicsrc`, `commandboard`, `cb`, and `sh1pt logicsrc ...`.",
+    logicsrc: "`logicsrc` as the canonical OpenStandards CLI.",
     openspec: "`@fission-ai/openspec` plus native coding-tool slash command integrations."
   },
   {
@@ -104,6 +118,7 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
         <a href="#schemas">Schemas</a>
         <a href="/agent-swarm">Soon</a>
         <a href="/agentbyte">AgentByte</a>
+        <a href="/credential-sharing">Credentials</a>
         <a href="#cli">CLI</a>
         <a href="/docs">Docs</a>
         <a href="/blog">Blog</a>
@@ -218,11 +233,41 @@ logicsrc agentbyte session audit \\
           <pre><code>npm install
 npm run schemas:validate
 npm --workspace @logicsrc/cli run dev -- \\
-  --openspec-only task validate ./task.yaml
-
-sh1pt logicsrc --openspec-only \\
   task validate ./task.yaml</code></pre>
           <p>The CLI belongs here as standards tooling: validate schemas, inspect objects, drive SDK/TUI/PWA/MCP contracts, and exercise compatible implementations.</p>
+        </div>
+      </section>
+
+      <section id="credential-sharing" class="band coming-soon credentials">
+        <div class="section-head">
+          <h2>Credential Sharing</h2>
+          <p>A coming-soon LogicSRC OpenSpec for replacing closed credential-sharing workflows with auditable, provider-neutral secret sync.</p>
+        </div>
+        <div class="soon-layout">
+          <article class="soon-lead">
+            <span>slug: credential-sharing</span>
+            <h3>Open replacement architecture for secrets</h3>
+            <p>LogicSRC defines the credential source, target, diff, approval, sync, rollback, and audit objects. External tools can consume the contract, but LogicSRC remains the open standards CLI and does not call out to proprietary product commands.</p>
+            <pre><code>logicsrc credentials providers
+logicsrc credentials plan --from env --to railway
+logicsrc credentials plan --from doppler --to github-secrets</code></pre>
+          </article>
+          <div class="soon-grid">
+            ${credentialProviders.map((item) => `
+              <article>
+                <h3>${item.name}</h3>
+                <p>${item.detail}</p>
+              </article>
+            `).join("")}
+          </div>
+        </div>
+        <div class="surface-strip" aria-label="Credential sharing reference surfaces">
+          ${credentialSurfaces.map((item) => `
+            <article>
+              <h3>${item.name}</h3>
+              <p>${item.detail}</p>
+            </article>
+          `).join("")}
         </div>
       </section>
 
@@ -248,10 +293,7 @@ sh1pt logicsrc --openspec-only \\
         <div class="cli-panel compare-note">
           <h2>Compatibility Mode</h2>
           <pre><code>logicsrc --openspec agentswarm --yolo \\
-  --repo profullstack/logicsrc
-
-sh1pt logicsrc --openspec \\
-  agentswarm --yolo</code></pre>
+  --repo profullstack/logicsrc</code></pre>
           <p><code>--openspec</code> enables OpenSpec.dev-compatible repo-local specs, proposals, tasks, and deltas where supported. <code>openspec import</code> and <code>openspec export</code> summarize those artifacts for LogicSRC workflows. <code>--openspec-only</code> restricts work to LogicSRC-published contracts.</p>
         </div>
       </section>
@@ -283,15 +325,16 @@ sh1pt logicsrc --openspec \\
           <article class="hire-panel">
             <p class="eyebrow">Profullstack standards work</p>
             <h3>Open-spec AI agent implementation help</h3>
-            <p>Hire us to turn agent ideas into portable LogicSRC specs, CLIs, SDKs, MCP resources, PWAs, APIs, and sh1pt-compatible workflows. We prioritize auditable contracts, repo-local artifacts, and integrations that can move between model providers and infrastructure.</p>
+            <p>Hire us to turn agent ideas into portable LogicSRC specs, CLIs, SDKs, MCP resources, PWAs, APIs, and provider-neutral plugin workflows. We prioritize auditable contracts, repo-local artifacts, and integrations that can move between model providers and infrastructure.</p>
             <div class="price-row">
               <strong>$500</strong>
               <span>per week</span>
             </div>
             <div class="cta-row">
-              <a class="button-primary" href="mailto:hire-us@profullstack.com?subject=LogicSRC%20Hire%20Us%20-%20CoinPay%20%24500%2Fweek">Request CoinPay invoice</a>
+              <button id="coinpay-checkout-button" class="button-primary" type="button">Pay with CoinPay</button>
               <a class="button-secondary" href="/docs">Read specs</a>
             </div>
+            <div id="coinpay-result" class="coinpay-result" aria-live="polite"></div>
           </article>
           <div class="hire-stack">
             <div class="hire-grid">
@@ -304,7 +347,7 @@ sh1pt logicsrc --openspec \\
             </div>
             <article id="coinpay-setup" class="coinpay-panel">
               <h3>CoinPay checkout hook</h3>
-              <p>Once the CoinPay org is configured, this page can point the primary CTA at a hosted checkout or escrow request for the weekly plan.</p>
+              <p>The primary CTA creates a CoinPay payment request for the weekly plan without exposing merchant credentials to the browser.</p>
               <pre><code>COINPAY_ORG=profullstack
 COINPAY_PRODUCT=logicsrc-hire-us
 COINPAY_AMOUNT_USD=500
@@ -341,6 +384,97 @@ if ("serviceWorker" in navigator) {
   });
 }
 
+document.querySelector<HTMLButtonElement>("#coinpay-checkout-button")?.addEventListener("click", async () => {
+  const button = document.querySelector<HTMLButtonElement>("#coinpay-checkout-button");
+  const result = document.querySelector<HTMLDivElement>("#coinpay-result");
+  if (!button || !result) return;
+
+  button.disabled = true;
+  button.textContent = "Creating payment...";
+  result.replaceChildren(buildParagraph("Creating CoinPay payment request."));
+
+  try {
+    const response = await fetch("/api/hire-us/coinpay-checkout", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({})
+    });
+    const payload = await response.json();
+
+    if (!response.ok || !payload.success) {
+      throw new Error(payload.error || "CoinPay payment could not be created.");
+    }
+
+    const payment = payload.payment;
+    if (payment.checkout_url) {
+      window.location.href = payment.checkout_url;
+      return;
+    }
+
+    result.replaceChildren(buildCoinPayResult(payment));
+  } catch (error) {
+    result.replaceChildren(
+      buildParagraph(error instanceof Error ? error.message : "CoinPay payment could not be created.")
+    );
+  } finally {
+    button.disabled = false;
+    button.textContent = "Pay with CoinPay";
+  }
+});
+
+function buildCoinPayResult(payment: {
+  amount_usd?: number;
+  crypto_amount?: string | null;
+  currency?: string;
+  address?: string | null;
+  id?: string;
+  qr_code?: string | null;
+}) {
+  const fragment = document.createDocumentFragment();
+  const heading = document.createElement("strong");
+  heading.textContent = "CoinPay payment ready";
+  fragment.append(heading);
+
+  const details = document.createElement("dl");
+  details.append(
+    buildDetail("Amount", `$${payment.amount_usd ?? 500} / ${payment.crypto_amount ?? "quoted at checkout"} ${payment.currency ?? "USDC_BASE"}`),
+    buildDetail("Address", payment.address ?? "Open CoinPay to complete payment", true),
+    buildDetail("Payment ID", payment.id ?? "pending", true)
+  );
+  fragment.append(details);
+
+  if (payment.qr_code) {
+    const image = document.createElement("img");
+    image.src = payment.qr_code;
+    image.alt = "CoinPay payment QR code";
+    fragment.append(image);
+  }
+
+  return fragment;
+}
+
+function buildDetail(label: string, value: string, code = false) {
+  const row = document.createElement("div");
+  const term = document.createElement("dt");
+  const definition = document.createElement("dd");
+  term.textContent = label;
+  if (code) {
+    const codeElement = document.createElement("code");
+    codeElement.textContent = value;
+    definition.append(codeElement);
+  } else {
+    definition.textContent = value;
+  }
+  row.append(term, definition);
+  return row;
+}
+
+function buildParagraph(text: string) {
+  const paragraph = document.createElement("p");
+  paragraph.textContent = text;
+  return paragraph;
+}
+
 if (window.location.pathname === "/agent-swarm") {
   document.querySelector("#agent-swarm")?.scrollIntoView();
 }
@@ -350,6 +484,6 @@ if (window.location.pathname === "/agentbyte") {
 }
 
 const pageRoute = window.location.pathname.slice(1);
-if (["docs", "blog", "openspec", "hire-us", "about", "terms", "privacy"].includes(pageRoute)) {
+if (["docs", "blog", "openspec", "credential-sharing", "hire-us", "about", "terms", "privacy"].includes(pageRoute)) {
   document.querySelector(`#${pageRoute}`)?.scrollIntoView();
 }

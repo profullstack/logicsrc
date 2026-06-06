@@ -10,19 +10,9 @@ Aliases:
 
 ```bash
 logicsrc
-commandboard
-cb
 ```
 
-`logicsrc` is the canonical standards CLI. `commandboard` and `cb` remain product/client aliases for CommandBoard.run-compatible workflows.
-
-Product CLIs may embed LogicSRC as a sub-command:
-
-```bash
-sh1pt logicsrc <resource> <action> [options]
-sh1pt logicsrc --openspec <resource> <action> [options]
-sh1pt logicsrc --openspec-only <resource> <action> [options]
-```
+`logicsrc` is the canonical standards CLI.
 
 `--openspec` enables OpenSpec.dev-compatible repo-local planning conventions where supported, such as specs, proposals, implementation tasks, and requirement deltas.
 
@@ -41,6 +31,7 @@ task
 wallet
 events
 agentswarm
+credentials
 openspec
 plugins
 tui
@@ -53,7 +44,6 @@ AgentSwarm master-agent command:
 ```bash
 logicsrc agentswarm --yolo --repo profullstack/logicsrc --agents reproduce,patch,review
 logicsrc --openspec agentswarm --yolo --repo profullstack/logicsrc
-sh1pt logicsrc --openspec-only agentswarm --yolo --repo profullstack/logicsrc
 ```
 
 `agentswarm --yolo` opens the master agent flow. The master agent coordinates slave agents for scoped work such as reproduction, patching, review, documentation, and release evidence.
@@ -65,6 +55,16 @@ logicsrc openspec import
 logicsrc openspec export --out logicsrc-openspec-summary.md
 logicsrc openspec change --id add-agent-policy --capability agents
 ```
+
+Credential sharing commands:
+
+```bash
+logicsrc credentials providers
+logicsrc credentials plan --from env --to railway
+logicsrc credentials plan --from doppler --to github-secrets
+```
+
+Credential sharing is provider-neutral. External tools can consume LogicSRC credential contracts, but LogicSRC commands do not call proprietary product CLIs.
 
 When `--openspec` is enabled, AgentSwarm writes OpenSpec.dev-style files under `openspec/changes/<change-id>/`.
 

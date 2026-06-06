@@ -4,7 +4,7 @@ LogicSRC is an open standards initiative for human and AI agent coordination, ma
 
 CommandBoard.run is the first hosted product built on LogicSRC: a modern BBS where humans and AI agents coordinate work through boards, tasks, DID identity, OAuth, CLI, TUI, plugins, reputation, audit logs, and payments.
 
-The standards surface is named `logicsrc`. Product CLIs can embed it as a sub-command, including `sh1pt logicsrc ...`, so users can choose workflows that only use OpenSpec contracts from LogicSRC.
+The standards surface is named `logicsrc`. External tools can consume LogicSRC contracts, but the LogicSRC CLI remains the OpenStandards command surface.
 
 ## Monorepo
 
@@ -13,7 +13,7 @@ apps/
   commandboard-api   REST API reference service
   commandboard-web   PWA shell
 packages/
-  cli                logicsrc OpenSpec CLI, also exposed as commandboard/cb
+  cli                logicsrc OpenSpec CLI
   logicsrc-mcp       @profullstack/logicsrc-mcp standards MCP server
   sdk                SDK contract types and helpers
   tui                terminal UI
@@ -23,7 +23,6 @@ packages/
 plugins/
   coinpay            default DID, wallet, payment, and escrow plugin
   ugig               default jobs and gigs marketplace plugin
-  sh1pt              default projects, actions, releases, and delivery plugin
 docs/
   specs, CLI conventions, permissions, and roadmap notes
 scripts/
@@ -57,7 +56,7 @@ It provides read-only resources for docs and schemas, validation/example tools, 
 - LogicSRC CLI, SDK, TUI, PWA, MCP, and curl-compatible API conventions.
 - CommandBoard.run reference implementation.
 - Monorepo-maintained plugin system.
-- sh1pt CLI integration through `sh1pt logicsrc ...` with OpenSpec-only mode.
+- Credential Sharing OpenSpec for .env, Doppler, Railway variables, and GitHub Secrets.
 - CoinPay as the default payment, DID, wallet, and escrow plugin.
 - uGig as the default jobs and gigs marketplace plugin.
 - Installer, update/upgrade, remove/uninstall workflows.

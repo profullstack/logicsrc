@@ -12,12 +12,25 @@ test.describe("LogicSRC PWA", () => {
     await expect(page.getByText("openspec export")).toBeVisible();
   });
 
+  test("renders Credential Sharing OpenSpec route", async ({ page }) => {
+    await page.goto("/credential-sharing");
+
+    await expect(page.getByRole("heading", { name: "Credential Sharing", exact: true })).toBeVisible();
+    await expect(page.getByText("Open replacement architecture for secrets")).toBeVisible();
+    await expect(page.getByRole("heading", { name: ".env", exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Doppler", exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Railway", exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "GitHub Secrets", exact: true })).toBeVisible();
+    await expect(page.getByText("logicsrc credentials plan --from env --to railway")).toBeVisible();
+  });
+
   test("renders top-level docs and legal route targets", async ({ page }) => {
     await page.goto("/privacy");
 
     await expect(page.getByRole("heading", { name: "Top-Level Pages" })).toBeVisible();
     await expect(page.getByText("/docs · Docs")).toBeVisible();
     await expect(page.getByText("/blog · Blog")).toBeVisible();
+    await expect(page.getByText("/credential-sharing · Credential Sharing")).toBeVisible();
     await expect(page.getByText("/terms · Terms")).toBeVisible();
     await expect(page.getByText("/privacy · Privacy")).toBeVisible();
   });
@@ -29,7 +42,8 @@ test.describe("LogicSRC PWA", () => {
     await expect(page.locator(".price-row strong", { hasText: "$500" })).toBeVisible();
     await expect(page.getByText("per week")).toBeVisible();
     await expect(page.getByText("open infrastructure and open specs for AI agent systems")).toBeVisible();
-    await expect(page.getByRole("link", { name: "Request CoinPay invoice" })).toHaveAttribute("href", /CoinPay/);
+    await expect(page.getByRole("button", { name: "Pay with CoinPay" })).toBeVisible();
+    await expect(page.getByText("without exposing merchant credentials to the browser")).toBeVisible();
     await expect(page.getByText("COINPAY_PRODUCT=logicsrc-hire-us")).toBeVisible();
   });
 
@@ -40,10 +54,12 @@ test.describe("LogicSRC PWA", () => {
     expect(sitemap.status()).toBe(200);
     expect(sitemap.headers()["content-type"]).toMatch(/(?:application|text)\/xml/);
     await expect(sitemap.text()).resolves.toContain("https://logicsrc.com/openspec");
+    await expect(sitemap.text()).resolves.toContain("https://logicsrc.com/credential-sharing");
     await expect(sitemap.text()).resolves.toContain("https://logicsrc.com/hire-us");
 
     expect(rss.status()).toBe(200);
     expect(rss.headers()["content-type"]).toMatch(/(?:application|text)\/xml/);
     await expect(rss.text()).resolves.toContain("LogicSRC OpenSpec Compatibility");
+    await expect(rss.text()).resolves.toContain("LogicSRC Credential Sharing OpenSpec");
   });
 });

@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 import { readFileSync } from "node:fs";
-import { basename } from "node:path";
 import { Command } from "commander";
 import { renderPluginStatus, renderTui } from "@logicsrc/tui";
 import { assertSchemaKind, parseDocument, validate } from "@logicsrc/validators";
@@ -10,12 +9,9 @@ import { exportOpenSpecSummary, importOpenSpec, writeOpenSpecChange } from "./op
 import { defaultPluginRegistry } from "./registry.js";
 
 const program = new Command();
-const binaryName = basename(process.argv[1] ?? "");
-const commandName = binaryName === "commandboard" || binaryName === "cb" ? binaryName : "logicsrc";
 
 program
-  .name(commandName)
-  .aliases(["commandboard", "cb"])
+  .name("logicsrc")
   .description("LogicSRC OpenSpec CLI for schemas, boards, tasks, agents, payments, plugins, and TUI.")
   .option("--openspec", "Enable OpenSpec.dev-compatible repo-local specs, proposals, tasks, and deltas where supported.")
   .option("--openspec-only", "Restrict workflows to LogicSRC OpenSpec schemas, SDKs, MCP, CLI, TUI, and PWA contracts.")
@@ -29,11 +25,11 @@ program
   .action((options) => {
     const mode = options.did ? `CoinPay DID ${options.did}` : options.oauth ? `${options.oauth} OAuth` : "browser/device";
     console.log(`Login flow ready: ${mode}`);
-    console.log("Token storage target: $HOME/.commandboard/auth.json");
+    console.log("Token storage target: $HOME/.logicsrc/auth.json");
   });
 
 program.command("logout").description("Clear local auth token.").action(() => {
-  console.log("Logged out. Local auth token would be removed from $HOME/.commandboard/auth.json.");
+  console.log("Logged out. Local auth token would be removed from $HOME/.logicsrc/auth.json.");
 });
 
 program.command("whoami").description("Show current DID and account context.").action(() => {
@@ -216,38 +212,32 @@ program.command("plugins").option("--format <format>", "table, json, or markdown
   print(snapshot.plugins, options.format as OutputFormat);
 });
 
-const sh1pt = program.command("sh1pt").description("sh1pt project, action, release, and delivery commands.");
+const credentials = program.command("credentials").alias("creds").description("Credential-sharing OpenSpec commands.");
 
-sh1pt
-  .command("projects")
-  .option("--format <format>", "table, json, or markdown", "table")
-  .description("List synced sh1pt projects.")
-  .action((options) => {
-    print(
-      [
-        { id: "sh1pt_project_1", board: "/projects/sh1pt", status: "active", actions: 5 },
-        { id: "sh1pt_project_2", board: "/projects/crawlproof", status: "active", actions: 2 }
-      ],
-      options.format as OutputFormat
-    );
-  });
+credentials.command("providers").option("--format <format>", "table, json, or markdown", "table").description("List credential sharing provider targets.").action((options) => {
+  print(
+    [
+      { id: "env", target: ".env files", mode: "read/write" },
+      { id: "doppler", target: "Doppler projects/configs", mode: "sync" },
+      { id: "railway", target: "Railway service variables", mode: "sync" },
+      { id: "github-secrets", target: "GitHub Actions and environment secrets", mode: "sync" }
+    ],
+    options.format as OutputFormat
+  );
+});
 
-sh1pt
-  .command("actions")
-  .option("--format <format>", "table, json, or markdown", "table")
-  .description("List sh1pt actions available for task publishing.")
-  .action((options) => {
-    print(
-      [
-        { id: "action_release_checklist", title: "Release checklist", publishable: true },
-        { id: "action_deploy_preview", title: "Deploy preview", publishable: true }
-      ],
-      options.format as OutputFormat
-    );
-  });
-
-sh1pt.command("publish").argument("<action>", "sh1pt action id").option("--board <board>", "Target board", "/projects/sh1pt").description("Publish a sh1pt action as a CommandBoard task.").action((action, options) => {
-  console.log(`Published sh1pt action ${action} to ${options.board}`);
+credentials.command("plan").option("--from <provider>", "Source provider", "env").option("--to <provider>", "Destination provider", "railway").option("--format <format>", "table, json, or markdown", "table").description("Describe a credential sync plan without moving secrets.").action((options) => {
+  print(
+    {
+      type: "logicsrc.credential_sync_plan",
+      from: options.from,
+      to: options.to,
+      policy: "redact-values",
+      approval: "required-before-write",
+      audit: "write target, key names, fingerprints, and timestamps; never write raw secret values"
+    },
+    options.format as OutputFormat
+  );
 });
 
 program.command("tui").description("Launch the tmux-friendly TUI.").action(() => {
@@ -255,16 +245,16 @@ program.command("tui").description("Launch the tmux-friendly TUI.").action(() =>
   console.log("\nPlugin status:\n" + renderPluginStatus());
 });
 
-program.command("update").alias("upgrade").description("Update the local CommandBoard.run CLI.").action(() => {
+program.command("update").alias("upgrade").description("Update the local LogicSRC CLI.").action(() => {
   console.log("Current version: 0.1.0");
   console.log("Latest version: 0.1.0");
-  console.log("CommandBoard.run CLI is already up to date.");
-  console.log("Config preserved at $HOME/.commandboard");
+  console.log("LogicSRC CLI is already up to date.");
+  console.log("Config preserved at $HOME/.logicsrc");
 });
 
-program.command("remove").alias("uninstall").option("--purge", "Remove config and auth tokens").description("Remove local CommandBoard.run CLI.").action((options) => {
-  console.log("Removed CommandBoard.run CLI.");
-  console.log(options.purge ? "Removed config and auth tokens from $HOME/.commandboard." : "Preserved config at $HOME/.commandboard. Run with --purge to remove config and auth tokens.");
+program.command("remove").alias("uninstall").option("--purge", "Remove config and auth tokens").description("Remove local LogicSRC CLI.").action((options) => {
+  console.log("Removed LogicSRC CLI.");
+  console.log(options.purge ? "Removed config and auth tokens from $HOME/.logicsrc." : "Preserved config at $HOME/.logicsrc. Run with --purge to remove config and auth tokens.");
 });
 
 function validateFile(kindArg: string, file: string) {

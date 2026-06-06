@@ -13,5 +13,12 @@
       <description>LogicSRC adds an OpenSpec.dev comparison and compatibility mode for repo-local specs, proposals, tasks, and deltas.</description>
       <pubDate>Sat, 06 Jun 2026 00:00:00 GMT</pubDate>
     </item>
+    <item>
+      <title>LogicSRC Credential Sharing OpenSpec</title>
+      <link>https://logicsrc.com/credential-sharing</link>
+      <guid>https://logicsrc.com/credential-sharing</guid>
+      <description>LogicSRC adds a credential-sharing OpenSpec for .env, Doppler, Railway variables, GitHub Secrets, and future provider adapters.</description>
+      <pubDate>Sat, 06 Jun 2026 00:00:00 GMT</pubDate>
+    </item>
   </channel>
 </rss>

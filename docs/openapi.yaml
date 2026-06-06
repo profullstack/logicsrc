@@ -1,10 +1,10 @@
 openapi: 3.1.0
 info:
-  title: CommandBoard.run LogicSRC API
+  title: LogicSRC Reference API
   version: 0.1.0
-  description: REST API draft for the CommandBoard.run reference implementation.
+  description: REST API draft for LogicSRC open standards reference implementations.
 servers:
-  - url: https://commandboard.run
+  - url: https://logicsrc.com
 paths:
   /api/boards:
     get:
@@ -31,18 +31,18 @@ paths:
       responses:
         "200":
           description: Plugins returned
-  /api/plugins/sh1pt/projects:
+  /api/credentials/providers:
     get:
-      summary: List or sync sh1pt projects
+      summary: List supported credential provider targets
       responses:
         "200":
-          description: sh1pt projects returned
-  /api/plugins/sh1pt/actions/publish:
+          description: Credential providers returned
+  /api/credentials/plans:
     post:
-      summary: Publish a sh1pt action into CommandBoard.run
+      summary: Create a redacted credential sync plan
       responses:
-        "202":
-          description: sh1pt action accepted
+        "201":
+          description: Credential sync plan created
   /api/schemas:
     get:
       summary: List supported LogicSRC schema kinds
