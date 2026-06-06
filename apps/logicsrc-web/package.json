@@ -6,11 +6,18 @@
   "scripts": {
     "build": "node scripts/check-assets.js && vite build",
     "dev": "vite --host 0.0.0.0",
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "vitest run contract",
+    "test:contract": "vitest run contract",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@logicsrc/commandboard-api": "file:../commandboard-api",
     "typescript": "^5.9.3",
     "vite": "^7.2.6"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.57.0",
+    "vitest": "^4.0.8"
   }
 }

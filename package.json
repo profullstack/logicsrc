@@ -17,8 +17,8 @@
     "test": "npm run test --workspaces --if-present",
     "check": "npm run build && npm run test",
     "schemas:validate": "npm --workspace @logicsrc/validators run validate:fixtures",
-    "test:contract": "npm --workspace @logicsrc/commandboard-api run test:contract",
-    "test:e2e": "npm --workspace @logicsrc/commandboard-web run test:e2e"
+    "test:contract": "npm --workspace @logicsrc/commandboard-api run test:contract && npm --workspace @logicsrc/web run test:contract",
+    "test:e2e": "npm --workspace @logicsrc/commandboard-web run test:e2e && npm --workspace @logicsrc/web run test:e2e"
   },
   "devDependencies": {
     "@types/node": "^24.10.1",
