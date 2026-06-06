@@ -7,6 +7,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "dev": "tsx src/index.ts",
+    "start": "node dist/index.js",
     "test": "vitest run src",
     "test:contract": "vitest run src/contract.test.ts"
   },
