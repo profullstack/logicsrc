@@ -18,7 +18,9 @@ const schemas = [
 
 const implementations = [
   { name: "CommandBoard.run", detail: "Hosted reference product implementing the LogicSRC primitives." },
-  { name: "CLI and TUI", detail: "`commandboard` and `cb` clients for standards-compatible workflows." },
+  { name: "CLI and TUI", detail: "`logicsrc` is the standards CLI; `commandboard` and `cb` remain compatible product aliases." },
+  { name: "SDKs", detail: "Planned Rust, Bun, Node, Python, and curl surfaces mirror the same OpenSpec resources." },
+  { name: "sh1pt CLI", detail: "`sh1pt logicsrc ...` lets sh1pt users choose LogicSRC OpenSpec-only workflows." },
   { name: "Reference API", detail: "Sample REST API available under `/api/*` for contract testing." },
   { name: "Plugins", detail: "CoinPay, uGig, and sh1pt adapters prove the plugin manifest shape." }
 ];
@@ -26,7 +28,7 @@ const implementations = [
 const upcoming = [
   { name: "Model routing", detail: "Switch across major AI model providers from one open spec interface." },
   { name: "Cost controls", detail: "Prefer the cheapest capable model, or rotate providers by price, latency, and task fit." },
-  { name: "Agent workflows", detail: "Fan out a bug report into scoped agents for reproduction, patching, review, and evidence." },
+  { name: "Master/slave agent workflows", detail: "Fan out a bug report from a master agent into scoped slave agents for reproduction, patching, review, and evidence." },
   { name: "GitHub integration", detail: "Target Profullstack repos, create issues and branches, and keep task history auditable." }
 ];
 
@@ -35,6 +37,14 @@ const agentByteSurfaces = [
   { name: "TUI", detail: "Terminal panes for live transcripts, policy events, model use, evidence, and scorecards." },
   { name: "SDKs", detail: "Rust, Bun, Node, Python, and curl surfaces with the same screening session API." },
   { name: "PWA", detail: "Plan builder, candidate intake, live screening room, artifact review, and decision packet." }
+];
+
+const pages = [
+  { id: "docs", title: "Docs", detail: "Specification guides, CLI conventions, schemas, plugin contracts, SDK conventions, and MCP resources." },
+  { id: "blog", title: "Blog", detail: "Project notes for LogicSRC, AgentSwarm, AgentByte, OpenSpec workflows, and reference implementations." },
+  { id: "about", title: "About", detail: "LogicSRC is the Profullstack open specification project for human and AI agent coordination." },
+  { id: "terms", title: "Terms", detail: "Draft terms will cover acceptable use, reference implementation boundaries, and hosted-product responsibilities." },
+  { id: "privacy", title: "Privacy", detail: "Draft privacy notes will cover telemetry, audit events, identity data, and hosted-product data boundaries." }
 ];
 
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
@@ -53,6 +63,11 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
         <a href="/agent-swarm">Soon</a>
         <a href="/agentbyte">AgentByte</a>
         <a href="#cli">CLI</a>
+        <a href="/docs">Docs</a>
+        <a href="/blog">Blog</a>
+        <a href="/about">About</a>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
         <a href="#reference">Reference</a>
       </nav>
     </aside>
@@ -95,9 +110,8 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
             <span>slug: agent-swarm</span>
             <h3>Provider-neutral agent orchestration</h3>
             <p>LogicSRC is adding model-provider integration primitives so a CLI or agent runtime can switch between major AI models, choose the cheapest capable option, or rotate models automatically for resilience and cost control.</p>
-            <pre><code>logicsrc run bug-report \\
+            <pre><code>logicsrc agentswarm --yolo \\
   --repo profullstack/logicsrc \\
-  --route cheapest-capable \\
   --agents reproduce,patch,review</code></pre>
           </article>
           <div class="soon-grid">
@@ -159,8 +173,12 @@ logicsrc agentbyte session audit \\
           <h2>CLI Validation</h2>
           <pre><code>npm install
 npm run schemas:validate
-npm --workspace @logicsrc/cli run dev -- task validate ./task.yaml</code></pre>
-          <p>The CLI belongs here as standards tooling: validate schemas, inspect objects, and exercise compatible implementations.</p>
+npm --workspace @logicsrc/cli run dev -- \\
+  --openspec-only task validate ./task.yaml
+
+sh1pt logicsrc --openspec-only \\
+  task validate ./task.yaml</code></pre>
+          <p>The CLI belongs here as standards tooling: validate schemas, inspect objects, drive SDK/TUI/PWA/MCP contracts, and exercise compatible implementations.</p>
         </div>
       </section>
 
@@ -176,6 +194,24 @@ npm --workspace @logicsrc/cli run dev -- task validate ./task.yaml</code></pre>
               <div>
                 <h3>${item.name}</h3>
                 <p>${item.detail}</p>
+              </div>
+            </article>
+          `).join("")}
+        </div>
+      </section>
+
+      <section id="pages" class="band">
+        <div class="section-head">
+          <h2>Top-Level Pages</h2>
+          <p>LogicSRC.com should expose stable project pages for docs, publishing, company context, and legal basics.</p>
+        </div>
+        <div class="implementation-list">
+          ${pages.map((page) => `
+            <article id="${page.id}">
+              <span></span>
+              <div>
+                <h3>/${page.id} · ${page.title}</h3>
+                <p>${page.detail}</p>
               </div>
             </article>
           `).join("")}
@@ -197,4 +233,9 @@ if (window.location.pathname === "/agent-swarm") {
 
 if (window.location.pathname === "/agentbyte") {
   document.querySelector("#agentbyte")?.scrollIntoView();
+}
+
+const pageRoute = window.location.pathname.slice(1);
+if (["docs", "blog", "about", "terms", "privacy"].includes(pageRoute)) {
+  document.querySelector(`#${pageRoute}`)?.scrollIntoView();
 }

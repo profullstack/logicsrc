@@ -1,11 +1,12 @@
 {
   "name": "@logicsrc/cli",
   "version": "0.1.0",
-  "description": "CommandBoard.run CLI.",
+  "description": "LogicSRC OpenSpec CLI.",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "bin": {
+    "logicsrc": "./dist/index.js",
     "commandboard": "./dist/index.js",
     "cb": "./dist/index.js"
   },

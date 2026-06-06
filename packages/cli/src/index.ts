@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { readFileSync } from "node:fs";
+import { basename } from "node:path";
 import { Command } from "commander";
 import { renderPluginStatus, renderTui } from "@logicsrc/tui";
 import { assertSchemaKind, parseDocument, validate } from "@logicsrc/validators";
@@ -8,11 +9,14 @@ import { print, type OutputFormat } from "./format.js";
 import { defaultPluginRegistry } from "./registry.js";
 
 const program = new Command();
+const binaryName = basename(process.argv[1] ?? "");
+const commandName = binaryName === "commandboard" || binaryName === "cb" ? binaryName : "logicsrc";
 
 program
-  .name("commandboard")
-  .alias("cb")
-  .description("CommandBoard.run CLI for LogicSRC boards, tasks, agents, payments, plugins, and TUI.")
+  .name(commandName)
+  .aliases(["commandboard", "cb"])
+  .description("LogicSRC OpenSpec CLI for schemas, boards, tasks, agents, payments, plugins, and TUI.")
+  .option("--openspec-only", "Restrict workflows to LogicSRC OpenSpec schemas, SDKs, MCP, CLI, TUI, and PWA contracts.")
   .version("0.1.0");
 
 program
@@ -121,6 +125,38 @@ program.command("events").description("Listen to LogicSRC event stream.").argume
   console.log(`Listening for events${options.board ? ` on ${options.board}` : ""}${options.type ? ` of type ${options.type}` : ""}...`);
   console.log(JSON.stringify({ type: "logicsrc.event", event: "task.created", resource_id: "task_789" }));
 });
+
+program
+  .command("agentswarm")
+  .alias("agent-swarm")
+  .description("Open an AgentSwarm master agent session.")
+  .option("--yolo", "Start the master agent with autonomous execution enabled.")
+  .option("--repo <repo>", "Target repository, for example profullstack/logicsrc")
+  .option("--agents <agents>", "Comma-separated slave agent roles", "reproduce,patch,review")
+  .action((options) => {
+    if (!options.yolo) {
+      console.log("AgentSwarm is coming soon. Run `logicsrc agentswarm --yolo` to open the master agent flow.");
+      return;
+    }
+
+    const slaveAgents = String(options.agents)
+      .split(",")
+      .map((agent) => agent.trim())
+      .filter(Boolean);
+
+    print(
+      {
+        type: "logicsrc.agentswarm.session",
+        status: "opening",
+        mode: "yolo",
+        master_agent: "agentswarm-master",
+        slave_agents: slaveAgents,
+        repo: options.repo ?? null,
+        openspec_only: program.opts().openspecOnly || process.env.LOGICSRC_OPENSPEC_ONLY === "1"
+      },
+      "json"
+    );
+  });
 
 program.command("plugins").option("--format <format>", "table, json, or markdown", "table").description("Show plugin status.").action((options) => {
   const snapshot = defaultPluginRegistry().snapshot();
