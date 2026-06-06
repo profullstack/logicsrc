@@ -87,7 +87,7 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
 
       <section id="agent-swarm" class="band coming-soon">
         <div class="section-head">
-          <h2>Agent Swarm</h2>
+          <h2>AgentSwarm</h2>
           <p>An open spec AI agent platform for routing work across models, tools, providers, and repositories.</p>
         </div>
         <div class="soon-layout">
