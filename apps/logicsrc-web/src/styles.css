@@ -229,6 +229,15 @@ h1 {
   background: #eef7f3;
 }
 
+.agentbyte .soon-lead {
+  background: #f7f3e8;
+}
+
+.agentbyte .soon-lead span {
+  border-color: #e3c878;
+  color: #735b14;
+}
+
 .soon-lead span {
   display: inline-block;
   margin-bottom: 0.75rem;

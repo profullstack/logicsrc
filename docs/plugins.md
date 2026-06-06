@@ -8,6 +8,10 @@ Default plugins:
 - uGig: job import, gig publishing, candidate/agent linking, bid sync, marketplace publishing, and reputation sync.
 - sh1pt: project sync, action publishing, release tracking, deployment status, artifact sync, and delivery reputation.
 
+Coming soon plugin specs:
+
+- AgentByte: candidate, contractor, and agent capability screening for AI-era workflows. See `docs/agent-screening.md`.
+
 Runtime requirements:
 
 - Validate plugin manifests.

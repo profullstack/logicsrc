@@ -30,6 +30,13 @@ const upcoming = [
   { name: "GitHub integration", detail: "Target Profullstack repos, create issues and branches, and keep task history auditable." }
 ];
 
+const agentByteSurfaces = [
+  { name: "CLI", detail: "`logicsrc agentbyte` for plans, sessions, scorecards, audits, and artifacts." },
+  { name: "TUI", detail: "Terminal panes for live transcripts, policy events, model use, evidence, and scorecards." },
+  { name: "SDKs", detail: "Rust, Bun, Node, Python, and curl surfaces with the same screening session API." },
+  { name: "PWA", detail: "Plan builder, candidate intake, live screening room, artifact review, and decision packet." }
+];
+
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   <main class="shell">
     <aside class="rail">
@@ -44,6 +51,7 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
         <a class="active" href="#overview">Overview</a>
         <a href="#schemas">Schemas</a>
         <a href="/agent-swarm">Soon</a>
+        <a href="/agentbyte">AgentByte</a>
         <a href="#cli">CLI</a>
         <a href="#reference">Reference</a>
       </nav>
@@ -94,6 +102,35 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
           </article>
           <div class="soon-grid">
             ${upcoming.map((item) => `
+              <article>
+                <h3>${item.name}</h3>
+                <p>${item.detail}</p>
+              </article>
+            `).join("")}
+          </div>
+        </div>
+      </section>
+
+      <section id="agentbyte" class="band coming-soon agentbyte">
+        <div class="section-head">
+          <h2>AgentByte</h2>
+          <p>A coming-soon LogicSRC plugin spec for AI-era screening, assessments, interviews, and auditable agent-assisted answers.</p>
+        </div>
+        <div class="soon-layout">
+          <article class="soon-lead">
+            <span>slug: agentbyte</span>
+            <h3>Screening where AI use is declared, measured, and auditable</h3>
+            <p>AgentByte defines open screening sessions for humans, AI-assisted humans, autonomous agents, and human-agent pairs. Instead of pretending AI is absent, the spec records model use, tools, artifacts, scorecards, policy decisions, and evidence.</p>
+            <pre><code>logicsrc agentbyte plan create \\
+  --role "AI Engineer" \\
+  --repo profullstack/logicsrc
+
+logicsrc agentbyte session audit \\
+  --session ssn_123 \\
+  --format markdown</code></pre>
+          </article>
+          <div class="soon-grid">
+            ${agentByteSurfaces.map((item) => `
               <article>
                 <h3>${item.name}</h3>
                 <p>${item.detail}</p>
@@ -156,4 +193,8 @@ if ("serviceWorker" in navigator) {
 
 if (window.location.pathname === "/agent-swarm") {
   document.querySelector("#agent-swarm")?.scrollIntoView();
+}
+
+if (window.location.pathname === "/agentbyte") {
+  document.querySelector("#agentbyte")?.scrollIntoView();
 }
