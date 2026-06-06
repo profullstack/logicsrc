@@ -103,7 +103,7 @@ async function handleHireUsCoinPayCheckout(request, response) {
   const apiKey = process.env.COINPAY_API_KEY;
   const merchantId = process.env.COINPAY_MERCHANT_ID;
   const apiUrl = process.env.COINPAY_API_URL || "https://coinpayportal.com";
-  const blockchain = process.env.COINPAY_HIRE_US_BLOCKCHAIN || "USDC_BASE";
+  const blockchain = process.env.COINPAY_HIRE_US_BLOCKCHAIN || "USDC_POL";
 
   if (!apiKey) {
     sendJson(response, 503, { success: false, error: "CoinPay checkout is not configured" });

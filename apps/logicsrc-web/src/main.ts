@@ -437,7 +437,7 @@ function buildCoinPayResult(payment: {
 
   const details = document.createElement("dl");
   details.append(
-    buildDetail("Amount", `$${payment.amount_usd ?? 500} / ${payment.crypto_amount ?? "quoted at checkout"} ${payment.currency ?? "USDC_BASE"}`),
+    buildDetail("Amount", `$${payment.amount_usd ?? 500} / ${payment.crypto_amount ?? "quoted at checkout"} ${payment.currency ?? "USDC_POL"}`),
     buildDetail("Address", payment.address ?? "Open CoinPay to complete payment", true),
     buildDetail("Payment ID", payment.id ?? "pending", true)
   );
