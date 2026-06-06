@@ -6,6 +6,7 @@ import { renderPluginStatus, renderTui } from "@logicsrc/tui";
 import { assertSchemaKind, parseDocument, validate } from "@logicsrc/validators";
 import { boards, tasks } from "./fixtures.js";
 import { print, type OutputFormat } from "./format.js";
+import { exportOpenSpecSummary, importOpenSpec, writeOpenSpecChange } from "./openspec.js";
 import { defaultPluginRegistry } from "./registry.js";
 
 const program = new Command();
@@ -134,6 +135,8 @@ program
   .option("--yolo", "Start the master agent with autonomous execution enabled.")
   .option("--repo <repo>", "Target repository, for example profullstack/logicsrc")
   .option("--agents <agents>", "Comma-separated slave agent roles", "reproduce,patch,review")
+  .option("--change <id>", "OpenSpec-compatible change id", "agentswarm-yolo")
+  .option("--out <dir>", "OpenSpec-compatible output directory")
   .action((options) => {
     if (!options.yolo) {
       console.log("AgentSwarm is coming soon. Run `logicsrc agentswarm --yolo` to open the master agent flow.");
@@ -145,20 +148,68 @@ program
       .map((agent) => agent.trim())
       .filter(Boolean);
 
-    print(
-      {
-        type: "logicsrc.agentswarm.session",
-        status: "opening",
-        mode: "yolo",
-        master_agent: "agentswarm-master",
-        slave_agents: slaveAgents,
-        repo: options.repo ?? null,
-        openspec_compatible: program.opts().openspec || process.env.LOGICSRC_OPENSPEC_COMPAT === "1",
-        openspec_only: program.opts().openspecOnly || process.env.LOGICSRC_OPENSPEC_ONLY === "1"
-      },
-      "json"
-    );
+    const openspecCompatible = program.opts().openspec || process.env.LOGICSRC_OPENSPEC_COMPAT === "1";
+    const openspecArtifacts = openspecCompatible
+      ? writeOpenSpecChange({
+          id: options.change,
+          title: "AgentSwarm YOLO Session",
+          summary: "Open a LogicSRC AgentSwarm master agent session and coordinate scoped slave agents.",
+          capability: "agentswarm",
+          repo: options.repo,
+          agents: slaveAgents,
+          outDir: options.out
+        })
+      : null;
+
+    print({
+      type: "logicsrc.agentswarm.session",
+      status: "opening",
+      mode: "yolo",
+      master_agent: "agentswarm-master",
+      slave_agents: slaveAgents,
+      repo: options.repo ?? null,
+      openspec_compatible: openspecCompatible,
+      openspec_only: program.opts().openspecOnly || process.env.LOGICSRC_OPENSPEC_ONLY === "1",
+      openspec_artifacts: openspecArtifacts
+    }, "json");
   });
+
+const openspec = program.command("openspec").description("Import, export, and generate OpenSpec.dev-compatible repo-local planning artifacts.");
+
+openspec
+  .command("import")
+  .argument("[root]", "OpenSpec root directory", "openspec")
+  .option("--format <format>", "table, json, or markdown", "json")
+  .description("Read OpenSpec.dev-style specs and changes from a repo.")
+  .action((root, options) => print(importOpenSpec(root), options.format as OutputFormat));
+
+openspec
+  .command("export")
+  .argument("[root]", "OpenSpec root directory", "openspec")
+  .option("--out <file>", "Write a markdown summary", "logicsrc-openspec-summary.md")
+  .description("Export OpenSpec.dev-style repo artifacts into a LogicSRC-readable summary.")
+  .action((root, options) => {
+    const outFile = exportOpenSpecSummary(importOpenSpec(root), options.out);
+    console.log(`Wrote ${outFile}`);
+  });
+
+openspec
+  .command("change")
+  .option("--id <id>", "Change id", "logic-src-change")
+  .option("--title <title>", "Change title", "LogicSRC OpenSpec Change")
+  .option("--summary <summary>", "Change summary", "Describe a LogicSRC-compatible change.")
+  .option("--capability <capability>", "Capability/spec id", "logicsrc")
+  .option("--repo <repo>", "Target repository")
+  .option("--out <dir>", "Output directory")
+  .description("Create an OpenSpec.dev-style proposal/design/tasks/spec delta.")
+  .action((options) => print(writeOpenSpecChange({
+    id: options.id,
+    title: options.title,
+    summary: options.summary,
+    capability: options.capability,
+    repo: options.repo,
+    outDir: options.out
+  }), "json"));
 
 program.command("plugins").option("--format <format>", "table, json, or markdown", "table").description("Show plugin status.").action((options) => {
   const snapshot = defaultPluginRegistry().snapshot();

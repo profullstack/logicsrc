@@ -12,7 +12,7 @@
     "apps/*"
   ],
   "scripts": {
-    "build": "npm --workspace @logicsrc/schemas run build && npm --workspace @logicsrc/validators run build && npm --workspace @logicsrc/plugin-core run build && npm --workspace @logicsrc/plugin-coinpay run build && npm --workspace @logicsrc/plugin-ugig run build && npm --workspace @logicsrc/plugin-sh1pt run build && npm --workspace @logicsrc/tui run build && npm --workspace @logicsrc/cli run build && npm --workspace @profullstack/logicsrc-mcp run build && npm --workspace @logicsrc/commandboard-api run build && npm --workspace @logicsrc/commandboard-web run build && npm --workspace @logicsrc/web run build",
+    "build": "npm --workspace @logicsrc/schemas run build && npm --workspace @logicsrc/validators run build && npm --workspace @logicsrc/sdk run build && npm --workspace @logicsrc/plugin-core run build && npm --workspace @logicsrc/plugin-coinpay run build && npm --workspace @logicsrc/plugin-ugig run build && npm --workspace @logicsrc/plugin-sh1pt run build && npm --workspace @logicsrc/tui run build && npm --workspace @logicsrc/cli run build && npm --workspace @profullstack/logicsrc-mcp run build && npm --workspace @logicsrc/commandboard-api run build && npm --workspace @logicsrc/commandboard-web run build && npm --workspace @logicsrc/web run build",
     "start": "npm --workspace @logicsrc/web run start",
     "test": "npm run test --workspaces --if-present",
     "check": "npm run build && npm run test",

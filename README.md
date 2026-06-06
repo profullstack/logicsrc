@@ -15,8 +15,8 @@ apps/
 packages/
   cli                logicsrc OpenSpec CLI, also exposed as commandboard/cb
   logicsrc-mcp       @profullstack/logicsrc-mcp standards MCP server
+  sdk                SDK contract types and helpers
   tui                terminal UI
-  sdk                planned Rust, Bun, Node, Python, and curl SDK surfaces
   schemas            LogicSRC JSON schemas
   validators         schema validation utilities
   plugin-core        plugin manifest and loader runtime
@@ -36,6 +36,8 @@ scripts/
 npm install
 npm run check
 npm --workspace @logicsrc/cli run dev -- --openspec agentswarm --yolo --repo profullstack/logicsrc
+npm --workspace @logicsrc/cli run dev -- openspec import
+npm --workspace @logicsrc/cli run dev -- openspec export --out logicsrc-openspec-summary.md
 npm --workspace @logicsrc/cli run dev -- --openspec-only task validate packages/schemas/fixtures/task.yaml
 npm --workspace @logicsrc/cli run dev -- agentswarm --yolo --repo profullstack/logicsrc
 npm --workspace @logicsrc/cli run dev -- plugins

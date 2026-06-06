@@ -18,7 +18,8 @@ const mimeTypes = {
   ".json": "application/json; charset=utf-8",
   ".png": "image/png",
   ".svg": "image/svg+xml",
-  ".webmanifest": "application/manifest+json; charset=utf-8"
+  ".webmanifest": "application/manifest+json; charset=utf-8",
+  ".xml": "application/xml; charset=utf-8"
 };
 
 createServer((request, response) => {
@@ -76,7 +77,7 @@ function sendFile(file, headOnly, response) {
 
   const extension = extname(file);
   response.writeHead(200, {
-    "cache-control": extension === ".html" ? "no-store" : "public, max-age=31536000, immutable",
+    "cache-control": extension === ".html" || extension === ".xml" ? "no-store" : "public, max-age=31536000, immutable",
     "content-type": mimeTypes[extension] ?? "application/octet-stream"
   });
 

@@ -19,7 +19,7 @@ const schemas = [
 const implementations = [
   { name: "CommandBoard.run", detail: "Hosted reference product implementing the LogicSRC primitives." },
   { name: "CLI and TUI", detail: "`logicsrc` is the standards CLI; `commandboard` and `cb` remain compatible product aliases." },
-  { name: "SDKs", detail: "Planned Rust, Bun, Node, Python, and curl surfaces mirror the same OpenSpec resources." },
+  { name: "SDKs", detail: "`@logicsrc/sdk` defines contract types now; Rust, Bun, Node, Python, and curl surfaces mirror the same resources." },
   { name: "sh1pt CLI", detail: "`sh1pt logicsrc ...` lets sh1pt users choose LogicSRC OpenSpec-only workflows." },
   { name: "Reference API", detail: "Sample REST API available under `/api/*` for contract testing." },
   { name: "Plugins", detail: "CoinPay, uGig, and sh1pt adapters prove the plugin manifest shape." }
@@ -56,7 +56,7 @@ const comparisonRows = [
   },
   {
     area: "Artifacts",
-    logicsrc: "Schemas, plugin manifests, task/agent/run docs, event contracts, SDKs, MCP resources, CLI/TUI/PWA/API surfaces.",
+    logicsrc: "Schemas, plugin manifests, task/agent/run docs, event contracts, `@logicsrc/sdk`, MCP resources, CLI/TUI/PWA/API surfaces.",
     openspec: "Repo-local specs, proposals, design docs, implementation tasks, and spec deltas."
   },
   {
@@ -243,7 +243,7 @@ sh1pt logicsrc --openspec-only \\
 
 sh1pt logicsrc --openspec \\
   agentswarm --yolo</code></pre>
-          <p><code>--openspec</code> enables OpenSpec.dev-compatible repo-local specs, proposals, tasks, and deltas where supported. <code>--openspec-only</code> restricts work to LogicSRC-published contracts.</p>
+          <p><code>--openspec</code> enables OpenSpec.dev-compatible repo-local specs, proposals, tasks, and deltas where supported. <code>openspec import</code> and <code>openspec export</code> summarize those artifacts for LogicSRC workflows. <code>--openspec-only</code> restricts work to LogicSRC-published contracts.</p>
         </div>
       </section>
 

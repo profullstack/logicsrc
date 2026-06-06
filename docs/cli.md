@@ -41,6 +41,7 @@ task
 wallet
 events
 agentswarm
+openspec
 plugins
 tui
 update / upgrade
@@ -56,6 +57,16 @@ sh1pt logicsrc --openspec-only agentswarm --yolo --repo profullstack/logicsrc
 ```
 
 `agentswarm --yolo` opens the master agent flow. The master agent coordinates slave agents for scoped work such as reproduction, patching, review, documentation, and release evidence.
+
+OpenSpec-compatible artifact commands:
+
+```bash
+logicsrc openspec import
+logicsrc openspec export --out logicsrc-openspec-summary.md
+logicsrc openspec change --id add-agent-policy --capability agents
+```
+
+When `--openspec` is enabled, AgentSwarm writes OpenSpec.dev-style files under `openspec/changes/<change-id>/`.
 
 Machine-readable output should be available anywhere data is returned:
 

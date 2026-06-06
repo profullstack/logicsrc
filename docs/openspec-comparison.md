@@ -21,9 +21,13 @@ The projects can be complementary. LogicSRC should support an `--openspec` compa
 
 ```bash
 logicsrc --openspec agentswarm --yolo --repo profullstack/logicsrc
+logicsrc openspec import
+logicsrc openspec export --out logicsrc-openspec-summary.md
 logicsrc --openspec-only task validate ./task.yaml
 sh1pt logicsrc --openspec agentswarm --yolo --repo profullstack/logicsrc
 ```
 
 - `--openspec` enables OpenSpec.dev-compatible repo-local planning conventions where supported.
 - `--openspec-only` restricts work to LogicSRC-published OpenSpec contracts.
+- `openspec import` summarizes repo-local OpenSpec.dev-style specs and changes.
+- `openspec export` writes a LogicSRC-readable markdown summary of those artifacts.
