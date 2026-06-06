@@ -184,7 +184,10 @@ h1 {
 .cli-panel,
 .soon-lead,
 .soon-grid article,
-.implementation-list article {
+.implementation-list article,
+.hire-panel,
+.hire-grid article,
+.coinpay-panel {
   border: 1px solid #d6ddd2;
   border-radius: 8px;
   background: #ffffff;
@@ -374,15 +377,125 @@ pre {
   margin-top: 0.75rem;
 }
 
+.hire-us {
+  padding-top: 1.2rem;
+}
+
+.hire-layout {
+  display: grid;
+  grid-template-columns: minmax(20rem, 0.9fr) minmax(0, 1.1fr);
+  gap: 1rem;
+}
+
+.hire-panel {
+  padding: 1rem;
+  background: #101418;
+  color: #f6f7f4;
+}
+
+.hire-panel .eyebrow {
+  color: #5ac8a6;
+}
+
+.hire-panel h3 {
+  margin-bottom: 0.55rem;
+  font-size: 1.35rem;
+}
+
+.hire-panel p {
+  color: #ccd5ce;
+  line-height: 1.5;
+}
+
+.price-row {
+  display: flex;
+  align-items: end;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.price-row strong {
+  color: #ffffff;
+  font-size: 2.4rem;
+  line-height: 1;
+}
+
+.price-row span {
+  color: #b5beb2;
+  font-weight: 800;
+}
+
+.cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.button-primary,
+.button-secondary {
+  display: inline-flex;
+  min-height: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0.6rem 0.85rem;
+  border-radius: 6px;
+  font-weight: 800;
+}
+
+.button-primary {
+  background: #5ac8a6;
+  color: #101418;
+}
+
+.button-secondary {
+  border: 1px solid #3f5049;
+  color: #f6f7f4;
+}
+
+.hire-stack {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.hire-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.hire-grid article,
+.coinpay-panel {
+  padding: 0.85rem;
+}
+
+.hire-grid h3,
+.coinpay-panel h3 {
+  margin-bottom: 0.35rem;
+  font-size: 1rem;
+}
+
+.hire-grid p,
+.coinpay-panel p {
+  margin-bottom: 0;
+  color: #58615b;
+  line-height: 1.45;
+}
+
+.coinpay-panel pre {
+  margin-bottom: 0;
+}
+
 @media (max-width: 980px) {
   .primitive-grid,
-  .implementation-list {
+  .implementation-list,
+  .hire-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .hero,
   .soon-layout,
-  .two-col {
+  .two-col,
+  .hire-layout {
     grid-template-columns: 1fr;
   }
 }
@@ -417,7 +530,8 @@ pre {
   .status-grid,
   .primitive-grid,
   .soon-grid,
-  .implementation-list {
+  .implementation-list,
+  .hire-grid {
     grid-template-columns: 1fr;
   }
 

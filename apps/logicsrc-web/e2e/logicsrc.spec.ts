@@ -22,6 +22,17 @@ test.describe("LogicSRC PWA", () => {
     await expect(page.getByText("/privacy · Privacy")).toBeVisible();
   });
 
+  test("renders Hire Us offer and CoinPay payment CTA", async ({ page }) => {
+    await page.goto("/hire-us");
+
+    await expect(page.getByRole("heading", { name: "Hire Us", exact: true })).toBeVisible();
+    await expect(page.locator(".price-row strong", { hasText: "$500" })).toBeVisible();
+    await expect(page.getByText("per week")).toBeVisible();
+    await expect(page.getByText("open infrastructure and open specs for AI agent systems")).toBeVisible();
+    await expect(page.getByRole("link", { name: "Request CoinPay invoice" })).toHaveAttribute("href", /CoinPay/);
+    await expect(page.getByText("COINPAY_PRODUCT=logicsrc-hire-us")).toBeVisible();
+  });
+
   test("serves sitemap and RSS XML endpoints", async ({ request }) => {
     const sitemap = await request.get("/sitemap.xml");
     const rss = await request.get("/blog/rss.xml");
@@ -29,6 +40,7 @@ test.describe("LogicSRC PWA", () => {
     expect(sitemap.status()).toBe(200);
     expect(sitemap.headers()["content-type"]).toMatch(/(?:application|text)\/xml/);
     await expect(sitemap.text()).resolves.toContain("https://logicsrc.com/openspec");
+    await expect(sitemap.text()).resolves.toContain("https://logicsrc.com/hire-us");
 
     expect(rss.status()).toBe(200);
     expect(rss.headers()["content-type"]).toMatch(/(?:application|text)\/xml/);

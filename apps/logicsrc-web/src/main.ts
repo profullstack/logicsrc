@@ -39,10 +39,18 @@ const agentByteSurfaces = [
   { name: "PWA", detail: "Plan builder, candidate intake, live screening room, artifact review, and decision packet." }
 ];
 
+const hireUsWork = [
+  { name: "AI agent workflow specs", detail: "Open schemas, repo-local plans, AgentSwarm flows, AgentByte screening contracts, and MCP resources." },
+  { name: "Reference implementations", detail: "CLI, TUI, SDK, PWA, API, curl, and sh1pt-compatible surfaces that prove the spec can be used." },
+  { name: "Integration hardening", detail: "GitHub, CoinPay, model providers, webhooks, audit logs, permissions, and deployment-ready contracts." },
+  { name: "Open infrastructure", detail: "Portable code and specs first: no closed workflow lock-in, no one-off agent scripts that cannot be audited." }
+];
+
 const pages = [
   { id: "docs", title: "Docs", detail: "Specification guides, CLI conventions, schemas, plugin contracts, SDK conventions, and MCP resources." },
   { id: "blog", title: "Blog", detail: "Project notes for LogicSRC, AgentSwarm, AgentByte, OpenSpec workflows, and reference implementations." },
   { id: "openspec", title: "OpenSpec", detail: "Comparison and compatibility notes for OpenSpec.dev-style repo-local specs, proposals, tasks, and deltas." },
+  { id: "hire-us", title: "Hire Us", detail: "$500/week LogicSRC work on open infrastructure, specs, AI agent workflows, and reference implementations paid through CoinPay." },
   { id: "about", title: "About", detail: "LogicSRC is the Profullstack open specification project for human and AI agent coordination." },
   { id: "terms", title: "Terms", detail: "Draft terms will cover acceptable use, reference implementation boundaries, and hosted-product responsibilities." },
   { id: "privacy", title: "Privacy", detail: "Draft privacy notes will cover telemetry, audit events, identity data, and hosted-product data boundaries." }
@@ -100,6 +108,7 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
         <a href="/docs">Docs</a>
         <a href="/blog">Blog</a>
         <a href="/openspec">OpenSpec</a>
+        <a href="/hire-us">Hire Us</a>
         <a href="/about">About</a>
         <a href="/terms">Terms</a>
         <a href="/privacy">Privacy</a>
@@ -265,6 +274,46 @@ sh1pt logicsrc --openspec \\
         </div>
       </section>
 
+      <section id="hire-us" class="band hire-us">
+        <div class="section-head">
+          <h2>Hire Us</h2>
+          <p>$500/week for LogicSRC work using open infrastructure and open specs for AI agent systems.</p>
+        </div>
+        <div class="hire-layout">
+          <article class="hire-panel">
+            <p class="eyebrow">Profullstack standards work</p>
+            <h3>Open-spec AI agent implementation help</h3>
+            <p>Hire us to turn agent ideas into portable LogicSRC specs, CLIs, SDKs, MCP resources, PWAs, APIs, and sh1pt-compatible workflows. We prioritize auditable contracts, repo-local artifacts, and integrations that can move between model providers and infrastructure.</p>
+            <div class="price-row">
+              <strong>$500</strong>
+              <span>per week</span>
+            </div>
+            <div class="cta-row">
+              <a class="button-primary" href="mailto:hire-us@profullstack.com?subject=LogicSRC%20Hire%20Us%20-%20CoinPay%20%24500%2Fweek">Request CoinPay invoice</a>
+              <a class="button-secondary" href="/docs">Read specs</a>
+            </div>
+          </article>
+          <div class="hire-stack">
+            <div class="hire-grid">
+              ${hireUsWork.map((item) => `
+                <article>
+                  <h3>${item.name}</h3>
+                  <p>${item.detail}</p>
+                </article>
+              `).join("")}
+            </div>
+            <article id="coinpay-setup" class="coinpay-panel">
+              <h3>CoinPay checkout hook</h3>
+              <p>Once the CoinPay org is configured, this page can point the primary CTA at a hosted checkout or escrow request for the weekly plan.</p>
+              <pre><code>COINPAY_ORG=profullstack
+COINPAY_PRODUCT=logicsrc-hire-us
+COINPAY_AMOUNT_USD=500
+COINPAY_INTERVAL=week</code></pre>
+            </article>
+          </div>
+        </div>
+      </section>
+
       <section id="pages" class="band">
         <div class="section-head">
           <h2>Top-Level Pages</h2>
@@ -301,6 +350,6 @@ if (window.location.pathname === "/agentbyte") {
 }
 
 const pageRoute = window.location.pathname.slice(1);
-if (["docs", "blog", "openspec", "about", "terms", "privacy"].includes(pageRoute)) {
+if (["docs", "blog", "openspec", "hire-us", "about", "terms", "privacy"].includes(pageRoute)) {
   document.querySelector(`#${pageRoute}`)?.scrollIntoView();
 }

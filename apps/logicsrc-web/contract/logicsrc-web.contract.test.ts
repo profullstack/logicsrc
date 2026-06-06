@@ -23,7 +23,7 @@ afterAll(() => {
 
 describe("LogicSRC web contracts", () => {
   it("serves SPA routes from the built app shell", async () => {
-    for (const route of ["/", "/openspec", "/docs", "/blog", "/about", "/terms", "/privacy"]) {
+    for (const route of ["/", "/openspec", "/docs", "/blog", "/hire-us", "/about", "/terms", "/privacy"]) {
       const response = await fetch(`${baseUrl}${route}`);
       const text = await response.text();
 
@@ -41,6 +41,7 @@ describe("LogicSRC web contracts", () => {
     expect(response.headers.get("content-type")).toContain("application/xml");
     expect(response.headers.get("cache-control")).toBe("no-store");
     expect(text).toContain("<loc>https://logicsrc.com/openspec</loc>");
+    expect(text).toContain("<loc>https://logicsrc.com/hire-us</loc>");
     expect(text).toContain("<loc>https://logicsrc.com/blog</loc>");
   });
 
