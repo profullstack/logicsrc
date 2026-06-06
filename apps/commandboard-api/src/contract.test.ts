@@ -22,6 +22,15 @@ afterAll(async () => {
 });
 
 describe("CommandBoard API contracts", () => {
+  it("exposes root API index", async () => {
+    const response = await fetch(`${baseUrl}/`);
+    const body = await response.json() as { ok: boolean; service: string; endpoints: string[] };
+
+    expect(response.status).toBe(200);
+    expect(body).toMatchObject({ ok: true, service: "commandboard-api" });
+    expect(body.endpoints).toEqual(expect.arrayContaining(["/health", "/api/boards", "/api/plugins"]));
+  });
+
   it("exposes health contract", async () => {
     const response = await fetch(`${baseUrl}/health`);
     const body = await response.json() as { ok: boolean; service: string };

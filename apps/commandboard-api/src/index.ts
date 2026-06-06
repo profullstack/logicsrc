@@ -54,6 +54,15 @@ export function createCommandBoardServer() {
 async function route(request: IncomingMessage, response: ServerResponse) {
   const url = new URL(request.url ?? "/", "http://localhost");
 
+  if (request.method === "GET" && url.pathname === "/") {
+    json(response, 200, {
+      ok: true,
+      service: "commandboard-api",
+      endpoints: ["/health", "/api/boards", "/api/tasks", "/api/plugins", "/api/schemas"]
+    });
+    return;
+  }
+
   if (request.method === "GET" && url.pathname === "/health") {
     json(response, 200, { ok: true, service: "commandboard-api" });
     return;
