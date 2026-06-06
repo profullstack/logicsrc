@@ -4,4 +4,4 @@ for (const file of ["index.html", "public/manifest.webmanifest", "public/icon.sv
   accessSync(new URL(`../${file}`, import.meta.url));
 }
 
-console.log("commandboard-web assets verified");
+console.log("logicsrc-web assets verified");

@@ -1,0 +1,23 @@
+{
+  "name": "@profullstack/logicsrc-mcp",
+  "version": "0.1.0",
+  "description": "MCP server for LogicSRC standards, schemas, prompts, and validators.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "logicsrc-mcp": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run src"
+  },
+  "dependencies": {
+    "@logicsrc/validators": "file:../validators",
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "zod": "^4.1.13"
+  },
+  "devDependencies": {
+    "vitest": "^4.0.8"
+  }
+}

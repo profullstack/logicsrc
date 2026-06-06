@@ -12,6 +12,7 @@ apps/
   commandboard-web   PWA shell
 packages/
   cli                commandboard/cb command line client
+  logicsrc-mcp       @profullstack/logicsrc-mcp standards MCP server
   tui                terminal UI
   schemas            LogicSRC JSON schemas
   validators         schema validation utilities
@@ -33,7 +34,14 @@ npm install
 npm run check
 npm --workspace @logicsrc/cli run dev -- plugins
 npm --workspace @logicsrc/cli run dev -- tui
+npm --workspace @profullstack/logicsrc-mcp run build
+node packages/logicsrc-mcp/dist/index.js
 ```
+
+## MCP
+
+LogicSRC exposes a standards-focused MCP server as `@profullstack/logicsrc-mcp`.
+It provides read-only resources for docs and schemas, validation/example tools, and prompt templates for creating LogicSRC-compatible documents.
 
 ## v1.0.0 Priorities
 

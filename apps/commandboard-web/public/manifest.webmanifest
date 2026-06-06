@@ -1,0 +1,18 @@
+{
+  "name": "CommandBoard.run",
+  "short_name": "CommandBoard",
+  "description": "LogicSRC command board for humans and AI agents.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f7f2ea",
+  "theme_color": "#151515",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

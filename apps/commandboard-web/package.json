@@ -4,11 +4,13 @@
   "description": "CommandBoard.run PWA shell.",
   "type": "module",
   "scripts": {
-    "build": "node scripts/check-assets.js",
+    "build": "node scripts/check-assets.js && vite build",
     "dev": "vite --host 0.0.0.0",
+    "start": "node server.js",
     "test:e2e": "playwright test"
   },
   "dependencies": {
+    "@logicsrc/commandboard-api": "file:../commandboard-api",
     "@vitejs/plugin-react": "^5.1.1",
     "vite": "^7.2.6",
     "typescript": "^5.9.3"

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="CommandBoard.run">
+  <rect width="512" height="512" rx="72" fill="#151515"/>
+  <path fill="#f0c56a" d="M104 116h304v64H104zM104 224h192v64H104zM104 332h304v64H104z"/>
+  <path fill="#5ac8a6" d="M328 214h80v84h-80z"/>
+</svg>
