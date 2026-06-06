@@ -1,21 +1,60 @@
 #!/usr/bin/env node
 import { readFileSync } from "node:fs";
 import { Command } from "commander";
-import { renderPluginStatus, renderTui } from "@logicsrc/tui";
+import { renderArcadeList, renderPluginStatus, renderTui, runArcadeSession, type TaskSnapshot } from "@logicsrc/tui";
 import { assertSchemaKind, parseDocument, validate } from "@logicsrc/validators";
+import { getConfigValue, readConfig, setConfigValue, writeConfig } from "./config.js";
 import { boards, tasks } from "./fixtures.js";
 import { print, type OutputFormat } from "./format.js";
 import { exportOpenSpecSummary, importOpenSpec, writeOpenSpecChange } from "./openspec.js";
 import { defaultPluginRegistry } from "./registry.js";
 
+process.stdout.on("error", (error: NodeJS.ErrnoException) => {
+  if (error.code === "EPIPE") {
+    process.exit(0);
+  }
+  throw error;
+});
+
 const program = new Command();
+program.enablePositionalOptions();
 
 program
   .name("logicsrc")
   .description("LogicSRC OpenSpec CLI for schemas, boards, tasks, agents, payments, plugins, and TUI.")
   .option("--openspec", "Enable OpenSpec.dev-compatible repo-local specs, proposals, tasks, and deltas where supported.")
   .option("--openspec-only", "Restrict workflows to LogicSRC OpenSpec schemas, SDKs, MCP, CLI, TUI, and PWA contracts.")
+  .option("--yolo", "Start the default AgentSwarm YOLO flow.")
+  .option("--arcade [game]", "Launch Waiting Arcade while a long-running task executes.")
+  .option("--waiting-arcade", "Alias for --arcade.")
+  .option("--waiting-game <game>", "Alias for --arcade=<game>.")
+  .option("--no-arcade", "Disable Waiting Arcade.")
   .version("0.1.0");
+
+program.action(async (options) => {
+  if (!options.yolo) {
+    program.outputHelp();
+    return;
+  }
+
+  const arcadeGame = resolveArcadeGame(options);
+  if (arcadeGame) {
+    await runYoloArcade(arcadeGame);
+    return;
+  }
+
+  print(
+    {
+      type: "logicsrc.agentswarm.session",
+      status: "opening",
+      mode: "yolo",
+      master_agent: "agentswarm-master",
+      slave_agents: ["reproduce", "patch", "review"],
+      arcade: false
+    },
+    "json"
+  );
+});
 
 program
   .command("login")
@@ -124,16 +163,59 @@ program.command("events").description("Listen to LogicSRC event stream.").argume
   console.log(JSON.stringify({ type: "logicsrc.event", event: "task.created", resource_id: "task_789" }));
 });
 
+const arcade = program.command("arcade").description("Play Waiting Arcade games.");
+
+arcade.action(async () => {
+  await runArcadeSession({ game: process.env.LOGICSRC_ARCADE_GAME || "hangman", standalone: true });
+});
+
+arcade.command("list").description("List built-in Waiting Arcade games.").action(() => {
+  console.log(renderArcadeList());
+});
+
+arcade
+  .command("play")
+  .argument("[game]", "Game id or random", "hangman")
+  .description("Play a standalone Waiting Arcade game.")
+  .action(async (game) => {
+    await runArcadeSession({ game, standalone: true });
+  });
+
+const config = program.command("config").description("Read and write LogicSRC config.");
+
+config
+  .command("get")
+  .argument("<path>", "Dot-path config key")
+  .description("Print a config value.")
+  .action((path) => {
+    console.log(JSON.stringify(getConfigValue(path), null, 2));
+  });
+
+config
+  .command("set")
+  .argument("<path>", "Dot-path config key")
+  .argument("<value>", "JSON, boolean, number, or string value")
+  .description("Set a config value.")
+  .action((path, value) => {
+    const next = setConfigValue(path, value);
+    const file = writeConfig(next);
+    console.log(`Set ${path} in ${file}`);
+  });
+
 program
   .command("agentswarm")
   .alias("agent-swarm")
   .description("Open an AgentSwarm master agent session.")
   .option("--yolo", "Start the master agent with autonomous execution enabled.")
+  .option("--arcade [game]", "Launch Waiting Arcade while AgentSwarm runs.")
+  .option("--waiting-arcade", "Alias for --arcade.")
+  .option("--waiting-game <game>", "Alias for --arcade=<game>.")
+  .option("--no-arcade", "Disable Waiting Arcade.")
   .option("--repo <repo>", "Target repository, for example profullstack/logicsrc")
   .option("--agents <agents>", "Comma-separated slave agent roles", "reproduce,patch,review")
   .option("--change <id>", "OpenSpec-compatible change id", "agentswarm-yolo")
   .option("--out <dir>", "OpenSpec-compatible output directory")
-  .action((options) => {
+  .action(async (options) => {
     if (!options.yolo) {
       console.log("AgentSwarm is coming soon. Run `logicsrc agentswarm --yolo` to open the master agent flow.");
       return;
@@ -156,6 +238,12 @@ program
           outDir: options.out
         })
       : null;
+
+    const arcadeGame = resolveArcadeGame(options);
+    if (arcadeGame) {
+      await runYoloArcade(arcadeGame, options.repo);
+      return;
+    }
 
     print({
       type: "logicsrc.agentswarm.session",
@@ -282,6 +370,49 @@ function toTaskSchema(item: (typeof tasks)[number]) {
     budget: { amount: Number.parseFloat(item.budget), currency: item.budget.replace(/[0-9. ]/g, "") || "USDC" },
     assignee_did: item.assignee ?? undefined
   };
+}
+
+function resolveArcadeGame(options: { arcade?: string | boolean; waitingArcade?: boolean; waitingGame?: string }) {
+  if (options.arcade === false || process.env.LOGICSRC_NO_ARCADE === "1") {
+    return undefined;
+  }
+
+  if (options.waitingGame) {
+    return options.waitingGame;
+  }
+
+  if (typeof options.arcade === "string") {
+    return options.arcade;
+  }
+
+  const config = readConfig();
+  const configuredDefault = String(getConfigValue("waiting.arcade.defaultGame", config) ?? "hangman");
+
+  if (options.arcade === true || options.waitingArcade || process.env.LOGICSRC_ARCADE === "1") {
+    return process.env.LOGICSRC_ARCADE_GAME || configuredDefault;
+  }
+
+  return undefined;
+}
+
+async function runYoloArcade(game: string, repo?: string) {
+  const task: TaskSnapshot = {
+    id: "agentswarm_yolo",
+    title: repo ? `AgentSwarm YOLO on ${repo}` : "AgentSwarm YOLO session",
+    status: "running",
+    phase: "starting",
+    progress: 0.05,
+    costUsd: 0,
+    lastMessage: "launching Waiting Arcade"
+  };
+
+  await runArcadeSession({
+    game,
+    standalone: false,
+    task,
+    simulateTask: true,
+    logs: ["AgentSwarm master session started.", "Task continues while Waiting Arcade is active."]
+  });
 }
 
 program.parseAsync(process.argv).catch((error: unknown) => {

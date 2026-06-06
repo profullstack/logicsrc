@@ -1,6 +1,8 @@
 import { createPluginRegistry } from "@logicsrc/plugin-core";
 import { coinPayPlugin } from "@logicsrc/plugin-coinpay";
 import { uGigPlugin } from "@logicsrc/plugin-ugig";
+export { ArcadeRegistry, createDefaultArcadeRegistry, renderArcadeList, renderArcadeSnapshot, runArcadeSession } from "./arcade/index.js";
+export type { ArcadeEvent, GameAction, GameContext, GameControl, KeyEvent, TaskEvent, TaskSnapshot, TerminalFrame, WaitingGame } from "./arcade/index.js";
 
 export interface TuiState {
   did: string;
