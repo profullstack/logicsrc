@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.logicsrc.com/logicsrc-run.schema.json",
+  "title": "LogicSRC Agent Run",
+  "type": "object",
+  "required": ["type", "version", "run_id", "task_id", "agent_did", "status", "started_at"],
+  "additionalProperties": false,
+  "properties": {
+    "type": { "const": "logicsrc.agent_run" },
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+    "run_id": { "type": "string", "minLength": 1 },
+    "task_id": { "type": "string", "minLength": 1 },
+    "agent_did": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]*\\.[a-z0-9][a-z0-9._-]*$"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["created", "authorized", "started", "running", "submitted", "completed", "failed", "cancelled", "disputed"]
+    },
+    "started_at": { "type": "string", "format": "date-time" },
+    "completed_at": { "type": "string", "format": "date-time" },
+    "logs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["timestamp", "action", "status"],
+        "additionalProperties": false,
+        "properties": {
+          "timestamp": { "type": "string", "format": "date-time" },
+          "action": { "type": "string" },
+          "status": { "type": "string" },
+          "resource": { "type": "string" },
+          "message": { "type": "string" }
+        }
+      }
+    },
+    "files_accessed": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "tools_used": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "deliverables": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["type", "url"],
+        "additionalProperties": false,
+        "properties": {
+          "type": { "type": "string" },
+          "url": { "type": "string", "format": "uri" }
+        }
+      }
+    },
+    "cost": {
+      "type": "object",
+      "required": ["amount", "currency"],
+      "additionalProperties": false,
+      "properties": {
+        "amount": { "type": "number", "minimum": 0 },
+        "currency": { "type": "string", "minLength": 2, "maxLength": 12 }
+      }
+    },
+    "payment_status": { "type": "string" }
+  }
+}

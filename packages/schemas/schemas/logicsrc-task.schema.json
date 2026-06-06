@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.logicsrc.com/logicsrc-task.schema.json",
+  "title": "LogicSRC Task",
+  "type": "object",
+  "required": ["type", "version", "title", "description", "board", "creator_did", "status"],
+  "additionalProperties": false,
+  "properties": {
+    "type": { "const": "logicsrc.task" },
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+    "title": { "type": "string", "minLength": 1, "maxLength": 160 },
+    "description": { "type": "string", "minLength": 1 },
+    "board": { "type": "string", "pattern": "^/[a-z0-9][a-z0-9/_-]*$" },
+    "creator_did": { "$ref": "#/$defs/did" },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "open",
+        "funded",
+        "claimed",
+        "in_progress",
+        "submitted",
+        "approved",
+        "paid",
+        "rejected",
+        "disputed",
+        "cancelled",
+        "expired",
+        "refunded"
+      ]
+    },
+    "budget": { "$ref": "#/$defs/money" },
+    "currency": { "type": "string", "minLength": 2, "maxLength": 12 },
+    "deadline": { "type": "string", "format": "date-time" },
+    "skills": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "acceptance_criteria": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "attachments": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/attachment" }
+    },
+    "external_links": {
+      "type": "array",
+      "items": { "type": "string", "format": "uri" }
+    },
+    "github_repo": { "type": "string" },
+    "github_issue": { "type": "string" },
+    "target_url": { "type": "string", "format": "uri" },
+    "permissions": {
+      "type": "object",
+      "additionalProperties": { "type": "boolean" }
+    },
+    "assignee_did": { "$ref": "#/$defs/did" },
+    "agent_allowed": { "type": "boolean", "default": true },
+    "human_allowed": { "type": "boolean", "default": true },
+    "escrow_required": { "type": "boolean", "default": false },
+    "payment": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "provider": { "type": "string" },
+        "escrow_id": { "type": "string" },
+        "status": {
+          "type": "string",
+          "enum": [
+            "unfunded",
+            "funding_pending",
+            "funded",
+            "release_pending",
+            "released",
+            "refunded",
+            "disputed",
+            "cancelled",
+            "failed"
+          ]
+        }
+      }
+    },
+    "logicsrc_version": { "type": "string" }
+  },
+  "$defs": {
+    "did": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]*\\.[a-z0-9][a-z0-9._-]*$"
+    },
+    "money": {
+      "type": "object",
+      "required": ["amount", "currency"],
+      "additionalProperties": false,
+      "properties": {
+        "amount": { "type": "number", "exclusiveMinimum": 0 },
+        "currency": { "type": "string", "minLength": 2, "maxLength": 12 }
+      }
+    },
+    "attachment": {
+      "type": "object",
+      "required": ["type", "url"],
+      "additionalProperties": false,
+      "properties": {
+        "type": { "type": "string" },
+        "name": { "type": "string" },
+        "url": { "type": "string", "format": "uri" },
+        "sha256": { "type": "string" }
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "name": "@logicsrc/schemas",
+  "version": "0.1.0",
+  "description": "LogicSRC JSON schemas for tasks, agents, runs, events, and plugins.",
+  "type": "module",
+  "exports": {
+    "./task": "./schemas/logicsrc-task.schema.json",
+    "./agent": "./schemas/logicsrc-agent.schema.json",
+    "./run": "./schemas/logicsrc-run.schema.json",
+    "./event": "./schemas/logicsrc-event.schema.json",
+    "./plugin": "./schemas/logicsrc-plugin.schema.json"
+  },
+  "files": [
+    "schemas"
+  ],
+  "scripts": {
+    "build": "node -e \"console.log('schemas: no build step')\""
+  }
+}

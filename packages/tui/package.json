@@ -1,0 +1,17 @@
+{
+  "name": "@logicsrc/tui",
+  "version": "0.1.0",
+  "description": "CommandBoard.run terminal UI.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@logicsrc/plugin-core": "file:../plugin-core",
+    "@logicsrc/plugin-coinpay": "file:../../plugins/coinpay",
+    "@logicsrc/plugin-sh1pt": "file:../../plugins/sh1pt",
+    "@logicsrc/plugin-ugig": "file:../../plugins/ugig"
+  }
+}

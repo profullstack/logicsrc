@@ -1,0 +1,26 @@
+type: logicsrc.task
+version: "0.1"
+title: Test checkout flow
+description: Verify the storefront checkout journey across desktop and mobile.
+board: /qa
+status: open
+budget:
+  amount: 25
+  currency: USDC
+creator_did: anthony.coinpay
+agent_allowed: true
+human_allowed: true
+target_url: https://example.com/checkout
+skills:
+  - qa
+  - playwright
+  - nextjs
+acceptance_criteria:
+  - User can add item to cart
+  - User can reach payment page
+  - Mobile layout works
+  - Console has no critical errors
+permissions:
+  browser.visit_url: true
+  github.create_issue: true
+  files.read_attached: true

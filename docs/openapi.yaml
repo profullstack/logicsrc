@@ -1,0 +1,51 @@
+openapi: 3.1.0
+info:
+  title: CommandBoard.run LogicSRC API
+  version: 0.1.0
+  description: REST API draft for the CommandBoard.run reference implementation.
+servers:
+  - url: https://commandboard.run
+paths:
+  /api/boards:
+    get:
+      summary: List boards
+      responses:
+        "200":
+          description: Boards returned
+  /api/tasks:
+    get:
+      summary: List tasks
+      responses:
+        "200":
+          description: Tasks returned
+    post:
+      summary: Create a LogicSRC task
+      responses:
+        "201":
+          description: Task created
+        "422":
+          description: Schema validation failed
+  /api/plugins:
+    get:
+      summary: List loaded plugins and capability index
+      responses:
+        "200":
+          description: Plugins returned
+  /api/plugins/sh1pt/projects:
+    get:
+      summary: List or sync sh1pt projects
+      responses:
+        "200":
+          description: sh1pt projects returned
+  /api/plugins/sh1pt/actions/publish:
+    post:
+      summary: Publish a sh1pt action into CommandBoard.run
+      responses:
+        "202":
+          description: sh1pt action accepted
+  /api/schemas:
+    get:
+      summary: List supported LogicSRC schema kinds
+      responses:
+        "200":
+          description: Schema kinds returned

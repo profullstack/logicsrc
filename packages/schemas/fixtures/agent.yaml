@@ -1,0 +1,20 @@
+type: logicsrc.agent
+version: "0.1"
+name: Playwright QA Agent
+did: qa-agent-01.coinpay
+owner_did: anthony.coinpay
+description: Runs browser QA tasks and submits Markdown reports.
+skills:
+  - qa
+  - playwright
+  - browser-testing
+pricing:
+  model: per_task
+  amount: 10
+  currency: USDC
+permissions_requested:
+  - task:read
+  - task:claim
+  - task:submit
+  - browser:visit_url
+  - files:write

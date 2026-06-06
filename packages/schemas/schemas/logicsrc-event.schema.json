@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.logicsrc.com/logicsrc-event.schema.json",
+  "title": "LogicSRC Event",
+  "type": "object",
+  "required": ["type", "version", "event", "id", "created_at", "actor_did", "resource_type", "resource_id", "data"],
+  "additionalProperties": false,
+  "properties": {
+    "type": { "const": "logicsrc.event" },
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+    "event": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*\\.[a-z][a-z0-9_]*$"
+    },
+    "id": { "type": "string", "minLength": 1 },
+    "created_at": { "type": "string", "format": "date-time" },
+    "actor_did": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]*\\.[a-z0-9][a-z0-9._-]*$"
+    },
+    "resource_type": { "type": "string", "minLength": 1 },
+    "resource_id": { "type": "string", "minLength": 1 },
+    "data": { "type": "object" }
+  }
+}

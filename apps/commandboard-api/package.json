@@ -1,0 +1,21 @@
+{
+  "name": "@logicsrc/commandboard-api",
+  "version": "0.1.0",
+  "description": "CommandBoard.run REST API reference service.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsx src/index.ts"
+  },
+  "dependencies": {
+    "@logicsrc/plugin-core": "file:../../packages/plugin-core",
+    "@logicsrc/plugin-coinpay": "file:../../plugins/coinpay",
+    "@logicsrc/plugin-sh1pt": "file:../../plugins/sh1pt",
+    "@logicsrc/plugin-ugig": "file:../../plugins/ugig",
+    "@logicsrc/validators": "file:../../packages/validators"
+  },
+  "devDependencies": {
+    "tsx": "^4.21.0"
+  }
+}
