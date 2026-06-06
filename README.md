@@ -35,6 +35,7 @@ scripts/
 ```bash
 npm install
 npm run check
+npm --workspace @logicsrc/cli run dev -- --openspec agentswarm --yolo --repo profullstack/logicsrc
 npm --workspace @logicsrc/cli run dev -- --openspec-only task validate packages/schemas/fixtures/task.yaml
 npm --workspace @logicsrc/cli run dev -- agentswarm --yolo --repo profullstack/logicsrc
 npm --workspace @logicsrc/cli run dev -- plugins

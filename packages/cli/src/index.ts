@@ -16,6 +16,7 @@ program
   .name(commandName)
   .aliases(["commandboard", "cb"])
   .description("LogicSRC OpenSpec CLI for schemas, boards, tasks, agents, payments, plugins, and TUI.")
+  .option("--openspec", "Enable OpenSpec.dev-compatible repo-local specs, proposals, tasks, and deltas where supported.")
   .option("--openspec-only", "Restrict workflows to LogicSRC OpenSpec schemas, SDKs, MCP, CLI, TUI, and PWA contracts.")
   .version("0.1.0");
 
@@ -152,6 +153,7 @@ program
         master_agent: "agentswarm-master",
         slave_agents: slaveAgents,
         repo: options.repo ?? null,
+        openspec_compatible: program.opts().openspec || process.env.LOGICSRC_OPENSPEC_COMPAT === "1",
         openspec_only: program.opts().openspecOnly || process.env.LOGICSRC_OPENSPEC_ONLY === "1"
       },
       "json"

@@ -20,8 +20,11 @@ Product CLIs may embed LogicSRC as a sub-command:
 
 ```bash
 sh1pt logicsrc <resource> <action> [options]
+sh1pt logicsrc --openspec <resource> <action> [options]
 sh1pt logicsrc --openspec-only <resource> <action> [options]
 ```
+
+`--openspec` enables OpenSpec.dev-compatible repo-local planning conventions where supported, such as specs, proposals, implementation tasks, and requirement deltas.
 
 `--openspec-only` means the workflow must stay inside LogicSRC-published schemas, CLI/TUI conventions, SDK contracts, MCP resources/tools/prompts, PWA states, and curl-compatible API surfaces.
 
@@ -48,6 +51,7 @@ AgentSwarm master-agent command:
 
 ```bash
 logicsrc agentswarm --yolo --repo profullstack/logicsrc --agents reproduce,patch,review
+logicsrc --openspec agentswarm --yolo --repo profullstack/logicsrc
 sh1pt logicsrc --openspec-only agentswarm --yolo --repo profullstack/logicsrc
 ```
 

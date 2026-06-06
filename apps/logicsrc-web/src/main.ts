@@ -42,9 +42,43 @@ const agentByteSurfaces = [
 const pages = [
   { id: "docs", title: "Docs", detail: "Specification guides, CLI conventions, schemas, plugin contracts, SDK conventions, and MCP resources." },
   { id: "blog", title: "Blog", detail: "Project notes for LogicSRC, AgentSwarm, AgentByte, OpenSpec workflows, and reference implementations." },
+  { id: "openspec", title: "OpenSpec", detail: "Comparison and compatibility notes for OpenSpec.dev-style repo-local specs, proposals, tasks, and deltas." },
   { id: "about", title: "About", detail: "LogicSRC is the Profullstack open specification project for human and AI agent coordination." },
   { id: "terms", title: "Terms", detail: "Draft terms will cover acceptable use, reference implementation boundaries, and hosted-product responsibilities." },
   { id: "privacy", title: "Privacy", detail: "Draft privacy notes will cover telemetry, audit events, identity data, and hosted-product data boundaries." }
+];
+
+const comparisonRows = [
+  {
+    area: "Primary scope",
+    logicsrc: "Open coordination standards for humans, agents, plugins, payments, hosted products, and reference implementations.",
+    openspec: "Lightweight spec-driven planning for code changes and agent work."
+  },
+  {
+    area: "Artifacts",
+    logicsrc: "Schemas, plugin manifests, task/agent/run docs, event contracts, SDKs, MCP resources, CLI/TUI/PWA/API surfaces.",
+    openspec: "Repo-local specs, proposals, design docs, implementation tasks, and spec deltas."
+  },
+  {
+    area: "Agents",
+    logicsrc: "Agent profiles, runs, audit logs, model routing, AgentSwarm orchestration, and provider-neutral execution records.",
+    openspec: "Persistent requirements and planning context for coding agents."
+  },
+  {
+    area: "CLI",
+    logicsrc: "`logicsrc`, `commandboard`, `cb`, and `sh1pt logicsrc ...`.",
+    openspec: "`@fission-ai/openspec` plus native coding-tool slash command integrations."
+  },
+  {
+    area: "MCP",
+    logicsrc: "Standards MCP server with schemas, validation tools, and prompts.",
+    openspec: "OpenSpec.dev currently positions itself as no-MCP."
+  },
+  {
+    area: "Compatibility",
+    logicsrc: "`--openspec` should read/write OpenSpec.dev-style repo-local planning artifacts where useful.",
+    openspec: "Can remain the lightweight planning layer inside repos."
+  }
 ];
 
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
@@ -65,6 +99,7 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
         <a href="#cli">CLI</a>
         <a href="/docs">Docs</a>
         <a href="/blog">Blog</a>
+        <a href="/openspec">OpenSpec</a>
         <a href="/about">About</a>
         <a href="/terms">Terms</a>
         <a href="/privacy">Privacy</a>
@@ -182,6 +217,36 @@ sh1pt logicsrc --openspec-only \\
         </div>
       </section>
 
+      <section id="openspec" class="band">
+        <div class="section-head">
+          <h2>LogicSRC vs OpenSpec.dev</h2>
+          <p>OpenSpec.dev is adjacent: it focuses on lightweight repo-local planning artifacts. LogicSRC is the broader coordination standard and can support OpenSpec-compatible workflows.</p>
+        </div>
+        <div class="compare-table" role="table" aria-label="LogicSRC and OpenSpec.dev comparison">
+          <div class="compare-row compare-head" role="row">
+            <strong role="columnheader">Area</strong>
+            <strong role="columnheader">LogicSRC.com</strong>
+            <strong role="columnheader">OpenSpec.dev</strong>
+          </div>
+          ${comparisonRows.map((row) => `
+            <div class="compare-row" role="row">
+              <strong role="cell">${row.area}</strong>
+              <p role="cell">${row.logicsrc}</p>
+              <p role="cell">${row.openspec}</p>
+            </div>
+          `).join("")}
+        </div>
+        <div class="cli-panel compare-note">
+          <h2>Compatibility Mode</h2>
+          <pre><code>logicsrc --openspec agentswarm --yolo \\
+  --repo profullstack/logicsrc
+
+sh1pt logicsrc --openspec \\
+  agentswarm --yolo</code></pre>
+          <p><code>--openspec</code> enables OpenSpec.dev-compatible repo-local specs, proposals, tasks, and deltas where supported. <code>--openspec-only</code> restricts work to LogicSRC-published contracts.</p>
+        </div>
+      </section>
+
       <section id="reference" class="band">
         <div class="section-head">
           <h2>Reference Implementations</h2>
@@ -236,6 +301,6 @@ if (window.location.pathname === "/agentbyte") {
 }
 
 const pageRoute = window.location.pathname.slice(1);
-if (["docs", "blog", "about", "terms", "privacy"].includes(pageRoute)) {
+if (["docs", "blog", "openspec", "about", "terms", "privacy"].includes(pageRoute)) {
   document.querySelector(`#${pageRoute}`)?.scrollIntoView();
 }
