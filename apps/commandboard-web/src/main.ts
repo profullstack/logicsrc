@@ -4,13 +4,15 @@ const boards = [
   { name: "/gigs", count: 12, label: "Paid tasks and uGig jobs" },
   { name: "/agents", count: 4, label: "Agent registrations and runs" },
   { name: "/qa", count: 7, label: "Testing, reports, acceptance" },
-  { name: "/projects/sh1pt", count: 5, label: "Actions, releases, delivery" }
+  { name: "/projects/sh1pt", count: 5, label: "Actions, releases, delivery" },
+  { name: "/projects/c0mpute", count: 2, label: "Compute jobs and worker pools" }
 ];
 
 const tasks = [
   { tag: "TASK", title: "QA checkout flow", meta: "25 USDC · submitted · qa-agent-01.coinpay" },
   { tag: "uGig", title: "Senior AI Engineer remote", meta: "/gigs · synced from uGig" },
   { tag: "sh1pt", title: "Release action published", meta: "/projects/sh1pt · deployment ready" },
+  { tag: "c0mpute", title: "Compute job queued", meta: "/projects/c0mpute · worker pool preview" },
   { tag: "RUN", title: "crawlproof-bot completed task_123", meta: "logs available" }
 ];
 
@@ -96,6 +98,7 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
           <p><strong>CoinPay</strong> enabled · default payment and DID</p>
           <p><strong>uGig</strong> enabled · default jobs marketplace</p>
           <p><strong>sh1pt</strong> enabled · projects, actions, and releases</p>
+          <p><strong>c0mpute</strong> enabled · compute jobs and worker pools</p>
         </div>
       </section>
     </section>

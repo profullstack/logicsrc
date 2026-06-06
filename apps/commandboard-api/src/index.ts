@@ -1,18 +1,20 @@
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
 import { pathToFileURL } from "node:url";
 import { createPluginRegistry } from "@logicsrc/plugin-core";
+import { c0mputePlugin } from "@logicsrc/plugin-c0mpute";
 import { coinPayPlugin } from "@logicsrc/plugin-coinpay";
 import { sh1ptPlugin } from "@logicsrc/plugin-sh1pt";
 import { uGigPlugin } from "@logicsrc/plugin-ugig";
 import { schemas, validate } from "@logicsrc/validators";
 
-const registry = createPluginRegistry([coinPayPlugin, uGigPlugin, sh1ptPlugin]);
+const registry = createPluginRegistry([coinPayPlugin, uGigPlugin, sh1ptPlugin, c0mputePlugin]);
 
 const boards = [
   { path: "/general", title: "General", description: "CommandBoard.run general discussion." },
   { path: "/gigs", title: "Gigs", description: "Paid work, uGig imports, and LogicSRC tasks." },
   { path: "/agents", title: "Agents", description: "Agent registration, runs, and capabilities." },
-  { path: "/projects/sh1pt", title: "sh1pt", description: "Project actions, releases, artifacts, and delivery status." }
+  { path: "/projects/sh1pt", title: "sh1pt", description: "Project actions, releases, artifacts, and delivery status." },
+  { path: "/projects/c0mpute", title: "c0mpute", description: "Compute jobs, worker pools, usage, and settlement status." }
 ];
 
 const tasks = [
@@ -39,6 +41,15 @@ const sh1ptProjects = [
 const sh1ptActions = [
   { id: "action_release_checklist", title: "Release checklist", publishable: true },
   { id: "action_deploy_preview", title: "Deploy preview", publishable: true }
+];
+
+const c0mputeJobs = [
+  { id: "compute_job_1", board: "/projects/c0mpute", status: "draft", workload: "agent-run-smoke-test", provider: "c0mpute.com" },
+  { id: "compute_job_2", board: "/projects/c0mpute", status: "queued", workload: "openspec-index-build", provider: "c0mpute.com" }
+];
+
+const c0mputeWorkers = [
+  { id: "worker_pool_1", region: "us-west", status: "preview", capacity: "wip" }
 ];
 
 export function createCommandBoardServer() {
@@ -123,6 +134,49 @@ async function route(request: IncomingMessage, response: ServerResponse) {
       accepted: true,
       action_id: body.action_id,
       board: typeof body.board === "string" ? body.board : "/projects/sh1pt"
+    });
+    return;
+  }
+
+  if (request.method === "GET" && url.pathname === "/api/plugins/c0mpute/jobs") {
+    json(response, 200, { jobs: c0mputeJobs });
+    return;
+  }
+
+  if (request.method === "GET" && url.pathname === "/api/plugins/c0mpute/workers") {
+    json(response, 200, { workers: c0mputeWorkers });
+    return;
+  }
+
+  if (request.method === "POST" && url.pathname === "/api/plugins/c0mpute/jobs/dispatch") {
+    const body = await readJson(request);
+    if (!isRecord(body) || typeof body.job_id !== "string") {
+      json(response, 422, { error: "Expected job_id" });
+      return;
+    }
+
+    json(response, 202, {
+      accepted: true,
+      job_id: body.job_id,
+      status: "queued",
+      board: typeof body.board === "string" ? body.board : "/projects/c0mpute"
+    });
+    return;
+  }
+
+  if (request.method === "POST" && url.pathname === "/api/plugins/c0mpute/quotes") {
+    const body = await readJson(request);
+    if (!isRecord(body) || typeof body.workload !== "string") {
+      json(response, 422, { error: "Expected workload" });
+      return;
+    }
+
+    json(response, 202, {
+      accepted: true,
+      quote_id: `quote_${Date.now()}`,
+      workload: body.workload,
+      provider: "c0mpute.com",
+      status: "draft"
     });
     return;
   }

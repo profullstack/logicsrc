@@ -35,16 +35,19 @@ test.describe("LogicSRC PWA", () => {
     await expect(page.getByText("/privacy · Privacy")).toBeVisible();
   });
 
-  test("renders Hire Us offer and CoinPay payment CTA", async ({ page }) => {
+  test("renders Hire Us project request flow", async ({ page }) => {
     await page.goto("/hire-us");
 
     await expect(page.getByRole("heading", { name: "Hire Us", exact: true })).toBeVisible();
-    await expect(page.locator(".price-row strong", { hasText: "$500" })).toBeVisible();
+    await expect(page.locator(".price-row strong", { hasText: "$250" })).toBeVisible();
     await expect(page.getByText("per week")).toBeVisible();
     await expect(page.getByText("open infrastructure and open specs for AI agent systems")).toBeVisible();
-    await expect(page.getByRole("button", { name: "Pay with CoinPay" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Request review" })).toBeVisible();
+    await expect(page.getByPlaceholder("you@example.com")).toBeVisible();
+    await expect(page.getByPlaceholder("Describe the agent workflow")).toBeVisible();
     await expect(page.getByText("without exposing merchant credentials to the browser")).toBeVisible();
     await expect(page.getByText("COINPAY_PRODUCT=logicsrc-hire-us")).toBeVisible();
+    await expect(page.getByText("COINPAY_STATUS=pending_acceptance")).toBeVisible();
   });
 
   test("serves sitemap and RSS XML endpoints", async ({ request }) => {

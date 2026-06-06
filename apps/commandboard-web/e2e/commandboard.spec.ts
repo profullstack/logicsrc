@@ -10,13 +10,15 @@ test.describe("CommandBoard.run PWA", () => {
     await expect(page.getByText("QA checkout flow")).toBeVisible();
   });
 
-  test("shows default plugin status including sh1pt", async ({ page }) => {
+  test("shows default plugin status including product plugins", async ({ page }) => {
     await page.goto("/");
 
     await expect(page.getByText("CoinPay").last()).toBeVisible();
     await expect(page.getByText("uGig").last()).toBeVisible();
     await expect(page.getByText("sh1pt").last()).toBeVisible();
+    await expect(page.getByText("c0mpute").last()).toBeVisible();
     await expect(page.getByText("projects, actions, and releases")).toBeVisible();
+    await expect(page.getByText("c0mpute enabled · compute jobs and worker pools")).toBeVisible();
   });
 
   test("surfaces sh1pt project activity", async ({ page }) => {
@@ -25,5 +27,13 @@ test.describe("CommandBoard.run PWA", () => {
     await expect(page.getByText("/projects/sh1pt", { exact: true })).toBeVisible();
     await expect(page.getByText("Release action published")).toBeVisible();
     await expect(page.getByText("/projects/sh1pt · deployment ready")).toBeVisible();
+  });
+
+  test("surfaces c0mpute preview activity", async ({ page }) => {
+    await page.goto("/");
+
+    await expect(page.getByText("/projects/c0mpute", { exact: true })).toBeVisible();
+    await expect(page.getByText("Compute job queued")).toBeVisible();
+    await expect(page.getByText("/projects/c0mpute · worker pool preview")).toBeVisible();
   });
 });

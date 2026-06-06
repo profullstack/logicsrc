@@ -139,6 +139,13 @@ h1 {
   line-height: 1.55;
 }
 
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 1rem;
+}
+
 .status-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -475,6 +482,45 @@ pre {
   display: flex;
   flex-wrap: wrap;
   gap: 0.65rem;
+}
+
+.project-request-form {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.project-request-form label {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.project-request-form label span {
+  color: #8ee4c9;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.project-request-form input,
+.project-request-form textarea {
+  width: 100%;
+  border: 1px solid #3f5049;
+  border-radius: 6px;
+  background: #171d1a;
+  color: #f6f7f4;
+  font: inherit;
+  line-height: 1.45;
+  padding: 0.7rem 0.75rem;
+}
+
+.project-request-form textarea {
+  resize: vertical;
+}
+
+.project-request-form input::placeholder,
+.project-request-form textarea::placeholder {
+  color: #7f8b84;
 }
 
 .button-primary,

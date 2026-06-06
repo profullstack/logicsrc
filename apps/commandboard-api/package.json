@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@logicsrc/plugin-core": "file:../../packages/plugin-core",
+    "@logicsrc/plugin-c0mpute": "file:../../plugins/c0mpute",
     "@logicsrc/plugin-coinpay": "file:../../plugins/coinpay",
     "@logicsrc/plugin-sh1pt": "file:../../plugins/sh1pt",
     "@logicsrc/plugin-ugig": "file:../../plugins/ugig",

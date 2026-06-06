@@ -23,6 +23,7 @@ packages/
 plugins/
   coinpay            default DID, wallet, payment, and escrow plugin
   ugig               default jobs and gigs marketplace plugin
+  c0mpute            work-in-progress compute jobs and worker pools plugin
 docs/
   specs, CLI conventions, permissions, and roadmap notes
 scripts/
@@ -59,4 +60,5 @@ It provides read-only resources for docs and schemas, validation/example tools, 
 - Credential Sharing OpenSpec for .env, Doppler, Railway variables, and GitHub Secrets.
 - CoinPay as the default payment, DID, wallet, and escrow plugin.
 - uGig as the default jobs and gigs marketplace plugin.
+- c0mpute as a work-in-progress compute jobs and worker pools plugin.
 - Installer, update/upgrade, remove/uninstall workflows.

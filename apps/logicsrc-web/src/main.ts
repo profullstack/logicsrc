@@ -64,7 +64,7 @@ const pages = [
   { id: "blog", title: "Blog", detail: "Project notes for LogicSRC, AgentSwarm, AgentByte, OpenSpec workflows, and reference implementations." },
   { id: "openspec", title: "OpenSpec", detail: "Comparison and compatibility notes for OpenSpec.dev-style repo-local specs, proposals, tasks, and deltas." },
   { id: "credential-sharing", title: "Credential Sharing", detail: "Open replacement architecture for portable secret sync across .env, Doppler, Railway variables, GitHub Secrets, and future providers." },
-  { id: "hire-us", title: "Hire Us", detail: "$500/week LogicSRC work on open infrastructure, specs, AI agent workflows, and reference implementations paid through CoinPay." },
+  { id: "hire-us", title: "Hire Us", detail: "$250/week LogicSRC work on open infrastructure, specs, AI agent workflows, and reference implementations paid through CoinPay after project acceptance." },
   { id: "about", title: "About", detail: "LogicSRC is the Profullstack open specification project for human and AI agent coordination." },
   { id: "terms", title: "Terms", detail: "Draft terms will cover acceptable use, reference implementation boundaries, and hosted-product responsibilities." },
   { id: "privacy", title: "Privacy", detail: "Draft privacy notes will cover telemetry, audit events, identity data, and hosted-product data boundaries." }
@@ -136,6 +136,9 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
           <p class="eyebrow">Profullstack open spec project</p>
           <h1>LogicSRC</h1>
           <p class="lede">Open schemas, primitives, and conventions for coordination between humans, AI agents, plugins, payment systems, and hosted products.</p>
+          <div class="hero-actions">
+            <a class="button-primary" href="/api/oauth/coinpay/start">Connect CoinPay</a>
+          </div>
         </div>
         <div class="status-grid" aria-label="Project status">
           <span><strong>0.1</strong>draft spec</span>
@@ -319,7 +322,7 @@ logicsrc credentials plan --from doppler --to github-secrets</code></pre>
       <section id="hire-us" class="band hire-us">
         <div class="section-head">
           <h2>Hire Us</h2>
-          <p>$500/week for LogicSRC work using open infrastructure and open specs for AI agent systems.</p>
+          <p>$250/week for accepted LogicSRC work using open infrastructure and open specs for AI agent systems.</p>
         </div>
         <div class="hire-layout">
           <article class="hire-panel">
@@ -327,14 +330,24 @@ logicsrc credentials plan --from doppler --to github-secrets</code></pre>
             <h3>Open-spec AI agent implementation help</h3>
             <p>Hire us to turn agent ideas into portable LogicSRC specs, CLIs, SDKs, MCP resources, PWAs, APIs, and provider-neutral plugin workflows. We prioritize auditable contracts, repo-local artifacts, and integrations that can move between model providers and infrastructure.</p>
             <div class="price-row">
-              <strong>$500</strong>
+              <strong>$250</strong>
               <span>per week</span>
             </div>
-            <div class="cta-row">
-              <button id="coinpay-checkout-button" class="button-primary" type="button">Pay with CoinPay</button>
-              <a class="button-secondary" href="/docs">Read specs</a>
-            </div>
-            <div id="coinpay-result" class="coinpay-result" aria-live="polite"></div>
+            <form id="project-request-form" class="project-request-form">
+              <label>
+                <span>Contact</span>
+                <input id="project-contact" name="contact" type="email" autocomplete="email" placeholder="you@example.com" required />
+              </label>
+              <label>
+                <span>Project</span>
+                <textarea id="project-description" name="project" rows="6" minlength="20" placeholder="Describe the agent workflow, spec, CLI, plugin, API, or integration you want help with." required></textarea>
+              </label>
+              <div class="cta-row">
+                <button id="project-request-button" class="button-primary" type="submit">Request review</button>
+                <a class="button-secondary" href="/docs">Read specs</a>
+              </div>
+            </form>
+            <div id="project-request-result" class="coinpay-result" aria-live="polite"></div>
           </article>
           <div class="hire-stack">
             <div class="hire-grid">
@@ -346,12 +359,13 @@ logicsrc credentials plan --from doppler --to github-secrets</code></pre>
               `).join("")}
             </div>
             <article id="coinpay-setup" class="coinpay-panel">
-              <h3>CoinPay checkout hook</h3>
-              <p>The primary CTA creates a CoinPay payment request for the weekly plan without exposing merchant credentials to the browser.</p>
+              <h3>CoinPay recurring invoice</h3>
+              <p>After we accept the project, we create a recurring CoinPay invoice for the weekly plan without exposing merchant credentials to the browser.</p>
               <pre><code>COINPAY_ORG=profullstack
 COINPAY_PRODUCT=logicsrc-hire-us
-COINPAY_AMOUNT_USD=500
-COINPAY_INTERVAL=week</code></pre>
+COINPAY_AMOUNT_USD=250
+COINPAY_INTERVAL=week
+COINPAY_STATUS=pending_acceptance</code></pre>
             </article>
           </div>
         </div>
@@ -384,41 +398,38 @@ if ("serviceWorker" in navigator) {
   });
 }
 
-document.querySelector<HTMLButtonElement>("#coinpay-checkout-button")?.addEventListener("click", async () => {
-  const button = document.querySelector<HTMLButtonElement>("#coinpay-checkout-button");
-  const result = document.querySelector<HTMLDivElement>("#coinpay-result");
-  if (!button || !result) return;
+document.querySelector<HTMLFormElement>("#project-request-form")?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const button = document.querySelector<HTMLButtonElement>("#project-request-button");
+  const result = document.querySelector<HTMLDivElement>("#project-request-result");
+  const contact = document.querySelector<HTMLInputElement>("#project-contact");
+  const project = document.querySelector<HTMLTextAreaElement>("#project-description");
+  if (!button || !result || !contact || !project) return;
 
   button.disabled = true;
-  button.textContent = "Creating payment...";
-  result.replaceChildren(buildParagraph("Creating CoinPay payment request."));
+  button.textContent = "Submitting...";
+  result.replaceChildren(buildParagraph("Submitting project request."));
 
   try {
-    const response = await fetch("/api/hire-us/coinpay-checkout", {
+    const response = await fetch("/api/hire-us/project-request", {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({})
+      body: JSON.stringify({ contact: contact.value, project: project.value })
     });
     const payload = await response.json();
 
     if (!response.ok || !payload.success) {
-      throw new Error(payload.error || "CoinPay payment could not be created.");
+      throw new Error(payload.error || "Project request could not be submitted.");
     }
 
-    const payment = payload.payment;
-    if (payment.checkout_url) {
-      window.location.href = payment.checkout_url;
-      return;
-    }
-
-    result.replaceChildren(buildCoinPayResult(payment));
+    result.replaceChildren(buildParagraph("Request received. If it is a fit, we will send a $250/week recurring CoinPay invoice."));
   } catch (error) {
     result.replaceChildren(
-      buildParagraph(error instanceof Error ? error.message : "CoinPay payment could not be created.")
+      buildParagraph(error instanceof Error ? error.message : "Project request could not be submitted.")
     );
   } finally {
     button.disabled = false;
-    button.textContent = "Pay with CoinPay";
+    button.textContent = "Request review";
   }
 });
 
@@ -437,7 +448,7 @@ function buildCoinPayResult(payment: {
 
   const details = document.createElement("dl");
   details.append(
-    buildDetail("Amount", `$${payment.amount_usd ?? 500} / ${payment.crypto_amount ?? "quoted at checkout"} ${payment.currency ?? "USDC_POL"}`),
+    buildDetail("Amount", `$${payment.amount_usd ?? 250} / ${payment.crypto_amount ?? "quoted at checkout"} ${payment.currency ?? "USDC_POL"}`),
     buildDetail("Address", payment.address ?? "Open CoinPay to complete payment", true),
     buildDetail("Payment ID", payment.id ?? "pending", true)
   );

@@ -1,0 +1,18 @@
+{
+  "name": "@logicsrc/plugin-c0mpute",
+  "version": "0.1.0",
+  "description": "CommandBoard.run compute jobs, worker pools, usage, and settlement plugin for c0mpute.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run src --passWithNoTests"
+  },
+  "dependencies": {
+    "@logicsrc/plugin-core": "file:../../packages/plugin-core"
+  },
+  "devDependencies": {
+    "vitest": "^4.0.8"
+  }
+}

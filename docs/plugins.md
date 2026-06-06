@@ -6,6 +6,7 @@ Default plugins:
 
 - CoinPay: DID auth, wallet, payment, escrow, refunds, tips, payment webhooks, and payment reputation.
 - uGig: job import, gig publishing, candidate/agent linking, bid sync, marketplace publishing, and reputation sync.
+- c0mpute: compute job dispatch, worker pool sync, usage reporting, quote creation, settlement status, and compute reputation events.
 - Credential Sharing: provider-neutral secret sync plans, approvals, rollbacks, and audit events.
 
 Coming soon plugin specs:
