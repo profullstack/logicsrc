@@ -498,3 +498,40 @@ const pageRoute = window.location.pathname.slice(1);
 if (["docs", "blog", "openspec", "credential-sharing", "hire-us", "about", "terms", "privacy"].includes(pageRoute)) {
   document.querySelector(`#${pageRoute}`)?.scrollIntoView();
 }
+
+// CoinPay OAuth connection status
+const coinpayParam = new URLSearchParams(window.location.search).get("coinpay_oauth");
+if (coinpayParam) {
+  const url = new URL(window.location.href);
+  url.searchParams.delete("coinpay_oauth");
+  url.searchParams.delete("error");
+  history.replaceState(null, "", url.pathname + (url.search || ""));
+}
+
+async function updateCoinPayButton() {
+  const connectBtn = document.querySelector<HTMLAnchorElement>(".hero-actions a[href='/api/oauth/coinpay/start']");
+  if (!connectBtn) return;
+
+  try {
+    const res = await fetch("/api/oauth/coinpay/session");
+    const data = await res.json();
+
+    if (data.authenticated && data.user) {
+      const label = data.user.email || data.user.name || data.user.sub || "CoinPay";
+      connectBtn.textContent = `Connected: ${label}`;
+      connectBtn.style.background = "#3a9e7e";
+      connectBtn.removeAttribute("href");
+      connectBtn.style.cursor = "default";
+      connectBtn.title = `Connected via CoinPay since ${new Date(data.user.connected_at).toLocaleDateString()}`;
+    } else if (coinpayParam === "connected") {
+      connectBtn.textContent = "CoinPay Connected";
+      connectBtn.style.background = "#3a9e7e";
+    } else if (coinpayParam === "error") {
+      connectBtn.textContent = "Connect CoinPay (retry)";
+    }
+  } catch {
+    // session check failed — leave button as-is
+  }
+}
+
+updateCoinPayButton();
