@@ -1,4 +1,8 @@
-import "./styles.css";
+// Server-rendered markup for the LogicSRC single-page site. This is a faithful
+// port of the legacy Vite `main.ts` innerHTML template: same data, same markup,
+// same class hooks — now rendered on the server for SEO instead of in the
+// browser. Interactivity (hire-us form, CoinPay button, section scroll) lives in
+// the `home-interactivity` client component.
 
 const primitives = [
   { name: "Identity", detail: "DIDs, OAuth accounts, profiles, and organization membership." },
@@ -103,7 +107,8 @@ const comparisonRows = [
   }
 ];
 
-document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
+export function renderPageMarkup(): string {
+  return `
   <main class="shell">
     <aside class="rail">
       <div class="brand">
@@ -391,147 +396,4 @@ COINPAY_STATUS=pending_acceptance</code></pre>
     </section>
   </main>
 `;
-
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("/service-worker.js").catch(() => undefined);
-  });
 }
-
-document.querySelector<HTMLFormElement>("#project-request-form")?.addEventListener("submit", async (event) => {
-  event.preventDefault();
-  const button = document.querySelector<HTMLButtonElement>("#project-request-button");
-  const result = document.querySelector<HTMLDivElement>("#project-request-result");
-  const contact = document.querySelector<HTMLInputElement>("#project-contact");
-  const project = document.querySelector<HTMLTextAreaElement>("#project-description");
-  if (!button || !result || !contact || !project) return;
-
-  button.disabled = true;
-  button.textContent = "Submitting...";
-  result.replaceChildren(buildParagraph("Submitting project request."));
-
-  try {
-    const response = await fetch("/api/hire-us/project-request", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ contact: contact.value, project: project.value })
-    });
-    const payload = await response.json();
-
-    if (!response.ok || !payload.success) {
-      throw new Error(payload.error || "Project request could not be submitted.");
-    }
-
-    result.replaceChildren(buildParagraph("Request received. If it is a fit, we will send a $250/week recurring CoinPay invoice."));
-  } catch (error) {
-    result.replaceChildren(
-      buildParagraph(error instanceof Error ? error.message : "Project request could not be submitted.")
-    );
-  } finally {
-    button.disabled = false;
-    button.textContent = "Request review";
-  }
-});
-
-function buildCoinPayResult(payment: {
-  amount_usd?: number;
-  crypto_amount?: string | null;
-  currency?: string;
-  address?: string | null;
-  id?: string;
-  qr_code?: string | null;
-}) {
-  const fragment = document.createDocumentFragment();
-  const heading = document.createElement("strong");
-  heading.textContent = "CoinPay payment ready";
-  fragment.append(heading);
-
-  const details = document.createElement("dl");
-  details.append(
-    buildDetail("Amount", `$${payment.amount_usd ?? 250} / ${payment.crypto_amount ?? "quoted at checkout"} ${payment.currency ?? "USDC_POL"}`),
-    buildDetail("Address", payment.address ?? "Open CoinPay to complete payment", true),
-    buildDetail("Payment ID", payment.id ?? "pending", true)
-  );
-  fragment.append(details);
-
-  if (payment.qr_code) {
-    const image = document.createElement("img");
-    image.src = payment.qr_code;
-    image.alt = "CoinPay payment QR code";
-    fragment.append(image);
-  }
-
-  return fragment;
-}
-
-function buildDetail(label: string, value: string, code = false) {
-  const row = document.createElement("div");
-  const term = document.createElement("dt");
-  const definition = document.createElement("dd");
-  term.textContent = label;
-  if (code) {
-    const codeElement = document.createElement("code");
-    codeElement.textContent = value;
-    definition.append(codeElement);
-  } else {
-    definition.textContent = value;
-  }
-  row.append(term, definition);
-  return row;
-}
-
-function buildParagraph(text: string) {
-  const paragraph = document.createElement("p");
-  paragraph.textContent = text;
-  return paragraph;
-}
-
-if (window.location.pathname === "/agent-swarm") {
-  document.querySelector("#agent-swarm")?.scrollIntoView();
-}
-
-if (window.location.pathname === "/agentbyte") {
-  document.querySelector("#agentbyte")?.scrollIntoView();
-}
-
-const pageRoute = window.location.pathname.slice(1);
-if (["docs", "blog", "openspec", "credential-sharing", "hire-us", "about", "terms", "privacy"].includes(pageRoute)) {
-  document.querySelector(`#${pageRoute}`)?.scrollIntoView();
-}
-
-// CoinPay OAuth connection status
-const coinpayParam = new URLSearchParams(window.location.search).get("coinpay_oauth");
-if (coinpayParam) {
-  const url = new URL(window.location.href);
-  url.searchParams.delete("coinpay_oauth");
-  url.searchParams.delete("error");
-  history.replaceState(null, "", url.pathname + (url.search || ""));
-}
-
-async function updateCoinPayButton() {
-  const connectBtn = document.querySelector<HTMLAnchorElement>(".hero-actions a[href='/api/oauth/coinpay/start']");
-  if (!connectBtn) return;
-
-  try {
-    const res = await fetch("/api/oauth/coinpay/session");
-    const data = await res.json();
-
-    if (data.authenticated && data.user) {
-      const label = data.user.email || data.user.name || data.user.sub || "CoinPay";
-      connectBtn.textContent = `Connected: ${label}`;
-      connectBtn.style.background = "#3a9e7e";
-      connectBtn.removeAttribute("href");
-      connectBtn.style.cursor = "default";
-      connectBtn.title = `Connected via CoinPay since ${new Date(data.user.connected_at).toLocaleDateString()}`;
-    } else if (coinpayParam === "connected") {
-      connectBtn.textContent = "CoinPay Connected";
-      connectBtn.style.background = "#3a9e7e";
-    } else if (coinpayParam === "error") {
-      connectBtn.textContent = "Connect CoinPay (retry)";
-    }
-  } catch {
-    // session check failed — leave button as-is
-  }
-}
-
-updateCoinPayButton();
