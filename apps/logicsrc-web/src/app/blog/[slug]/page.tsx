@@ -20,14 +20,18 @@ type PostRow = {
 const SITE_URL = (process.env.PUBLIC_URL ?? "https://logicsrc.com").replace(/\/$/, "");
 
 async function loadPost(slug: string): Promise<PostRow | null> {
-  const supabase = publicClient();
-  const { data } = await supabase
-    .from("blog_posts")
-    .select("slug, title, excerpt, html, featured_image, published_at, updated_at")
-    .eq("slug", slug)
-    .eq("status", "published")
-    .maybeSingle();
-  return (data as PostRow | null) ?? null;
+  try {
+    const supabase = publicClient();
+    const { data } = await supabase
+      .from("blog_posts")
+      .select("slug, title, excerpt, html, featured_image, published_at, updated_at")
+      .eq("slug", slug)
+      .eq("status", "published")
+      .maybeSingle();
+    return (data as PostRow | null) ?? null;
+  } catch {
+    return null;
+  }
 }
 
 export async function generateMetadata({

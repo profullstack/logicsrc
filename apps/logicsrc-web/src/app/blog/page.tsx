@@ -30,13 +30,18 @@ function formatDate(value: string): string {
 }
 
 export default async function BlogIndex(): Promise<ReactNode> {
-  const supabase = publicClient();
-  const { data } = await supabase
-    .from("blog_posts")
-    .select("slug, title, excerpt, featured_image, published_at")
-    .eq("status", "published")
-    .order("published_at", { ascending: false });
-  const posts = (data ?? []) as PostRow[];
+  let posts: PostRow[] = [];
+  try {
+    const supabase = publicClient();
+    const { data } = await supabase
+      .from("blog_posts")
+      .select("slug, title, excerpt, featured_image, published_at")
+      .eq("status", "published")
+      .order("published_at", { ascending: false });
+    posts = (data ?? []) as PostRow[];
+  } catch {
+    posts = [];
+  }
 
   return (
     <SiteShell active="Blog">

@@ -61,8 +61,9 @@ test.describe("LogicSRC PWA", () => {
     await expect(sitemap.text()).resolves.toContain("https://logicsrc.com/hire-us");
 
     expect(rss.status()).toBe(200);
-    expect(rss.headers()["content-type"]).toMatch(/(?:application|text)\/xml/);
-    await expect(rss.text()).resolves.toContain("LogicSRC OpenSpec Compatibility");
-    await expect(rss.text()).resolves.toContain("LogicSRC Credential Sharing OpenSpec");
+    expect(rss.headers()["content-type"]).toMatch(/xml/);
+    // Feed is generated from the blog_posts table; the channel header is always
+    // present even when there are no posts (e.g. CI without Supabase).
+    await expect(rss.text()).resolves.toContain("<title>LogicSRC Blog</title>");
   });
 });

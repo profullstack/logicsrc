@@ -24,16 +24,22 @@ function escapeXml(value: string): string {
 }
 
 // GET /blog/rss.xml — RSS 2.0 feed generated from published blog_posts.
+// Degrades to an empty (but valid) feed when Supabase is unavailable.
 export async function GET(): Promise<Response> {
   const base = baseUrl();
-  const supabase = publicClient();
-  const { data } = await supabase
-    .from("blog_posts")
-    .select("slug, title, excerpt, published_at")
-    .eq("status", "published")
-    .order("published_at", { ascending: false })
-    .limit(50);
-  const posts = (data ?? []) as PostRow[];
+  let posts: PostRow[] = [];
+  try {
+    const supabase = publicClient();
+    const { data } = await supabase
+      .from("blog_posts")
+      .select("slug, title, excerpt, published_at")
+      .eq("status", "published")
+      .order("published_at", { ascending: false })
+      .limit(50);
+    posts = (data ?? []) as PostRow[];
+  } catch {
+    posts = [];
+  }
 
   const items = posts
     .map((post) => {
