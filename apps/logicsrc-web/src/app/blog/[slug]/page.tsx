@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
 import { publicClient } from "@/lib/supabase";
+import { SiteShell } from "@/components/site-shell";
 
 export const dynamic = "force-dynamic";
 
@@ -65,17 +66,15 @@ export default async function BlogPostPage({
   if (!post) notFound();
 
   return (
-    <main style={{ maxWidth: 760, margin: "0 auto", padding: "64px 24px" }}>
-      <p style={{ marginBottom: 32 }}>
-        <Link href="/blog" style={{ color: "#5b6b7a", textDecoration: "none" }}>
-          ← Blog
-        </Link>
-      </p>
-      <article>
-        <h1 style={{ fontSize: 38, fontWeight: 800, margin: "0 0 8px" }}>
-          {post.title}
-        </h1>
-        <div style={{ color: "#8a95a0", fontSize: 14, marginBottom: 32 }}>
+    <SiteShell active="Blog">
+      <article className="band" style={{ maxWidth: "48rem" }}>
+        <p style={{ marginBottom: "1.5rem" }}>
+          <Link href="/blog" style={{ color: "#b5beb2", textDecoration: "none" }}>
+            ← Blog
+          </Link>
+        </p>
+        <h1 style={{ fontSize: "2.2rem", margin: "0 0 0.5rem" }}>{post.title}</h1>
+        <div style={{ color: "#8a95a0", fontSize: "0.85rem", marginBottom: "2rem" }}>
           {formatDate(post.published_at)}
         </div>
         {post.featured_image?.url ? (
@@ -83,14 +82,15 @@ export default async function BlogPostPage({
           <img
             src={post.featured_image.url}
             alt={post.title}
-            style={{ width: "100%", borderRadius: 12, margin: "0 0 32px" }}
+            style={{ width: "100%", borderRadius: "0.75rem", margin: "0 0 2rem" }}
           />
         ) : null}
         <div
           className="blog-content"
+          style={{ lineHeight: 1.7 }}
           dangerouslySetInnerHTML={{ __html: post.html }}
         />
       </article>
-    </main>
+    </SiteShell>
   );
 }

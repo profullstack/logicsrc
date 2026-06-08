@@ -15,8 +15,12 @@ body {
 }
 
 a {
-  color: inherit;
+  color: #5ac8a6;
   text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
 }
 
 button {
@@ -75,6 +79,7 @@ nav {
 }
 
 nav a {
+  color: inherit;
   min-height: 2.35rem;
   padding: 0.55rem 0.75rem;
   border: 1px solid #263039;
@@ -85,6 +90,7 @@ nav a.active,
 nav a:hover {
   border-color: #3f5049;
   background: #1b2329;
+  text-decoration: none;
 }
 
 .workspace {
@@ -695,4 +701,50 @@ pre {
   h1 {
     font-size: 2.4rem;
   }
+}
+
+/* Rendered blog post HTML (autoblog payload) on the dark workspace. */
+.blog-content {
+  color: #e7ebe4;
+}
+.blog-content a {
+  color: #5ac8a6;
+}
+.blog-content h2,
+.blog-content h3,
+.blog-content h4 {
+  margin: 1.75rem 0 0.5rem;
+  line-height: 1.25;
+}
+.blog-content p,
+.blog-content ul,
+.blog-content ol,
+.blog-content blockquote {
+  margin: 0 0 1rem;
+}
+.blog-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+}
+.blog-content pre {
+  background: rgba(0, 0, 0, 0.32);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow: auto;
+}
+.blog-content code {
+  background: rgba(0, 0, 0, 0.32);
+  padding: 0.1rem 0.35rem;
+  border-radius: 0.25rem;
+  font-size: 0.9em;
+}
+.blog-content pre code {
+  background: none;
+  padding: 0;
+}
+.blog-content blockquote {
+  border-left: 3px solid rgba(245, 247, 244, 0.2);
+  padding-left: 1rem;
+  color: #b5beb2;
 }
