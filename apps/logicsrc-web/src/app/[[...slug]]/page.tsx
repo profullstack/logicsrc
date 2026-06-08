@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { renderPageMarkup } from "@/lib/page-markup";
 import { HomeInteractivity } from "@/components/home-interactivity";
@@ -7,18 +8,57 @@ import { HomeInteractivity } from "@/components/home-interactivity";
 // scrolled to the matching section. We preserve those URLs (they are canonical
 // in sitemap.xml) by rendering the same page for each known route and 404ing
 // anything else.
-const KNOWN_ROUTES = new Set([
-  "docs",
-  "blog",
-  "openspec",
-  "credential-sharing",
-  "hire-us",
-  "about",
-  "terms",
-  "privacy",
-  "agent-swarm",
-  "agentbyte"
-]);
+const ROUTE_META: Record<string, { title: string; description: string }> = {
+  docs: {
+    title: "Docs · LogicSRC",
+    description: "LogicSRC specification guides, schemas, and CLI conventions for human–AI agent coordination.",
+  },
+  openspec: {
+    title: "LogicSRC vs OpenSpec.dev · LogicSRC",
+    description: "How LogicSRC's coordination standard compares with OpenSpec.dev, including MCP and agent support.",
+  },
+  "credential-sharing": {
+    title: "Credential Sharing · LogicSRC",
+    description: "Source/target credential diffs, approval, sync, rollback, and audit across .env, Doppler, Railway, and GitHub Secrets.",
+  },
+  "hire-us": {
+    title: "Hire Us · LogicSRC",
+    description: "Implementation help for LogicSRC, AgentSwarm, and Credential Sharing at $250/week for accepted work, paid via CoinPay.",
+  },
+  about: {
+    title: "About · LogicSRC",
+    description: "LogicSRC is the Profullstack, Inc. open-specification project for human and AI agent coordination.",
+  },
+  terms: { title: "Terms · LogicSRC", description: "LogicSRC terms of use." },
+  privacy: { title: "Privacy · LogicSRC", description: "LogicSRC privacy notes." },
+  "agent-swarm": {
+    title: "AgentSwarm · LogicSRC",
+    description: "Provider-neutral agent orchestration with model routing, cost controls, and GitHub integration.",
+  },
+  agentbyte: {
+    title: "AgentByte · LogicSRC",
+    description: "Agent screening sessions, AI-assisted humans, policy events, and APIs.",
+  },
+};
+
+const KNOWN_ROUTES = new Set(Object.keys(ROUTE_META));
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug?: string[] }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const key = slug?.[0];
+  if (key && ROUTE_META[key]) {
+    return {
+      title: ROUTE_META[key].title,
+      description: ROUTE_META[key].description,
+      alternates: { canonical: `/${key}` },
+    };
+  }
+  return {};
+}
 
 export default async function Page({
   params

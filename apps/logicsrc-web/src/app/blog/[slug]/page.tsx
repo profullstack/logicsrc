@@ -14,13 +14,16 @@ type PostRow = {
   html: string;
   featured_image: { url?: string } | null;
   published_at: string;
+  updated_at: string;
 };
+
+const SITE_URL = (process.env.PUBLIC_URL ?? "https://logicsrc.com").replace(/\/$/, "");
 
 async function loadPost(slug: string): Promise<PostRow | null> {
   const supabase = publicClient();
   const { data } = await supabase
     .from("blog_posts")
-    .select("slug, title, excerpt, html, featured_image, published_at")
+    .select("slug, title, excerpt, html, featured_image, published_at, updated_at")
     .eq("slug", slug)
     .eq("status", "published")
     .maybeSingle();
@@ -65,8 +68,25 @@ export default async function BlogPostPage({
   const post = await loadPost(slug);
   if (!post) notFound();
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.excerpt ?? undefined,
+    image: post.featured_image?.url ? [post.featured_image.url] : undefined,
+    datePublished: post.published_at,
+    dateModified: post.updated_at,
+    url: `${SITE_URL}/blog/${post.slug}`,
+    mainEntityOfPage: `${SITE_URL}/blog/${post.slug}`,
+    publisher: { "@id": `${SITE_URL}/#organization` },
+  };
+
   return (
     <SiteShell active="Blog">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <article className="band" style={{ maxWidth: "48rem" }}>
         <p style={{ marginBottom: "1.5rem" }}>
           <Link href="/blog" style={{ color: "#5b6b7a", textDecoration: "none" }}>

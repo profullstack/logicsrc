@@ -6,7 +6,19 @@ import type { NextConfig } from "next";
 // webhooks) are filesystem routes and match before these afterFiles rewrites.
 const commandboardApiUrl = process.env.COMMANDBOARD_API_URL;
 
+const securityHeaders = [
+  // HSTS — site is HTTPS-only behind Railway. No `preload` (irreversible).
+  { key: "Strict-Transport-Security", value: "max-age=31536000; includeSubDomains" },
+  { key: "X-Content-Type-Options", value: "nosniff" },
+  { key: "X-Frame-Options", value: "SAMEORIGIN" },
+  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+  { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+];
+
 const nextConfig: NextConfig = {
+  async headers() {
+    return [{ source: "/:path*", headers: securityHeaders }];
+  },
   async rewrites() {
     if (!commandboardApiUrl) return [];
     const base = commandboardApiUrl.replace(/\/$/, "");
