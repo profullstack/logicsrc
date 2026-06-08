@@ -56,13 +56,13 @@ export function SiteShell({
             maxWidth: "72rem",
             margin: "2rem auto 0",
             padding: "1.25rem 0",
-            borderTop: "1px solid rgba(245, 247, 244, 0.12)",
+            borderTop: "1px solid #d9ded4",
             display: "flex",
             flexWrap: "wrap",
             gap: "0.75rem",
             justifyContent: "space-between",
             fontSize: "0.85rem",
-            color: "#b5beb2",
+            color: "#5b6b7a",
           }}
         >
           <span>© {new Date().getFullYear()} Profullstack, Inc. · LogicSRC</span>

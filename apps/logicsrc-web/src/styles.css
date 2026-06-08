@@ -15,7 +15,7 @@ body {
 }
 
 a {
-  color: #5ac8a6;
+  color: #0a7d59;
   text-decoration: none;
 }
 
@@ -703,18 +703,19 @@ pre {
   }
 }
 
-/* Rendered blog post HTML (autoblog payload) on the dark workspace. */
+/* Rendered blog post HTML (autoblog payload) on the light workspace. */
 .blog-content {
-  color: #e7ebe4;
+  color: #1f2933;
 }
 .blog-content a {
-  color: #5ac8a6;
+  color: #0a7d59;
 }
 .blog-content h2,
 .blog-content h3,
 .blog-content h4 {
   margin: 1.75rem 0 0.5rem;
   line-height: 1.25;
+  color: #101418;
 }
 .blog-content p,
 .blog-content ul,
@@ -728,13 +729,14 @@ pre {
   border-radius: 0.5rem;
 }
 .blog-content pre {
-  background: rgba(0, 0, 0, 0.32);
+  background: #f1f3ef;
+  border: 1px solid #e3e6e0;
   padding: 1rem;
   border-radius: 0.5rem;
   overflow: auto;
 }
 .blog-content code {
-  background: rgba(0, 0, 0, 0.32);
+  background: rgba(16, 20, 24, 0.06);
   padding: 0.1rem 0.35rem;
   border-radius: 0.25rem;
   font-size: 0.9em;
@@ -744,7 +746,7 @@ pre {
   padding: 0;
 }
 .blog-content blockquote {
-  border-left: 3px solid rgba(245, 247, 244, 0.2);
+  border-left: 3px solid #d9ded4;
   padding-left: 1rem;
-  color: #b5beb2;
+  color: #5b6b7a;
 }

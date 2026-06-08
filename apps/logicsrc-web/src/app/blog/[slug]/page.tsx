@@ -69,12 +69,14 @@ export default async function BlogPostPage({
     <SiteShell active="Blog">
       <article className="band" style={{ maxWidth: "48rem" }}>
         <p style={{ marginBottom: "1.5rem" }}>
-          <Link href="/blog" style={{ color: "#b5beb2", textDecoration: "none" }}>
+          <Link href="/blog" style={{ color: "#5b6b7a", textDecoration: "none" }}>
             ← Blog
           </Link>
         </p>
-        <h1 style={{ fontSize: "2.2rem", margin: "0 0 0.5rem" }}>{post.title}</h1>
-        <div style={{ color: "#8a95a0", fontSize: "0.85rem", marginBottom: "2rem" }}>
+        <h1 style={{ fontSize: "2.2rem", margin: "0 0 0.5rem", color: "#101418" }}>
+          {post.title}
+        </h1>
+        <div style={{ color: "#5b6b7a", fontSize: "0.85rem", marginBottom: "2rem" }}>
           {formatDate(post.published_at)}
         </div>
         {post.featured_image?.url ? (
