@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { publicClient } from "@/lib/supabase";
+import { DOC_SLUGS } from "@/lib/docs";
 
 export const dynamic = "force-dynamic";
 
@@ -35,6 +36,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: route.priority,
   }));
 
+  const docEntries: MetadataRoute.Sitemap = DOC_SLUGS.map((slug) => ({
+    url: `${base}/docs/${slug}`,
+    changeFrequency: "monthly",
+    priority: 0.6,
+  }));
+
   let postEntries: MetadataRoute.Sitemap = [];
   try {
     const supabase = publicClient();
@@ -54,5 +61,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     postEntries = [];
   }
 
-  return [...staticEntries, ...postEntries];
+  return [...staticEntries, ...docEntries, ...postEntries];
 }
