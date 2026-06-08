@@ -128,8 +128,10 @@ export function renderPageMarkup(): string {
         <a href="/docs">Docs</a>
         <a href="/blog">Blog</a>
         <a href="/openspec">OpenSpec</a>
+        <a href="/pricing">Pricing</a>
         <a href="/hire-us">Hire Us</a>
         <a href="/about">About</a>
+        <a href="https://github.com/profullstack/logicsrc" target="_blank" rel="noreferrer">GitHub ↗</a>
         <a href="/terms">Terms</a>
         <a href="/privacy">Privacy</a>
         <a href="#reference">Reference</a>

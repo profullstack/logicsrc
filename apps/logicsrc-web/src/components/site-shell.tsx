@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 
 // Mirrors the rail/nav from page-markup.ts so standalone routes (e.g. /blog)
 // share the site chrome. Anchor links point at the homepage sections.
-const NAV: Array<{ href: string; label: string }> = [
+const NAV: Array<{ href: string; label: string; external?: boolean }> = [
   { href: "/#overview", label: "Overview" },
   { href: "/#schemas", label: "Schemas" },
   { href: "/agent-swarm", label: "Soon" },
@@ -12,8 +12,10 @@ const NAV: Array<{ href: string; label: string }> = [
   { href: "/docs", label: "Docs" },
   { href: "/blog", label: "Blog" },
   { href: "/openspec", label: "OpenSpec" },
+  { href: "/pricing", label: "Pricing" },
   { href: "/hire-us", label: "Hire Us" },
   { href: "/about", label: "About" },
+  { href: "https://github.com/profullstack/logicsrc", label: "GitHub ↗", external: true },
   { href: "/terms", label: "Terms" },
   { href: "/privacy", label: "Privacy" },
   { href: "/#reference", label: "Reference" },
@@ -43,6 +45,8 @@ export function SiteShell({
               href={item.href}
               className={item.label === active ? "active" : undefined}
               aria-current={item.label === active ? "page" : undefined}
+              target={item.external ? "_blank" : undefined}
+              rel={item.external ? "noreferrer" : undefined}
             >
               {item.label}
             </a>

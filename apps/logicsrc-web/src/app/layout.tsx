@@ -24,13 +24,11 @@ export const metadata: Metadata = {
     url: SITE_URL,
     title: "LogicSRC — Open Coordination Standards for Humans & AI Agents",
     description: DESCRIPTION,
-    images: ["/icon.svg"],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: "LogicSRC — Open Coordination Standards",
     description: DESCRIPTION,
-    images: ["/icon.svg"],
   },
 };
 
