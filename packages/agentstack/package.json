@@ -1,0 +1,18 @@
+{
+  "name": "@logicsrc/agentstack",
+  "version": "0.1.0",
+  "description": "AgentStack: portable agent, task, payment, and reputation coordination module for LogicSRC.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run src --passWithNoTests"
+  },
+  "dependencies": {
+    "@logicsrc/plugin-core": "file:../../packages/plugin-core"
+  },
+  "devDependencies": {
+    "vitest": "^4.0.8"
+  }
+}

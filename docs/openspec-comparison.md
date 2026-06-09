@@ -14,7 +14,7 @@ The projects can be complementary. LogicSRC should support an `--openspec` compa
 | CLI direction | `logicsrc` as the canonical OpenStandards CLI. | `@fission-ai/openspec` CLI and slash-command integrations with coding tools. |
 | MCP | LogicSRC has a standards MCP server and should expose resources, tools, and prompts. | Site states "No MCP" as a product trait. |
 | SDK/API | Planned Rust, Bun, Node, Python, curl, and PWA surfaces with matching contracts. | Focus appears to be repo workflow and agent planning artifacts rather than a cross-language SDK/API standard. |
-| Plugins | Plugin manifest standard plus CoinPay, uGig, AgentByte, Credential Sharing, and future integration specs. | Integrates with many coding agents and editors; plugin-contract scope is not the main positioning. |
+| Plugins | Plugin manifest standard plus CoinPay, uGig, AgentStack, AgentByte, Credential Sharing, and future integration specs. | Integrates with many coding agents and editors; plugin-contract scope is not the main positioning. |
 | Compatibility idea | `logicsrc --openspec` reads/writes OpenSpec.dev-style specs/proposals/tasks where useful. | Can remain the lightweight planning layer inside repos. |
 
 ## CLI Flags
