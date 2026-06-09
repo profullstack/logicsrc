@@ -16,6 +16,7 @@
   "dependencies": {
     "@logicsrc/plugin-core": "file:../plugin-core",
     "@logicsrc/plugin-coinpay": "file:../../plugins/coinpay",
+    "@logicsrc/plugin-feed-discovery": "file:../../plugins/feed-discovery",
     "@logicsrc/plugin-ugig": "file:../../plugins/ugig",
     "@logicsrc/tui": "file:../tui",
     "@logicsrc/validators": "file:../validators",

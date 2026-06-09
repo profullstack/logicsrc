@@ -15,6 +15,7 @@
     "@logicsrc/plugin-core": "file:../../packages/plugin-core",
     "@logicsrc/plugin-c0mpute": "file:../../plugins/c0mpute",
     "@logicsrc/plugin-coinpay": "file:../../plugins/coinpay",
+    "@logicsrc/plugin-feed-discovery": "file:../../plugins/feed-discovery",
     "@logicsrc/plugin-sh1pt": "file:../../plugins/sh1pt",
     "@logicsrc/plugin-ugig": "file:../../plugins/ugig",
     "@logicsrc/validators": "file:../../packages/validators"

@@ -7,6 +7,7 @@ describe("CLI registry", () => {
 
     expect(ids).toContain("coinpay");
     expect(ids).toContain("ugig");
+    expect(ids).toContain("feed-discovery");
     expect(ids).not.toContain("sh1pt");
   });
 });

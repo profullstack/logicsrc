@@ -47,7 +47,7 @@ describe("CommandBoard API contracts", () => {
     };
 
     expect(response.status).toBe(200);
-    expect(body.plugins.map((plugin) => plugin.id)).toEqual(["coinpay", "ugig", "sh1pt", "c0mpute"]);
+    expect(body.plugins.map((plugin) => plugin.id)).toEqual(["coinpay", "ugig", "sh1pt", "c0mpute", "feed-discovery"]);
     expect(body.plugins.find((plugin) => plugin.id === "sh1pt")).toMatchObject({
       enabled: true,
       capabilities: expect.arrayContaining(["projects.sync", "actions.publish", "deployments.status"])
@@ -58,6 +58,28 @@ describe("CommandBoard API contracts", () => {
     });
     expect(body.capabilities["actions.publish"]).toEqual(["sh1pt"]);
     expect(body.capabilities["compute.jobs.dispatch"]).toEqual(["c0mpute"]);
+    expect(body.capabilities["feeds.discover"]).toEqual(["feed-discovery"]);
+  });
+
+  it("exposes feed discovery plugin endpoints", async () => {
+    const providersResponse = await fetch(`${baseUrl}/api/feeds/providers`);
+    const providersBody = await providersResponse.json() as { providers: Array<{ id: string; enabledByDefault: boolean }> };
+    const discoverResponse = await fetch(`${baseUrl}/api/feeds/discover?q=microsaas&providers=manual-curated&includeUnvalidated=true`);
+    const discoverBody = await discoverResponse.json() as { query: string; results: Array<{ feedUrl: string; provider: string }> };
+    const rssResponse = await fetch(`${baseUrl}/rss/discover/microsaas.xml?providers=manual-curated&includeUnvalidated=true`);
+    const rssBody = await rssResponse.text();
+    const opmlResponse = await fetch(`${baseUrl}/opml/discover/microsaas.xml?providers=manual-curated&includeUnvalidated=true`);
+    const opmlBody = await opmlResponse.text();
+
+    expect(providersResponse.status).toBe(200);
+    expect(providersBody.providers.map((provider) => provider.id)).toContain("manual-curated");
+    expect(discoverResponse.status).toBe(200);
+    expect(discoverBody.query).toBe("microsaas");
+    expect(discoverBody.results[0]).toMatchObject({ provider: "manual-curated" });
+    expect(rssResponse.status).toBe(200);
+    expect(rssBody).toContain("<rss");
+    expect(opmlResponse.status).toBe(200);
+    expect(opmlBody).toContain("<opml");
   });
 
   it("exposes sh1pt project and action contracts", async () => {

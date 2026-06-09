@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { readFileSync } from "node:fs";
 import { Command } from "commander";
+import { discoverFeeds, listFeedProviders, probeSite, renderDiscoveryOutput, validateFeed, type FeedKind, type FeedOutputFormat } from "@logicsrc/plugin-feed-discovery";
 import { renderArcadeList, renderPluginStatus, renderTui, runArcadeSession, type TaskSnapshot } from "@logicsrc/tui";
 import { assertSchemaKind, parseDocument, validate } from "@logicsrc/validators";
 import { getConfigValue, readConfig, setConfigValue, writeConfig } from "./config.js";
@@ -295,6 +296,76 @@ openspec
     outDir: options.out
   }), "json"));
 
+const feeds = program.command("feeds").description("Discover, validate, probe, and export feed sources.");
+
+feeds
+  .command("discover")
+  .argument("<keyword>", "Keyword, phrase, or homepage URL")
+  .option("--type <type>", "Feed kind or all", "all")
+  .option("--format <format>", "json, opml, rss, atom, or json-feed", "json")
+  .option("--limit <limit>", "Maximum results", "25")
+  .option("--freshness-days <days>", "Freshness window for callers that need it")
+  .option("--include-dead-feeds", "Include feeds that fail validation")
+  .option("--include-unvalidated", "Return provider candidates without validation")
+  .option("--providers <providers>", "Comma-separated provider ids")
+  .description("Discover canonical feed URLs by keyword.")
+  .action(async (keyword, options) => {
+    const response = await discoverFeeds({
+      q: keyword,
+      type: options.type as FeedKind | "all",
+      limit: Number(options.limit),
+      freshnessDays: options.freshnessDays ? Number(options.freshnessDays) : undefined,
+      includeDeadFeeds: Boolean(options.includeDeadFeeds),
+      includeUnvalidated: Boolean(options.includeUnvalidated),
+      providers: splitOption(options.providers)
+    });
+    console.log(renderDiscoveryOutput(response, options.format as FeedOutputFormat));
+  });
+
+feeds
+  .command("validate")
+  .argument("<feed-url>", "Feed URL")
+  .option("--format <format>", "json, table, or markdown", "json")
+  .description("Validate a feed URL with SSRF protections.")
+  .action(async (feedUrl, options) => {
+    const result = await validateFeed(feedUrl);
+    print(result, options.format as OutputFormat);
+    if (!result.ok) {
+      process.exitCode = 1;
+    }
+  });
+
+feeds
+  .command("probe")
+  .argument("<homepage-url>", "Homepage URL")
+  .option("--format <format>", "json, table, or markdown", "json")
+  .description("Probe a homepage for alternate feed links and common feed paths.")
+  .action(async (homepageUrl, options) => {
+    const result = await probeSite(homepageUrl);
+    print(result, options.format as OutputFormat);
+    if (result.feeds.length === 0) {
+      process.exitCode = 1;
+    }
+  });
+
+feeds
+  .command("providers")
+  .option("--format <format>", "table, json, or markdown", "table")
+  .description("List feed discovery providers.")
+  .action((options) => {
+    print(listFeedProviders(), options.format as OutputFormat);
+  });
+
+feeds
+  .command("export-opml")
+  .argument("<keyword>", "Keyword or phrase")
+  .option("--limit <limit>", "Maximum results", "100")
+  .description("Discover feeds and print OPML.")
+  .action(async (keyword, options) => {
+    const response = await discoverFeeds({ q: keyword, limit: Number(options.limit) });
+    console.log(renderDiscoveryOutput(response, "opml"));
+  });
+
 program.command("plugins").option("--format <format>", "table, json, or markdown", "table").description("Show plugin status.").action((options) => {
   const snapshot = defaultPluginRegistry().snapshot();
   print(snapshot.plugins, options.format as OutputFormat);
@@ -393,6 +464,13 @@ function resolveArcadeGame(options: { arcade?: string | boolean; waitingArcade?:
   }
 
   return undefined;
+}
+
+function splitOption(value: string | undefined) {
+  return value
+    ?.split(",")
+    .map((entry) => entry.trim())
+    .filter(Boolean);
 }
 
 async function runYoloArcade(game: string, repo?: string) {
