@@ -1,5 +1,7 @@
 import { createPluginRegistry } from "@logicsrc/plugin-core";
 import { coinPayPlugin } from "@logicsrc/plugin-coinpay";
+import { emailAccountsPlugin } from "@logicsrc/plugin-email-accounts";
+import { socialAccountsPlugin } from "@logicsrc/plugin-social-accounts";
 import { uGigPlugin } from "@logicsrc/plugin-ugig";
 export { ArcadeRegistry, createDefaultArcadeRegistry, renderArcadeList, renderArcadeSnapshot, runArcadeSession } from "./arcade/index.js";
 export type { ArcadeEvent, GameAction, GameContext, GameControl, KeyEvent, TaskEvent, TaskSnapshot, TerminalFrame, WaitingGame } from "./arcade/index.js";
@@ -20,7 +22,7 @@ const defaultState: TuiState = {
 
 export function renderTui(state: Partial<TuiState> = {}) {
   const view = { ...defaultState, ...state };
-  const registry = createPluginRegistry([coinPayPlugin, uGigPlugin]);
+  const registry = createPluginRegistry([coinPayPlugin, uGigPlugin, socialAccountsPlugin, emailAccountsPlugin]);
   const plugins = registry.snapshot().plugins;
 
   return [
@@ -34,13 +36,13 @@ export function renderTui(state: Partial<TuiState> = {}) {
     "│   /jobs       │ [uGig] Senior AI Engineer remote            │",
     "├───────────────┴─────────────────────────────────────────────┤",
     "│ Plugins: " + plugins.map((plugin) => `${plugin.name} ${plugin.enabled ? "enabled" : "disabled"}`).join(" | ").padEnd(50) + " │",
-    "│ Enter: open  p: post  t: task  a: agents  w: wallet  q: quit │",
+    "│ Enter: open  p: post  t: task  a: agents  c: accounts  q: quit │",
     "└─────────────────────────────────────────────────────────────┘"
   ].join("\n");
 }
 
 export function renderPluginStatus() {
-  const registry = createPluginRegistry([coinPayPlugin, uGigPlugin]);
+  const registry = createPluginRegistry([coinPayPlugin, uGigPlugin, socialAccountsPlugin, emailAccountsPlugin]);
   return registry
     .snapshot()
     .plugins.map((plugin) => `${plugin.id.padEnd(8)} ${plugin.enabled ? "enabled" : "disabled"}   ${plugin.type.join(", ")}`)

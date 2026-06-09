@@ -3,6 +3,7 @@ import { z } from "zod";
 import { assertSchemaKind, parseDocument, schemas, validate, type SchemaKind } from "@logicsrc/validators";
 
 const docs = {
+  "communication-accounts": `LogicSRC Communication Accounts defines shared contracts for connecting social and email identities, granting scoped human/agent/plugin access, evaluating policy gates, brokering credentials, and auditing every account action without exposing raw secrets.`,
   positioning: `LogicSRC is an open standards initiative for human and AI agent coordination, maintained by Profullstack, Inc.
 
 CommandBoard.run is a hosted product by Profullstack, Inc., built on LogicSRC. LogicSRC defines identity, boards, posts, tasks, bounties, agents, agent runs, permissions, payments, escrow, reputation, events, webhooks, CLI commands, API schemas, and plugin contracts.`,
@@ -80,7 +81,7 @@ export function createLogicSrcMcpServer() {
       title: "Validate LogicSRC Document",
       description: "Validates a JSON or YAML document against a LogicSRC schema kind.",
       inputSchema: {
-        kind: z.enum(["agent", "event", "plugin", "run", "task"]),
+        kind: z.enum(["account-audit-event", "account-grant", "account-provider", "agent", "connected-account", "email-message", "event", "plugin", "run", "social-post", "task"]),
         document: z.string().describe("JSON or YAML document text."),
         fileName: z.string().optional().describe("Optional file name used to select JSON parsing when it ends with .json.")
       },
@@ -99,7 +100,7 @@ export function createLogicSrcMcpServer() {
       title: "Generate Example LogicSRC Document",
       description: "Returns a minimal example document for a LogicSRC schema kind.",
       inputSchema: {
-        kind: z.enum(["agent", "event", "plugin", "run", "task"])
+        kind: z.enum(["account-audit-event", "account-grant", "account-provider", "agent", "connected-account", "email-message", "event", "plugin", "run", "social-post", "task"])
       },
       annotations: { readOnlyHint: true, openWorldHint: false }
     },
@@ -163,6 +164,36 @@ function titleCase(value: string) {
 
 function exampleFor(kind: SchemaKind) {
   switch (kind) {
+    case "account-audit-event":
+      return {
+        id: "acct_audit_123",
+        provider: "gmail",
+        kind: "email",
+        principal: { type: "agent", id: "marketing-agent" },
+        action: "email:send",
+        decision: "approval_required",
+        riskScore: 0.35,
+        requestPreview: { draft_id: "draft_123" },
+        resultPreview: {},
+        createdAt: new Date(0).toISOString()
+      };
+    case "account-grant":
+      return {
+        id: "grant_123",
+        accountId: "account_123",
+        principal: { type: "agent", id: "marketing-agent" },
+        permissions: ["email:headers:read", "email:draft"],
+        policy: [],
+        createdAt: new Date(0).toISOString()
+      };
+    case "account-provider":
+      return {
+        id: "gmail",
+        name: "Gmail",
+        kind: "email",
+        authMethods: ["oauth2"],
+        capabilities: ["email.headers.read", "email.search"]
+      };
     case "agent":
       return {
         type: "logicsrc.agent",
@@ -171,6 +202,32 @@ function exampleFor(kind: SchemaKind) {
         name: "QA Agent",
         capabilities: ["browser.qa", "report.write"],
         status: "active"
+      };
+    case "connected-account":
+      return {
+        id: "account_123",
+        ownerUserId: "user_123",
+        kind: "email",
+        provider: "gmail",
+        displayName: "Founder Inbox",
+        email: "founder@example.com",
+        status: "connected",
+        scopes: ["gmail.metadata"],
+        capabilities: ["email.headers.read", "email.search"],
+        credentialRef: "cred://gmail/account_123",
+        metadata: {},
+        createdAt: new Date(0).toISOString(),
+        updatedAt: new Date(0).toISOString()
+      };
+    case "email-message":
+      return {
+        id: "email_msg_123",
+        providerMessageId: "provider_msg_123",
+        subject: "Hello",
+        toAddresses: ["founder@example.com"],
+        ccAddresses: [],
+        labels: ["inbox"],
+        hasAttachments: false
       };
     case "event":
       return {
@@ -202,6 +259,17 @@ function exampleFor(kind: SchemaKind) {
         agent_did: "qa-agent-01.coinpay",
         status: "completed",
         started_at: new Date(0).toISOString()
+      };
+    case "social-post":
+      return {
+        id: "social_post_123",
+        accountId: "account_123",
+        status: "draft",
+        text: "Launching today",
+        media: [],
+        metadata: {},
+        createdAt: new Date(0).toISOString(),
+        updatedAt: new Date(0).toISOString()
       };
     case "task":
       return {

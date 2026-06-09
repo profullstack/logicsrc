@@ -1,7 +1,10 @@
 #!/usr/bin/env node
 import { readFileSync } from "node:fs";
+import { evaluateAccountPolicy, scoreAccountActionRisk } from "@logicsrc/account-core";
 import { Command } from "commander";
+import { listEmailAccountProviders } from "@logicsrc/plugin-email-accounts";
 import { discoverFeeds, listFeedProviders, probeSite, renderDiscoveryOutput, validateFeed, type FeedKind, type FeedOutputFormat } from "@logicsrc/plugin-feed-discovery";
+import { listSocialAccountProviders } from "@logicsrc/plugin-social-accounts";
 import { renderArcadeList, renderPluginStatus, renderTui, runArcadeSession, type TaskSnapshot } from "@logicsrc/tui";
 import { assertSchemaKind, parseDocument, validate } from "@logicsrc/validators";
 import { getConfigValue, readConfig, setConfigValue, writeConfig } from "./config.js";
@@ -398,6 +401,132 @@ credentials.command("plan").option("--from <provider>", "Source provider", "env"
     options.format as OutputFormat
   );
 });
+
+const accounts = program.command("accounts").description("Manage connected social and email accounts.");
+
+accounts
+  .command("providers")
+  .option("--kind <kind>", "social or email")
+  .option("--format <format>", "table, json, or markdown", "table")
+  .description("List communication account providers.")
+  .action((options) => {
+    const providers = [...listSocialAccountProviders(), ...listEmailAccountProviders()].filter((provider) => !options.kind || provider.kind === options.kind);
+    print(providers, options.format as OutputFormat);
+  });
+
+accounts
+  .command("list")
+  .alias("accounts")
+  .option("--kind <kind>", "social or email")
+  .option("--format <format>", "table, json, or markdown", "table")
+  .description("List connected accounts.")
+  .action((options) => {
+    print([], options.format as OutputFormat);
+  });
+
+accounts
+  .command("audit")
+  .argument("<account-id>", "Connected account id")
+  .option("--format <format>", "table, json, or markdown", "table")
+  .description("List account audit events.")
+  .action((accountId, options) => {
+    print({ account_id: accountId, events: [], note: "Account audit persistence is not wired yet." }, options.format as OutputFormat);
+  });
+
+const social = program.command("social").description("Manage social account providers and draft/publish flows.");
+
+social.command("providers").option("--format <format>", "table, json, or markdown", "table").description("List social account providers.").action((options) => {
+  print(listSocialAccountProviders(), options.format as OutputFormat);
+});
+
+social.command("accounts").option("--format <format>", "table, json, or markdown", "table").description("List connected social accounts.").action((options) => {
+  print([], options.format as OutputFormat);
+});
+
+social
+  .command("post")
+  .argument("<account-id>", "Connected social account id")
+  .requiredOption("--text <text>", "Post text")
+  .option("--dry-run", "Evaluate without publishing", false)
+  .option("--format <format>", "table, json, or markdown", "table")
+  .description("Request or dry-run a social post publish.")
+  .action((accountId, options) => {
+    const riskScore = scoreAccountActionRisk({ action: "social:post:publish" });
+    const decision = evaluateAccountPolicy({
+      action: "social:post:publish",
+      dryRun: Boolean(options.dryRun),
+      riskScore,
+      grant: {
+        id: "dry_run_grant",
+        accountId,
+        principal: { type: "user", id: process.env.COMMANDBOARD_DID || "local-user" },
+        permissions: ["social:post:publish"],
+        policy: [],
+        createdAt: new Date(0).toISOString()
+      }
+    });
+
+    print(
+      {
+        provider: "unknown",
+        account_id: accountId,
+        action: "social:post:publish",
+        dry_run: Boolean(options.dryRun),
+        scopes_required: ["social:post:publish"],
+        policy_decision: decision.decision,
+        risk_score: decision.riskScore,
+        payload_preview: { text: options.text }
+      },
+      options.format as OutputFormat
+    );
+  });
+
+const email = program.command("email").description("Manage email account providers and draft/send flows.");
+
+email.command("providers").option("--format <format>", "table, json, or markdown", "table").description("List email account providers.").action((options) => {
+  print(listEmailAccountProviders(), options.format as OutputFormat);
+});
+
+email.command("accounts").option("--format <format>", "table, json, or markdown", "table").description("List connected email accounts.").action((options) => {
+  print([], options.format as OutputFormat);
+});
+
+email
+  .command("send")
+  .argument("<draft-id>", "Email draft id")
+  .option("--dry-run", "Evaluate without sending", false)
+  .option("--format <format>", "table, json, or markdown", "table")
+  .description("Request or dry-run an outbound email send.")
+  .action((draftId, options) => {
+    const riskScore = scoreAccountActionRisk({ action: "email:send", externalRecipientCount: 1 });
+    const decision = evaluateAccountPolicy({
+      action: "email:send",
+      dryRun: Boolean(options.dryRun),
+      riskScore,
+      grant: {
+        id: "dry_run_grant",
+        accountId: "unknown",
+        principal: { type: "user", id: process.env.COMMANDBOARD_DID || "local-user" },
+        permissions: ["email:send"],
+        policy: [],
+        createdAt: new Date(0).toISOString()
+      }
+    });
+
+    print(
+      {
+        provider: "unknown",
+        draft_id: draftId,
+        action: "email:send",
+        dry_run: Boolean(options.dryRun),
+        scopes_required: ["email:send"],
+        policy_decision: decision.decision,
+        risk_score: decision.riskScore,
+        payload_preview: { draft_id: draftId }
+      },
+      options.format as OutputFormat
+    );
+  });
 
 program.command("tui").description("Launch the tmux-friendly TUI.").action(() => {
   console.log(renderTui());

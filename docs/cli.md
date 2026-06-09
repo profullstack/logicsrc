@@ -31,6 +31,9 @@ task
 wallet
 events
 agentswarm
+accounts
+social
+email
 credentials
 openspec
 plugins
@@ -65,6 +68,19 @@ logicsrc credentials plan --from doppler --to github-secrets
 ```
 
 Credential sharing is provider-neutral. External tools can consume LogicSRC credential contracts, but LogicSRC commands do not call proprietary product CLIs.
+
+Communication account commands:
+
+```bash
+logicsrc accounts providers
+logicsrc accounts list
+logicsrc social providers
+logicsrc email providers
+logicsrc social post <account-id> --text "Launching today" --dry-run
+logicsrc email send <draft-id> --dry-run
+```
+
+Communication account commands must redact credentials, support dry-run for write-capable actions, and require approval policies for outbound email and social publishing.
 
 When `--openspec` is enabled, AgentSwarm writes OpenSpec.dev-style files under `openspec/changes/<change-id>/`.
 

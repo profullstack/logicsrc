@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.logicsrc.com/logicsrc-account-audit-event.schema.json",
+  "title": "LogicSRC Account Audit Event",
+  "type": "object",
+  "required": ["id", "provider", "kind", "principal", "action", "decision", "riskScore", "requestPreview", "resultPreview", "createdAt"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "accountId": { "type": "string", "minLength": 1 },
+    "provider": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+    "kind": { "enum": ["social", "email"] },
+    "principal": {
+      "type": "object",
+      "required": ["type", "id"],
+      "additionalProperties": false,
+      "properties": {
+        "type": { "enum": ["user", "agent", "workflow", "plugin"] },
+        "id": { "type": "string", "minLength": 1 },
+        "trusted": { "type": "boolean" }
+      }
+    },
+    "action": { "type": "string", "pattern": "^[a-z][a-z0-9_-]*(:[a-z][a-z0-9_-]*)+$" },
+    "decision": { "enum": ["allow", "approval_required", "deny"] },
+    "riskScore": { "type": "number", "minimum": 0, "maximum": 1 },
+    "requestPreview": { "type": "object" },
+    "resultPreview": { "type": "object" },
+    "correlationId": { "type": "string", "minLength": 1 },
+    "createdAt": { "type": "string", "format": "date-time" }
+  }
+}

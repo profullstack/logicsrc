@@ -15,8 +15,10 @@
     "@logicsrc/plugin-core": "file:../../packages/plugin-core",
     "@logicsrc/plugin-c0mpute": "file:../../plugins/c0mpute",
     "@logicsrc/plugin-coinpay": "file:../../plugins/coinpay",
+    "@logicsrc/plugin-email-accounts": "file:../../plugins/email-accounts",
     "@logicsrc/plugin-feed-discovery": "file:../../plugins/feed-discovery",
     "@logicsrc/plugin-sh1pt": "file:../../plugins/sh1pt",
+    "@logicsrc/plugin-social-accounts": "file:../../plugins/social-accounts",
     "@logicsrc/plugin-ugig": "file:../../plugins/ugig",
     "@logicsrc/validators": "file:../../packages/validators"
   },

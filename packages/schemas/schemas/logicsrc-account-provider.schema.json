@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.logicsrc.com/logicsrc-account-provider.schema.json",
+  "title": "LogicSRC Account Provider",
+  "type": "object",
+  "required": ["id", "name", "kind", "authMethods", "capabilities"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+    "name": { "type": "string", "minLength": 1 },
+    "kind": { "enum": ["social", "email"] },
+    "authMethods": {
+      "type": "array",
+      "items": { "enum": ["oauth2", "api_key", "imap_smtp", "local_bridge"] },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "capabilities": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^[a-z][a-z0-9_-]*(\\.[a-z][a-z0-9_-]*)+$" },
+      "uniqueItems": true
+    },
+    "defaultScopes": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "status": { "enum": ["available", "planned", "disabled"] },
+    "docsUrl": { "type": "string", "format": "uri" }
+  }
+}

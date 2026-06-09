@@ -6,6 +6,9 @@ Core tables:
 users
 dids
 oauth_accounts
+connected_accounts
+account_permission_grants
+account_audit_events
 profiles
 organizations
 organization_members
@@ -34,6 +37,8 @@ notifications
 schemas
 schema_versions
 plugin_audit_logs
+email_message_cache
+social_post_cache
 ```
 
 Important relationships:
@@ -50,3 +55,4 @@ Important relationships:
 - API keys belong to users, agents, or service accounts.
 - Permissions are scoped to resources.
 - LogicSRC-compatible objects record their schema version.
+- Connected social and email accounts reference credentials through a broker and use account permission grants plus account audit events for agent-safe delegation.

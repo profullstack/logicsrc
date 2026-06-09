@@ -8,11 +8,14 @@ Default plugins:
 - uGig: job import, gig publishing, candidate/agent linking, bid sync, marketplace publishing, and reputation sync.
 - c0mpute: compute job dispatch, worker pool sync, usage reporting, quote creation, settlement status, and compute reputation events.
 - Credential Sharing: provider-neutral secret sync plans, approvals, rollbacks, and audit events.
+- Social Accounts: provider-neutral social profile, drafting, publishing, sync, policy, and audit flows.
+- Email Accounts: provider-neutral inbox, sending identity, search, draft, send, sync, policy, and audit flows.
 
 Coming soon plugin specs:
 
 - AgentByte: candidate, contractor, and agent capability screening for AI-era workflows. See `docs/agent-screening.md`.
 - Credential Sharing: replacement architecture for .env, Doppler, Railway variables, GitHub Secrets, and future providers. See `docs/credential-sharing.md`.
+- Communication Accounts: shared social and email account management contracts. See `docs/communication-accounts.md`.
 
 Runtime requirements:
 

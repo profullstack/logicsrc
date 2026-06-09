@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.logicsrc.com/logicsrc-email-message.schema.json",
+  "title": "LogicSRC Email Message Metadata",
+  "type": "object",
+  "required": ["id", "providerMessageId", "toAddresses", "ccAddresses", "labels", "hasAttachments"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "providerMessageId": { "type": "string", "minLength": 1 },
+    "threadId": { "type": "string", "minLength": 1 },
+    "subject": { "type": "string" },
+    "fromAddress": { "type": "string" },
+    "toAddresses": { "type": "array", "items": { "type": "string" } },
+    "ccAddresses": { "type": "array", "items": { "type": "string" } },
+    "snippet": { "type": "string" },
+    "labels": { "type": "array", "items": { "type": "string" } },
+    "hasAttachments": { "type": "boolean" },
+    "receivedAt": { "type": "string", "format": "date-time" },
+    "sentAt": { "type": "string", "format": "date-time" }
+  }
+}

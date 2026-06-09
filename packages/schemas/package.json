@@ -8,7 +8,13 @@
     "./agent": "./schemas/logicsrc-agent.schema.json",
     "./run": "./schemas/logicsrc-run.schema.json",
     "./event": "./schemas/logicsrc-event.schema.json",
-    "./plugin": "./schemas/logicsrc-plugin.schema.json"
+    "./plugin": "./schemas/logicsrc-plugin.schema.json",
+    "./connected-account": "./schemas/logicsrc-connected-account.schema.json",
+    "./account-provider": "./schemas/logicsrc-account-provider.schema.json",
+    "./account-grant": "./schemas/logicsrc-account-grant.schema.json",
+    "./account-audit-event": "./schemas/logicsrc-account-audit-event.schema.json",
+    "./email-message": "./schemas/logicsrc-email-message.schema.json",
+    "./social-post": "./schemas/logicsrc-social-post.schema.json"
   },
   "files": [
     "schemas"

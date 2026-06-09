@@ -43,6 +43,30 @@ paths:
       responses:
         "201":
           description: Credential sync plan created
+  /api/accounts/providers:
+    get:
+      summary: List social and email account providers
+      responses:
+        "200":
+          description: Account providers returned
+  /api/accounts:
+    get:
+      summary: List connected social and email accounts
+      responses:
+        "200":
+          description: Connected accounts returned
+  /api/social/providers:
+    get:
+      summary: List social account providers
+      responses:
+        "200":
+          description: Social account providers returned
+  /api/email/providers:
+    get:
+      summary: List email account providers
+      responses:
+        "200":
+          description: Email account providers returned
   /api/schemas:
     get:
       summary: List supported LogicSRC schema kinds

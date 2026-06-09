@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.logicsrc.com/logicsrc-account-grant.schema.json",
+  "title": "LogicSRC Account Permission Grant",
+  "type": "object",
+  "required": ["id", "accountId", "principal", "permissions", "policy", "createdAt"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "accountId": { "type": "string", "minLength": 1 },
+    "principal": {
+      "type": "object",
+      "required": ["type", "id"],
+      "additionalProperties": false,
+      "properties": {
+        "type": { "enum": ["user", "agent", "workflow", "plugin"] },
+        "id": { "type": "string", "minLength": 1 },
+        "trusted": { "type": "boolean" }
+      }
+    },
+    "permissions": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^[a-z][a-z0-9_-]*(:[a-z][a-z0-9_-]*)+$" },
+      "uniqueItems": true
+    },
+    "policy": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "resource", "action", "default"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "resource": { "type": "string", "minLength": 1 },
+          "action": { "type": "string", "pattern": "^[a-z][a-z0-9_-]*(:[a-z][a-z0-9_-]*)+$" },
+          "default": {
+            "enum": ["allow", "approval_required", "deny", "allow_if_dry_run", "allow_if_trusted_agent", "allow_if_below_risk_score"]
+          },
+          "conditions": { "type": "object" }
+        }
+      }
+    },
+    "expiresAt": { "type": "string", "format": "date-time" },
+    "createdBy": { "type": "string", "minLength": 1 },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "revokedAt": { "type": "string", "format": "date-time" }
+  }
+}

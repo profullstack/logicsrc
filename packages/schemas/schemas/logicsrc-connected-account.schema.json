@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.logicsrc.com/logicsrc-connected-account.schema.json",
+  "title": "LogicSRC Connected Account",
+  "type": "object",
+  "required": ["id", "ownerUserId", "kind", "provider", "displayName", "status", "scopes", "capabilities", "credentialRef", "metadata", "createdAt", "updatedAt"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "orgId": { "type": "string", "minLength": 1 },
+    "projectId": { "type": "string", "minLength": 1 },
+    "boardId": { "type": "string", "minLength": 1 },
+    "ownerUserId": { "type": "string", "minLength": 1 },
+    "kind": { "enum": ["social", "email"] },
+    "provider": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+    "providerAccountId": { "type": "string", "minLength": 1 },
+    "displayName": { "type": "string", "minLength": 1 },
+    "handle": { "type": "string", "minLength": 1 },
+    "email": { "type": "string", "format": "email" },
+    "avatarUrl": { "type": "string", "format": "uri" },
+    "homepageUrl": { "type": "string", "format": "uri" },
+    "status": { "enum": ["connected", "expired", "revoked", "error", "disabled", "pending"] },
+    "scopes": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "capabilities": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^[a-z][a-z0-9_-]*(\\.[a-z][a-z0-9_-]*)+$" },
+      "uniqueItems": true
+    },
+    "credentialRef": { "type": "string", "minLength": 1 },
+    "metadata": { "type": "object" },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" },
+    "lastSyncedAt": { "type": "string", "format": "date-time" }
+  }
+}

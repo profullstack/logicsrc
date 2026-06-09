@@ -3,12 +3,14 @@ import { pathToFileURL } from "node:url";
 import { createPluginRegistry } from "@logicsrc/plugin-core";
 import { c0mputePlugin } from "@logicsrc/plugin-c0mpute";
 import { coinPayPlugin } from "@logicsrc/plugin-coinpay";
+import { emailAccountsPlugin, listEmailAccountProviders } from "@logicsrc/plugin-email-accounts";
 import { discoverFeeds, feedDiscoveryPlugin, listFeedProviders, renderAtom, renderJsonFeed, renderOpml, renderRss, type FeedKind } from "@logicsrc/plugin-feed-discovery";
 import { sh1ptPlugin } from "@logicsrc/plugin-sh1pt";
+import { listSocialAccountProviders, socialAccountsPlugin } from "@logicsrc/plugin-social-accounts";
 import { uGigPlugin } from "@logicsrc/plugin-ugig";
 import { schemas, validate } from "@logicsrc/validators";
 
-const registry = createPluginRegistry([coinPayPlugin, uGigPlugin, sh1ptPlugin, c0mputePlugin, feedDiscoveryPlugin]);
+const registry = createPluginRegistry([coinPayPlugin, uGigPlugin, sh1ptPlugin, c0mputePlugin, feedDiscoveryPlugin, socialAccountsPlugin, emailAccountsPlugin]);
 
 const boards = [
   { path: "/general", title: "General", description: "CommandBoard.run general discussion." },
@@ -70,7 +72,7 @@ async function route(request: IncomingMessage, response: ServerResponse) {
     json(response, 200, {
       ok: true,
       service: "commandboard-api",
-      endpoints: ["/health", "/api/boards", "/api/tasks", "/api/plugins", "/api/schemas", "/api/feeds/discover", "/api/feeds/providers", "/rss/discover/:keyword.xml", "/opml/discover/:keyword.xml", "/atom/discover/:keyword.xml", "/json-feed/discover/:keyword.json"]
+      endpoints: ["/health", "/api/boards", "/api/tasks", "/api/plugins", "/api/schemas", "/api/accounts/providers", "/api/accounts", "/api/social/providers", "/api/email/providers", "/api/feeds/discover", "/api/feeds/providers", "/rss/discover/:keyword.xml", "/opml/discover/:keyword.xml", "/atom/discover/:keyword.xml", "/json-feed/discover/:keyword.json"]
     });
     return;
   }
@@ -111,6 +113,38 @@ async function route(request: IncomingMessage, response: ServerResponse) {
 
   if (request.method === "GET" && url.pathname === "/api/plugins") {
     json(response, 200, registry.snapshot());
+    return;
+  }
+
+  if (request.method === "GET" && url.pathname === "/api/accounts/providers") {
+    const kind = url.searchParams.get("kind");
+    const providers = [...listSocialAccountProviders(), ...listEmailAccountProviders()].filter((provider) => !kind || provider.kind === kind);
+    json(response, 200, { providers });
+    return;
+  }
+
+  if (request.method === "GET" && url.pathname === "/api/accounts") {
+    json(response, 200, { accounts: [] });
+    return;
+  }
+
+  if (request.method === "GET" && url.pathname === "/api/social/providers") {
+    json(response, 200, { providers: listSocialAccountProviders() });
+    return;
+  }
+
+  if (request.method === "GET" && url.pathname === "/api/social/accounts") {
+    json(response, 200, { accounts: [] });
+    return;
+  }
+
+  if (request.method === "GET" && url.pathname === "/api/email/providers") {
+    json(response, 200, { providers: listEmailAccountProviders() });
+    return;
+  }
+
+  if (request.method === "GET" && url.pathname === "/api/email/accounts") {
+    json(response, 200, { accounts: [] });
     return;
   }
 

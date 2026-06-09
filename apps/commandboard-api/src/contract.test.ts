@@ -47,7 +47,7 @@ describe("CommandBoard API contracts", () => {
     };
 
     expect(response.status).toBe(200);
-    expect(body.plugins.map((plugin) => plugin.id)).toEqual(["coinpay", "ugig", "sh1pt", "c0mpute", "feed-discovery"]);
+    expect(body.plugins.map((plugin) => plugin.id)).toEqual(["coinpay", "ugig", "sh1pt", "c0mpute", "feed-discovery", "social-accounts", "email-accounts"]);
     expect(body.plugins.find((plugin) => plugin.id === "sh1pt")).toMatchObject({
       enabled: true,
       capabilities: expect.arrayContaining(["projects.sync", "actions.publish", "deployments.status"])
@@ -59,6 +59,24 @@ describe("CommandBoard API contracts", () => {
     expect(body.capabilities["actions.publish"]).toEqual(["sh1pt"]);
     expect(body.capabilities["compute.jobs.dispatch"]).toEqual(["c0mpute"]);
     expect(body.capabilities["feeds.discover"]).toEqual(["feed-discovery"]);
+    expect(body.capabilities["social.post.publish"]).toEqual(["social-accounts"]);
+    expect(body.capabilities["email.send"]).toEqual(["email-accounts"]);
+  });
+
+  it("exposes communication account provider contracts", async () => {
+    const accountsResponse = await fetch(`${baseUrl}/api/accounts/providers`);
+    const accountsBody = await accountsResponse.json() as { providers: Array<{ id: string; kind: string }> };
+    const socialResponse = await fetch(`${baseUrl}/api/social/providers`);
+    const socialBody = await socialResponse.json() as { providers: Array<{ id: string; kind: string }> };
+    const emailResponse = await fetch(`${baseUrl}/api/email/providers`);
+    const emailBody = await emailResponse.json() as { providers: Array<{ id: string; kind: string }> };
+
+    expect(accountsResponse.status).toBe(200);
+    expect(accountsBody.providers.map((provider) => provider.id)).toEqual(expect.arrayContaining(["mastodon", "gmail", "imap-smtp"]));
+    expect(socialResponse.status).toBe(200);
+    expect(socialBody.providers[0]).toMatchObject({ id: "mastodon", kind: "social" });
+    expect(emailResponse.status).toBe(200);
+    expect(emailBody.providers[0]).toMatchObject({ id: "imap-smtp", kind: "email" });
   });
 
   it("exposes feed discovery plugin endpoints", async () => {

@@ -11,6 +11,8 @@
   "dependencies": {
     "@logicsrc/plugin-core": "file:../plugin-core",
     "@logicsrc/plugin-coinpay": "file:../../plugins/coinpay",
+    "@logicsrc/plugin-email-accounts": "file:../../plugins/email-accounts",
+    "@logicsrc/plugin-social-accounts": "file:../../plugins/social-accounts",
     "@logicsrc/plugin-ugig": "file:../../plugins/ugig"
   }
 }

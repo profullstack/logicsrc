@@ -14,9 +14,12 @@
     "test": "vitest run src"
   },
   "dependencies": {
+    "@logicsrc/account-core": "file:../account-core",
     "@logicsrc/plugin-core": "file:../plugin-core",
     "@logicsrc/plugin-coinpay": "file:../../plugins/coinpay",
+    "@logicsrc/plugin-email-accounts": "file:../../plugins/email-accounts",
     "@logicsrc/plugin-feed-discovery": "file:../../plugins/feed-discovery",
+    "@logicsrc/plugin-social-accounts": "file:../../plugins/social-accounts",
     "@logicsrc/plugin-ugig": "file:../../plugins/ugig",
     "@logicsrc/tui": "file:../tui",
     "@logicsrc/validators": "file:../validators",

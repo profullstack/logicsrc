@@ -27,5 +27,6 @@
 25. Add SDK contracts for Rust, Bun, Node, Python, and curl.
 26. Add MCP server contracts.
 27. Add credential sync audit exports.
-28. Add docs.
-29. Tag v1.0.0.
+28. Add communication account contracts, plugins, schemas, and account audit events.
+29. Add docs.
+30. Tag v1.0.0.

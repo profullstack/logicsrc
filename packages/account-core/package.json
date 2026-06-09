@@ -1,0 +1,15 @@
+{
+  "name": "@logicsrc/account-core",
+  "version": "0.1.0",
+  "description": "LogicSRC shared account provider, permission, policy, credential broker, and audit contracts.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run src"
+  },
+  "devDependencies": {
+    "vitest": "^4.0.8"
+  }
+}

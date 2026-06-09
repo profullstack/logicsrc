@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.logicsrc.com/logicsrc-social-post.schema.json",
+  "title": "LogicSRC Social Post",
+  "type": "object",
+  "required": ["id", "accountId", "status", "media", "metadata", "createdAt", "updatedAt"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "accountId": { "type": "string", "minLength": 1 },
+    "providerPostId": { "type": "string", "minLength": 1 },
+    "status": { "enum": ["draft", "pending_approval", "published", "deleted", "failed"] },
+    "text": { "type": "string" },
+    "media": {
+      "type": "array",
+      "items": { "type": "object" }
+    },
+    "url": { "type": "string", "format": "uri" },
+    "publishedAt": { "type": "string", "format": "date-time" },
+    "createdByPrincipalType": { "enum": ["user", "agent", "workflow", "plugin"] },
+    "createdByPrincipalId": { "type": "string", "minLength": 1 },
+    "metadata": { "type": "object" },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" }
+  }
+}
