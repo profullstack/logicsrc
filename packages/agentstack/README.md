@@ -51,6 +51,12 @@ sh1pt.users.id -> did:coinpay:user:123
 ugig.users.id  -> did:coinpay:user:123
 ```
 
+## Runtime
+
+Runtime-neutral by design — pure TypeScript with no Bun- or Node-only APIs (time is injected
+via the `AgentStack` constructor). Runs on **Bun, Node.js, Cloudflare Workers, and the
+browser**, matching the Profullstack dual-runtime standard.
+
 ## Environment
 
 ```txt

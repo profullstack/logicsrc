@@ -50,6 +50,12 @@ payment, escrow, and reputation stay linked. Terminal statuses (`complete`, `fai
   `updateTaskStatus`, `delegate`, `revokeDelegation`, `listTasks`, `snapshot`, `on`
 - `agentStackPlugin` — a validated LogicSRC `PluginDefinition`
 
+## Runtime
+
+Runtime-neutral by design — pure TypeScript, no Bun- or Node-only APIs (time is injected via
+the `AgentStack` constructor). Runs on Bun, Node.js, Cloudflare Workers, and the browser,
+matching the Profullstack dual-runtime standard (Bun + Node.js both first-class).
+
 ## Plugin manifest
 
 ```jsonc
