@@ -1,0 +1,21 @@
+type: agentad.placement
+version: "0.1"
+id: cli-footer-slot
+publisher_did: mytool.coinpay
+surface: cli
+accepted_formats:
+  - text
+  - ansi
+  - json
+dimensions:
+  max_width: 80
+  max_lines: 4
+context_tags:
+  - devtools
+  - deploy
+frequency_cap:
+  max_per_session: 1
+  max_per_day: 5
+block_categories:
+  - gambling
+  - crypto-tokens

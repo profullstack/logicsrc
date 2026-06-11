@@ -1,7 +1,7 @@
 {
   "name": "@logicsrc/schemas",
   "version": "0.1.0",
-  "description": "LogicSRC JSON schemas for tasks, agents, runs, events, and plugins.",
+  "description": "LogicSRC JSON schemas for tasks, agents, runs, events, plugins, and the AgentAd ad standard.",
   "type": "module",
   "exports": {
     "./task": "./schemas/logicsrc-task.schema.json",
@@ -14,7 +14,14 @@
     "./account-grant": "./schemas/logicsrc-account-grant.schema.json",
     "./account-audit-event": "./schemas/logicsrc-account-audit-event.schema.json",
     "./email-message": "./schemas/logicsrc-email-message.schema.json",
-    "./social-post": "./schemas/logicsrc-social-post.schema.json"
+    "./social-post": "./schemas/logicsrc-social-post.schema.json",
+    "./agentad-ad": "./schemas/agentad-ad.schema.json",
+    "./agentad-placement": "./schemas/agentad-placement.schema.json",
+    "./agentad-ad-request": "./schemas/agentad-ad-request.schema.json",
+    "./agentad-ad-response": "./schemas/agentad-ad-response.schema.json",
+    "./agentad-impression": "./schemas/agentad-impression.schema.json",
+    "./agentad-click": "./schemas/agentad-click.schema.json",
+    "./agentad-campaign": "./schemas/agentad-campaign.schema.json"
   },
   "files": [
     "schemas"

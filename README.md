@@ -54,6 +54,7 @@ It provides read-only resources for docs and schemas, validation/example tools, 
 ## v1.0.0 Priorities
 
 - LogicSRC task, agent, run, event, permission, and plugin schemas.
+- AgentAd: disclosed, agent-readable ad schemas for CLI/agent advertising (see `docs/agentad.md`); cl1s.tech is the reference network.
 - LogicSRC CLI, SDK, TUI, PWA, MCP, and curl-compatible API conventions.
 - CommandBoard.run reference implementation.
 - Monorepo-maintained plugin system.

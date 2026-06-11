@@ -7,7 +7,7 @@ function main(argv: string[]) {
   const [, , kindArg, fileArg] = argv;
 
   if (!kindArg || !fileArg) {
-    console.error("Usage: logicsrc-validate <task|agent|run|event|plugin> <file.yaml|file.json>");
+    console.error("Usage: logicsrc-validate <task|agent|run|event|plugin|agentad-ad|agentad-placement|...> <file.yaml|file.json>");
     process.exitCode = 2;
     return;
   }

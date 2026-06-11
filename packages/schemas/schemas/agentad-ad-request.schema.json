@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.logicsrc.com/agentad-ad-request.schema.json",
+  "title": "AgentAd Ad Request",
+  "description": "A request from a CLI/agent for an ad to fill a placement, with optional runtime context for relevance.",
+  "type": "object",
+  "required": ["type", "version", "placement_id"],
+  "additionalProperties": false,
+  "properties": {
+    "type": { "const": "agentad.ad_request" },
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+    "placement_id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$" },
+    "publisher_did": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*\\.[a-z0-9][a-z0-9._-]*$" },
+    "consumer": {
+      "type": "string",
+      "enum": ["human", "agent"],
+      "description": "Who will read the ad. Agents SHOULD receive machine_readable payloads and clear disclosure."
+    },
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "tool": { "type": "string", "description": "Host tool identifier, e.g. 'claude-code'." },
+        "keywords": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "language": { "type": "string" },
+        "locale": { "type": "string" }
+      }
+    },
+    "format_override": { "type": "string", "enum": ["text", "markdown", "ansi", "banner", "json"] },
+    "count": { "type": "integer", "minimum": 1, "maximum": 10, "default": 1 }
+  }
+}
