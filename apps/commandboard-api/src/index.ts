@@ -172,6 +172,11 @@ async function route(request: IncomingMessage, response: ServerResponse) {
 
   const formattedDiscover = matchFormattedDiscoverPath(url.pathname);
   if (request.method === "GET" && formattedDiscover) {
+    if (formattedDiscover.format === "invalid-encoding") {
+      json(response, 400, { error: "Invalid path encoding" });
+      return;
+    }
+
     const result = await discoverFeeds({
       q: formattedDiscover.keyword,
       type: "all",
@@ -312,21 +317,32 @@ function listParam(value: string | null) {
 function matchFormattedDiscoverPath(pathname: string) {
   const rss = /^\/rss\/discover\/(.+)\.xml$/.exec(pathname);
   if (rss) {
-    return { format: "rss" as const, keyword: decodeURIComponent(rss[1]) };
+    return formattedDiscoverMatch("rss", rss[1]);
   }
   const opml = /^\/opml\/discover\/(.+)\.xml$/.exec(pathname) ?? /^\/rss\/discover\/(.+)\.opml$/.exec(pathname);
   if (opml) {
-    return { format: "opml" as const, keyword: decodeURIComponent(opml[1]) };
+    return formattedDiscoverMatch("opml", opml[1]);
   }
   const atom = /^\/atom\/discover\/(.+)\.xml$/.exec(pathname);
   if (atom) {
-    return { format: "atom" as const, keyword: decodeURIComponent(atom[1]) };
+    return formattedDiscoverMatch("atom", atom[1]);
   }
   const jsonFeed = /^\/json-feed\/discover\/(.+)\.json$/.exec(pathname);
   if (jsonFeed) {
-    return { format: "json-feed" as const, keyword: decodeURIComponent(jsonFeed[1]) };
+    return formattedDiscoverMatch("json-feed", jsonFeed[1]);
   }
   return undefined;
+}
+
+function formattedDiscoverMatch(format: "rss" | "opml" | "atom" | "json-feed", encodedKeyword: string) {
+  try {
+    return { format, keyword: decodeURIComponent(encodedKeyword) };
+  } catch (error) {
+    if (error instanceof URIError) {
+      return { format: "invalid-encoding" as const };
+    }
+    throw error;
+  }
 }
 
 export function startCommandBoardServer(port = Number(process.env.PORT ?? 4010)) {
