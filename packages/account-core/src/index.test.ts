@@ -41,6 +41,23 @@ describe("account-core", () => {
     expect(result.decision).toBe("approval_required");
   });
 
+  it("treats non-finite risk scores as critical", () => {
+    const result = evaluateAccountPolicy({
+      action: "social:profile:read",
+      riskScore: Number.NaN,
+      grant: {
+        id: "grant_1",
+        accountId: "account_1",
+        principal: { type: "agent", id: "marketing-agent" },
+        permissions: ["social:profile:read"],
+        policy: [],
+        createdAt: new Date(0).toISOString()
+      }
+    });
+
+    expect(result).toMatchObject({ decision: "deny", riskScore: 1 });
+  });
+
   it("redacts secret-like audit previews", () => {
     const event = createAccountAuditEvent({
       provider: "gmail",
