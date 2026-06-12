@@ -74,10 +74,17 @@ export async function GET(request: NextRequest) {
     });
     const userText = await userResponse.text();
     const userInfo = userResponse.ok ? parseJson(userText) : {};
+    if (!userResponse.ok || typeof userInfo.sub !== "string" || userInfo.sub.trim() === "") {
+      console.error("[coinpay-oauth] userinfo failed", {
+        status: userResponse.status,
+        error: userResponse.ok ? "missing_sub" : userText.slice(0, 160)
+      });
+      return redirectWithOAuthStatus("error", "userinfo_failed");
+    }
 
     const session = signSession({
       provider: "coinpay",
-      sub: typeof userInfo.sub === "string" ? userInfo.sub : null,
+      sub: userInfo.sub,
       email: typeof userInfo.email === "string" ? userInfo.email : null,
       name: typeof userInfo.name === "string" ? userInfo.name : null,
       scope: typeof tokenPayload.scope === "string" ? tokenPayload.scope : config.scopes,
