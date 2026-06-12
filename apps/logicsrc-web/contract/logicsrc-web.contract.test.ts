@@ -410,6 +410,7 @@ describe("POST /api/webhooks/coinpay", () => {
 
     expect(verifyCoinPayWebhook(payload, `t=${timestamp},v1=${signature}`, secret)).toBe(true);
     expect(verifyCoinPayWebhook(payload, `t=${timestamp}, v1=${signature}`, secret)).toBe(true);
+    expect(verifyCoinPayWebhook(payload, `t=${timestamp},v1=${signature}0`, secret)).toBe(false);
 
     const response = await coinpayWebhook(
       new NextRequest("http://localhost/api/webhooks/coinpay", {
