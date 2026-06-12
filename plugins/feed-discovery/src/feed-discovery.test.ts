@@ -50,6 +50,7 @@ describe("site probing helpers", () => {
 
   it("blocks private SSRF targets", async () => {
     await expect(assertSafeHttpUrl("http://127.0.0.1/feed")).rejects.toThrow(/Blocked internal/);
+    await expect(assertSafeHttpUrl("http://[::]/feed")).rejects.toThrow(/Blocked internal/);
     await expect(assertSafeHttpUrl("http://[::ffff:192.168.1.10]/feed")).rejects.toThrow(/Blocked internal/);
     await expect(assertSafeHttpUrl("file:///etc/passwd")).rejects.toThrow(/Unsupported URL protocol/);
   });

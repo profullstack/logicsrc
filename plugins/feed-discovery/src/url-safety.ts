@@ -78,6 +78,7 @@ function isBlockedIp(value: string) {
       return isBlockedIp(`${high >> 8}.${high & 255}.${low >> 8}.${low & 255}`);
     }
     return (
+      normalized === "::" ||
       normalized === "::1" ||
       normalized.startsWith("fc") ||
       normalized.startsWith("fd") ||
