@@ -40,14 +40,12 @@ export function writeConfig(config: JsonObject) {
 }
 
 export function getConfigValue(path: string, config = readConfig()) {
-  return path.split(".").reduce<unknown>((current, key) => (isObject(current) ? current[key] : undefined), config);
+  const parts = splitConfigPath(path);
+  return parts.reduce<unknown>((current, key) => (isObject(current) ? current[key] : undefined), config);
 }
 
 export function setConfigValue(path: string, rawValue: string, config = readConfig()) {
-  const parts = path.split(".").filter(Boolean);
-  if (parts.length === 0) {
-    throw new Error("Config path cannot be empty.");
-  }
+  const parts = splitConfigPath(path);
   let current: JsonObject = config;
   for (const part of parts.slice(0, -1)) {
     if (!isObject(current[part])) {
@@ -57,6 +55,14 @@ export function setConfigValue(path: string, rawValue: string, config = readConf
   }
   current[parts[parts.length - 1] as string] = parseConfigValue(rawValue);
   return config;
+}
+
+function splitConfigPath(path: string) {
+  const parts = path.split(".");
+  if (parts.length === 0 || parts.some((part) => part.length === 0)) {
+    throw new Error("Config path cannot contain empty segments.");
+  }
+  return parts;
 }
 
 export function parseConfigValue(value: string): unknown {
