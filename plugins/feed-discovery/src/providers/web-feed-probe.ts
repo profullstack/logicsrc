@@ -30,7 +30,7 @@ function candidateUrls(query: FeedDiscoveryQuery, configured: string[]) {
 
   for (const entry of configured) {
     const [url, ...keywords] = entry.split("|").map((part) => part.trim());
-    if (!url) {
+    if (!/^https?:\/\//i.test(url)) {
       continue;
     }
     if (keywords.length === 0 || keywords.some((keyword) => query.q.toLowerCase().includes(keyword.toLowerCase()))) {
