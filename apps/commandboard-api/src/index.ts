@@ -331,7 +331,7 @@ function numberParam(value: string | null) {
     return undefined;
   }
   const parsed = Number(value);
-  return Number.isFinite(parsed) ? parsed : undefined;
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : undefined;
 }
 
 function listParam(value: string | null) {
