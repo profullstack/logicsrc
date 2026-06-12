@@ -39,6 +39,20 @@ describe("CommandBoard API contracts", () => {
     expect(body).toEqual({ ok: true, service: "commandboard-api" });
   });
 
+
+
+  it("rejects malformed task JSON with a client error", async () => {
+    const response = await fetch(`${baseUrl}/api/tasks`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: "{not-json"
+    });
+    const body = await response.json() as { error: string };
+
+    expect(response.status).toBe(400);
+    expect(body).toEqual({ error: "Invalid JSON body" });
+  });
+
   it("exposes default plugin contract including product plugins", async () => {
     const response = await fetch(`${baseUrl}/api/plugins`);
     const body = await response.json() as {
