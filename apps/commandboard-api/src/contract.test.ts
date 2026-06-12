@@ -118,6 +118,14 @@ describe("CommandBoard API contracts", () => {
     expect(opmlBody).toContain("<opml");
   });
 
+  it("rejects malformed encoded feed discovery paths as client errors", async () => {
+    const response = await fetch(`${baseUrl}/rss/discover/%E0%A4%A.xml`);
+    const body = await response.json() as { error: string };
+
+    expect(response.status).toBe(400);
+    expect(body).toEqual({ error: "Invalid path encoding" });
+  });
+
   it("exposes sh1pt project and action contracts", async () => {
     const projectsResponse = await fetch(`${baseUrl}/api/plugins/sh1pt/projects`);
     const projectsBody = await projectsResponse.json() as { projects: Array<{ id: string; board: string; status: string; actions: number }> };
