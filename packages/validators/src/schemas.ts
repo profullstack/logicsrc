@@ -9,6 +9,13 @@ import pluginSchema from "../../schemas/schemas/logicsrc-plugin.schema.json" wit
 import runSchema from "../../schemas/schemas/logicsrc-run.schema.json" with { type: "json" };
 import socialPostSchema from "../../schemas/schemas/logicsrc-social-post.schema.json" with { type: "json" };
 import taskSchema from "../../schemas/schemas/logicsrc-task.schema.json" with { type: "json" };
+import agentadAdSchema from "../../schemas/schemas/agentad-ad.schema.json" with { type: "json" };
+import agentadPlacementSchema from "../../schemas/schemas/agentad-placement.schema.json" with { type: "json" };
+import agentadAdRequestSchema from "../../schemas/schemas/agentad-ad-request.schema.json" with { type: "json" };
+import agentadAdResponseSchema from "../../schemas/schemas/agentad-ad-response.schema.json" with { type: "json" };
+import agentadImpressionSchema from "../../schemas/schemas/agentad-impression.schema.json" with { type: "json" };
+import agentadClickSchema from "../../schemas/schemas/agentad-click.schema.json" with { type: "json" };
+import agentadCampaignSchema from "../../schemas/schemas/agentad-campaign.schema.json" with { type: "json" };
 
 export const schemas = {
   agent: agentSchema,
@@ -21,7 +28,14 @@ export const schemas = {
   plugin: pluginSchema,
   run: runSchema,
   "social-post": socialPostSchema,
-  task: taskSchema
+  task: taskSchema,
+  "agentad-ad": agentadAdSchema,
+  "agentad-placement": agentadPlacementSchema,
+  "agentad-ad-request": agentadAdRequestSchema,
+  "agentad-ad-response": agentadAdResponseSchema,
+  "agentad-impression": agentadImpressionSchema,
+  "agentad-click": agentadClickSchema,
+  "agentad-campaign": agentadCampaignSchema
 } as const;
 
 export type SchemaKind = keyof typeof schemas;

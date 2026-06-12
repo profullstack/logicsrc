@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.logicsrc.com/agentad-impression.schema.json",
+  "title": "AgentAd Impression",
+  "description": "A confirmed display of an ad. Recorded only after the ad was actually rendered to the consumer.",
+  "type": "object",
+  "required": ["type", "version", "impression_token", "ad_id", "occurred_at"],
+  "additionalProperties": false,
+  "properties": {
+    "type": { "const": "agentad.impression" },
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+    "impression_token": { "type": "string", "minLength": 1 },
+    "ad_id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$" },
+    "placement_id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$" },
+    "consumer": { "type": "string", "enum": ["human", "agent"] },
+    "occurred_at": { "type": "string", "format": "date-time" }
+  }
+}

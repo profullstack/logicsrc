@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.logicsrc.com/agentad-ad.schema.json",
+  "title": "AgentAd Ad",
+  "description": "A single advertising unit served to CLI tools and AI agents. Ads MUST be disclosed and SHOULD carry a machine-readable payload so agents can reason about them.",
+  "type": "object",
+  "required": ["type", "version", "id", "advertiser_did", "format", "title", "url", "disclosure"],
+  "additionalProperties": false,
+  "properties": {
+    "type": { "const": "agentad.ad" },
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+    "id": { "$ref": "#/$defs/id" },
+    "campaign_id": { "$ref": "#/$defs/id" },
+    "advertiser_did": { "$ref": "#/$defs/did" },
+    "format": {
+      "type": "string",
+      "enum": ["text", "markdown", "ansi", "banner", "json"],
+      "description": "Render format. 'json' is the agent-native structured format; 'ansi'/'banner' target human CLI surfaces."
+    },
+    "title": { "type": "string", "minLength": 1, "maxLength": 120 },
+    "body": { "type": "string", "maxLength": 2000 },
+    "url": { "type": "string", "format": "uri" },
+    "cta": { "type": "string", "maxLength": 60, "description": "Call to action label, e.g. 'Install' or 'Read docs'." },
+    "disclosure": {
+      "type": "object",
+      "description": "Transparency contract. Every ad is labeled as sponsored so humans and agents can distinguish it from organic output.",
+      "required": ["sponsored", "label"],
+      "additionalProperties": false,
+      "properties": {
+        "sponsored": { "const": true },
+        "label": { "type": "string", "minLength": 1, "maxLength": 40, "default": "Sponsored" },
+        "advertiser_name": { "type": "string", "maxLength": 120 }
+      }
+    },
+    "machine_readable": {
+      "type": "object",
+      "description": "Optional structured payload an agent can parse instead of (or alongside) the rendered text.",
+      "additionalProperties": true
+    },
+    "targeting": { "$ref": "#/$defs/targeting" },
+    "media": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "ansi_art": { "type": "string", "description": "Pre-rendered ANSI/ASCII art for banner format." },
+        "icon": { "type": "string", "format": "uri" }
+      }
+    },
+    "pricing": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "model": { "type": "string", "enum": ["cpm", "cpc", "cpa", "flat"] },
+        "bid": { "type": "number", "minimum": 0 },
+        "currency": { "type": "string", "minLength": 2, "maxLength": 12 }
+      }
+    },
+    "expires_at": { "type": "string", "format": "date-time" }
+  },
+  "$defs": {
+    "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$", "minLength": 1, "maxLength": 64 },
+    "did": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*\\.[a-z0-9][a-z0-9._-]*$" },
+    "targeting": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "surfaces": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["cli", "tui", "agent", "ci"] },
+          "uniqueItems": true
+        },
+        "keywords": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "tools": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true, "description": "Host CLI/agent identifiers to target, e.g. 'claude-code', 'gh'." },
+        "languages": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "exclude_keywords": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
+      }
+    }
+  }
+}

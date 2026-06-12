@@ -1,0 +1,33 @@
+type: agentad.ad
+version: "0.1"
+id: deploy-faster-railway
+campaign_id: railway-q3
+advertiser_did: railway.coinpay
+format: markdown
+title: Ship your CLI to production in 60 seconds
+body: Railway deploys any Node, Bun, or Go service straight from your terminal. No YAML wrangling.
+url: https://railway.app/?ref=cl1s
+cta: Deploy now
+disclosure:
+  sponsored: true
+  label: Sponsored
+  advertiser_name: Railway
+machine_readable:
+  product: railway
+  category: infrastructure
+  install: "npm i -g @railway/cli"
+targeting:
+  surfaces:
+    - cli
+    - agent
+  keywords:
+    - deploy
+    - hosting
+    - infrastructure
+  tools:
+    - claude-code
+    - gh
+pricing:
+  model: cpc
+  bid: 0.4
+  currency: USDC

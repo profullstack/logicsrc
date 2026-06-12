@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.logicsrc.com/agentad-campaign.schema.json",
+  "title": "AgentAd Campaign",
+  "description": "An advertiser campaign grouping one or more ads under a shared budget, schedule, and targeting policy.",
+  "type": "object",
+  "required": ["type", "version", "id", "advertiser_did", "name", "budget"],
+  "additionalProperties": false,
+  "properties": {
+    "type": { "const": "agentad.campaign" },
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+    "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$", "minLength": 1, "maxLength": 64 },
+    "advertiser_did": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*\\.[a-z0-9][a-z0-9._-]*$" },
+    "name": { "type": "string", "minLength": 1, "maxLength": 120 },
+    "status": { "type": "string", "enum": ["draft", "active", "paused", "completed"], "default": "draft" },
+    "budget": {
+      "type": "object",
+      "required": ["total", "currency"],
+      "additionalProperties": false,
+      "properties": {
+        "total": { "type": "number", "minimum": 0 },
+        "daily_cap": { "type": "number", "minimum": 0 },
+        "currency": { "type": "string", "minLength": 2, "maxLength": 12 }
+      }
+    },
+    "schedule": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "start_at": { "type": "string", "format": "date-time" },
+        "end_at": { "type": "string", "format": "date-time" }
+      }
+    },
+    "ad_ids": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$" },
+      "uniqueItems": true
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.logicsrc.com/agentad-click.schema.json",
+  "title": "AgentAd Click",
+  "description": "A consumer action on an ad (a click, install, or conversion). For agents, 'action' records the structured intent taken.",
+  "type": "object",
+  "required": ["type", "version", "click_token", "ad_id", "occurred_at"],
+  "additionalProperties": false,
+  "properties": {
+    "type": { "const": "agentad.click" },
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+    "click_token": { "type": "string", "minLength": 1 },
+    "ad_id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$" },
+    "placement_id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$" },
+    "action": {
+      "type": "string",
+      "enum": ["click", "open_url", "copy_command", "install", "convert"],
+      "default": "click"
+    },
+    "consumer": { "type": "string", "enum": ["human", "agent"] },
+    "occurred_at": { "type": "string", "format": "date-time" }
+  }
+}

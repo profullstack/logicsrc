@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.logicsrc.com/agentad-ad-response.schema.json",
+  "title": "AgentAd Ad Response",
+  "description": "The network's response to an ad request: zero or more filled ads plus signed tracking tokens for impression/click events.",
+  "type": "object",
+  "required": ["type", "version", "request_id", "ads"],
+  "additionalProperties": false,
+  "properties": {
+    "type": { "const": "agentad.ad_response" },
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+    "request_id": { "type": "string", "minLength": 1 },
+    "ads": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["ad", "impression_token"],
+        "additionalProperties": false,
+        "properties": {
+          "ad": { "type": "object", "description": "An agentad.ad document; validate separately against agentad-ad.schema.json." },
+          "impression_token": { "type": "string", "minLength": 1, "description": "Opaque token to confirm the impression and to mint a click token." },
+          "rendered": { "type": "string", "description": "Server-rendered representation in the requested format." }
+        }
+      }
+    },
+    "no_fill_reason": {
+      "type": "string",
+      "enum": ["no_inventory", "frequency_capped", "blocked_category", "invalid_request"]
+    }
+  }
+}

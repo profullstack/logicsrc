@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.logicsrc.com/agentad-placement.schema.json",
+  "title": "AgentAd Placement",
+  "description": "A slot registered by a publisher (a CLI tool or agent) where AgentAd units may be rendered.",
+  "type": "object",
+  "required": ["type", "version", "id", "publisher_did", "surface", "accepted_formats"],
+  "additionalProperties": false,
+  "properties": {
+    "type": { "const": "agentad.placement" },
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+    "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$", "minLength": 1, "maxLength": 64 },
+    "publisher_did": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*\\.[a-z0-9][a-z0-9._-]*$" },
+    "surface": { "type": "string", "enum": ["cli", "tui", "agent", "ci"] },
+    "accepted_formats": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "enum": ["text", "markdown", "ansi", "banner", "json"] },
+      "uniqueItems": true
+    },
+    "dimensions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "max_width": { "type": "integer", "minimum": 1, "description": "Max columns for text/ansi rendering." },
+        "max_lines": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "context_tags": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true,
+      "description": "Keywords describing the host context, used for relevance matching."
+    },
+    "frequency_cap": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "max_per_session": { "type": "integer", "minimum": 0 },
+        "max_per_day": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "allow_categories": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "block_categories": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
+  }
+}

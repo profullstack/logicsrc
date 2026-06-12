@@ -25,4 +25,27 @@ describe("LogicSRC validators", () => {
 
     expect(result.ok).toBe(false);
   });
+
+  it("validates the AgentAd ad fixture", () => {
+    const testDir = dirname(fileURLToPath(import.meta.url));
+    const file = resolve(testDir, "../../schemas/fixtures/agentad-ad.yaml");
+    const data = parseDocument(readFileSync(file, "utf8"), file);
+
+    expect(validate("agentad-ad", data).ok).toBe(true);
+  });
+
+  it("rejects an AgentAd ad that is not disclosed as sponsored", () => {
+    const result = validate("agentad-ad", {
+      type: "agentad.ad",
+      version: "0.1",
+      id: "undisclosed",
+      advertiser_did: "acme.coinpay",
+      format: "text",
+      title: "Buy now",
+      url: "https://example.com",
+      disclosure: { sponsored: false, label: "Sponsored" }
+    });
+
+    expect(result.ok).toBe(false);
+  });
 });
