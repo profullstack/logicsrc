@@ -84,6 +84,8 @@ describe("CommandBoard API contracts", () => {
     const providersBody = await providersResponse.json() as { providers: Array<{ id: string; enabledByDefault: boolean }> };
     const discoverResponse = await fetch(`${baseUrl}/api/feeds/discover?q=microsaas&providers=manual-curated&includeUnvalidated=true`);
     const discoverBody = await discoverResponse.json() as { query: string; results: Array<{ feedUrl: string; provider: string }> };
+    const invalidLimitResponse = await fetch(`${baseUrl}/api/feeds/discover?q=microsaas&limit=-1&providers=manual-curated&includeUnvalidated=true`);
+    const invalidLimitBody = await invalidLimitResponse.json() as { results: Array<{ feedUrl: string; provider: string }> };
     const rssResponse = await fetch(`${baseUrl}/rss/discover/microsaas.xml?providers=manual-curated&includeUnvalidated=true`);
     const rssBody = await rssResponse.text();
     const opmlResponse = await fetch(`${baseUrl}/opml/discover/microsaas.xml?providers=manual-curated&includeUnvalidated=true`);
@@ -94,6 +96,8 @@ describe("CommandBoard API contracts", () => {
     expect(discoverResponse.status).toBe(200);
     expect(discoverBody.query).toBe("microsaas");
     expect(discoverBody.results[0]).toMatchObject({ provider: "manual-curated" });
+    expect(invalidLimitResponse.status).toBe(200);
+    expect(invalidLimitBody.results[0]).toMatchObject({ provider: "manual-curated" });
     expect(rssResponse.status).toBe(200);
     expect(rssBody).toContain("<rss");
     expect(opmlResponse.status).toBe(200);
