@@ -181,4 +181,16 @@ describe("CommandBoard API contracts", () => {
     expect(response.status).toBe(422);
     expect(Array.isArray(body.errors)).toBe(true);
   });
+
+  it("rejects malformed JSON request bodies as client errors", async () => {
+    const response = await fetch(`${baseUrl}/api/tasks`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: "{bad"
+    });
+    const body = await response.json() as { error: string };
+
+    expect(response.status).toBe(400);
+    expect(body).toEqual({ error: "Invalid JSON body" });
+  });
 });

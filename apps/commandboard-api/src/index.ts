@@ -55,11 +55,22 @@ const c0mputeWorkers = [
   { id: "worker_pool_1", region: "us-west", status: "preview", capacity: "wip" }
 ];
 
+class InvalidJsonBodyError extends Error {
+  constructor() {
+    super("Invalid JSON body");
+    this.name = "InvalidJsonBodyError";
+  }
+}
+
 export function createCommandBoardServer() {
   return createServer(async (request, response) => {
     try {
       await route(request, response);
     } catch (error) {
+      if (error instanceof InvalidJsonBodyError) {
+        json(response, 400, { error: error.message });
+        return;
+      }
       json(response, 500, { error: error instanceof Error ? error.message : String(error) });
     }
   });
@@ -287,7 +298,14 @@ async function readJson(request: IncomingMessage) {
     chunks.push(Buffer.from(chunk));
   }
 
-  return JSON.parse(Buffer.concat(chunks).toString("utf8")) as unknown;
+  try {
+    return JSON.parse(Buffer.concat(chunks).toString("utf8")) as unknown;
+  } catch (error) {
+    if (error instanceof SyntaxError) {
+      throw new InvalidJsonBodyError();
+    }
+    throw error;
+  }
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
