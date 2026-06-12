@@ -2,7 +2,8 @@ import { readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
-import { parseDocument, validate } from "./index.js";
+import { assertSchemaKind, parseDocument, schemas, validate } from "./index.js";
+import { isSchemaKind } from "./schemas.js";
 
 describe("LogicSRC validators", () => {
   it("validates the task fixture", () => {
@@ -47,5 +48,21 @@ describe("LogicSRC validators", () => {
     });
 
     expect(result.ok).toBe(false);
+  });
+});
+
+describe("isSchemaKind / assertSchemaKind prototype safety", () => {
+  it("rejects inherited Object.prototype keys", () => {
+    for (const key of ["toString", "constructor", "valueOf", "hasOwnProperty"]) {
+      expect(isSchemaKind(key)).toBe(false);
+      expect(() => assertSchemaKind(key)).toThrow(/Unknown schema kind/);
+    }
+  });
+
+  it("still accepts every real schema kind", () => {
+    for (const key of Object.keys(schemas)) {
+      expect(isSchemaKind(key)).toBe(true);
+      expect(assertSchemaKind(key)).toBe(key);
+    }
   });
 });
