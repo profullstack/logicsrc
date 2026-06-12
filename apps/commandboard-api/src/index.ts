@@ -206,7 +206,14 @@ async function route(request: IncomingMessage, response: ServerResponse) {
   }
 
   if (request.method === "POST" && url.pathname === "/api/plugins/sh1pt/actions/publish") {
-    const body = await readJson(request);
+    let body: unknown;
+    try {
+      body = await readJson(request);
+    } catch {
+      json(response, 400, { error: "Invalid JSON body" });
+      return;
+    }
+
     if (!isRecord(body) || typeof body.action_id !== "string") {
       json(response, 422, { error: "Expected action_id" });
       return;
