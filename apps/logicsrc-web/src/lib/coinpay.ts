@@ -160,7 +160,9 @@ export function signSession(payload: Record<string, unknown>): string {
 }
 
 export function verifySession(value: string): Record<string, unknown> | null {
-  const [encoded, signature] = value.split(".");
+  const parts = value.split(".");
+  if (parts.length !== 2) return null;
+  const [encoded, signature] = parts;
   if (!encoded || !signature) return null;
 
   const expected = createHmac("sha256", getSessionSecret()).update(encoded).digest("base64url");

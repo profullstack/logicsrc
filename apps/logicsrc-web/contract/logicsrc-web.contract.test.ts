@@ -376,7 +376,8 @@ describe("session signing", () => {
     process.env.LOGICSRC_SESSION_SECRET = "session_secret_for_tests";
     const token = signSession({ provider: "coinpay", sub: "merchant-123" });
     expect(verifySession(token)).toMatchObject({ provider: "coinpay", sub: "merchant-123" });
-    expect(verifySession(`${token}tampered`)).toBeNull();
+    expect(verifySession(`tampered`)).toBeNull();
+    expect(verifySession(`.extra`)).toBeNull();
   });
 });
 
