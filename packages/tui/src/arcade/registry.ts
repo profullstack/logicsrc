@@ -70,6 +70,6 @@ export function renderArcadeList(registry = createDefaultArcadeRegistry()) {
     "",
     `${"id".padEnd(idWidth)}  ${"title".padEnd(titleWidth)}  description`,
     `${"-".repeat(idWidth)}  ${"-".repeat(titleWidth)}  ${"-".repeat(40)}`,
-    ...rows.map((row) => `${row.id.padEnd(idWidth)}  ${row.title.padEnd(titleWidth)}  ${row.description}`)
+    ...(rows.length ? rows.map((row) => `${row.id.padEnd(idWidth)}  ${row.title.padEnd(titleWidth)}  ${row.description}`) : ["No games registered"])
   ].join("\n");
 }
