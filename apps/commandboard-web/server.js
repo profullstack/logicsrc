@@ -48,7 +48,12 @@ createServer((request, response) => {
 });
 
 function resolveStaticPath(pathname) {
-  const decodedPath = decodeURIComponent(pathname);
+  let decodedPath;
+  try {
+    decodedPath = decodeURIComponent(pathname);
+  } catch {
+    return null;
+  }
   const normalizedPath = normalize(decodedPath).replace(/^(\.\.[/\\])+/, "");
   let candidate = join(distDirectory, normalizedPath);
 
