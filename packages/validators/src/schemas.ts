@@ -27,5 +27,5 @@ export const schemas = {
 export type SchemaKind = keyof typeof schemas;
 
 export function isSchemaKind(value: string): value is SchemaKind {
-  return value in schemas;
+  return Object.hasOwn(schemas, value);
 }
