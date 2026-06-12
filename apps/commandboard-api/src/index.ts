@@ -60,6 +60,10 @@ export function createCommandBoardServer() {
     try {
       await route(request, response);
     } catch (error) {
+      if (error instanceof InvalidJsonBodyError) {
+        json(response, 400, { error: error.message });
+        return;
+      }
       json(response, 500, { error: error instanceof Error ? error.message : String(error) });
     }
   });
@@ -281,13 +285,24 @@ function text(response: ServerResponse, status: number, contentType: string, bod
   response.end(body);
 }
 
+class InvalidJsonBodyError extends Error {
+  constructor() {
+    super("Invalid JSON body");
+    this.name = "InvalidJsonBodyError";
+  }
+}
+
 async function readJson(request: IncomingMessage) {
   const chunks: Buffer[] = [];
   for await (const chunk of request) {
     chunks.push(Buffer.from(chunk));
   }
 
-  return JSON.parse(Buffer.concat(chunks).toString("utf8")) as unknown;
+  try {
+    return JSON.parse(Buffer.concat(chunks).toString("utf8")) as unknown;
+  } catch {
+    throw new InvalidJsonBodyError();
+  }
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {

@@ -182,3 +182,34 @@ describe("CommandBoard API contracts", () => {
     expect(Array.isArray(body.errors)).toBe(true);
   });
 });
+
+describe("invalid JSON request bodies", () => {
+  const postEndpoints = [
+    "/api/tasks",
+    "/api/plugins/sh1pt/actions/publish",
+    "/api/plugins/c0mpute/jobs/dispatch",
+    "/api/plugins/c0mpute/quotes"
+  ];
+
+  it.each(postEndpoints)("returns 400 (not 500) for malformed JSON on %s", async (endpoint) => {
+    const response = await fetch(`${baseUrl}${endpoint}`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: "{invalid json"
+    });
+    const body = await response.json() as { error: string };
+
+    expect(response.status).toBe(400);
+    expect(body).toEqual({ error: "Invalid JSON body" });
+  });
+
+  it("still returns 422 for well-formed JSON that fails schema validation", async () => {
+    const response = await fetch(`${baseUrl}/api/tasks`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ title: "missing required fields" })
+    });
+
+    expect(response.status).toBe(422);
+  });
+});
