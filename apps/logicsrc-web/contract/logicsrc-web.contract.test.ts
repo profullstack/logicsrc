@@ -408,6 +408,7 @@ describe("POST /api/webhooks/coinpay", () => {
     const signature = createHmac("sha256", secret).update(`${timestamp}.${payload}`).digest("hex");
 
     expect(verifyCoinPayWebhook(payload, `t=${timestamp},v1=${signature}`, secret)).toBe(true);
+    expect(verifyCoinPayWebhook(payload, `t=${timestamp}, v1=${signature}`, secret)).toBe(true);
 
     const response = await coinpayWebhook(
       new NextRequest("http://localhost/api/webhooks/coinpay", {

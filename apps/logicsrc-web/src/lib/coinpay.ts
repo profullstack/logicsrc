@@ -114,7 +114,7 @@ export function verifyCoinPayWebhook(
   }
 
   try {
-    const parts = signatureHeader.split(",");
+    const parts = signatureHeader.split(",").map((part) => part.trim());
     const timestamp = parts.find((part) => part.startsWith("t="))?.slice(2);
     const signature = parts.find((part) => part.startsWith("v1="))?.slice(3);
     if (!timestamp || !signature) {
