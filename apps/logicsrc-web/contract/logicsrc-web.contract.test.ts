@@ -221,6 +221,33 @@ describe("POST /api/hire-us/coinpay-checkout", () => {
     expect(body.payment.checkout_url).toBe("https://checkout.stripe.test/card-only");
   });
 
+  it("falls back to the configured checkout amount when CoinPay returns a malformed amount", async () => {
+    process.env.COINPAY_API_KEY = "cp_test_key";
+    process.env.COINPAY_API_URL = "https://coinpayportal.example";
+    process.env.COINPAY_BUSINESS_ID = "business-123";
+    process.env.COINPAY_ELIGIBILITY_MERCHANT_ID = "merchant-123";
+
+    vi.spyOn(globalThis, "fetch").mockImplementation(async (input) => {
+      const url = typeof input === "string" ? input : input.toString();
+      if (url.includes("/api/payments/merchant-eligibility")) {
+        return jsonResponse({ success: true, accepts_card: true, accepts_crypto: false, chains: [] });
+      }
+      return jsonResponse({ success: true, payment: { id: "pay_123", amount_usd: "not-a-number" } }, 201);
+    });
+
+    const response = await coinpayCheckout(
+      new NextRequest("http://localhost/api/hire-us/coinpay-checkout", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: "{}"
+      })
+    );
+    const body = await response.json();
+
+    expect(response.status).toBe(201);
+    expect(body.payment.amount_usd).toBe(250);
+  });
+
   it("does not create checkout when no payment rail is available", async () => {
     process.env.COINPAY_API_KEY = "cp_test_key";
     process.env.COINPAY_API_URL = "https://coinpayportal.example";
