@@ -16,6 +16,7 @@
   "dependencies": {
     "@logicsrc/account-core": "file:../account-core",
     "@logicsrc/plugin-core": "file:../plugin-core",
+    "@logicsrc/plugin-agentbbs": "file:../../plugins/agentbbs",
     "@logicsrc/plugin-coinpay": "file:../../plugins/coinpay",
     "@logicsrc/plugin-email-accounts": "file:../../plugins/email-accounts",
     "@logicsrc/plugin-feed-discovery": "file:../../plugins/feed-discovery",

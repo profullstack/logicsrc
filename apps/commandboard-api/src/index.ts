@@ -1,6 +1,7 @@
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
 import { pathToFileURL } from "node:url";
 import { createPluginRegistry } from "@logicsrc/plugin-core";
+import { agentBbsPlugin } from "@logicsrc/plugin-agentbbs";
 import { c0mputePlugin } from "@logicsrc/plugin-c0mpute";
 import { coinPayPlugin } from "@logicsrc/plugin-coinpay";
 import { emailAccountsPlugin, listEmailAccountProviders } from "@logicsrc/plugin-email-accounts";
@@ -10,7 +11,7 @@ import { listSocialAccountProviders, socialAccountsPlugin } from "@logicsrc/plug
 import { uGigPlugin } from "@logicsrc/plugin-ugig";
 import { schemas, validate } from "@logicsrc/validators";
 
-const registry = createPluginRegistry([coinPayPlugin, uGigPlugin, sh1ptPlugin, c0mputePlugin, feedDiscoveryPlugin, socialAccountsPlugin, emailAccountsPlugin]);
+const registry = createPluginRegistry([coinPayPlugin, uGigPlugin, sh1ptPlugin, c0mputePlugin, feedDiscoveryPlugin, socialAccountsPlugin, emailAccountsPlugin, agentBbsPlugin]);
 
 const boards = [
   { path: "/general", title: "General", description: "CommandBoard.run general discussion." },

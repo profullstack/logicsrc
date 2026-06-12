@@ -47,7 +47,7 @@ describe("CommandBoard API contracts", () => {
     };
 
     expect(response.status).toBe(200);
-    expect(body.plugins.map((plugin) => plugin.id)).toEqual(["coinpay", "ugig", "sh1pt", "c0mpute", "feed-discovery", "social-accounts", "email-accounts"]);
+    expect(body.plugins.map((plugin) => plugin.id)).toEqual(["coinpay", "ugig", "sh1pt", "c0mpute", "feed-discovery", "social-accounts", "email-accounts", "agentbbs"]);
     expect(body.plugins.find((plugin) => plugin.id === "sh1pt")).toMatchObject({
       enabled: true,
       capabilities: expect.arrayContaining(["projects.sync", "actions.publish", "deployments.status"])
@@ -61,6 +61,7 @@ describe("CommandBoard API contracts", () => {
     expect(body.capabilities["feeds.discover"]).toEqual(["feed-discovery"]);
     expect(body.capabilities["social.post.publish"]).toEqual(["social-accounts"]);
     expect(body.capabilities["email.send"]).toEqual(["email-accounts"]);
+    expect(body.capabilities["pods.provision"]).toEqual(["agentbbs"]);
   });
 
   it("exposes communication account provider contracts", async () => {

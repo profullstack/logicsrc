@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@logicsrc/plugin-core": "file:../../packages/plugin-core",
+    "@logicsrc/plugin-agentbbs": "file:../../plugins/agentbbs",
     "@logicsrc/plugin-c0mpute": "file:../../plugins/c0mpute",
     "@logicsrc/plugin-coinpay": "file:../../plugins/coinpay",
     "@logicsrc/plugin-email-accounts": "file:../../plugins/email-accounts",
