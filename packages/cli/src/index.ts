@@ -97,7 +97,7 @@ program
         { type: "TASK", board, title: "QA checkout flow", meta: "25 USDC" },
         { type: "POST", board, title: "New agent plugin idea", meta: "4 replies" },
         { type: "RUN", board, title: "qa-agent completed task_123", meta: "completed" }
-      ].slice(0, Number(options.limit)),
+      ].slice(0, parsePositiveIntegerOption(options.limit, 20)),
       options.format as OutputFormat
     );
   });
@@ -316,8 +316,8 @@ feeds
     const response = await discoverFeeds({
       q: keyword,
       type: options.type as FeedKind | "all",
-      limit: Number(options.limit),
-      freshnessDays: options.freshnessDays ? Number(options.freshnessDays) : undefined,
+      limit: parsePositiveIntegerOption(options.limit, 25),
+      freshnessDays: options.freshnessDays ? parsePositiveIntegerOption(options.freshnessDays, undefined) : undefined,
       includeDeadFeeds: Boolean(options.includeDeadFeeds),
       includeUnvalidated: Boolean(options.includeUnvalidated),
       providers: splitOption(options.providers)
@@ -365,7 +365,7 @@ feeds
   .option("--limit <limit>", "Maximum results", "100")
   .description("Discover feeds and print OPML.")
   .action(async (keyword, options) => {
-    const response = await discoverFeeds({ q: keyword, limit: Number(options.limit) });
+    const response = await discoverFeeds({ q: keyword, limit: parsePositiveIntegerOption(options.limit, 100) });
     console.log(renderDiscoveryOutput(response, "opml"));
   });
 
@@ -600,6 +600,13 @@ function splitOption(value: string | undefined) {
     ?.split(",")
     .map((entry) => entry.trim())
     .filter(Boolean);
+}
+
+function parsePositiveIntegerOption(value: string | undefined, fallback: number): number;
+function parsePositiveIntegerOption(value: string | undefined, fallback: undefined): number | undefined;
+function parsePositiveIntegerOption(value: string | undefined, fallback: number | undefined) {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) && parsed > 0 ? Math.trunc(parsed) : fallback;
 }
 
 async function runYoloArcade(game: string, repo?: string) {
