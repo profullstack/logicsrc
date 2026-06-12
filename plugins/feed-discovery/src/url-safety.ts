@@ -67,6 +67,16 @@ function isBlockedIp(value: string) {
 
   if (kind === 6) {
     const normalized = value.toLowerCase();
+    const compatibleDottedIpv4 = /^::(\d+\.\d+\.\d+\.\d+)$/.exec(normalized);
+    if (compatibleDottedIpv4) {
+      return isBlockedIp(compatibleDottedIpv4[1]);
+    }
+    const compatibleHexIpv4 = /^::([0-9a-f]{1,4}):([0-9a-f]{1,4})$/.exec(normalized);
+    if (compatibleHexIpv4) {
+      const high = Number.parseInt(compatibleHexIpv4[1], 16);
+      const low = Number.parseInt(compatibleHexIpv4[2], 16);
+      return isBlockedIp(`${high >> 8}.${high & 255}.${low >> 8}.${low & 255}`);
+    }
     const mappedDottedIpv4 = /^::ffff:(\d+\.\d+\.\d+\.\d+)$/.exec(normalized);
     if (mappedDottedIpv4) {
       return isBlockedIp(mappedDottedIpv4[1]);
