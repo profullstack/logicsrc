@@ -377,12 +377,17 @@ function formattedDiscoverMatch(format: "rss" | "opml" | "atom" | "json-feed", e
   }
 }
 
-export function startCommandBoardServer(port = Number(process.env.PORT ?? 4010)) {
+export function startCommandBoardServer(port = readPort(process.env.PORT, 4010)) {
   const server = createCommandBoardServer();
   server.listen(port, () => {
     console.log(`CommandBoard.run API listening on http://localhost:${port}`);
   });
   return server;
+}
+
+export function readPort(value: string | undefined, fallback: number) {
+  const parsed = Number(value ?? fallback);
+  return Number.isInteger(parsed) && parsed > 0 && parsed <= 65535 ? parsed : fallback;
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {

@@ -1,6 +1,6 @@
 import type { Server } from "node:http";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { createCommandBoardServer } from "./index.js";
+import { createCommandBoardServer, readPort } from "./index.js";
 
 let server: Server;
 let baseUrl: string;
@@ -22,6 +22,13 @@ afterAll(async () => {
 });
 
 describe("CommandBoard API contracts", () => {
+  it("falls back when PORT is invalid", () => {
+    expect(readPort("not-a-port", 4010)).toBe(4010);
+    expect(readPort("0", 4010)).toBe(4010);
+    expect(readPort("65536", 4010)).toBe(4010);
+    expect(readPort("4020", 4010)).toBe(4020);
+  });
+
   it("exposes root API index", async () => {
     const response = await fetch(`${baseUrl}/`);
     const body = await response.json() as { ok: boolean; service: string; endpoints: string[] };
