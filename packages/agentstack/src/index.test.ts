@@ -29,6 +29,7 @@ describe("DID helpers", () => {
   it("rejects non-CoinPay DIDs", () => {
     expect(parseDid("did:web:example.com")).toBeNull();
     expect(parseDid("did:coinpay:bot:abc")).toBeNull();
+    expect(parseDid("did:coinpay:agent:abc:extra")).toBeNull();
   });
 });
 
