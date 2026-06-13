@@ -10,6 +10,7 @@ import { assertSchemaKind, parseDocument, validate } from "@logicsrc/validators"
 import { getConfigValue, readConfig, setConfigValue, writeConfig } from "./config.js";
 import { boards, tasks } from "./fixtures.js";
 import { print, type OutputFormat } from "./format.js";
+import { parsePositiveInteger } from "./numeric-options.js";
 import { exportOpenSpecSummary, importOpenSpec, writeOpenSpecChange } from "./openspec.js";
 import { defaultPluginRegistry } from "./registry.js";
 
@@ -88,7 +89,7 @@ program
 program
   .command("read")
   .argument("<board>", "Board path")
-  .option("--limit <limit>", "Number of posts", "20")
+  .option("--limit <limit>", "Number of posts", parsePositiveInteger, 20)
   .option("--format <format>", "table, json, or markdown", "table")
   .description("Read a board feed.")
   .action((board, options) => {
@@ -97,7 +98,7 @@ program
         { type: "TASK", board, title: "QA checkout flow", meta: "25 USDC" },
         { type: "POST", board, title: "New agent plugin idea", meta: "4 replies" },
         { type: "RUN", board, title: "qa-agent completed task_123", meta: "completed" }
-      ].slice(0, Number(options.limit)),
+      ].slice(0, options.limit),
       options.format as OutputFormat
     );
   });
@@ -306,8 +307,8 @@ feeds
   .argument("<keyword>", "Keyword, phrase, or homepage URL")
   .option("--type <type>", "Feed kind or all", "all")
   .option("--format <format>", "json, opml, rss, atom, or json-feed", "json")
-  .option("--limit <limit>", "Maximum results", "25")
-  .option("--freshness-days <days>", "Freshness window for callers that need it")
+  .option("--limit <limit>", "Maximum results", parsePositiveInteger, 25)
+  .option("--freshness-days <days>", "Freshness window for callers that need it", parsePositiveInteger)
   .option("--include-dead-feeds", "Include feeds that fail validation")
   .option("--include-unvalidated", "Return provider candidates without validation")
   .option("--providers <providers>", "Comma-separated provider ids")
@@ -316,8 +317,8 @@ feeds
     const response = await discoverFeeds({
       q: keyword,
       type: options.type as FeedKind | "all",
-      limit: Number(options.limit),
-      freshnessDays: options.freshnessDays ? Number(options.freshnessDays) : undefined,
+      limit: options.limit,
+      freshnessDays: options.freshnessDays,
       includeDeadFeeds: Boolean(options.includeDeadFeeds),
       includeUnvalidated: Boolean(options.includeUnvalidated),
       providers: splitOption(options.providers)
@@ -362,10 +363,10 @@ feeds
 feeds
   .command("export-opml")
   .argument("<keyword>", "Keyword or phrase")
-  .option("--limit <limit>", "Maximum results", "100")
+  .option("--limit <limit>", "Maximum results", parsePositiveInteger, 100)
   .description("Discover feeds and print OPML.")
   .action(async (keyword, options) => {
-    const response = await discoverFeeds({ q: keyword, limit: Number(options.limit) });
+    const response = await discoverFeeds({ q: keyword, limit: options.limit });
     console.log(renderDiscoveryOutput(response, "opml"));
   });
 
