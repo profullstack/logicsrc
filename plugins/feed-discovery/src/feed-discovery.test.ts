@@ -100,4 +100,29 @@ describe("discovery orchestration", () => {
     expect(response.providerErrors).toEqual([{ provider: "broken-provider", error: "provider unavailable" }]);
     expect(response.results).toHaveLength(1);
   });
+
+  it("enforces the requested freshness window", async () => {
+    const provider: FeedDiscoveryProvider = {
+      id: "freshness-provider",
+      name: "Freshness",
+      enabledByDefault: true,
+      requiresApiKey: false,
+      async search() {
+        return [
+          { ...baseFeed, feedUrl: "https://example.com/fresh.xml", lastPublishedAt: new Date(Date.now() - 5 * 86_400_000).toISOString() },
+          { ...baseFeed, feedUrl: "https://example.com/stale.xml", lastPublishedAt: new Date(Date.now() - 60 * 86_400_000).toISOString() },
+          { ...baseFeed, feedUrl: "https://example.com/unknown.xml", lastPublishedAt: undefined },
+          { ...baseFeed, feedUrl: "https://example.com/invalid.xml", lastPublishedAt: "not-a-date" },
+          { ...baseFeed, feedUrl: "https://example.com/future.xml", lastPublishedAt: new Date(Date.now() + 86_400_000).toISOString() }
+        ];
+      }
+    };
+
+    const response = await discoverFeeds(
+      { q: "microsaas", freshnessDays: 30, includeUnvalidated: true },
+      { providers: [provider] }
+    );
+
+    expect(response.results.map((feed) => feed.feedUrl)).toEqual(["https://example.com/fresh.xml"]);
+  });
 });
