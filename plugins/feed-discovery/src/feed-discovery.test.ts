@@ -36,6 +36,26 @@ describe("feed parsing", () => {
     expect(atom.ok).toBe(true);
     expect(json.ok).toBe(true);
   });
+
+  it("classifies RSS feeds with audio enclosures as podcasts", () => {
+    const result = parseFeedDocument(
+      "https://example.com/podcast.xml",
+      `<?xml version="1.0"?>
+      <rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
+        <channel>
+          <title>Example Podcast</title>
+          <itunes:author>Example Host</itunes:author>
+          <item>
+            <title>Episode 1</title>
+            <enclosure url="https://example.com/episode-1.mp3" type="audio/mpeg" />
+          </item>
+        </channel>
+      </rss>`
+    );
+
+    expect(result.ok).toBe(true);
+    expect(result.kind).toBe("podcast");
+  });
 });
 
 describe("site probing helpers", () => {
