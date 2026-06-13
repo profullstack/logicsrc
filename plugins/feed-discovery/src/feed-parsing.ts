@@ -96,7 +96,7 @@ function parseRss(feedUrl: string, rss: Record<string, unknown>): ValidationResu
     title: title || "Untitled RSS Feed",
     description: stringValue(channel.description),
     homepageUrl: linkValue(channel.link),
-    kind: detectRssKind(channel),
+    kind: detectRssKind(channel, items),
     language: stringValue(channel.language),
     imageUrl: imageValue(channel.image),
     lastPublishedAt: newestDate([stringValue(channel.lastBuildDate), stringValue(channel.pubDate), ...sampleItems.map((item) => item.publishedAt)]),
@@ -132,11 +132,28 @@ function parseAtom(feedUrl: string, feed: Record<string, unknown>): ValidationRe
   };
 }
 
-function detectRssKind(channel: Record<string, unknown>): FeedKind {
+function detectRssKind(channel: Record<string, unknown>, items: Record<string, unknown>[]): FeedKind {
   if (channel.itunes || channel["itunes:author"] || channel.enclosure) {
     return "podcast";
   }
+  if (items.some(hasPodcastEnclosure)) {
+    return "podcast";
+  }
   return "blog";
+}
+
+function hasPodcastEnclosure(item: Record<string, unknown>) {
+  return asArray(item.enclosure)
+    .filter(isRecord)
+    .some((enclosure) => {
+      const type = stringValue(enclosure.type)?.toLowerCase();
+      const url = stringValue(enclosure.url);
+      return (
+        type?.startsWith("audio/") ||
+        type?.startsWith("video/") ||
+        /\.(mp3|m4a|mp4|m4v|ogg|oga|wav|aac|flac)(?:[?#].*)?$/i.test(url ?? "")
+      );
+    });
 }
 
 function imageValue(value: unknown) {
