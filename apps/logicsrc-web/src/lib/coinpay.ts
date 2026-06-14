@@ -150,7 +150,11 @@ export function getCoinPayOAuthConfig(): CoinPayOAuthConfig | null {
 }
 
 function getSessionSecret(): string {
-  return process.env.LOGICSRC_SESSION_SECRET || process.env.COINPAY_OAUTH_CLIENT_SECRET || "logicsrc-dev-session-secret";
+  const secret = process.env.LOGICSRC_SESSION_SECRET || process.env.COINPAY_OAUTH_CLIENT_SECRET;
+  if (!secret) {
+    throw new Error("LOGICSRC_SESSION_SECRET or COINPAY_OAUTH_CLIENT_SECRET must be set");
+  }
+  return secret;
 }
 
 export function signSession(payload: Record<string, unknown>): string {
