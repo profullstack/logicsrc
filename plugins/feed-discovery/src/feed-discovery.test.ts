@@ -29,6 +29,16 @@ describe("feed parsing", () => {
     expect(result.sampleItems[0]).toMatchObject({ title: "Launch tiny products", url: "https://example.com/post" });
   });
 
+  it("detects podcast RSS feeds from item enclosures", () => {
+    const result = parseFeedDocument(
+      "https://example.com/podcast.xml",
+      `<?xml version="1.0"?><rss version="2.0"><channel><title>Audio Show</title><link>https://example.com</link><item><title>Episode 1</title><enclosure url="https://example.com/episode-1.mp3" type="audio/mpeg" length="12345" /></item></channel></rss>`
+    );
+
+    expect(result.ok).toBe(true);
+    expect(result.kind).toBe("podcast");
+  });
+
   it("parses Atom and JSON Feed documents", () => {
     const atom = parseFeedDocument("https://example.com/atom.xml", `<feed><title>Atom Feed</title><entry><title>Entry</title><updated>2026-06-09T00:00:00Z</updated></entry></feed>`);
     const json = parseFeedDocument("https://example.com/feed.json", JSON.stringify({ version: "https://jsonfeed.org/version/1.1", title: "JSON Feed", items: [{ title: "Item", url: "https://example.com/item" }] }), "application/feed+json");
