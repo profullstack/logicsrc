@@ -76,6 +76,26 @@ describe("AgentStack coordinator", () => {
     expect(() => stack.updateTaskStatus(task.id, "running")).toThrow(/cancelled/);
   });
 
+  it("refuses to assign a task that is already in a terminal status", () => {
+    const stack = new AgentStack();
+    stack.registerAgent(agent);
+    const other: AgentProfile = { ...agent, did: agentDid("xyz") };
+    stack.registerAgent(other);
+    const task = stack.createTask({
+      ownerDid: owner,
+      sourceApp: "ugig.net",
+      title: "Paid task",
+      paymentIntentId: "pi_1",
+      escrowId: "esc_1"
+    });
+    stack.assignTask(task.id, agent.did);
+    stack.updateTaskStatus(task.id, "complete", { reputationEventId: "rep_1" });
+
+    expect(() => stack.assignTask(task.id, other.did)).toThrow(/already complete and cannot be assigned/);
+    expect(stack.getTask(task.id)?.assigneeDid).toBe(agent.did);
+    expect(stack.getTask(task.id)?.status).toBe("complete");
+  });
+
   it("records delegation grants and emits events", () => {
     const stack = new AgentStack();
     const listener = vi.fn();

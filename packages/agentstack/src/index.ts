@@ -113,6 +113,9 @@ export class AgentStack {
 
   assignTask(taskId: string, agentDidValue: string): DidTask {
     const task = this.requireTask(taskId);
+    if (TERMINAL.has(task.status)) {
+      throw new Error(`Task ${taskId} is already ${task.status} and cannot be assigned`);
+    }
     if (!this.agents.has(agentDidValue)) {
       throw new Error(`Unknown agent: ${agentDidValue}`);
     }
