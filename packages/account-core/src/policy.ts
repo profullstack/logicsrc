@@ -70,8 +70,10 @@ export function evaluateAccountPolicy(input: LogicSrcPolicyEvaluationInput): Log
   if (policy?.default === "approval_required") {
     return { decision: "approval_required", riskScore, reason: `policy ${policy.id} requires approval` };
   }
-  if (policy?.default === "allow_if_trusted_agent" && input.principal?.trusted) {
-    return { decision: "allow", riskScore, reason: `policy ${policy.id} allows trusted principal` };
+  if (policy?.default === "allow_if_trusted_agent") {
+    return input.principal?.trusted
+      ? { decision: "allow", riskScore, reason: `policy ${policy.id} allows trusted principal` }
+      : { decision: "approval_required", riskScore, reason: `policy ${policy.id} requires a trusted principal` };
   }
   if (policy?.default === "allow_if_below_risk_score") {
     const maxRiskScore = typeof policy.conditions?.maxRiskScore === "number" ? policy.conditions.maxRiskScore : 0.25;
