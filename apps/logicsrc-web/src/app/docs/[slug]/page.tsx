@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
 import { marked } from "marked";
+import sanitizeHtml from "sanitize-html";
 import { DOC_SLUGS, docExcerpt, docTitle, readDoc } from "@/lib/docs";
 import { SiteShell } from "@/components/site-shell";
 
@@ -37,7 +38,16 @@ export default async function DocPage({
   const md = readDoc(slug);
   if (!md) notFound();
 
-  const html = await marked.parse(md);
+  const rawHtml = await marked.parse(md);
+  const html = sanitizeHtml(rawHtml, {
+    allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img", "h1", "h2", "h3"]),
+    allowedAttributes: {
+      ...sanitizeHtml.defaults.allowedAttributes,
+      img: ["src", "alt", "width", "height"],
+      a: ["href", "name", "target", "rel"],
+      code: ["class"],
+    },
+  });
 
   return (
     <SiteShell active="Docs">
