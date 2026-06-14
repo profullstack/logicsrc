@@ -1,0 +1,18 @@
+{
+  "name": "@logicsrc/plugin-agentmail",
+  "version": "0.1.0",
+  "description": "Agent-native mail: a paid-member mailbox client (read/search/compose/send) over an injected IMAP/SMTP transport, designed for both bots and humans.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run src --passWithNoTests"
+  },
+  "dependencies": {
+    "@logicsrc/plugin-core": "file:../../packages/plugin-core"
+  },
+  "devDependencies": {
+    "vitest": "^4.0.8"
+  }
+}
