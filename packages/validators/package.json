@@ -11,7 +11,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "test": "vitest run src",
-    "validate:fixtures": "node dist/cli.js task ../schemas/fixtures/task.yaml && node dist/cli.js agent ../schemas/fixtures/agent.yaml && node dist/cli.js agentad-ad ../schemas/fixtures/agentad-ad.yaml && node dist/cli.js agentad-placement ../schemas/fixtures/agentad-placement.yaml"
+    "validate:fixtures": "node dist/cli.js task ../schemas/fixtures/task.yaml && node dist/cli.js agent ../schemas/fixtures/agent.yaml && node dist/cli.js agentad-ad ../schemas/fixtures/agentad-ad.yaml && node dist/cli.js agentad-placement ../schemas/fixtures/agentad-placement.yaml && node dist/cli.js repo ../schemas/fixtures/repo.yaml && node dist/cli.js pull-request ../schemas/fixtures/pull-request.yaml"
   },
   "dependencies": {
     "ajv": "^8.17.1",

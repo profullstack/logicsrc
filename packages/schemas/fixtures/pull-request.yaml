@@ -1,0 +1,24 @@
+type: logicsrc.pull_request
+version: "1.0"
+repo: agentgit-demo
+number: 7
+title: Add Forgejo backend adapter
+description: Implements the M1 ForgeAdapter against the Forgejo REST API.
+author_did: contributor.profullstack
+source_branch: feat/forgejo-adapter
+target_branch: main
+head_sha: abc1234
+task: task-42
+status: approved
+checks:
+  - name: ci
+    status: passing
+    url: https://git.profullstack.com/owner/agentgit-demo/actions
+reviews:
+  - reviewer_did: maintainer.profullstack
+    decision: approve
+    reputation: 25
+    summary: Looks good, policy-gated merge verified.
+    created_at: 2026-06-14T01:00:00Z
+created_at: 2026-06-14T00:30:00Z
+updated_at: 2026-06-14T01:05:00Z

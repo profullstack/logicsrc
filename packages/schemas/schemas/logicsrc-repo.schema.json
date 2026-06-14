@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.logicsrc.com/logicsrc-repo.schema.json",
+  "title": "LogicSRC Repo",
+  "type": "object",
+  "required": ["type", "version", "name", "slug", "owner_did", "backend", "visibility"],
+  "additionalProperties": false,
+  "properties": {
+    "type": { "const": "logicsrc.repo" },
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+    "name": { "type": "string", "minLength": 1, "maxLength": 160 },
+    "slug": { "type": "string", "pattern": "^[a-z0-9][a-z0-9/_-]*$" },
+    "description": { "type": "string" },
+    "owner_did": { "$ref": "#/$defs/did" },
+    "board": { "type": "string", "pattern": "^/[a-z0-9][a-z0-9/_-]*$" },
+    "visibility": {
+      "type": "string",
+      "enum": ["members_only", "private", "public"],
+      "default": "members_only"
+    },
+    "default_branch": { "type": "string", "minLength": 1, "default": "main" },
+    "backend": {
+      "type": "object",
+      "required": ["provider", "url"],
+      "additionalProperties": false,
+      "properties": {
+        "provider": { "type": "string", "enum": ["forgejo", "github", "git"] },
+        "url": { "type": "string", "format": "uri" },
+        "external_id": { "type": "string" }
+      }
+    },
+    "members": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["did", "role"],
+        "additionalProperties": false,
+        "properties": {
+          "did": { "$ref": "#/$defs/did" },
+          "role": {
+            "type": "string",
+            "enum": ["maintainer", "contributor", "reviewer", "reader"]
+          }
+        }
+      }
+    },
+    "merge_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "min_reviews": { "type": "integer", "minimum": 0, "default": 1 },
+        "require_passing_checks": { "type": "boolean", "default": true },
+        "reviewer_reputation_min": { "type": "number", "minimum": 0, "default": 0 },
+        "escrow_required": { "type": "boolean", "default": false },
+        "allow_agent_merge": { "type": "boolean", "default": true },
+        "allowed_merge_methods": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["merge", "squash", "rebase"] },
+          "uniqueItems": true,
+          "default": ["squash"]
+        }
+      }
+    },
+    "created_at": { "type": "string", "format": "date-time" },
+    "logicsrc_version": { "type": "string" }
+  },
+  "$defs": {
+    "did": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]*\\.[a-z0-9][a-z0-9._-]*$"
+    }
+  }
+}

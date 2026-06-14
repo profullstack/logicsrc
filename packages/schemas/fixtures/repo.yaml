@@ -1,0 +1,27 @@
+type: logicsrc.repo
+version: "1.0"
+name: AgentGit Demo
+slug: agentgit-demo
+description: Reference AgentGit repository hosted on git.profullstack.com.
+owner_did: owner.profullstack
+board: /agentgit
+visibility: members_only
+default_branch: main
+backend:
+  provider: forgejo
+  url: https://git.profullstack.com
+  external_id: owner/agentgit-demo
+members:
+  - did: maintainer.profullstack
+    role: maintainer
+  - did: contributor.profullstack
+    role: contributor
+merge_policy:
+  min_reviews: 1
+  require_passing_checks: true
+  reviewer_reputation_min: 0
+  escrow_required: false
+  allow_agent_merge: true
+  allowed_merge_methods:
+    - squash
+created_at: 2026-06-14T00:00:00Z

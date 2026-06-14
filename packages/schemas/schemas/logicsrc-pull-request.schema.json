@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.logicsrc.com/logicsrc-pull-request.schema.json",
+  "title": "LogicSRC Pull Request",
+  "type": "object",
+  "required": ["type", "version", "repo", "title", "author_did", "source_branch", "target_branch", "status"],
+  "additionalProperties": false,
+  "properties": {
+    "type": { "const": "logicsrc.pull_request" },
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+    "repo": { "type": "string", "pattern": "^[a-z0-9][a-z0-9/_-]*$" },
+    "number": { "type": "integer", "minimum": 1 },
+    "title": { "type": "string", "minLength": 1, "maxLength": 160 },
+    "description": { "type": "string" },
+    "author_did": { "$ref": "#/$defs/did" },
+    "source_branch": { "type": "string", "minLength": 1 },
+    "target_branch": { "type": "string", "minLength": 1 },
+    "head_sha": { "type": "string", "pattern": "^[0-9a-f]{7,64}$" },
+    "task": { "type": "string", "description": "Linked logicsrc.task id." },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "open", "approved", "changes_requested", "merged", "closed"]
+    },
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "status"],
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "status": { "type": "string", "enum": ["pending", "passing", "failing"] },
+          "url": { "type": "string", "format": "uri" }
+        }
+      }
+    },
+    "reviews": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["reviewer_did", "decision"],
+        "additionalProperties": false,
+        "properties": {
+          "reviewer_did": { "$ref": "#/$defs/did" },
+          "decision": { "type": "string", "enum": ["approve", "request_changes", "comment"] },
+          "reputation": { "type": "number", "minimum": 0 },
+          "summary": { "type": "string" },
+          "created_at": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "merge": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "method": { "type": "string", "enum": ["merge", "squash", "rebase"] },
+        "merged_by_did": { "$ref": "#/$defs/did" },
+        "merge_sha": { "type": "string", "pattern": "^[0-9a-f]{7,64}$" },
+        "policy_satisfied": { "type": "boolean" },
+        "merged_at": { "type": "string", "format": "date-time" }
+      }
+    },
+    "created_at": { "type": "string", "format": "date-time" },
+    "updated_at": { "type": "string", "format": "date-time" },
+    "logicsrc_version": { "type": "string" }
+  },
+  "$defs": {
+    "did": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]*\\.[a-z0-9][a-z0-9._-]*$"
+    }
+  }
+}

@@ -6,6 +6,8 @@ import connectedAccountSchema from "../../schemas/schemas/logicsrc-connected-acc
 import emailMessageSchema from "../../schemas/schemas/logicsrc-email-message.schema.json" with { type: "json" };
 import eventSchema from "../../schemas/schemas/logicsrc-event.schema.json" with { type: "json" };
 import pluginSchema from "../../schemas/schemas/logicsrc-plugin.schema.json" with { type: "json" };
+import pullRequestSchema from "../../schemas/schemas/logicsrc-pull-request.schema.json" with { type: "json" };
+import repoSchema from "../../schemas/schemas/logicsrc-repo.schema.json" with { type: "json" };
 import runSchema from "../../schemas/schemas/logicsrc-run.schema.json" with { type: "json" };
 import socialPostSchema from "../../schemas/schemas/logicsrc-social-post.schema.json" with { type: "json" };
 import taskSchema from "../../schemas/schemas/logicsrc-task.schema.json" with { type: "json" };
@@ -26,6 +28,8 @@ export const schemas = {
   "email-message": emailMessageSchema,
   event: eventSchema,
   plugin: pluginSchema,
+  "pull-request": pullRequestSchema,
+  repo: repoSchema,
   run: runSchema,
   "social-post": socialPostSchema,
   task: taskSchema,

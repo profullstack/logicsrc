@@ -14,6 +14,7 @@ Default plugins:
 Coming soon plugin specs:
 
 - AgentByte: candidate, contractor, and agent capability screening for AI-era workflows. See `docs/agent-screening.md`.
+- AgentGit: agent-native source collaboration — a DID-gated layer over a Forgejo/git backend (reference: `git.profullstack.com`, BBS members only) with policy-gated merges. See `docs/agentgit.md`.
 - Credential Sharing: replacement architecture for .env, Doppler, Railway variables, GitHub Secrets, and future providers. See `docs/credential-sharing.md`.
 - Communication Accounts: shared social and email account management contracts. See `docs/communication-accounts.md`.
 
