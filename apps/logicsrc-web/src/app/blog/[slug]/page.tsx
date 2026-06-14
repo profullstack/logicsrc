@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import sanitizeHtml from "sanitize-html";
 import { publicClient } from "@/lib/supabase";
 import { SiteShell } from "@/components/site-shell";
 
@@ -114,7 +115,15 @@ export default async function BlogPostPage({
         <div
           className="blog-content"
           style={{ lineHeight: 1.7 }}
-          dangerouslySetInnerHTML={{ __html: post.html }}
+          dangerouslySetInnerHTML={{
+            __html: sanitizeHtml(post.html, {
+              allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img", "h1", "h2", "h3"]),
+              allowedAttributes: {
+                ...sanitizeHtml.defaults.allowedAttributes,
+                img: ["src", "alt", "width", "height"],
+              },
+            }),
+          }}
         />
       </article>
     </SiteShell>
