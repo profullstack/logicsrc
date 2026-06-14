@@ -35,7 +35,18 @@ createServer((request, response) => {
     return;
   }
 
-  const file = resolveStaticPath(url.pathname);
+  let file;
+  try {
+    file = resolveStaticPath(url.pathname);
+  } catch (error) {
+    if (error instanceof URIError) {
+      response.writeHead(400, { "content-type": "text/plain; charset=utf-8" });
+      response.end("Invalid path encoding");
+      return;
+    }
+    throw error;
+  }
+
   if (!file) {
     response.writeHead(403);
     response.end("Forbidden");
