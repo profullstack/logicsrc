@@ -392,6 +392,34 @@ describe("CoinPay OAuth", () => {
       user: { provider: "coinpay", sub: "merchant-123", email: "merchant@example.com", name: "Merchant User" }
     });
   });
+
+  it("does not create a session when userinfo omits the subject", async () => {
+    process.env.COINPAY_OAUTH_ISSUER = "https://coinpayportal.example";
+    process.env.COINPAY_OAUTH_CLIENT_ID = "cp_test_client";
+    process.env.COINPAY_OAUTH_CLIENT_SECRET = "cps_test_secret";
+    process.env.COINPAY_OAUTH_REDIRECT_URI = "https://logicsrc.com/api/oauth/coinpay/callback";
+
+    vi.spyOn(globalThis, "fetch").mockImplementation(async (input) => {
+      const url = typeof input === "string" ? input : input.toString();
+      if (url.includes("/api/oauth/token")) {
+        return jsonResponse({ access_token: "access_token_123", token_type: "Bearer", scope: "openid profile email" });
+      }
+      if (url.includes("/api/oauth/userinfo")) {
+        return jsonResponse({ email: "merchant@example.com", name: "Merchant User" });
+      }
+      throw new Error(`unexpected fetch ${url}`);
+    });
+
+    const callback = await oauthCallback(
+      new NextRequest("http://localhost/api/oauth/coinpay/callback?code=auth_code_123&state=state_123", {
+        headers: { cookie: "logicsrc_coinpay_oauth_state=state_123" }
+      })
+    );
+
+    expect(callback.status).toBe(302);
+    expect(callback.headers.get("location")).toBe("/?coinpay_oauth=error&error=userinfo_failed");
+    expect(callback.headers.getSetCookie().some((cookie) => cookie.startsWith("logicsrc_coinpay_session="))).toBe(false);
+  });
 });
 
 describe("session signing", () => {
