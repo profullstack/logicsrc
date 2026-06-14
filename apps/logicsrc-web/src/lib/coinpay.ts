@@ -166,8 +166,8 @@ export function verifySession(value: string): Record<string, unknown> | null {
   if (!encoded || !signature) return null;
 
   const expected = createHmac("sha256", getSessionSecret()).update(encoded).digest("base64url");
-  const actualBuffer = Buffer.from(signature);
-  const expectedBuffer = Buffer.from(expected);
+  const actualBuffer = Buffer.from(signature, "base64url");
+  const expectedBuffer = Buffer.from(expected, "base64url");
   if (actualBuffer.length !== expectedBuffer.length || !timingSafeEqual(actualBuffer, expectedBuffer)) {
     return null;
   }
