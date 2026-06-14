@@ -70,12 +70,13 @@ export async function POST(request: NextRequest) {
     }
 
     const payment = (payload.payment as Record<string, unknown>) || {};
+    const amountUsd = Number(payment.amount_usd ?? payment.amount ?? 250);
     return json(
       {
         success: true,
         payment: {
           id: payment.id,
-          amount_usd: Number(payment.amount_usd ?? payment.amount ?? 250),
+          amount_usd: Number.isFinite(amountUsd) ? amountUsd : 250,
           payment_method: payment.stripe_checkout_url ? "card" : paymentRail.method,
           currency: payment.currency ?? payment.blockchain ?? paymentRail.blockchain ?? paymentRail.currency,
           crypto_amount: payment.amount_crypto ?? payment.crypto_amount ?? null,
