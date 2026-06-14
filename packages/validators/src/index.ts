@@ -18,7 +18,7 @@ export function createValidator() {
 }
 
 export function parseDocument(input: string, fileName = "document") {
-  if (fileName.endsWith(".json")) {
+  if (fileName.toLowerCase().endsWith(".json")) {
     return JSON.parse(input) as unknown;
   }
 

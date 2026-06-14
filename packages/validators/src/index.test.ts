@@ -14,6 +14,10 @@ describe("LogicSRC validators", () => {
     expect(validate("task", data).ok).toBe(true);
   });
 
+  it("parses JSON files case-insensitively by extension", () => {
+    expect(parseDocument('{"ok":true}', "TASK.JSON")).toEqual({ ok: true });
+  });
+
   it("rejects a task without a DID", () => {
     const result = validate("task", {
       type: "logicsrc.task",
