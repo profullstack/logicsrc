@@ -3,6 +3,7 @@ import { dedupeFeeds } from "./dedupe.js";
 import { discoverFeeds } from "./discovery.js";
 import { parseFeedDocument } from "./feed-parsing.js";
 import { renderDiscoveryOutput } from "./output/index.js";
+import { WebCandidateFeedProbeProvider } from "./providers/web-feed-probe.js";
 import { extractAlternateFeedLinks } from "./probe-site.js";
 import { scoreFeed } from "./scoring.js";
 import type { DiscoveredFeed, FeedDiscoveryProvider } from "./types.js";
@@ -63,6 +64,23 @@ describe("site probing helpers", () => {
     await expect(assertSafeHttpUrl("http://[::]/feed")).rejects.toThrow(/Blocked internal/);
     await expect(assertSafeHttpUrl("http://[::ffff:192.168.1.10]/feed")).rejects.toThrow(/Blocked internal/);
     await expect(assertSafeHttpUrl("file:///etc/passwd")).rejects.toThrow(/Unsupported URL protocol/);
+  });
+
+  it("ignores malformed configured candidate URLs", async () => {
+    const provider = new WebCandidateFeedProbeProvider({
+      cacheTtlSeconds: 60,
+      maxProviders: 1,
+      maxProbes: 1,
+      requestTimeoutMs: 10,
+      maxBodyBytes: 1024,
+      userAgent: "test",
+      opmlPaths: [],
+      candidateUrls: ["not-a-url|micro"],
+      podcastIndexApiKey: undefined,
+      podcastIndexApiSecret: undefined
+    });
+
+    await expect(provider.search({ q: "micro" })).resolves.toEqual([]);
   });
 });
 
