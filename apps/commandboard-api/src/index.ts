@@ -261,7 +261,13 @@ async function route(request: IncomingMessage, response: ServerResponse) {
   }
 
   if (request.method === "POST" && url.pathname === "/api/plugins/c0mpute/jobs/dispatch") {
-    const body = await readJson(request);
+    let body: unknown;
+    try {
+      body = await readJson(request);
+    } catch {
+      json(response, 400, { error: "Invalid JSON body" });
+      return;
+    }
     if (!isRecord(body) || typeof body.job_id !== "string") {
       json(response, 422, { error: "Expected job_id" });
       return;
@@ -277,7 +283,13 @@ async function route(request: IncomingMessage, response: ServerResponse) {
   }
 
   if (request.method === "POST" && url.pathname === "/api/plugins/c0mpute/quotes") {
-    const body = await readJson(request);
+    let body: unknown;
+    try {
+      body = await readJson(request);
+    } catch {
+      json(response, 400, { error: "Invalid JSON body" });
+      return;
+    }
     if (!isRecord(body) || typeof body.workload !== "string") {
       json(response, 422, { error: "Expected workload" });
       return;
@@ -311,9 +323,16 @@ function text(response: ServerResponse, status: number, contentType: string, bod
   response.end(body);
 }
 
+const MAX_BODY_BYTES = 1_048_576; // 1 MB
+
 async function readJson(request: IncomingMessage) {
   const chunks: Buffer[] = [];
+  let total = 0;
   for await (const chunk of request) {
+    total += chunk.length;
+    if (total > MAX_BODY_BYTES) {
+      throw new Error("Request body too large");
+    }
     chunks.push(Buffer.from(chunk));
   }
 
