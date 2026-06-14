@@ -41,6 +41,34 @@ describe("account-core", () => {
     expect(result.decision).toBe("approval_required");
   });
 
+  it.each([
+    { principal: { type: "agent" as const, id: "trusted-agent", trusted: true }, expected: "allow" },
+    { principal: { type: "agent" as const, id: "untrusted-agent", trusted: false }, expected: "approval_required" },
+    { principal: undefined, expected: "approval_required" }
+  ])("enforces trusted-agent policies for $expected decisions", ({ principal, expected }) => {
+    const result = evaluateAccountPolicy({
+      action: "social:profile:read",
+      principal,
+      grant: {
+        id: "grant_trusted_agent",
+        accountId: "account_1",
+        principal: { type: "agent", id: "trusted-agent" },
+        permissions: ["social:profile:read"],
+        policy: [
+          {
+            id: "trusted_read",
+            resource: "social:profile",
+            action: "social:profile:read",
+            default: "allow_if_trusted_agent"
+          }
+        ],
+        createdAt: new Date(0).toISOString()
+      }
+    });
+
+    expect(result.decision).toBe(expected);
+  });
+
   it("redacts secret-like audit previews", () => {
     const event = createAccountAuditEvent({
       provider: "gmail",
