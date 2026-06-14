@@ -41,6 +41,31 @@ describe("account-core", () => {
     expect(result.decision).toBe("approval_required");
   });
 
+  it.each([Number.NaN, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY])(
+    "fails closed for a non-finite risk score of %s",
+    (riskScore) => {
+      const result = evaluateAccountPolicy({
+        action: "social:profile:read",
+        riskScore,
+        principal: { type: "agent", id: "profile-agent" },
+        grant: {
+          id: "grant_non_finite",
+          accountId: "account_1",
+          principal: { type: "agent", id: "profile-agent" },
+          permissions: ["social:profile:read"],
+          policy: [],
+          createdAt: new Date(0).toISOString()
+        }
+      });
+
+      expect(result).toMatchObject({
+        decision: "deny",
+        riskScore: 1,
+        reason: "critical risk requires admin override"
+      });
+    }
+  );
+
   it("redacts secret-like audit previews", () => {
     const event = createAccountAuditEvent({
       provider: "gmail",
