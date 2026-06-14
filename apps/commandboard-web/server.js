@@ -8,7 +8,7 @@ const appDirectory = fileURLToPath(new URL(".", import.meta.url));
 const distDirectory = resolve(appDirectory, "dist");
 const indexFile = join(distDirectory, "index.html");
 const apiServer = createCommandBoardServer();
-const port = Number(process.env.PORT ?? 4173);
+const port = readPort(process.env.PORT, 4173);
 
 const mimeTypes = {
   ".css": "text/css; charset=utf-8",
@@ -65,6 +65,11 @@ function resolveStaticPath(pathname) {
   }
 
   return indexFile;
+}
+
+function readPort(value, fallback) {
+  const parsed = Number(value ?? fallback);
+  return Number.isInteger(parsed) && parsed > 0 && parsed <= 65535 ? parsed : fallback;
 }
 
 function sendFile(file, headOnly, response) {
