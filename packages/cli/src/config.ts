@@ -4,6 +4,8 @@ import { homedir } from "node:os";
 
 export type JsonObject = Record<string, unknown>;
 
+const UNSAFE_CONFIG_KEYS = new Set(["__proto__", "prototype", "constructor"]);
+
 export const defaultConfig: JsonObject = {
   waiting: {
     arcade: {
@@ -40,7 +42,12 @@ export function writeConfig(config: JsonObject) {
 }
 
 export function getConfigValue(path: string, config = readConfig()) {
-  return path.split(".").reduce<unknown>((current, key) => (isObject(current) ? current[key] : undefined), config);
+  return path.split(".").reduce<unknown>((current, key) => {
+    if (UNSAFE_CONFIG_KEYS.has(key) || !isObject(current) || !Object.hasOwn(current, key)) {
+      return undefined;
+    }
+    return current[key];
+  }, config);
 }
 
 export function setConfigValue(path: string, rawValue: string, config = readConfig()) {
@@ -48,9 +55,10 @@ export function setConfigValue(path: string, rawValue: string, config = readConf
   if (parts.length === 0) {
     throw new Error("Config path cannot be empty.");
   }
+  parts.forEach(assertSafeConfigKey);
   let current: JsonObject = config;
   for (const part of parts.slice(0, -1)) {
-    if (!isObject(current[part])) {
+    if (!Object.hasOwn(current, part) || !isObject(current[part])) {
       current[part] = {};
     }
     current = current[part] as JsonObject;
@@ -71,9 +79,10 @@ export function parseConfigValue(value: string): unknown {
   }
 }
 
-function mergeConfig(base: JsonObject, override: JsonObject): JsonObject {
+export function mergeConfig(base: JsonObject, override: JsonObject): JsonObject {
   for (const [key, value] of Object.entries(override)) {
-    if (isObject(value) && isObject(base[key])) {
+    assertSafeConfigKey(key);
+    if (isObject(value) && Object.hasOwn(base, key) && isObject(base[key])) {
       base[key] = mergeConfig(base[key] as JsonObject, value);
     } else {
       base[key] = value;
@@ -84,4 +93,10 @@ function mergeConfig(base: JsonObject, override: JsonObject): JsonObject {
 
 function isObject(value: unknown): value is JsonObject {
   return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function assertSafeConfigKey(key: string) {
+  if (UNSAFE_CONFIG_KEYS.has(key)) {
+    throw new Error(`Unsafe config key: ${key}`);
+  }
 }
