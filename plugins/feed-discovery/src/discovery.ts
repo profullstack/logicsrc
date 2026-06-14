@@ -15,6 +15,7 @@ export async function discoverFeeds(query: FeedDiscoveryQuery, options: { provid
     q: query.q.trim(),
     type: query.type ?? "all",
     limit: clampLimit(query.limit),
+    freshnessDays: normalizeFreshnessDays(query.freshnessDays),
     includeUnvalidated: query.includeUnvalidated ?? false,
     includeDeadFeeds: query.includeDeadFeeds ?? false
   };
@@ -54,6 +55,7 @@ export async function discoverFeeds(query: FeedDiscoveryQuery, options: { provid
   const validated = await validateCandidates(candidates.slice(0, Math.max((resolvedQuery.limit ?? 25) * 2, 25)), resolvedQuery, config);
   const scored = validated
     .filter((feed) => !resolvedQuery.type || resolvedQuery.type === "all" || feed.kind === resolvedQuery.type)
+    .filter((feed) => isWithinFreshnessWindow(feed.lastPublishedAt, resolvedQuery.freshnessDays))
     .map((feed) => scoreFeed(feed, resolvedQuery));
   const results = dedupeFeeds(scored).slice(0, resolvedQuery.limit ?? 25);
 
@@ -109,6 +111,23 @@ function clampLimit(limit: number | undefined) {
     return 25;
   }
   return Math.min(Math.max(Math.trunc(limit), 1), 100);
+}
+
+function normalizeFreshnessDays(freshnessDays: number | undefined) {
+  return typeof freshnessDays === "number" && Number.isFinite(freshnessDays) && freshnessDays > 0
+    ? freshnessDays
+    : undefined;
+}
+
+function isWithinFreshnessWindow(lastPublishedAt: string | undefined, freshnessDays: number | undefined) {
+  if (freshnessDays === undefined) {
+    return true;
+  }
+  if (!lastPublishedAt) {
+    return false;
+  }
+  const ageMs = Date.now() - Date.parse(lastPublishedAt);
+  return Number.isFinite(ageMs) && ageMs >= 0 && ageMs <= freshnessDays * 86_400_000;
 }
 
 function safeCanonical(url: string) {
