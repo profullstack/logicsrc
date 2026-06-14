@@ -563,7 +563,7 @@ function toTaskSchema(item: (typeof tasks)[number]) {
     type: "logicsrc.task",
     version: "0.1",
     title: item.title,
-    description: item.title,
+    description: item.description,
     board: item.board,
     creator_did: "anthony.coinpay",
     status: item.status,
