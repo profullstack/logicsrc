@@ -52,7 +52,8 @@ export function scoreAccountActionRisk(input: {
 
 export function evaluateAccountPolicy(input: LogicSrcPolicyEvaluationInput): LogicSrcPolicyEvaluationResult {
   const riskScore = Math.min(1, Math.max(0, input.riskScore ?? scoreAccountActionRisk({ action: input.action })));
-  const grantActive = input.grant && !input.grant.revokedAt && (!input.grant.expiresAt || Date.parse(input.grant.expiresAt) > Date.now());
+  const expiryMs = input.grant?.expiresAt ? Date.parse(input.grant.expiresAt) : NaN;
+  const grantActive = input.grant && !input.grant.revokedAt && (!input.grant.expiresAt || (!Number.isNaN(expiryMs) && expiryMs > Date.now()));
   const hasPermission = Boolean(grantActive && input.grant?.permissions.includes(input.action));
 
   if (!hasPermission) {
