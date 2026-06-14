@@ -14,6 +14,9 @@ const WRITE_ACTIONS = new Set([
 ]);
 
 export function riskBandForScore(score: number): LogicSrcRiskBand {
+  if (!Number.isFinite(score)) {
+    return "critical";
+  }
   if (score >= 0.75) {
     return "critical";
   }

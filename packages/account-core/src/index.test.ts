@@ -24,6 +24,13 @@ describe("account-core", () => {
     expect(riskBandForScore(score)).toBe("high");
   });
 
+  it.each([Number.NaN, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY])(
+    "classifies a non-finite risk score of %s as critical",
+    (riskScore) => {
+      expect(riskBandForScore(riskScore)).toBe("critical");
+    }
+  );
+
   it("requires approval for gated actions with matching grants", () => {
     const result = evaluateAccountPolicy({
       action: "email:send",
