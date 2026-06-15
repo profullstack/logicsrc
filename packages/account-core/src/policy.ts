@@ -14,6 +14,9 @@ const WRITE_ACTIONS = new Set([
 ]);
 
 export function riskBandForScore(score: number): LogicSrcRiskBand {
+  if (!Number.isFinite(score)) {
+    return "critical";
+  }
   if (score >= 0.75) {
     return "critical";
   }
@@ -50,8 +53,16 @@ export function scoreAccountActionRisk(input: {
   return Math.min(1, Number(score.toFixed(2)));
 }
 
+function normalizeRiskScore(score: number): number {
+  if (!Number.isFinite(score)) {
+    return 1;
+  }
+
+  return Math.min(1, Math.max(0, score));
+}
+
 export function evaluateAccountPolicy(input: LogicSrcPolicyEvaluationInput): LogicSrcPolicyEvaluationResult {
-  const riskScore = Math.min(1, Math.max(0, input.riskScore ?? scoreAccountActionRisk({ action: input.action })));
+  const riskScore = normalizeRiskScore(input.riskScore ?? scoreAccountActionRisk({ action: input.action }));
   const grantActive = input.grant && !input.grant.revokedAt && (!input.grant.expiresAt || Date.parse(input.grant.expiresAt) > Date.now());
   const hasPermission = Boolean(grantActive && input.grant?.permissions.includes(input.action));
 
