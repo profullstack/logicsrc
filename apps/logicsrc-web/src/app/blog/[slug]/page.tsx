@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import type { Metadata } from "next";
 import { publicClient } from "@/lib/supabase";
 import { SiteShell } from "@/components/site-shell";
+import { sanitizeRenderedHtml } from "@/lib/html";
 
 export const dynamic = "force-dynamic";
 
@@ -84,6 +85,7 @@ export default async function BlogPostPage({
     mainEntityOfPage: `${SITE_URL}/blog/${post.slug}`,
     publisher: { "@id": `${SITE_URL}/#organization` },
   };
+  const html = sanitizeRenderedHtml(post.html);
 
   return (
     <SiteShell active="Blog">
@@ -114,7 +116,7 @@ export default async function BlogPostPage({
         <div
           className="blog-content"
           style={{ lineHeight: 1.7 }}
-          dangerouslySetInnerHTML={{ __html: post.html }}
+          dangerouslySetInnerHTML={{ __html: html }}
         />
       </article>
     </SiteShell>
