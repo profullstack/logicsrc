@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import { marked } from "marked";
 import { DOC_SLUGS, docExcerpt, docTitle, readDoc } from "@/lib/docs";
 import { SiteShell } from "@/components/site-shell";
+import { sanitizeRenderedHtml } from "@/lib/html";
 
 // Statically generate one page per curated doc at build time.
 export function generateStaticParams(): Array<{ slug: string }> {
@@ -37,7 +38,8 @@ export default async function DocPage({
   const md = readDoc(slug);
   if (!md) notFound();
 
-  const html = await marked.parse(md);
+  const rawHtml = await marked.parse(md);
+  const html = sanitizeRenderedHtml(rawHtml);
 
   return (
     <SiteShell active="Docs">
