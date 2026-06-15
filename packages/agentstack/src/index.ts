@@ -24,6 +24,32 @@ export const agentDid = (id: string) => makeDid("agent", id);
 /** Parse a CoinPay DID into its kind and id, or return null if it is not one. */
 export function parseDid(did: string): { kind: DidKind; id: string } | null {
   const prefix = `${DID_METHOD}:`;
+import type { PluginDefinition } from "@logicsrc/plugin-core";
+import { agentStackManifest } from "./manifest.js";
+import type {
+  AgentProfile,
+  AgentStackEvent,
+  AgentStackListener,
+  AgentStackSnapshot,
+  CreateTaskInput,
+  DelegationGrant,
+  DidKind,
+  DidTask,
+  TaskStatus
+} from "./types.js";
+import { DID_METHOD } from "./types.js";
+
+/** Build a CoinPay-method DID for a user or agent: `did:coinpay:user:123`. */
+export function makeDid(kind: DidKind, id: string): string {
+  return `${DID_METHOD}:${kind}:${id}`;
+}
+
+export const userDid = (id: string) => makeDid("user", id);
+export const agentDid = (id: string) => makeDid("agent", id);
+
+/** Parse a CoinPay DID into its kind and id, or return null if it is not one. */
+export function parseDid(did: string): { kind: DidKind; id: string } | null {
+  const prefix = `${DID_METHOD}:`;
   if (!did.startsWith(prefix)) return null;
   const [kind, id] = did.slice(prefix.length).split(":");
   if ((kind !== "user" && kind !== "agent") || !id) return null;
@@ -38,6 +64,12 @@ export function isDidTask(value: unknown): value is DidTask {
     typeof (value as DidTask).ownerDid === "string" &&
     typeof (value as DidTask).status === "string"
   );
+}
+
+/** Return false if the grant has an expiresAt that is in the past compared to `now`. */
+export function isGrantActive(grant: DelegationGrant, now: string): boolean {
+  if (!grant.expiresAt) return true;
+  return grant.expiresAt > now;
 }
 
 const TERMINAL: ReadonlySet<TaskStatus> = new Set(["complete", "failed", "cancelled"]);
@@ -119,70 +151,6 @@ export class AgentStack {
     if (!this.agents.has(agentDidValue)) {
       throw new Error(`Unknown agent: ${agentDidValue}`);
     }
-    const updated: DidTask = {
-      ...task,
-      assigneeDid: agentDidValue,
-      status: task.status === "pending" ? "queued" : task.status,
-      updatedAt: this.now()
-    };
-    this.tasks.set(taskId, updated);
-    this.emit({ type: "task.assigned", task: updated });
-    return updated;
-  }
-
-  updateTaskStatus(
-    taskId: string,
-    status: TaskStatus,
-    patch: Partial<Pick<DidTask, "reputationEventId" | "paymentIntentId" | "escrowId" | "metadata">> = {}
-  ): DidTask {
-    const task = this.requireTask(taskId);
-    if (TERMINAL.has(task.status)) {
-      throw new Error(`Task ${taskId} is already ${task.status} and cannot transition to ${status}`);
-    }
-    const updated: DidTask = { ...task, ...patch, status, updatedAt: this.now() };
-    this.tasks.set(taskId, updated);
-    this.emit({ type: "task.updated", task: updated });
-    return updated;
-  }
-
-  /** Grant an agent authority to act for an owner. */
-  delegate(ownerDidValue: string, agentDidValue: string, scopes: string[], expiresAt?: string): DelegationGrant {
-    if (!parseDid(ownerDidValue)) throw new Error(`Invalid owner DID: ${ownerDidValue}`);
-    if (!this.agents.has(agentDidValue)) throw new Error(`Unknown agent: ${agentDidValue}`);
-    const grant: DelegationGrant = {
-      id: this.nextId("grant"),
-      ownerDid: ownerDidValue,
-      agentDid: agentDidValue,
-      scopes,
-      expiresAt,
-      createdAt: this.now()
-    };
-    this.delegations.set(grant.id, grant);
-    this.emit({ type: "delegation.granted", grant });
-    return grant;
-  }
-
-  revokeDelegation(grantId: string): DelegationGrant {
-    const grant = this.delegations.get(grantId);
-    if (!grant) throw new Error(`Unknown delegation grant: ${grantId}`);
-    this.delegations.delete(grantId);
-    this.emit({ type: "delegation.revoked", grant });
-    return grant;
-  }
-
-  listTasks(filter?: { ownerDid?: string; assigneeDid?: string; status?: TaskStatus }): DidTask[] {
-    return [...this.tasks.values()].filter((task) => {
-      if (filter?.ownerDid && task.ownerDid !== filter.ownerDid) return false;
-      if (filter?.assigneeDid && task.assigneeDid !== filter.assigneeDid) return false;
-      if (filter?.status && task.status !== filter.status) return false;
-      return true;
-    });
-  }
-
-  snapshot(): AgentStackSnapshot {
-    return {
-      agents: [...this.agents.values()],
-      tasks: [...this.tasks.values()],
       delegations: [...this.delegations.values()]
     };
   }
