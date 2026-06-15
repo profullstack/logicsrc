@@ -7,7 +7,6 @@ import { createCommandBoardServer } from "../commandboard-api/dist/index.js";
 const appDirectory = fileURLToPath(new URL(".", import.meta.url));
 const distDirectory = resolve(appDirectory, "dist");
 const indexFile = join(distDirectory, "index.html");
-const apiServer = createCommandBoardServer();
 const port = readPort(process.env.PORT, 4173);
 
 const mimeTypes = {
@@ -21,50 +20,53 @@ const mimeTypes = {
   ".webmanifest": "application/manifest+json; charset=utf-8"
 };
 
-createServer((request, response) => {
-  const url = new URL(request.url ?? "/", `http://${request.headers.host ?? "localhost"}`);
+export function createCommandBoardWebServer() {
+  const apiServer = createCommandBoardServer();
 
-  if (url.pathname === "/health" || url.pathname.startsWith("/api/")) {
-    apiServer.emit("request", request, response);
-    return;
-  }
+  return createServer((request, response) => {
+    const url = new URL(request.url ?? "/", `http://${request.headers.host ?? "localhost"}`);
 
-  if (request.method !== "GET" && request.method !== "HEAD") {
-    response.writeHead(405, { allow: "GET, HEAD" });
-    response.end("Method not allowed");
-    return;
-  }
-
-  let file;
-  try {
-    file = resolveStaticPath(url.pathname);
-  } catch (error) {
-    if (error instanceof URIError) {
-      response.writeHead(400, { "content-type": "text/plain; charset=utf-8" });
-      response.end("Invalid path encoding");
+    if (url.pathname === "/health" || url.pathname.startsWith("/api/")) {
+      apiServer.emit("request", request, response);
       return;
     }
-    throw error;
-  }
 
-  if (!file) {
-    response.writeHead(403);
-    response.end("Forbidden");
-    return;
-  }
+    if (request.method !== "GET" && request.method !== "HEAD") {
+      response.writeHead(405, { allow: "GET, HEAD" });
+      response.end("Method not allowed");
+      return;
+    }
 
-  sendFile(file, request.method === "HEAD", response);
-}).listen(port, () => {
-  console.log(`CommandBoard.run PWA listening on http://localhost:${port}`);
-});
+    let file;
+    try {
+      file = resolveStaticPath(url.pathname);
+    } catch (error) {
+      if (error instanceof URIError) {
+        response.writeHead(400, { "content-type": "text/plain; charset=utf-8" });
+        response.end("Invalid path encoding");
+        return;
+      }
+      throw error;
+    }
 
-function resolveStaticPath(pathname) {
-  let decodedPath;
-  try {
-    decodedPath = decodeURIComponent(pathname);
-  } catch {
-    return null;
-  }
+    if (!file) {
+      response.writeHead(403);
+      response.end("Forbidden");
+      return;
+    }
+
+    sendFile(file, request.method === "HEAD", response);
+  });
+}
+
+if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  createCommandBoardWebServer().listen(port, () => {
+    console.log(`CommandBoard.run PWA listening on http://localhost:${port}`);
+  });
+}
+
+export function resolveStaticPath(pathname) {
+  const decodedPath = decodeURIComponent(pathname);
   const normalizedPath = normalize(decodedPath).replace(/^(\.\.[/\\])+/, "");
   let candidate = join(distDirectory, normalizedPath);
 
