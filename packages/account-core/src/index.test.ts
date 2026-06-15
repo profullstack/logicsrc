@@ -24,6 +24,12 @@ describe("account-core", () => {
     expect(riskBandForScore(score)).toBe("high");
   });
 
+  it("treats non-finite risk scores as critical", () => {
+    expect(riskBandForScore(Number.NaN)).toBe("critical");
+    expect(riskBandForScore(Number.POSITIVE_INFINITY)).toBe("critical");
+    expect(riskBandForScore(Number.NEGATIVE_INFINITY)).toBe("critical");
+  });
+
   it("requires approval for gated actions with matching grants", () => {
     const result = evaluateAccountPolicy({
       action: "email:send",
@@ -39,6 +45,25 @@ describe("account-core", () => {
     });
 
     expect(result.decision).toBe("approval_required");
+  });
+
+  it.each([Number.NaN, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY])("fails closed for non-finite policy risk score %s", (riskScore) => {
+    const result = evaluateAccountPolicy({
+      action: "social:profile:read",
+      riskScore,
+      principal: { type: "agent", id: "reader-agent" },
+      grant: {
+        id: "grant_read",
+        accountId: "account_1",
+        principal: { type: "agent", id: "reader-agent" },
+        permissions: ["social:profile:read"],
+        policy: [],
+        createdAt: new Date(0).toISOString()
+      }
+    });
+
+    expect(result.riskScore).toBe(1);
+    expect(result.decision).toBe("deny");
   });
 
   it.each([
