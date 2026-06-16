@@ -41,6 +41,12 @@ export function isDidTask(value: unknown): value is DidTask {
 }
 
 const TERMINAL: ReadonlySet<TaskStatus> = new Set(["complete", "failed", "cancelled"]);
+const ALLOWED_TRANSITIONS: Partial<Readonly<Record<TaskStatus, readonly TaskStatus[]>>> = {
+  pending: ["pending", "queued", "cancelled"],
+  queued: ["queued", "running", "cancelled"],
+  running: ["running", "blocked", "complete", "failed", "cancelled"]
+};
+// Blocked re-entry is still a PRD open question, so keep its current permissive behavior for now.
 
 /**
  * In-memory AgentStack coordinator: registers agents, tracks portable tasks through their
@@ -138,6 +144,10 @@ export class AgentStack {
     const task = this.requireTask(taskId);
     if (TERMINAL.has(task.status)) {
       throw new Error(`Task ${taskId} is already ${task.status} and cannot transition to ${status}`);
+    }
+    const allowedStatuses = ALLOWED_TRANSITIONS[task.status];
+    if (allowedStatuses && !allowedStatuses.includes(status)) {
+      throw new Error(`Invalid task status transition: ${task.status} -> ${status}`);
     }
     const updated: DidTask = { ...task, ...patch, status, updatedAt: this.now() };
     this.tasks.set(taskId, updated);
