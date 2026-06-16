@@ -87,6 +87,9 @@ export class AgentStack {
     if (!parseDid(input.ownerDid)) {
       throw new Error(`Invalid owner DID: ${input.ownerDid}`);
     }
+    if (input.assigneeDid && !this.agents.has(input.assigneeDid)) {
+      throw new Error(`Unknown agent: ${input.assigneeDid}`);
+    }
     const ts = this.now();
     const task: DidTask = {
       id: this.nextId("task"),

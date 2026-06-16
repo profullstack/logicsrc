@@ -116,6 +116,19 @@ describe("AgentStack coordinator", () => {
     expect(() => stack.assignTask(task.id, agentDid("ghost"))).toThrow(/Unknown agent/);
   });
 
+  it("rejects tasks preassigned to unknown agents", () => {
+    const stack = new AgentStack();
+    expect(() =>
+      stack.createTask({
+        ownerDid: owner,
+        sourceApp: "ugig.net",
+        title: "Ghost assignment",
+        assigneeDid: agentDid("ghost")
+      })
+    ).toThrow(/Unknown agent/);
+    expect(stack.listTasks({ assigneeDid: agentDid("ghost") })).toHaveLength(0);
+  });
+
   it("filters tasks in snapshots", () => {
     const stack = new AgentStack();
     stack.createTask({ ownerDid: owner, sourceApp: "x", title: "a" });
