@@ -76,6 +76,25 @@ describe("AgentStack coordinator", () => {
     expect(() => stack.updateTaskStatus(task.id, "running")).toThrow(/cancelled/);
   });
 
+  it("rejects status jumps outside the AgentStack lifecycle", () => {
+    const stack = new AgentStack();
+    stack.registerAgent(agent);
+
+    const pending = stack.createTask({ ownerDid: owner, sourceApp: "ugig.net", title: "Pending task" });
+    expect(() => stack.updateTaskStatus(pending.id, "running")).toThrow(/pending -> running/);
+
+    const queued = stack.createTask({
+      ownerDid: owner,
+      sourceApp: "ugig.net",
+      title: "Queued task",
+      assigneeDid: agent.did
+    });
+    expect(() => stack.updateTaskStatus(queued.id, "complete")).toThrow(/queued -> complete/);
+
+    const blocked = stack.updateTaskStatus(queued.id, "running");
+    expect(stack.updateTaskStatus(blocked.id, "blocked").status).toBe("blocked");
+  });
+
   it("refuses to assign a task that is already in a terminal status", () => {
     const stack = new AgentStack();
     stack.registerAgent(agent);
@@ -89,6 +108,7 @@ describe("AgentStack coordinator", () => {
       escrowId: "esc_1"
     });
     stack.assignTask(task.id, agent.did);
+    stack.updateTaskStatus(task.id, "running");
     stack.updateTaskStatus(task.id, "complete", { reputationEventId: "rep_1" });
 
     expect(() => stack.assignTask(task.id, other.did)).toThrow(/already complete and cannot be assigned/);
