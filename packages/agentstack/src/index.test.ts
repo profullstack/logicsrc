@@ -132,6 +132,7 @@ describe("AgentStack coordinator", () => {
   it("rejects unknown agents and invalid DIDs", () => {
     const stack = new AgentStack();
     expect(() => stack.createTask({ ownerDid: "nope", sourceApp: "x", title: "t" })).toThrow();
+    expect(() => stack.registerAgent({ ...agent, did: userDid("not-an-agent") })).toThrow(/Invalid agent DID/);
     const task = stack.createTask({ ownerDid: owner, sourceApp: "x", title: "t" });
     expect(() => stack.assignTask(task.id, agentDid("ghost"))).toThrow(/Unknown agent/);
   });
