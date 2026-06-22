@@ -25,7 +25,9 @@ export const agentDid = (id: string) => makeDid("agent", id);
 export function parseDid(did: string): { kind: DidKind; id: string } | null {
   const prefix = `${DID_METHOD}:`;
   if (!did.startsWith(prefix)) return null;
-  const [kind, id] = did.slice(prefix.length).split(":");
+  const parts = did.slice(prefix.length).split(":");
+  if (parts.length !== 2) return null;
+  const [kind, id] = parts;
   if ((kind !== "user" && kind !== "agent") || !id) return null;
   return { kind, id };
 }
