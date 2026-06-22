@@ -77,7 +77,8 @@ export class AgentStack {
   }
 
   registerAgent(agent: AgentProfile): AgentProfile {
-    if (!parseDid(agent.did)) {
+    const parsed = parseDid(agent.did);
+    if (!parsed || parsed.kind !== "agent") {
       throw new Error(`Invalid agent DID: ${agent.did}`);
     }
     this.agents.set(agent.did, agent);
