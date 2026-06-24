@@ -1,0 +1,15 @@
+{
+  "name": "@logicsrc/ans",
+  "version": "0.1.0",
+  "description": "LogicSRC TypeScript SDK for the Agent Name Service (ANS): resolver + offline transparency-log verifier.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run src"
+  },
+  "devDependencies": {
+    "vitest": "^4.0.8"
+  }
+}
