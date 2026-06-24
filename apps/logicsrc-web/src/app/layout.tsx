@@ -86,7 +86,7 @@ export default function RootLayout({ children }: { children: ReactNode }): React
           src="https://crawlproof.com/stats.js"
           strategy="afterInteractive"
         />
-      </body>
+      <script async src="https://feedback.profullstack.com/embed/profullstack-feedback.js" data-property="logicsrc.com"></script></body>
     </html>
   );
 }
