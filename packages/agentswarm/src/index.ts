@@ -17,6 +17,8 @@ export type {
   SwarmOptions,
   LLMRouterOptions
 } from "./swarm.js";
+export { InMemoryBudgetLedger, withBudget } from "./budget.js";
+export type { AgentIdentity, BudgetLedger, BudgetRunnerOptions } from "./budget.js";
 export { createRubricRunner, createLLMJudge } from "./rubric.js";
 export type {
   RubricEvaluation,
