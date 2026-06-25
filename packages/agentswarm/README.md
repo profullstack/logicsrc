@@ -89,6 +89,23 @@ const runner = createRubricRunner({
 
 Pass the rubric per request: `{ "messages": [...], "rubric": "- one sentence\n- mentions chlorophyll" }`.
 
+## Optional: run on community GPUs (c0mpute.com)
+
+Inference is swappable. If a user connects their [c0mpute.com](https://c0mpute.com)
+account (peer-shared GPUs), run agents/judges/routers on it instead of a hosted
+provider. agentswarm does no OAuth — the host's c0mpute connector supplies the
+credentials; this just consumes them:
+
+```ts
+import { createC0mputeModel, createDeepAgentRunner } from "@logicsrc/agentswarm";
+
+// `connector` comes from the user connecting their c0mpute.com account
+const model = await createC0mputeModel({ apiKey: connector.apiKey, model: "llama-3.1-70b" });
+const runner = await createDeepAgentRunner({ model });
+```
+
+Opt-in: omit it and the default hosted provider is used. Requires `@langchain/openai`.
+
 ## Status
 
 - **M1** ✓ core handler + injectable runner + deepagents adapter + x402 gate hook.

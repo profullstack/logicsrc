@@ -6,6 +6,8 @@
  */
 export { createSwarmHandler } from "./handler.js";
 export type { SwarmHandlerOptions } from "./handler.js";
+export { withX402 } from "./x402.js";
+export type { X402Options, X402Accept } from "./x402.js";
 export { createDeepAgentRunner } from "./runner.js";
 export type { DeepAgentRunnerOptions } from "./runner.js";
 export { createSwarm, createLLMRouter } from "./swarm.js";
