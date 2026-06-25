@@ -6,10 +6,21 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "license": "MIT",
+  "files": ["dist", "README.md"],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/profullstack/logicsrc.git",
+    "directory": "packages/agentswarm"
+  },
+  "keywords": ["agents", "deepagents", "swarm", "llm", "x402", "logicsrc"],
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "test": "vitest run src --passWithNoTests",
-    "demo": "node examples/server.mjs"
+    "demo": "node examples/server.mjs",
+    "prepublishOnly": "npm run build"
   },
   "peerDependencies": {
     "@langchain/langgraph": "*",
