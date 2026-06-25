@@ -8,6 +8,15 @@ export { createSwarmHandler } from "./handler.js";
 export type { SwarmHandlerOptions } from "./handler.js";
 export { createDeepAgentRunner } from "./runner.js";
 export type { DeepAgentRunnerOptions } from "./runner.js";
+export { createSwarm, createLLMRouter } from "./swarm.js";
+export type {
+  SwarmAgent,
+  SwarmRouter,
+  SwarmRouterInput,
+  SwarmHandoff,
+  SwarmOptions,
+  LLMRouterOptions
+} from "./swarm.js";
 export { createRubricRunner, createLLMJudge } from "./rubric.js";
 export type {
   RubricEvaluation,
