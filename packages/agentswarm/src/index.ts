@@ -17,6 +17,14 @@ export type {
   SwarmOptions,
   LLMRouterOptions
 } from "./swarm.js";
+export {
+  createC0mputeModel,
+  resolveC0mputeConnector,
+  c0mputeConnectorFromEnv,
+  C0MPUTE_DEFAULT_BASE_URL,
+  C0MPUTE_DEFAULT_MODEL
+} from "./compute.js";
+export type { C0mputeConnector, ResolvedC0mputeConnector } from "./compute.js";
 export { InMemoryBudgetLedger, withBudget } from "./budget.js";
 export type { AgentIdentity, BudgetLedger, BudgetRunnerOptions } from "./budget.js";
 export { createRubricRunner, createLLMJudge } from "./rubric.js";

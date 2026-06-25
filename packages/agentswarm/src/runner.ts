@@ -1,8 +1,12 @@
 import type { SwarmMessage, SwarmRunInput, SwarmRunResult, SwarmRunner } from "./types.js";
 
 export interface DeepAgentRunnerOptions {
-  /** Provider-prefixed model id, e.g. "anthropic:claude-sonnet-4-6". */
-  model: string;
+  /**
+   * The model to run on: a provider-prefixed id (e.g. "anthropic:claude-sonnet-4-6")
+   * or a pre-built LangChain chat model instance — e.g. from {@link createC0mputeModel}
+   * to run inference on community-shared GPUs.
+   */
+  model: string | object;
   /** System instructions for the lead agent. */
   instructions?: string;
   /**
