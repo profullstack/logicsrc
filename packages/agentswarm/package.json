@@ -1,0 +1,25 @@
+{
+  "name": "@logicsrc/agentswarm",
+  "version": "0.1.0",
+  "description": "AgentSwarm: embeddable multi-agent swarm runtime for LogicSRC, wrapping deepagents. Mount it on your own route (e.g. /swarm).",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run src --passWithNoTests",
+    "demo": "node examples/server.mjs"
+  },
+  "peerDependencies": {
+    "@langchain/langgraph": "*",
+    "deepagents": "^1.10.0"
+  },
+  "peerDependenciesMeta": {
+    "@langchain/langgraph": { "optional": true },
+    "deepagents": { "optional": true }
+  },
+  "devDependencies": {
+    "vitest": "^4.0.8"
+  }
+}
