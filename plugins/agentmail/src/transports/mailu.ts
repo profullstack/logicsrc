@@ -40,22 +40,25 @@ export interface CreateMailuTransportOptions {
 
 /**
  * resolveMailuConfig builds a MailuConfig from the environment, defaulting to
- * the production hosts (mail.profullstack.com over IMAPS:993, smtp.profullstack.com
- * over submission:587/STARTTLS). The caller supplies the member's credentials.
+ * the production bbs mail stack: member addresses on bbs.profullstack.com, served
+ * by mail.profullstack.com over IMAPS:993 and modern implicit-TLS submission:465.
+ * (The bbs Mailu front does not listen on 587 — it refuses the connection.) The
+ * caller supplies the member's credentials.
  */
 export function resolveMailuConfig(auth: { user: string; pass: string }, env: Record<string, string | undefined> = process.env): MailuConfig {
-  const domain = env.AGENTMAIL_DOMAIN ?? "mail.profullstack.com";
+  const domain = env.AGENTMAIL_DOMAIN ?? "bbs.profullstack.com";
+  const mailHost = "mail.profullstack.com";
   return {
     domain,
     imap: {
-      host: env.AGENTMAIL_IMAP_HOST ?? domain,
+      host: env.AGENTMAIL_IMAP_HOST ?? mailHost,
       port: Number(env.AGENTMAIL_IMAP_PORT ?? 993),
       secure: (env.AGENTMAIL_IMAP_SECURE ?? "true") !== "false"
     },
     smtp: {
-      host: env.AGENTMAIL_SMTP_HOST ?? "smtp.profullstack.com",
-      port: Number(env.AGENTMAIL_SMTP_PORT ?? 587),
-      secure: (env.AGENTMAIL_SMTP_SECURE ?? "false") === "true"
+      host: env.AGENTMAIL_SMTP_HOST ?? mailHost,
+      port: Number(env.AGENTMAIL_SMTP_PORT ?? 465),
+      secure: (env.AGENTMAIL_SMTP_SECURE ?? "true") !== "false"
     },
     auth
   };
