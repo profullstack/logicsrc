@@ -21,7 +21,7 @@ test.describe("LogicSRC PWA", () => {
     await expect(page.getByRole("heading", { name: "Doppler", exact: true })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Railway", exact: true })).toBeVisible();
     await expect(page.getByRole("heading", { name: "GitHub Secrets", exact: true })).toBeVisible();
-    await expect(page.getByText("logicsrc credentials plan --from env --to railway")).toBeVisible();
+    await expect(page.getByText("logicsrc credentials providers")).toBeVisible();
   });
 
   test("renders top-level docs and legal route targets", async ({ page }) => {
