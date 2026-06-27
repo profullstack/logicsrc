@@ -68,7 +68,7 @@ describe("CommandBoard API contracts", () => {
     };
 
     expect(response.status).toBe(200);
-    expect(body.plugins.map((plugin) => plugin.id)).toEqual(["coinpay", "ugig", "sh1pt", "c0mpute", "feed-discovery", "social-accounts", "email-accounts"]);
+    expect(body.plugins.map((plugin) => plugin.id)).toEqual(["coinpay", "ugig", "sh1pt", "c0mpute", "feed-discovery", "social-accounts", "email-accounts", "agentmail"]);
     expect(body.plugins.find((plugin) => plugin.id === "sh1pt")).toMatchObject({
       enabled: true,
       capabilities: expect.arrayContaining(["projects.sync", "actions.publish", "deployments.status"])
