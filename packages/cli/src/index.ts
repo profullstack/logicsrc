@@ -2,6 +2,7 @@
 import { readFileSync } from "node:fs";
 import { evaluateAccountPolicy, scoreAccountActionRisk } from "@logicsrc/account-core";
 import { Command } from "commander";
+import { createCredentialEngine, listCredentialProviders, type CredentialEndpoint } from "@logicsrc/plugin-credential-sharing";
 import { listEmailAccountProviders } from "@logicsrc/plugin-email-accounts";
 import { discoverFeeds, listFeedProviders, probeSite, renderDiscoveryOutput, validateFeed, type FeedKind, type FeedOutputFormat } from "@logicsrc/plugin-feed-discovery";
 import { listSocialAccountProviders } from "@logicsrc/plugin-social-accounts";
@@ -375,33 +376,153 @@ program.command("plugins").option("--format <format>", "table, json, or markdown
   print(snapshot.plugins, options.format as OutputFormat);
 });
 
-const credentials = program.command("credentials").alias("creds").description("Credential-sharing OpenSpec commands.");
+const credentials = program.command("credentials").alias("creds").description("Credential Sharing OpenSpec: portable, auditable secret sync.");
 
-credentials.command("providers").option("--format <format>", "table, json, or markdown", "table").description("List credential sharing provider targets.").action((options) => {
-  print(
-    [
-      { id: "env", target: ".env files", mode: "read/write" },
-      { id: "doppler", target: "Doppler projects/configs", mode: "sync" },
-      { id: "railway", target: "Railway service variables", mode: "sync" },
-      { id: "github-secrets", target: "GitHub Actions and environment secrets", mode: "sync" }
-    ],
-    options.format as OutputFormat
-  );
-});
+function endpointFromOptions(options: Record<string, unknown>, prefix: "" | "from" | "to"): CredentialEndpoint {
+  const pick = (name: string) => {
+    const key = prefix ? `${prefix}${name[0].toUpperCase()}${name.slice(1)}` : name;
+    const value = options[key];
+    return typeof value === "string" && value.length > 0 ? value : undefined;
+  };
+  // The provider id is stored under the bare flag: options.from / options.to / options.provider.
+  const providerValue = options[prefix ? prefix : "provider"];
+  const provider = (typeof providerValue === "string" && providerValue.length > 0 ? providerValue : undefined) ?? (prefix === "to" ? "railway" : "env");
+  return { provider, path: pick("path"), project: pick("project"), config: pick("config"), service: pick("service"), scope: pick("scope") };
+}
 
-credentials.command("plan").option("--from <provider>", "Source provider", "env").option("--to <provider>", "Destination provider", "railway").option("--format <format>", "table, json, or markdown", "table").description("Describe a credential sync plan without moving secrets.").action((options) => {
-  print(
-    {
-      type: "logicsrc.credential_sync_plan",
-      from: options.from,
-      to: options.to,
-      policy: "redact-values",
-      approval: "required-before-write",
-      audit: "write target, key names, fingerprints, and timestamps; never write raw secret values"
-    },
-    options.format as OutputFormat
-  );
-});
+function withEndpointOptions(command: import("commander").Command, prefix: "" | "from" | "to", help: string) {
+  const flag = (name: string) => (prefix ? `--${prefix}-${name}` : `--${name}`);
+  return command
+    .option(`${flag("path")} <path>`, `${help} .env file path`)
+    .option(`${flag("project")} <id>`, `${help} project (Doppler project, Railway projectId, GitHub owner)`)
+    .option(`${flag("config")} <id>`, `${help} config (Doppler config, Railway environmentId, GitHub environment)`)
+    .option(`${flag("service")} <id>`, `${help} service (Railway serviceId, GitHub repo)`)
+    .option(`${flag("scope")} <scope>`, `${help} scope (GitHub: repo|org|environment)`);
+}
+
+function credentialEngine() {
+  return createCredentialEngine();
+}
+
+credentials
+  .command("providers")
+  .option("--format <format>", "table, json, or markdown", "table")
+  .description("List credential provider adapters and their capabilities.")
+  .action((options) => {
+    print(
+      listCredentialProviders().map((p) => ({
+        id: p.id,
+        name: p.name,
+        status: p.status,
+        reads_values: p.capabilities.readValues,
+        writes: p.capabilities.write,
+        auth: p.authRequirements.join(", ") || "none"
+      })),
+      options.format as OutputFormat
+    );
+  });
+
+withEndpointOptions(
+  credentials.command("inspect").requiredOption("--provider <provider>", "Provider id"),
+  "",
+  "Source"
+)
+  .option("--format <format>", "table, json, or markdown", "table")
+  .description("Inspect an endpoint: redacted key names and value fingerprints, never raw values.")
+  .action(async (options) => {
+    const snapshot = await credentialEngine().inspectCredentialSource(endpointFromOptions(options, ""));
+    print(options.format === "json" ? snapshot : snapshot.keys, options.format as OutputFormat);
+  });
+
+withEndpointOptions(
+  withEndpointOptions(
+    credentials.command("diff").requiredOption("--from <provider>", "Source provider").requiredOption("--to <provider>", "Destination provider"),
+    "from",
+    "Source"
+  ),
+  "to",
+  "Target"
+)
+  .option("--redact", "Explicitly redact values (always on; accepted for spec parity)")
+  .option("--format <format>", "table, json, or markdown", "table")
+  .description("Diff secrets between a source and target without moving anything.")
+  .action(async (options) => {
+    const diff = await credentialEngine().diffCredentialEndpoints(endpointFromOptions(options, "from"), endpointFromOptions(options, "to"));
+    print(options.format === "json" ? diff : diff.entries, options.format as OutputFormat);
+  });
+
+withEndpointOptions(
+  withEndpointOptions(
+    credentials.command("plan").requiredOption("--from <provider>", "Source provider").requiredOption("--to <provider>", "Destination provider"),
+    "from",
+    "Source"
+  ),
+  "to",
+  "Target"
+)
+  .option("--format <format>", "table, json, or markdown", "json")
+  .description("Build a redacted sync plan (stored for later approve/sync).")
+  .action(async (options) => {
+    const plan = await credentialEngine().createCredentialSyncPlan({
+      from: endpointFromOptions(options, "from"),
+      to: endpointFromOptions(options, "to")
+    });
+    print(plan, options.format as OutputFormat);
+  });
+
+credentials
+  .command("approve")
+  .requiredOption("--plan <id>", "Sync plan id")
+  .option("--keys <keys>", "Comma-separated keys to approve (default: all changes)")
+  .option("--format <format>", "table, json, or markdown", "json")
+  .description("Record an approval for a sync plan.")
+  .action((options) => {
+    const approval = credentialEngine().approveCredentialSync(options.plan, { keys: splitOption(options.keys) });
+    print(approval, options.format as OutputFormat);
+  });
+
+credentials
+  .command("sync")
+  .requiredOption("--plan <id>", "Sync plan id")
+  .option("--approve", "Approve and apply the plan (writes secrets)")
+  .option("--apply", "Apply the plan (alias for committing the write)")
+  .option("--format <format>", "table, json, or markdown", "json")
+  .description("Run a sync plan. Dry-run by default; --approve/--apply writes to the target.")
+  .action(async (options) => {
+    const engine = credentialEngine();
+    const apply = Boolean(options.approve || options.apply);
+    const approval = apply ? engine.approveCredentialSync(options.plan) : undefined;
+    const run = await engine.runCredentialSync(options.plan, { dryRun: !apply, approval });
+    print(run, options.format as OutputFormat);
+  });
+
+credentials
+  .command("rollback")
+  .requiredOption("--run <id>", "Sync run id to reverse")
+  .option("--format <format>", "table, json, or markdown", "json")
+  .description("Create a new sync plan that restores a run's captured pre-image.")
+  .action(async (options) => {
+    const plan = await credentialEngine().rollbackCredentialSync(options.run);
+    print(plan, options.format as OutputFormat);
+  });
+
+credentials
+  .command("audit")
+  .requiredOption("--run <id>", "Sync run id")
+  .option("--format <format>", "table, json, or markdown", "table")
+  .description("Export the audit trail for a run (key names, targets, fingerprints, timestamps).")
+  .action((options) => {
+    print(credentialEngine().exportCredentialAudit(options.run), options.format as OutputFormat);
+  });
+
+credentials
+  .command("export")
+  .requiredOption("--run <id>", "Sync run id")
+  .option("--format <format>", "table, json, or markdown", "json")
+  .description("Alias for audit: export a run's audit events.")
+  .action((options) => {
+    print(credentialEngine().exportCredentialAudit(options.run), options.format as OutputFormat);
+  });
 
 const accounts = program.command("accounts").description("Manage connected social and email accounts.");
 

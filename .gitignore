@@ -9,4 +9,5 @@ playwright-report
 test-results
 *.tsbuildinfo
 .commandboard
+.logicsrc
 supabase/.temp

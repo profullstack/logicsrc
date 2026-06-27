@@ -1,8 +1,48 @@
 # Credential Sharing OpenSpec
 
-Status: coming soon
+Status: reference implementation available (`@logicsrc/plugin-credential-sharing`)
 
 Slug: `credential-sharing`
+
+## Reference Implementation
+
+The spec below is implemented by `plugins/credential-sharing` and surfaced through
+`logicsrc credentials <command>`. All four first providers (`env`, `doppler`,
+`railway`, `github-secrets`) ship as provider adapters.
+
+```bash
+# List adapters and their capabilities (which can read values vs. write-only)
+logicsrc credentials providers
+
+# Inspect an endpoint — redacted key names + value fingerprints, never raw values
+logicsrc credentials inspect --provider env --path .env
+
+# Diff a source against a target without moving anything
+logicsrc credentials diff --from env --from-path .env --to railway \
+  --to-project <projectId> --to-config <environmentId>
+
+# Build a plan (stored under .logicsrc/credentials), then dry-run, then apply
+logicsrc credentials plan --from env --from-path .env --to doppler \
+  --to-project <project> --to-config <config>
+logicsrc credentials sync --plan <planId>            # dry-run (no writes)
+logicsrc credentials sync --plan <planId> --approve  # writes to the target
+
+# Audit and reverse a run (rollback emits a NEW plan)
+logicsrc credentials audit --run <runId> --format markdown
+logicsrc credentials rollback --run <runId>
+```
+
+SDK usage mirrors the spec via `createCredentialEngine()` from the plugin package.
+
+Implementation notes:
+- Value fingerprints are salted SHA-256 (truncated) so two endpoints can be diffed
+  without revealing values; they are equality/integrity markers, not secret storage.
+- `github-secrets` is write-only for values (GitHub never returns secret values), so
+  it cannot be a sync source or a value-restoring rollback target. Secret writes are
+  libsodium sealed-box encrypted against the repo/org/environment public key.
+- Rollback captures the target's prior values into a 0600 vault under `.logicsrc/`
+  (gitignored) — the only place raw values touch disk. Plans, runs, and audit records
+  contain fingerprints only.
 
 Credential Sharing is a LogicSRC OpenSpec for portable, auditable secret synchronization across local files and infrastructure providers. It is intended to replace closed, proprietary credential-sharing workflows with a provider-neutral contract.
 

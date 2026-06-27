@@ -17,6 +17,7 @@
     "@logicsrc/account-core": "file:../account-core",
     "@logicsrc/plugin-core": "file:../plugin-core",
     "@logicsrc/plugin-coinpay": "file:../../plugins/coinpay",
+    "@logicsrc/plugin-credential-sharing": "file:../../plugins/credential-sharing",
     "@logicsrc/plugin-email-accounts": "file:../../plugins/email-accounts",
     "@logicsrc/plugin-feed-discovery": "file:../../plugins/feed-discovery",
     "@logicsrc/plugin-social-accounts": "file:../../plugins/social-accounts",

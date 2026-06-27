@@ -32,7 +32,11 @@
     "./agentad-ad-response": "./schemas/agentad-ad-response.schema.json",
     "./agentad-impression": "./schemas/agentad-impression.schema.json",
     "./agentad-click": "./schemas/agentad-click.schema.json",
-    "./agentad-campaign": "./schemas/agentad-campaign.schema.json"
+    "./agentad-campaign": "./schemas/agentad-campaign.schema.json",
+    "./credential-provider": "./schemas/logicsrc-credential-provider.schema.json",
+    "./credential-sync-plan": "./schemas/logicsrc-credential-sync-plan.schema.json",
+    "./credential-sync-run": "./schemas/logicsrc-credential-sync-run.schema.json",
+    "./credential-audit-event": "./schemas/logicsrc-credential-audit-event.schema.json"
   },
   "files": [
     "schemas"

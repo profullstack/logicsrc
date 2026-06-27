@@ -50,10 +50,10 @@ const credentialProviders = [
 ];
 
 const credentialSurfaces = [
-  { name: "CLI", detail: "`logicsrc credentials` for provider listing, dry-run plans, diffs, approvals, sync, and audit exports." },
-  { name: "TUI", detail: "Review key diffs, target providers, approval prompts, fingerprints, and failure states without showing raw secrets." },
-  { name: "SDKs", detail: "Rust, Bun, Node, Python, and curl APIs share the same credential source, target, policy, and audit objects." },
-  { name: "PWA", detail: "Provider connection health, dry-run previews, approval history, and redacted sync evidence." }
+  { name: "CLI", detail: "`logicsrc credentials` ships provider listing, dry-run plans, diffs, approvals, sync, rollback, and audit exports today." },
+  { name: "SDK", detail: "`createCredentialEngine()` in `@logicsrc/plugin-credential-sharing` exposes the same source, target, policy, and audit objects for Node/TS." },
+  { name: "TUI", detail: "A Credential Sharing panel reviews key diffs, providers, approval prompts, fingerprints, and failure states without showing raw secrets." },
+  { name: "PWA", detail: "Planned: provider connection health, dry-run previews, approval history, and redacted sync evidence." }
 ];
 
 const hireUsWork = [
@@ -248,10 +248,10 @@ npm --workspace @logicsrc/cli run dev -- \\
         </div>
       </section>
 
-      <section id="credential-sharing" class="band coming-soon credentials">
+      <section id="credential-sharing" class="band credentials">
         <div class="section-head">
           <h2>Credential Sharing</h2>
-          <p>A coming-soon LogicSRC OpenSpec for replacing closed credential-sharing workflows with auditable, provider-neutral secret sync.</p>
+          <p>An available LogicSRC OpenSpec for replacing closed credential-sharing workflows with auditable, provider-neutral secret sync. Shipped in <code>@logicsrc/plugin-credential-sharing</code>.</p>
         </div>
         <div class="soon-layout">
           <article class="soon-lead">
@@ -259,8 +259,14 @@ npm --workspace @logicsrc/cli run dev -- \\
             <h3>Open replacement architecture for secrets</h3>
             <p>LogicSRC defines the credential source, target, diff, approval, sync, rollback, and audit objects. External tools can consume the contract, but LogicSRC remains the open standards CLI and does not call out to proprietary product commands.</p>
             <pre><code>logicsrc credentials providers
-logicsrc credentials plan --from env --to railway
-logicsrc credentials plan --from doppler --to github-secrets</code></pre>
+logicsrc credentials diff --from env --from-path .env --to railway \\
+  --to-project &lt;projectId&gt; --to-config &lt;environmentId&gt;
+logicsrc credentials plan --from env --from-path .env --to doppler \\
+  --to-project &lt;project&gt; --to-config &lt;config&gt;
+logicsrc credentials sync --plan &lt;planId&gt;            # dry-run, no writes
+logicsrc credentials sync --plan &lt;planId&gt; --approve  # writes to the target
+logicsrc credentials audit --run &lt;runId&gt; --format markdown
+logicsrc credentials rollback --run &lt;runId&gt;</code></pre>
           </article>
           <div class="soon-grid">
             ${credentialProviders.map((item) => `

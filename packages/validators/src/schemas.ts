@@ -18,6 +18,10 @@ import agentadAdResponseSchema from "../../schemas/schemas/agentad-ad-response.s
 import agentadImpressionSchema from "../../schemas/schemas/agentad-impression.schema.json" with { type: "json" };
 import agentadClickSchema from "../../schemas/schemas/agentad-click.schema.json" with { type: "json" };
 import agentadCampaignSchema from "../../schemas/schemas/agentad-campaign.schema.json" with { type: "json" };
+import credentialProviderSchema from "../../schemas/schemas/logicsrc-credential-provider.schema.json" with { type: "json" };
+import credentialSyncPlanSchema from "../../schemas/schemas/logicsrc-credential-sync-plan.schema.json" with { type: "json" };
+import credentialSyncRunSchema from "../../schemas/schemas/logicsrc-credential-sync-run.schema.json" with { type: "json" };
+import credentialAuditEventSchema from "../../schemas/schemas/logicsrc-credential-audit-event.schema.json" with { type: "json" };
 
 export const schemas = {
   agent: agentSchema,
@@ -39,7 +43,11 @@ export const schemas = {
   "agentad-ad-response": agentadAdResponseSchema,
   "agentad-impression": agentadImpressionSchema,
   "agentad-click": agentadClickSchema,
-  "agentad-campaign": agentadCampaignSchema
+  "agentad-campaign": agentadCampaignSchema,
+  "credential-provider": credentialProviderSchema,
+  "credential-sync-plan": credentialSyncPlanSchema,
+  "credential-sync-run": credentialSyncRunSchema,
+  "credential-audit-event": credentialAuditEventSchema
 } as const;
 
 export type SchemaKind = keyof typeof schemas;
