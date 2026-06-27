@@ -1,6 +1,7 @@
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
 import { pathToFileURL } from "node:url";
 import { createPluginRegistry } from "@logicsrc/plugin-core";
+import { agentMailPlugin, DraftError, MailAccessError, parseAddress, type Draft, type MailAddress } from "@logicsrc/plugin-agentmail";
 import { c0mputePlugin } from "@logicsrc/plugin-c0mpute";
 import { coinPayPlugin } from "@logicsrc/plugin-coinpay";
 import { emailAccountsPlugin, listEmailAccountProviders } from "@logicsrc/plugin-email-accounts";
@@ -9,8 +10,9 @@ import { sh1ptPlugin } from "@logicsrc/plugin-sh1pt";
 import { listSocialAccountProviders, socialAccountsPlugin } from "@logicsrc/plugin-social-accounts";
 import { uGigPlugin } from "@logicsrc/plugin-ugig";
 import { schemas, validate } from "@logicsrc/validators";
+import { buildAgentMailService, mailIdentity } from "./agentmail.js";
 
-const registry = createPluginRegistry([coinPayPlugin, uGigPlugin, sh1ptPlugin, c0mputePlugin, feedDiscoveryPlugin, socialAccountsPlugin, emailAccountsPlugin]);
+const registry = createPluginRegistry([coinPayPlugin, uGigPlugin, sh1ptPlugin, c0mputePlugin, feedDiscoveryPlugin, socialAccountsPlugin, emailAccountsPlugin, agentMailPlugin]);
 
 const boards = [
   { path: "/general", title: "General", description: "CommandBoard.run general discussion." },
@@ -83,7 +85,7 @@ async function route(request: IncomingMessage, response: ServerResponse) {
     json(response, 200, {
       ok: true,
       service: "commandboard-api",
-      endpoints: ["/health", "/api/boards", "/api/tasks", "/api/plugins", "/api/schemas", "/api/accounts/providers", "/api/accounts", "/api/social/providers", "/api/email/providers", "/api/feeds/discover", "/api/feeds/providers", "/rss/discover/:keyword.xml", "/opml/discover/:keyword.xml", "/atom/discover/:keyword.xml", "/json-feed/discover/:keyword.json"]
+      endpoints: ["/health", "/api/boards", "/api/tasks", "/api/plugins", "/api/schemas", "/api/accounts/providers", "/api/accounts", "/api/social/providers", "/api/email/providers", "/api/feeds/discover", "/api/feeds/providers", "/api/plugins/agentmail/mailboxes", "/api/plugins/agentmail/mailboxes/:mailbox/messages", "/api/plugins/agentmail/mailboxes/:mailbox/messages/:uid", "/api/plugins/agentmail/search", "/api/plugins/agentmail/messages", "/rss/discover/:keyword.xml", "/opml/discover/:keyword.xml", "/atom/discover/:keyword.xml", "/json-feed/discover/:keyword.json"]
     });
     return;
   }
@@ -218,6 +220,11 @@ async function route(request: IncomingMessage, response: ServerResponse) {
     return;
   }
 
+  if (url.pathname === "/api/plugins/agentmail" || url.pathname.startsWith("/api/plugins/agentmail/")) {
+    await handleAgentMail(request, response, url);
+    return;
+  }
+
   if (request.method === "GET" && url.pathname === "/api/plugins/sh1pt/projects") {
     json(response, 200, { projects: sh1ptProjects });
     return;
@@ -316,6 +323,147 @@ async function route(request: IncomingMessage, response: ServerResponse) {
 function json(response: ServerResponse, status: number, data: unknown) {
   response.writeHead(status, { "content-type": "application/json; charset=utf-8" });
   response.end(JSON.stringify(data, null, 2));
+}
+
+// AgentMail routes (the @logicsrc/plugin-agentmail surface), backed by the
+// agentbbs Mailu server. The acting member comes from the x-agentmail-member
+// header (falling back to the configured service identity). Access/draft errors
+// map to 402/422 instead of the generic 500 the outer handler would produce.
+const AGENTMAIL_PREFIX = "/api/plugins/agentmail";
+
+async function handleAgentMail(request: IncomingMessage, response: ServerResponse, url: URL) {
+  const memberHeader = request.headers["x-agentmail-member"];
+  const member = Array.isArray(memberHeader) ? memberHeader[0] : memberHeader;
+  const service = buildAgentMailService(mailIdentity(member));
+  const sub = url.pathname.slice(AGENTMAIL_PREFIX.length); // e.g. "/mailboxes/INBOX/messages"
+  const method = request.method ?? "GET";
+
+  try {
+    if (method === "GET" && (sub === "" || sub === "/" || sub === "/mailboxes")) {
+      json(response, 200, { address: service.address(), mailboxes: await service.mailboxes() });
+      return;
+    }
+
+    if (method === "GET" && sub === "/search") {
+      const query = url.searchParams.get("q") ?? url.searchParams.get("query");
+      if (!query) {
+        json(response, 422, { error: "Expected ?q=" });
+        return;
+      }
+      const mailbox = url.searchParams.get("mailbox") ?? undefined;
+      const limit = numberParam(url.searchParams.get("limit"));
+      json(response, 200, { messages: await service.search(query, { mailbox, limit }) });
+      return;
+    }
+
+    if (method === "POST" && sub === "/messages") {
+      let body: unknown;
+      try {
+        body = await readJson(request);
+      } catch {
+        json(response, 400, { error: "Invalid JSON body" });
+        return;
+      }
+      if (!isRecord(body)) {
+        json(response, 422, { error: "Draft body must be an object" });
+        return;
+      }
+      const draft: Draft = {
+        to: coerceAddresses(body.to),
+        cc: body.cc !== undefined ? coerceAddresses(body.cc) : undefined,
+        bcc: body.bcc !== undefined ? coerceAddresses(body.bcc) : undefined,
+        subject: typeof body.subject === "string" ? body.subject : "",
+        text: typeof body.text === "string" ? body.text : "",
+        html: typeof body.html === "string" ? body.html : undefined,
+        inReplyTo: typeof body.inReplyTo === "string" ? body.inReplyTo : undefined
+      };
+      json(response, 201, await service.send(draft));
+      return;
+    }
+
+    // /mailboxes/{mailbox}/messages[/{uid}]
+    const msgMatch = /^\/mailboxes\/([^/]+)\/messages(?:\/(\d+))?$/.exec(sub);
+    if (msgMatch) {
+      const mailbox = decodeURIComponent(msgMatch[1]);
+      const uid = msgMatch[2] ? Number(msgMatch[2]) : undefined;
+
+      if (uid === undefined) {
+        if (method !== "GET") {
+          json(response, 405, { error: "Method not allowed" });
+          return;
+        }
+        const limit = numberParam(url.searchParams.get("limit"));
+        json(response, 200, { mailbox, messages: await service.list(mailbox, limit) });
+        return;
+      }
+
+      if (method === "GET") {
+        const peek = url.searchParams.get("peek") === "true";
+        const message = await service.read(mailbox, uid, { peek });
+        if (!message) {
+          json(response, 404, { error: `no message uid ${uid} in ${mailbox}` });
+          return;
+        }
+        json(response, 200, { message });
+        return;
+      }
+
+      if (method === "PATCH") {
+        let body: unknown;
+        try {
+          body = await readJson(request);
+        } catch {
+          json(response, 400, { error: "Invalid JSON body" });
+          return;
+        }
+        if (!isRecord(body)) {
+          json(response, 422, { error: "Expected { seen?, flagged? }" });
+          return;
+        }
+        await service.setFlags(mailbox, uid, {
+          seen: typeof body.seen === "boolean" ? body.seen : undefined,
+          flagged: typeof body.flagged === "boolean" ? body.flagged : undefined
+        });
+        json(response, 200, { ok: true });
+        return;
+      }
+
+      if (method === "DELETE") {
+        await service.delete(mailbox, uid);
+        json(response, 200, { ok: true });
+        return;
+      }
+
+      json(response, 405, { error: "Method not allowed" });
+      return;
+    }
+
+    json(response, 404, { error: "Not found" });
+  } catch (error) {
+    if (error instanceof MailAccessError) {
+      json(response, 402, { error: error.message });
+      return;
+    }
+    if (error instanceof DraftError) {
+      json(response, 422, { error: error.message });
+      return;
+    }
+    json(response, 502, { error: error instanceof Error ? error.message : String(error) });
+  }
+}
+
+// Accepts a recipient field as a string, "Name <addr>", an array of those, or
+// {name?,address} objects, and normalizes to MailAddress[].
+function coerceAddresses(input: unknown): MailAddress[] {
+  const one = (v: unknown): MailAddress | null => {
+    if (typeof v === "string") return parseAddress(v);
+    if (isRecord(v) && typeof v.address === "string") {
+      return typeof v.name === "string" ? { name: v.name, address: v.address } : { address: v.address };
+    }
+    return null;
+  };
+  const list = Array.isArray(input) ? input : input === undefined || input === null ? [] : [input];
+  return list.map(one).filter((a): a is MailAddress => a !== null);
 }
 
 function text(response: ServerResponse, status: number, contentType: string, body: string) {
