@@ -74,7 +74,8 @@ Backed by `src/index.ts`, `src/types.ts`, `src/manifest.ts`:
 - **Status lifecycle** — `pending → queued → running → blocked → complete | failed | cancelled`.
 - **`AgentStack` coordinator** (in-memory `Map` storage, injectable clock):
   `registerAgent`, `getAgent`, `createTask`, `getTask`, `assignTask`, `updateTaskStatus`,
-  `delegate`, `revokeDelegation`, `listTasks`, `snapshot`, and an `on(listener)` event subscription.
+  `delegate`, `revokeDelegation`, `listDelegations`, `hasDelegation`, `listTasks`, `snapshot`,
+  and an `on(listener)` event subscription.
 - **Events** — `agent.registered`, `task.created`, `task.assigned`, `task.updated`,
   `delegation.granted`, `delegation.revoked`.
 - **`agentStackPlugin`** — a LogicSRC `PluginDefinition`, plus `agentStackManifest` declaring

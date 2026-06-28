@@ -186,6 +186,34 @@ export class AgentStack {
     return grant;
   }
 
+  listDelegations(filter?: {
+    ownerDid?: string;
+    agentDid?: string;
+    scope?: string;
+    activeAt?: string;
+  }): DelegationGrant[] {
+    return [...this.delegations.values()].filter((grant) => {
+      if (filter?.ownerDid && grant.ownerDid !== filter.ownerDid) return false;
+      if (filter?.agentDid && grant.agentDid !== filter.agentDid) return false;
+      if (filter?.scope && !this.grantAllowsScope(grant, filter.scope)) return false;
+      if (filter?.activeAt && !this.grantIsActive(grant, filter.activeAt)) return false;
+      return true;
+    });
+  }
+
+  hasDelegation(ownerDidValue: string, agentDidValue: string, scope: string, at: string = this.now()): boolean {
+    if (!parseDid(ownerDidValue)) throw new Error(`Invalid owner DID: ${ownerDidValue}`);
+    if (!this.agents.has(agentDidValue)) throw new Error(`Unknown agent: ${agentDidValue}`);
+    return (
+      this.listDelegations({
+        ownerDid: ownerDidValue,
+        agentDid: agentDidValue,
+        scope,
+        activeAt: at
+      }).length > 0
+    );
+  }
+
   listTasks(filter?: { ownerDid?: string; assigneeDid?: string; status?: TaskStatus }): DidTask[] {
     return [...this.tasks.values()].filter((task) => {
       if (filter?.ownerDid && task.ownerDid !== filter.ownerDid) return false;
@@ -207,6 +235,14 @@ export class AgentStack {
     const task = this.tasks.get(id);
     if (!task) throw new Error(`Unknown task: ${id}`);
     return task;
+  }
+
+  private grantAllowsScope(grant: DelegationGrant, scope: string): boolean {
+    return grant.scopes.includes(scope) || grant.scopes.includes("*");
+  }
+
+  private grantIsActive(grant: DelegationGrant, at: string): boolean {
+    return !grant.expiresAt || grant.expiresAt > at;
   }
 }
 

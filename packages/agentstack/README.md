@@ -15,7 +15,8 @@ Shared AppKit OpenSpec (`profullstack-web/openspec/specs/agentstack`).
   (`pending → queued → running → blocked → complete | failed | cancelled`) that can bind to
   payment, escrow, and reputation events.
 - **`AgentStack`** — an in-memory coordinator that registers agents, tracks tasks, records
-  delegation grants, and emits coordination events. Storage backends can wrap the same API.
+  delegation grants, checks active scoped authority, and emits coordination events. Storage
+  backends can wrap the same API.
 - **`agentStackPlugin`** — a LogicSRC `PluginDefinition` (validated against the plugin
   manifest schema) exposing AgentStack as a coordination plugin with routes, events,
   permissions, and a TUI panel.
@@ -39,6 +40,10 @@ const task = stack.createTask({ ownerDid: owner, sourceApp: "sh1pt.com", title: 
 stack.assignTask(task.id, agentDid("abc"));
 stack.updateTaskStatus(task.id, "running");
 stack.updateTaskStatus(task.id, "complete", { reputationEventId: "rep_1" });
+
+const grant = stack.delegate(owner, agentDid("abc"), ["tasks:create"]);
+stack.hasDelegation(owner, agentDid("abc"), "tasks:create"); // true while the grant is active
+stack.revokeDelegation(grant.id);
 ```
 
 ## Cross-app identity
