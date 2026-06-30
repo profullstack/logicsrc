@@ -67,6 +67,37 @@ describe("site probing helpers", () => {
     await expect(assertSafeHttpUrl("file:///etc/passwd")).rejects.toThrow(/Unsupported URL protocol/);
   });
 
+  it("blocks reserved and documentation IPv4 SSRF targets", async () => {
+    // TEST-NET-1 (192.0.2.0/24)
+    await expect(assertSafeHttpUrl("http://192.0.2.1/feed")).rejects.toThrow(/Blocked internal/);
+    // TEST-NET-2 (198.51.100.0/24)
+    await expect(assertSafeHttpUrl("http://198.51.100.1/feed")).rejects.toThrow(/Blocked internal/);
+    // TEST-NET-3 (203.0.113.0/24)
+    await expect(assertSafeHttpUrl("http://203.0.113.1/feed")).rejects.toThrow(/Blocked internal/);
+    // IETF protocol assignments (192.0.0.0/24)
+    await expect(assertSafeHttpUrl("http://192.0.0.1/feed")).rejects.toThrow(/Blocked internal/);
+    // Benchmark (198.18.0.0/15)
+    await expect(assertSafeHttpUrl("http://198.18.0.1/feed")).rejects.toThrow(/Blocked internal/);
+    await expect(assertSafeHttpUrl("http://198.19.255.255/feed")).rejects.toThrow(/Blocked internal/);
+    // Multicast (224.0.0.0/4)
+    await expect(assertSafeHttpUrl("http://224.0.0.1/feed")).rejects.toThrow(/Blocked internal/);
+    // Reserved (240.0.0.0/4)
+    await expect(assertSafeHttpUrl("http://240.0.0.1/feed")).rejects.toThrow(/Blocked internal/);
+  });
+
+  it("blocks reserved and documentation IPv6 SSRF targets", async () => {
+    // Discard-only (100::/64)
+    await expect(assertSafeHttpUrl("http://[100::]/feed")).rejects.toThrow(/Blocked internal/);
+    // Benchmark (2001:2::/48)
+    await expect(assertSafeHttpUrl("http://[2001:2::1]/feed")).rejects.toThrow(/Blocked internal/);
+    // Documentation (2001:db8::/32)
+    await expect(assertSafeHttpUrl("http://[2001:db8::1]/feed")).rejects.toThrow(/Blocked internal/);
+    // Multicast (ff00::/8)
+    await expect(assertSafeHttpUrl("http://[ff02::1]/feed")).rejects.toThrow(/Blocked internal/);
+    // Link-local (fe80::/10) — already blocked, verify extended range (feb0::)
+    await expect(assertSafeHttpUrl("http://[feb0::1]/feed")).rejects.toThrow(/Blocked internal/);
+  });
+
   it("ignores malformed configured candidate URLs", async () => {
     const provider = new WebCandidateFeedProbeProvider({
       cacheTtlSeconds: 60,

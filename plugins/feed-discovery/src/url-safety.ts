@@ -61,7 +61,17 @@ function isBlockedIp(value: string) {
       (a === 169 && b === 254) ||
       (a === 172 && b >= 16 && b <= 31) ||
       (a === 192 && b === 168) ||
-      (a === 100 && b >= 64 && b <= 127)
+      (a === 100 && b >= 64 && b <= 127) ||
+      // Documentation (TEST-NET-1/2/3)
+      (a === 192 && b === 0 && parts[2] === 2) ||
+      (a === 198 && b === 51 && parts[2] === 100) ||
+      (a === 203 && b === 0 && parts[2] === 113) ||
+      // IETF protocol assignments (192.0.0.0/24)
+      (a === 192 && b === 0 && parts[2] === 0) ||
+      // Benchmark (198.18.0.0/15)
+      (a === 198 && (b === 18 || b === 19)) ||
+      // Multicast (224.0.0.0/4) and reserved (240.0.0.0/4)
+      a >= 224
     );
   }
 
@@ -92,7 +102,17 @@ function isBlockedIp(value: string) {
       normalized === "::1" ||
       normalized.startsWith("fc") ||
       normalized.startsWith("fd") ||
-      normalized.startsWith("fe80")
+      normalized.startsWith("fe80") ||
+      // Discard-only (100::/64)
+      normalized.startsWith("100::") ||
+      // Benchmark (2001:2::/48)
+      normalized.startsWith("2001:2:") ||
+      // Documentation (2001:db8::/32)
+      normalized.startsWith("2001:db8:") ||
+      // Link-local scoped (fe80::/10 — covers fe80 through febf)
+      /^fe[89ab]/.test(normalized) ||
+      // Multicast (ff00::/8)
+      normalized.startsWith("ff")
     );
   }
 
