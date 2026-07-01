@@ -130,6 +130,29 @@ describe("AgentStack coordinator", () => {
     expect(listener).toHaveBeenCalledWith(expect.objectContaining({ type: "delegation.granted" }));
   });
 
+  it("checks active delegation authority by owner, agent, scope, and expiry", () => {
+    const stack = new AgentStack(() => "2026-01-01T00:00:00.000Z");
+    stack.registerAgent(agent);
+
+    stack.delegate(owner, agent.did, ["tasks:create"], "2026-01-02T00:00:00.000Z");
+
+    expect(stack.hasDelegation(owner, agent.did, "tasks:create")).toBe(true);
+    expect(stack.hasDelegation(owner, agent.did, "tasks:update")).toBe(false);
+    expect(stack.hasDelegation(owner, agent.did, "tasks:create", "2026-01-03T00:00:00.000Z")).toBe(false);
+    expect(stack.listDelegations({ ownerDid: owner, agentDid: agent.did, scope: "tasks:create" })).toHaveLength(1);
+    expect(stack.listDelegations({ activeAt: "2026-01-03T00:00:00.000Z" })).toHaveLength(0);
+  });
+
+  it("allows wildcard delegation scopes and ignores revoked grants", () => {
+    const stack = new AgentStack();
+    stack.registerAgent(agent);
+    const grant = stack.delegate(owner, agent.did, ["*"]);
+
+    expect(stack.hasDelegation(owner, agent.did, "tasks:update")).toBe(true);
+    stack.revokeDelegation(grant.id);
+    expect(stack.hasDelegation(owner, agent.did, "tasks:update")).toBe(false);
+  });
+
   it("rejects unknown agents and invalid DIDs", () => {
     const stack = new AgentStack();
     expect(() => stack.createTask({ ownerDid: "nope", sourceApp: "x", title: "t" })).toThrow();
