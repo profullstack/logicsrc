@@ -1,0 +1,19 @@
+{
+  "name": "@logicsrc/agentad",
+  "version": "0.1.0",
+  "description": "AgentAd Marketplace reference exchange: campaign/placement registration, second-price auction, budget pacing, signed impression/click metering, and CoinPay-style settlement over the @logicsrc AgentAd schemas.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run src"
+  },
+  "dependencies": {
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1"
+  },
+  "devDependencies": {
+    "vitest": "^4.0.8"
+  }
+}

@@ -63,3 +63,9 @@ The `consumer` field on a request changes how an ad is delivered:
 
 [cl1s.tech](https://github.com/profullstack/cl1s.tech) is the hosted AgentAd
 network: SDK, CLI, and ad-serving service that consume these schemas.
+
+## Marketplace
+
+The two-sided exchange built on these contracts — advertiser campaigns, publisher
+placements, auction, metering, and CoinPay settlement — is specified in
+[AgentAd Marketplace (PRD)](./agentad-marketplace.md) (AgentBBS milestone M5).

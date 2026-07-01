@@ -19,6 +19,7 @@ packages/
   tui                terminal UI
   schemas            LogicSRC JSON schemas
   validators         schema validation utilities
+  agentad            AgentAd Marketplace exchange (auction, metering, settlement)
   plugin-core        plugin manifest and loader runtime
 plugins/
   coinpay            default DID, wallet, payment, and escrow plugin
@@ -54,7 +55,7 @@ It provides read-only resources for docs and schemas, validation/example tools, 
 ## v1.0.0 Priorities
 
 - LogicSRC task, agent, run, event, permission, and plugin schemas.
-- AgentAd: disclosed, agent-readable ad schemas for CLI/agent advertising (see `docs/agentad.md`); cl1s.tech is the reference network.
+- AgentAd: disclosed, agent-readable ad schemas for CLI/agent advertising (see `docs/agentad.md`); cl1s.tech is the reference network. The two-sided exchange on top is specified in `docs/agentad-marketplace.md`.
 - LogicSRC CLI, SDK, TUI, PWA, MCP, and curl-compatible API conventions.
 - CommandBoard.run reference implementation.
 - Monorepo-maintained plugin system.
