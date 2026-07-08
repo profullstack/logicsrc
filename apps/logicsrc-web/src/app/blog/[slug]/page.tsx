@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import type { Metadata } from "next";
 import { publicClient } from "@/lib/supabase";
 import { SiteShell } from "@/components/site-shell";
+import { AdUnit } from "@/components/ad-unit";
 import { sanitizeRenderedHtml } from "@/lib/html";
 
 export const dynamic = "force-dynamic";
@@ -118,6 +119,9 @@ export default async function BlogPostPage({
           style={{ lineHeight: 1.7 }}
           dangerouslySetInnerHTML={{ __html: html }}
         />
+        <div style={{ display: "flex", justifyContent: "center", marginTop: "2.5rem" }}>
+          <AdUnit slot="709f4f1d-667a-4888-9040-90f5f65120f2" format="banner_300x250" />
+        </div>
       </article>
     </SiteShell>
   );
