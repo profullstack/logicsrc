@@ -1,10 +1,12 @@
-openprd: "0.1"
-id: park-service-expansion
-title: Parked-domain service expansion
-status: draft
-owner: moshcoder.coinpay
+openprd: "0.2"
+id: "0001"
+title: Expand the parked-domain service
+status: Draft
+authors:
+  - anthony@profullstack.com
 repo: moshcoder/moshcoding
 created: 2026-07-12
+updated: 2026-07-12
 tags:
   - growth
   - monetization
