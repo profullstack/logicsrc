@@ -17,6 +17,16 @@ export function createValidator() {
   return ajv;
 }
 
+const _ajv = createValidator();
+const _compiledValidators = new Map<SchemaKind, ReturnType<typeof _ajv.compile>>();
+
+function getCompiledValidator(kind: SchemaKind) {
+  if (!_compiledValidators.has(kind)) {
+    _compiledValidators.set(kind, _ajv.compile(schemas[kind]));
+  }
+  return _compiledValidators.get(kind)!;
+}
+
 export function parseDocument(input: string, fileName = "document") {
   if (fileName.toLowerCase().endsWith(".json")) {
     return JSON.parse(input) as unknown;
@@ -26,8 +36,7 @@ export function parseDocument(input: string, fileName = "document") {
 }
 
 export function validate(kind: SchemaKind, data: unknown): ValidationResult {
-  const ajv = createValidator();
-  const validateDocument = ajv.compile(schemas[kind]);
+  const validateDocument = getCompiledValidator(kind);
   const ok = validateDocument(data);
 
   if (ok) {
