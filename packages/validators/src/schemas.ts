@@ -22,6 +22,7 @@ import credentialProviderSchema from "../../schemas/schemas/logicsrc-credential-
 import credentialSyncPlanSchema from "../../schemas/schemas/logicsrc-credential-sync-plan.schema.json" with { type: "json" };
 import credentialSyncRunSchema from "../../schemas/schemas/logicsrc-credential-sync-run.schema.json" with { type: "json" };
 import credentialAuditEventSchema from "../../schemas/schemas/logicsrc-credential-audit-event.schema.json" with { type: "json" };
+import openprdPrdSchema from "../../schemas/schemas/openprd-prd.schema.json" with { type: "json" };
 
 export const schemas = {
   agent: agentSchema,
@@ -47,7 +48,8 @@ export const schemas = {
   "credential-provider": credentialProviderSchema,
   "credential-sync-plan": credentialSyncPlanSchema,
   "credential-sync-run": credentialSyncRunSchema,
-  "credential-audit-event": credentialAuditEventSchema
+  "credential-audit-event": credentialAuditEventSchema,
+  "openprd-prd": openprdPrdSchema
 } as const;
 
 export type SchemaKind = keyof typeof schemas;

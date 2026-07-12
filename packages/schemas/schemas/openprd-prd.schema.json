@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.logicsrc.com/openprd-prd.schema.json",
+  "title": "OpenPRD Product Requirements Document",
+  "description": "The front-matter manifest of an OpenPRD document. OpenPRD is a deliberately lightweight, single-file PRD standard: one prd/<slug>/prd.md per product decision, authored by a human or an AI agent. The document body is Markdown with a fixed set of sections; this schema governs only the YAML front-matter. PRD documents are private by convention (gitignored) — only the OpenPRD standard itself is published.",
+  "type": "object",
+  "required": ["openprd", "id", "title", "status"],
+  "additionalProperties": false,
+  "properties": {
+    "openprd": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+(\\.\\d+)?$",
+      "description": "OpenPRD standard version this document conforms to, e.g. '0.1'."
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$",
+      "description": "Kebab-case slug, unique within the repo. Also the directory name: prd/<id>/prd.md."
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable product/feature title."
+    },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "review", "active", "shipped", "archived"],
+      "description": "Lifecycle stage of the PRD."
+    },
+    "owner": {
+      "type": "string",
+      "description": "Optional DID or handle of the accountable owner, e.g. a LogicSRC agent or account DID."
+    },
+    "repo": {
+      "type": "string",
+      "description": "Optional owner/name of the repository this PRD targets."
+    },
+    "created": {
+      "type": "string",
+      "format": "date",
+      "description": "ISO date (YYYY-MM-DD) the PRD was created."
+    },
+    "updated": {
+      "type": "string",
+      "format": "date",
+      "description": "ISO date (YYYY-MM-DD) of the last substantive edit."
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "uniqueItems": true,
+      "description": "Optional freeform labels for grouping PRDs."
+    },
+    "supersedes": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+      "uniqueItems": true,
+      "description": "Optional ids of earlier PRDs this one replaces."
+    }
+  }
+}
