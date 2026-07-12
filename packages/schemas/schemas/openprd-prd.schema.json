@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.logicsrc.com/openprd-prd.schema.json",
   "title": "OpenPRD Product Requirements Document",
-  "description": "The front-matter manifest of an OpenPRD document. OpenPRD is a lightweight, DIP-style proposal standard: a repo publishes a numbered collection of PRDs under prd/ (prd/NNNN-slug.md), with a 0000-template.md and a README index, committed to the repo like a BIP/EIP/DIP process. This schema governs the YAML front-matter; the body is Markdown with a fixed set of sections.",
+  "description": "The front-matter manifest of an OpenPRD document. OpenPRD is a lightweight, DIP-style proposal standard: a repo publishes a numbered collection of PRDs under prd/ (prd/NNNN-slug.md), with a 0000-template.md and a README index, committed to the repo like a BIP/EIP/DIP process. This schema governs the YAML front-matter; the body is Markdown with a fixed set of sections. Optional keys MAY be present but empty (null) — the template ships them blank for authors to fill.",
   "type": "object",
   "required": ["openprd", "id", "title", "status"],
   "additionalProperties": false,
@@ -28,51 +28,50 @@
       "description": "Lifecycle stage. Draft → Review → Accepted → Final; or Rejected/Withdrawn/Superseded."
     },
     "authors": {
-      "type": "array",
+      "type": ["array", "null"],
       "items": { "type": "string" },
-      "minItems": 1,
       "uniqueItems": true,
       "description": "Author identities — email, handle, or DID."
     },
     "owner": {
-      "type": "string",
+      "type": ["string", "null"],
       "description": "Optional DID or handle of the accountable owner (e.g. a LogicSRC account/agent DID)."
     },
     "repo": {
-      "type": "string",
+      "type": ["string", "null"],
       "description": "Optional owner/name of the repository this PRD targets."
     },
     "created": {
-      "type": "string",
+      "type": ["string", "null"],
       "format": "date",
       "description": "ISO date (YYYY-MM-DD) the PRD was created."
     },
     "updated": {
-      "type": "string",
+      "type": ["string", "null"],
       "format": "date",
       "description": "ISO date (YYYY-MM-DD) of the last substantive edit."
     },
     "discussion": {
-      "type": "string",
+      "type": ["string", "null"],
       "description": "Optional URL to the PR/issue/thread where this PRD is discussed."
     },
     "implementation": {
-      "type": "string",
+      "type": ["string", "null"],
       "description": "Optional URL/reference to the implementation PR or tracking issue."
     },
     "tags": {
-      "type": "array",
+      "type": ["array", "null"],
       "items": { "type": "string" },
       "uniqueItems": true,
       "description": "Optional freeform labels for grouping PRDs."
     },
     "supersedes": {
-      "type": "string",
+      "type": ["string", "null"],
       "pattern": "^\\d{4}$",
       "description": "Optional id of an earlier PRD this one replaces."
     },
     "superseded-by": {
-      "type": "string",
+      "type": ["string", "null"],
       "pattern": "^\\d{4}$",
       "description": "Optional id of a later PRD that replaces this one."
     }
