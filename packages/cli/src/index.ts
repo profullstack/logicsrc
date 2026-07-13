@@ -9,6 +9,20 @@ import { listSocialAccountProviders } from "@logicsrc/plugin-social-accounts";
 import { renderArcadeList, renderPluginStatus, renderTui, runArcadeSession, type TaskSnapshot } from "@logicsrc/tui";
 import { assertSchemaKind, parseDocument, validate } from "@logicsrc/validators";
 import { getConfigValue, readConfig, setConfigValue, writeConfig } from "./config.js";
+import {
+  loginAction,
+  logoutAction,
+  whoamiAction,
+  teamsCreateAction,
+  teamsListAction,
+  teamsInviteAction,
+  teamsAcceptAction,
+  teamsMembersAction,
+  teamsVaultsAction,
+  teamsGrantAction,
+  teamsPushAction,
+  teamsPullAction
+} from "./teams.js";
 import { boards, tasks } from "./fixtures.js";
 import { print, type OutputFormat } from "./format.js";
 import { parsePositiveInteger } from "./numeric-options.js";
@@ -64,21 +78,27 @@ program.action(async (options) => {
 
 program
   .command("login")
-  .option("--did <did>", "CoinPay DID")
-  .option("--oauth <provider>", "OAuth provider")
-  .description("Start a login flow.")
-  .action((options) => {
-    const mode = options.did ? `CoinPay DID ${options.did}` : options.oauth ? `${options.oauth} OAuth` : "browser/device";
-    console.log(`Login flow ready: ${mode}`);
-    console.log("Token storage target: $HOME/.logicsrc/auth.json");
+  .option("--email <email>", "Email to log in with (LogicSRC team credential sharing)")
+  .option("--code <code>", "Login code (skip the interactive prompt)")
+  .option("--did <did>", "CoinPay DID (legacy)")
+  .option("--oauth <provider>", "OAuth provider (legacy)")
+  .description("Log in by email for team credential sharing (registers your device identity key).")
+  .action(async (options) => {
+    if (!options.email && (options.did || options.oauth)) {
+      const mode = options.did ? `CoinPay DID ${options.did}` : `${options.oauth} OAuth`;
+      console.log(`Login flow ready: ${mode}`);
+      console.log("Token storage target: $HOME/.logicsrc/identity.json");
+      return;
+    }
+    await loginAction({ email: options.email, code: options.code });
   });
 
-program.command("logout").description("Clear local auth token.").action(() => {
-  console.log("Logged out. Local auth token would be removed from $HOME/.logicsrc/auth.json.");
+program.command("logout").description("Clear local auth token (keeps your identity key).").action(async () => {
+  await logoutAction();
 });
 
-program.command("whoami").description("Show current DID and account context.").action(() => {
-  print({ did: process.env.COMMANDBOARD_DID || "anthony.coinpay", api_url: process.env.COMMANDBOARD_API_URL || "http://localhost:4010" }, "table");
+program.command("whoami").option("--format <format>", "table, json, or markdown", "table").description("Show current login + teams.").action(async (options) => {
+  await whoamiAction(options.format as OutputFormat);
 });
 
 program
@@ -523,6 +543,79 @@ credentials
   .action((options) => {
     print(credentialEngine().exportCredentialAudit(options.run), options.format as OutputFormat);
   });
+
+const teams = program.command("teams").description("Share credentials with teammates by email — end-to-end encrypted team vaults.");
+
+teams
+  .command("create")
+  .argument("<slug>", "Team slug (lowercase letters, numbers, dashes)")
+  .option("--name <name>", "Display name")
+  .option("--format <format>", "table, json, or markdown", "table")
+  .description("Create a team you own.")
+  .action((slug, options) => teamsCreateAction(slug, { name: options.name, format: options.format as OutputFormat }));
+
+teams
+  .command("list")
+  .option("--format <format>", "table, json, or markdown", "table")
+  .description("List teams you belong to.")
+  .action((options) => teamsListAction(options.format as OutputFormat));
+
+teams
+  .command("invite")
+  .argument("<slug>", "Team slug")
+  .argument("<email>", "Teammate email")
+  .option("--role <role>", "owner | admin | member", "member")
+  .option("--format <format>", "table, json, or markdown", "table")
+  .description("Invite a teammate by email.")
+  .action((slug, email, options) => teamsInviteAction(slug, email, { role: options.role, format: options.format as OutputFormat }));
+
+teams
+  .command("accept")
+  .argument("<token>", "Invite token from your email")
+  .option("--format <format>", "table, json, or markdown", "table")
+  .description("Accept a team invite.")
+  .action((token, options) => teamsAcceptAction(token, options.format as OutputFormat));
+
+teams
+  .command("members")
+  .argument("<slug>", "Team slug")
+  .option("--format <format>", "table, json, or markdown", "table")
+  .description("List team members and their status.")
+  .action((slug, options) => teamsMembersAction(slug, options.format as OutputFormat));
+
+teams
+  .command("vaults")
+  .argument("<slug>", "Team slug")
+  .option("--format <format>", "table, json, or markdown", "table")
+  .description("List a team's credential vaults.")
+  .action((slug, options) => teamsVaultsAction(slug, options.format as OutputFormat));
+
+teams
+  .command("grant")
+  .argument("<slug>", "Team slug")
+  .argument("<vault>", "Vault name")
+  .argument("<email>", "Teammate email to grant vault access")
+  .option("--format <format>", "table, json, or markdown", "table")
+  .description("Grant a member decryption access to a vault (re-wraps the vault key to their key).")
+  .action((slug, vault, email, options) => teamsGrantAction(slug, vault, email, options.format as OutputFormat));
+
+teams
+  .command("push")
+  .argument("<slug>", "Team slug")
+  .argument("<vault>", "Vault name")
+  .option("--env <path>", "Source .env file", ".env")
+  .option("--format <format>", "table, json, or markdown", "table")
+  .description("Encrypt and push a local .env into a team vault.")
+  .action((slug, vault, options) => teamsPushAction(slug, vault, { env: options.env, format: options.format as OutputFormat }));
+
+teams
+  .command("pull")
+  .argument("<slug>", "Team slug")
+  .argument("<vault>", "Vault name")
+  .option("--env <path>", "Destination .env file", ".env")
+  .option("--format <format>", "table, json, or markdown", "table")
+  .description("Pull a team vault and decrypt it into a local .env.")
+  .action((slug, vault, options) => teamsPullAction(slug, vault, { env: options.env, format: options.format as OutputFormat }));
 
 const accounts = program.command("accounts").description("Manage connected social and email accounts.");
 

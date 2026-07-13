@@ -17,6 +17,6 @@ export const credentialSharingManifest: PluginManifest = {
     "credentials.audit.read",
     "credentials.export"
   ],
-  commands: ["credentials"],
-  env: ["DOPPLER_TOKEN", "RAILWAY_TOKEN", "GITHUB_TOKEN", "LOGICSRC_CREDENTIAL_HOME"]
+  commands: ["credentials", "teams"],
+  env: ["DOPPLER_TOKEN", "RAILWAY_TOKEN", "GITHUB_TOKEN", "LOGICSRC_CREDENTIAL_HOME", "LOGICSRC_HOME", "COMMANDBOARD_API_URL", "LOGICSRC_API_URL"]
 };

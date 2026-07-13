@@ -152,3 +152,66 @@ provider.audit()
 ```
 
 The adapter boundary lets tools such as a PWA, TUI, CI workflow, or external CLI consume the same open standard without making LogicSRC depend on any specific product.
+
+## Team Sharing (end-to-end encrypted)
+
+The `team` provider adds a fifth endpoint type — a hosted, **end-to-end-encrypted**
+team vault — so you can share credentials with teammates by email instead of
+passing `.env` files over chat. It is addressed as `team:<team-slug>/<vault-name>`
+(`endpoint.project` = team slug, `endpoint.config` = vault name).
+
+### Trust model
+
+The server (`commandboard-api`, routes under `/api/credshare`) is a **zero-knowledge
+relay for secret values**. It stores only:
+
+- member identity **public keys** (X25519),
+- the vault **data-encryption key (DEK) sealed to each member's public key**
+  (`crypto_box_seal`), one wrapped copy per member,
+- secret **ciphertext + nonce** (`crypto_secretbox`), plus a salted fingerprint
+  for redacted diffs.
+
+Plaintext secret values and the raw DEK never leave a member's machine. Granting a
+teammate access = an existing member unwraps the DEK with their private key and
+re-wraps (seals) it to the new member's public key. The private key lives only in
+`~/.logicsrc/identity.json` (mode 0600) and is never uploaded.
+
+### CLI
+
+```bash
+# One-time: log in by email (registers this device's identity key).
+logicsrc login --email you@example.com
+
+# Owner: create a team, push a local .env into an encrypted vault, invite people.
+logicsrc teams create acme --name "Acme Inc"
+logicsrc teams push acme prod --env .env        # encrypt + upload
+logicsrc teams invite acme teammate@example.com # emails an accept link
+
+# Teammate: accept, then get granted, then pull + decrypt locally.
+logicsrc login --email teammate@example.com
+logicsrc teams accept <token-from-email>
+# …an existing member runs:  logicsrc teams grant acme prod teammate@example.com
+logicsrc teams pull acme prod --env .env        # download + decrypt
+
+# Inspect / manage
+logicsrc teams list
+logicsrc teams members acme
+logicsrc teams vaults acme
+```
+
+Because `team` is a normal provider, the generic sync surface works too — e.g.
+`logicsrc credentials plan --from env --from-path .env --to team --to-project acme
+--to-config prod`, then `diff`, `sync`, `audit`, and `rollback` behave exactly as
+with the other providers.
+
+### Server + web
+
+- Server storage is behind a `CredShareStore` interface: an in-memory store for
+  local dev/tests, and a Supabase-backed store (`SUPABASE_URL` +
+  `SUPABASE_SERVICE_ROLE_KEY`) for production. Migration:
+  `supabase/migrations/*_credshare.sql` (deny-by-default RLS).
+- Email (login codes + invites) uses Resend when `RESEND_API_KEY` is set; without
+  it, codes/tokens are returned in the API response for local use.
+- `logicsrc.com/teams` is a management surface only: log in by email, view
+  teams/members/vaults and invite/accept. The browser holds no private key, so it
+  never decrypts — decryption happens only in the CLI.

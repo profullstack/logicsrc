@@ -53,9 +53,44 @@ export {
   dopplerProvider,
   railwayProvider,
   githubSecretsProvider,
+  teamProvider,
   parseEnv,
   applyEnv
 } from "./providers/index.js";
+export {
+  TeamClient,
+  TeamApiError,
+  type TeamClientOptions,
+  type RemoteUser,
+  type RemoteTeam,
+  type RemoteMember,
+  type RemoteVault,
+  type RemoteSecret,
+  type RemoteGrantRow
+} from "./client.js";
+export {
+  generateIdentityKeyPair,
+  generateVaultKey,
+  wrapVaultKey,
+  unwrapVaultKey,
+  encryptValue,
+  decryptValue,
+  publicKeyForSecret,
+  type IdentityKeyPair,
+  type SealedValue
+} from "./crypto.js";
+export {
+  loadOrCreateIdentity,
+  readIdentity,
+  saveIdentity,
+  updateIdentity,
+  requireAuth,
+  verifyIdentityIntegrity,
+  identityPath,
+  logicsrcHome,
+  defaultApiUrl,
+  type LocalIdentity
+} from "./identity.js";
 export {
   createFileCredentialStore,
   createMemoryCredentialStore,

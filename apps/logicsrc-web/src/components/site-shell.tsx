@@ -8,6 +8,7 @@ const NAV: Array<{ href: string; label: string; external?: boolean }> = [
   { href: "/agent-swarm", label: "Soon" },
   { href: "/agentbyte", label: "AgentByte" },
   { href: "/credential-sharing", label: "Credentials" },
+  { href: "/teams", label: "Teams" },
   { href: "/#cli", label: "CLI" },
   { href: "/docs", label: "Docs" },
   { href: "/blog", label: "Blog" },

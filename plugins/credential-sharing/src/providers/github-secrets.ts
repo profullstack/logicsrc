@@ -45,7 +45,10 @@ interface PublicKey {
 }
 
 async function sealValue(value: string, publicKeyB64: string): Promise<string> {
-  const sodiumModule = (await import("libsodium-wrappers")) as unknown as { default?: SodiumLike } & SodiumLike;
+  // libsodium-wrappers' ESM entry is broken; load its self-contained CJS build.
+  const { createRequire } = await import("node:module");
+  const require = createRequire(import.meta.url);
+  const sodiumModule = require("libsodium-wrappers") as { default?: SodiumLike } & SodiumLike;
   const sodium: SodiumLike = sodiumModule.default ?? sodiumModule;
   await sodium.ready;
   const key = sodium.from_base64(publicKeyB64, sodium.base64_variants.ORIGINAL);
