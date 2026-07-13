@@ -11,10 +11,6 @@ import { listSocialAccountProviders, socialAccountsPlugin } from "@logicsrc/plug
 import { uGigPlugin } from "@logicsrc/plugin-ugig";
 import { schemas, validate } from "@logicsrc/validators";
 import { buildAgentMailService, mailIdentity } from "./agentmail.js";
-import { createCredShareApi, type CredShareRequest } from "./credshare/router.js";
-import { createMemoryCredShareStore } from "./credshare/store.js";
-import { createSupabaseCredShareStore } from "./credshare/supabase-store.js";
-import { createResendEmailSender } from "./credshare/email.js";
 
 const registry = createPluginRegistry([coinPayPlugin, uGigPlugin, sh1ptPlugin, c0mputePlugin, feedDiscoveryPlugin, socialAccountsPlugin, emailAccountsPlugin, agentMailPlugin]);
 
@@ -61,42 +57,6 @@ const c0mputeWorkers = [
   { id: "worker_pool_1", region: "us-west", status: "preview", capacity: "wip" }
 ];
 
-// Credential-sharing API: Supabase-backed when SUPABASE_URL + service key are
-// present, else an in-process memory store (local dev / tests). Zero-knowledge:
-// the server only ever relays ciphertext, wrapped keys, and public keys.
-const credShareApi = createCredShareApi({
-  store: createSupabaseCredShareStore() ?? createMemoryCredShareStore(),
-  email: createResendEmailSender(),
-  webBaseUrl: process.env.LOGICSRC_WEB_URL || "https://logicsrc.com"
-});
-
-const CREDSHARE_PREFIX = "/api/credshare";
-
-async function handleCredShare(request: IncomingMessage, response: ServerResponse, url: URL) {
-  const method = request.method ?? "GET";
-  let body: unknown;
-  if (method === "POST" || method === "PUT" || method === "PATCH") {
-    try {
-      body = await readJson(request);
-    } catch {
-      json(response, 400, { error: "Invalid JSON body" });
-      return;
-    }
-  }
-  const authHeader = request.headers["authorization"];
-  const header = Array.isArray(authHeader) ? authHeader[0] : authHeader;
-  const token = header?.toLowerCase().startsWith("bearer ") ? header.slice(7).trim() : undefined;
-  const req: CredShareRequest = {
-    method,
-    path: url.pathname.slice(CREDSHARE_PREFIX.length) || "/",
-    query: url.searchParams,
-    body,
-    token
-  };
-  const result = await credShareApi.handle(req);
-  json(response, result.status, result.body);
-}
-
 class InvalidJsonBodyError extends Error {
   constructor() {
     super("Invalid JSON body");
@@ -125,7 +85,7 @@ async function route(request: IncomingMessage, response: ServerResponse) {
     json(response, 200, {
       ok: true,
       service: "commandboard-api",
-      endpoints: ["/health", "/api/boards", "/api/tasks", "/api/plugins", "/api/schemas", "/api/accounts/providers", "/api/accounts", "/api/social/providers", "/api/email/providers", "/api/feeds/discover", "/api/feeds/providers", "/api/credshare/auth/request", "/api/credshare/auth/verify", "/api/credshare/keys", "/api/credshare/teams", "/api/credshare/teams/:slug/members", "/api/credshare/teams/:slug/invites", "/api/credshare/teams/:slug/vaults", "/api/credshare/invites/accept", "/api/credshare/vaults/:id/secrets", "/api/credshare/vaults/:id/grant", "/api/credshare/vaults/:id/grants", "/api/credshare/vaults/:id/audit", "/api/plugins/agentmail/mailboxes", "/api/plugins/agentmail/mailboxes/:mailbox/messages", "/api/plugins/agentmail/mailboxes/:mailbox/messages/:uid", "/api/plugins/agentmail/search", "/api/plugins/agentmail/messages", "/rss/discover/:keyword.xml", "/opml/discover/:keyword.xml", "/atom/discover/:keyword.xml", "/json-feed/discover/:keyword.json"]
+      endpoints: ["/health", "/api/boards", "/api/tasks", "/api/plugins", "/api/schemas", "/api/accounts/providers", "/api/accounts", "/api/social/providers", "/api/email/providers", "/api/feeds/discover", "/api/feeds/providers", "/api/plugins/agentmail/mailboxes", "/api/plugins/agentmail/mailboxes/:mailbox/messages", "/api/plugins/agentmail/mailboxes/:mailbox/messages/:uid", "/api/plugins/agentmail/search", "/api/plugins/agentmail/messages", "/rss/discover/:keyword.xml", "/opml/discover/:keyword.xml", "/atom/discover/:keyword.xml", "/json-feed/discover/:keyword.json"]
     });
     return;
   }
@@ -257,11 +217,6 @@ async function route(request: IncomingMessage, response: ServerResponse) {
       return;
     }
     text(response, 200, "application/feed+json; charset=utf-8", renderJsonFeed(result));
-    return;
-  }
-
-  if (url.pathname === CREDSHARE_PREFIX || url.pathname.startsWith(`${CREDSHARE_PREFIX}/`)) {
-    await handleCredShare(request, response, url);
     return;
   }
 

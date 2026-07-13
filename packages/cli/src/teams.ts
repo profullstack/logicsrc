@@ -1,4 +1,7 @@
-import { createInterface } from "node:readline/promises";
+import { createServer } from "node:http";
+import { createHash, randomBytes } from "node:crypto";
+import { hostname } from "node:os";
+import { spawn } from "node:child_process";
 import {
   TeamClient,
   TeamApiError,
@@ -26,13 +29,77 @@ function authedClient(): { client: TeamClient; identity: ReturnType<typeof requi
   return { client, identity };
 }
 
-async function prompt(question: string): Promise<string> {
-  const rl = createInterface({ input: process.stdin, output: process.stderr });
+const b64url = (buf: Buffer): string => buf.toString("base64url");
+
+function openBrowser(url: string): void {
+  const [cmd, args] =
+    process.platform === "darwin" ? ["open", [url]]
+    : process.platform === "win32" ? ["cmd", ["/c", "start", "", url]]
+    : ["xdg-open", [url]];
   try {
-    return (await rl.question(question)).trim();
-  } finally {
-    rl.close();
+    const child = spawn(cmd, args, { stdio: "ignore", detached: true });
+    child.on("error", () => {});
+    child.unref();
+  } catch {
+    /* print fallback below */
   }
+}
+
+const DONE_PAGE = (msg: string) =>
+  `<!doctype html><meta charset=utf-8><body style="background:#f6f7f4;color:#101418;font-family:system-ui,sans-serif;text-align:center;padding:16vh 24px"><h1 style="color:#0a7d59">${msg}</h1><p>Return to your terminal — you can close this tab.</p></body>`;
+
+/** Browser OAuth-PKCE loopback login against the LogicSRC app → an lsk_ token. */
+function loopbackLogin(apiUrl: string, timeoutMs = 180000): Promise<{ token: string; email: string | null; userId?: string }> {
+  const verifier = b64url(randomBytes(32));
+  const challenge = b64url(createHash("sha256").update(verifier).digest());
+  const state = b64url(randomBytes(16));
+  const base = apiUrl.replace(/\/+$/, "");
+
+  return new Promise((resolve, reject) => {
+    const server = createServer(async (req, res) => {
+      const url = new URL(req.url ?? "/", "http://127.0.0.1");
+      if (url.pathname !== "/callback") {
+        res.writeHead(404).end();
+        return;
+      }
+      try {
+        const code = url.searchParams.get("code");
+        if (url.searchParams.get("error")) throw new Error(`authorization denied (${url.searchParams.get("error")})`);
+        if (!code || url.searchParams.get("state") !== state) throw new Error("bad authorization response (state mismatch)");
+        const tokRes = await fetch(`${base}/cli/token`, {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ code, code_verifier: verifier })
+        });
+        if (!tokRes.ok) throw new Error(`token exchange failed (${tokRes.status})`);
+        const tok = (await tokRes.json()) as { access_token: string; user?: { email?: string; id?: string } };
+        res.writeHead(200, { "content-type": "text/html" }).end(DONE_PAGE("You're in."));
+        server.close();
+        resolve({ token: tok.access_token, email: tok.user?.email ?? null, userId: tok.user?.id });
+      } catch (error) {
+        res.writeHead(400, { "content-type": "text/html" }).end(DONE_PAGE("Login failed — check the terminal."));
+        server.close();
+        reject(error);
+      }
+    });
+
+    server.listen(0, "127.0.0.1", () => {
+      const { port } = server.address() as { port: number };
+      const authUrl = `${base}/cli/authorize?` + new URLSearchParams({
+        redirect_uri: `http://127.0.0.1:${port}/callback`,
+        state,
+        code_challenge: challenge,
+        code_challenge_method: "S256",
+        name: `logicsrc cli @ ${hostname()}`
+      });
+      console.error("\n🔑 Opening your browser to authorize the LogicSRC CLI…");
+      console.error(`   If it doesn't open, visit:\n   ${authUrl}\n`);
+      openBrowser(authUrl);
+    });
+
+    const timer = setTimeout(() => { server.close(); reject(new Error("login timed out — run `logicsrc login` again")); }, timeoutMs);
+    server.on("close", () => clearTimeout(timer));
+  });
 }
 
 async function resolveVaultId(client: TeamClient, slug: string, vault: string): Promise<string> {
@@ -42,42 +109,37 @@ async function resolveVaultId(client: TeamClient, slug: string, vault: string): 
   return found.id;
 }
 
-export async function loginAction(options: { email?: string; code?: string }): Promise<void> {
+export async function loginAction(options: { apiUrl?: string; token?: string }): Promise<void> {
   const identity = await loadOrCreateIdentity();
-  const email = options.email ?? (await prompt("Email: "));
-  if (!email) throw new Error("An email is required: logicsrc login --email you@example.com");
-  const client = new TeamClient({ apiUrl: identity.apiUrl || defaultApiUrl() });
+  const apiUrl = (options.apiUrl || identity.apiUrl || defaultApiUrl()).replace(/\/+$/, "");
 
-  const requested = await client.requestLoginCode(email);
-  let code = options.code;
-  if (requested.devCode) {
-    // No email transport configured server-side (local dev) — the code is returned.
-    console.error(`(dev) login code: ${requested.devCode}`);
-    code = code ?? requested.devCode;
+  // Loopback browser OAuth-PKCE (like `moshcode login`), or a --token for CI.
+  let token = options.token;
+  let email: string | null = null;
+  let userId: string | undefined;
+  if (token) {
+    const client = new TeamClient({ apiUrl, token });
+    const me = await client.me();
+    email = me.user.email;
+    userId = me.user.id;
+  } else {
+    const result = await loopbackLogin(apiUrl);
+    token = result.token;
+    email = result.email;
+    userId = result.userId;
   }
-  if (!code) code = await prompt(`Enter the 6-digit code sent to ${email}: `);
 
-  const verified = await client.verifyLoginCode(email, code);
-  client.setToken(verified.token);
+  const client = new TeamClient({ apiUrl, token: token! });
   await client.uploadPublicKey(identity.keys.publicKey);
-  await updateIdentity({ email: verified.user.email, userId: verified.user.id, apiToken: verified.token, apiUrl: identity.apiUrl || defaultApiUrl() });
+  await updateIdentity({ email: email ?? undefined, userId, apiToken: token, apiUrl });
 
-  console.error(`Logged in as ${verified.user.email}. Identity key registered.`);
-  print({ email: verified.user.email, userId: verified.user.id, apiUrl: identity.apiUrl || defaultApiUrl() }, "table");
+  console.error(`Logged in${email ? ` as ${email}` : ""}. Identity key registered on ${apiUrl}.`);
+  print({ email, apiUrl }, "table");
 }
 
 export async function logoutAction(): Promise<void> {
-  const identity = readIdentity();
-  if (identity?.apiToken) {
-    try {
-      const client = new TeamClient({ apiUrl: identity.apiUrl || defaultApiUrl(), token: identity.apiToken });
-      await client.logout();
-    } catch {
-      // best effort — token may already be gone
-    }
-  }
   await updateIdentity({ apiToken: undefined, email: undefined, userId: undefined });
-  console.error("Logged out. Local identity key retained (delete ~/.logicsrc/identity.json to remove it).");
+  console.error("Logged out (local token cleared; revoke the key at /settings). Identity key retained — delete ~/.logicsrc/identity.json to remove it.");
 }
 
 export async function whoamiAction(format: OutputFormat): Promise<void> {

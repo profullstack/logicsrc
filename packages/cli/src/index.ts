@@ -78,19 +78,11 @@ program.action(async (options) => {
 
 program
   .command("login")
-  .option("--email <email>", "Email to log in with (LogicSRC team credential sharing)")
-  .option("--code <code>", "Login code (skip the interactive prompt)")
-  .option("--did <did>", "CoinPay DID (legacy)")
-  .option("--oauth <provider>", "OAuth provider (legacy)")
-  .description("Log in by email for team credential sharing (registers your device identity key).")
+  .option("--api-url <url>", "LogicSRC app URL", process.env.LOGICSRC_API_URL || process.env.COMMANDBOARD_API_URL)
+  .option("--token <lsk_key>", "Use an existing API key instead of the browser flow (CI)")
+  .description("Log in via your browser (loopback OAuth) for team credential sharing; registers your device identity key.")
   .action(async (options) => {
-    if (!options.email && (options.did || options.oauth)) {
-      const mode = options.did ? `CoinPay DID ${options.did}` : `${options.oauth} OAuth`;
-      console.log(`Login flow ready: ${mode}`);
-      console.log("Token storage target: $HOME/.logicsrc/identity.json");
-      return;
-    }
-    await loginAction({ email: options.email, code: options.code });
+    await loginAction({ apiUrl: options.apiUrl, token: options.token });
   });
 
 program.command("logout").description("Clear local auth token (keeps your identity key).").action(async () => {

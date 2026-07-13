@@ -1,0 +1,23 @@
+{
+  "name": "@logicsrc/pwa",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "LogicSRC credentials — Express + libSQL/Turso app: auth + end-to-end-encrypted team credential sharing.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node src/server.mjs",
+    "dev": "node --watch src/server.mjs",
+    "migrate": "node src/migrate.mjs",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "@libsql/client": "^0.14.0",
+    "@simplewebauthn/browser": "^13.3.0",
+    "@simplewebauthn/server": "^13.1.0",
+    "cookie-parser": "^1.4.7",
+    "express": "^4.21.2"
+  }
+}
