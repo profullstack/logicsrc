@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import "../styles.css";
 import Script from "next/script";
+import { FeedbackWidget } from "@profullstack/stack/feedback";
 
 const SITE_URL = (process.env.PUBLIC_URL ?? "https://logicsrc.com").replace(/\/$/, "");
 const DESCRIPTION =
@@ -86,7 +87,8 @@ export default function RootLayout({ children }: { children: ReactNode }): React
           src="https://crawlproof.com/stats.js"
           strategy="afterInteractive"
         />
-      <script async src="https://feedback.profullstack.com/embed/profullstack-feedback.js" data-property="logicsrc.com"></script></body>
+        <FeedbackWidget property="logicsrc.com" />
+      </body>
     </html>
   );
 }
