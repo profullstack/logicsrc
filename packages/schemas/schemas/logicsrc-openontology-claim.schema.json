@@ -1,0 +1,148 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://logicsrc.com/schemas/openontology/claim.schema.json",
+  "title": "LogicSRC OpenOntology Claim",
+  "description": "The canonical fact record. A relationship is a claim whose object is an entity reference; a scalar property is a claim whose object is a typed value. Accepted claims are append-only — corrections are expressed as dispute, retraction, or supersession.",
+  "type": "object",
+  "required": ["openontology", "kind", "id", "subject", "predicate", "object", "status", "assertedAt", "assertedBy"],
+  "additionalProperties": false,
+  "properties": {
+    "openontology": { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+    "kind": { "const": "Claim" },
+    "id": { "type": "string", "minLength": 1 },
+    "ontology": {
+      "type": "string",
+      "description": "Package reference the claim belongs to, e.g. 'ethereum-ecosystem@0.1.0'."
+    },
+    "subject": { "type": "string", "minLength": 1, "description": "Entity id." },
+    "predicate": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Relationship type id (entity object) or property id (value object)."
+    },
+    "object": { "$ref": "#/$defs/claimObject" },
+    "status": {
+      "type": "string",
+      "enum": ["asserted", "proposed", "disputed", "retracted", "superseded", "derived"]
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Metadata about certainty. Confidence is never proof and never grants permission."
+    },
+    "validTime": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Domain valid time, independent of when the system recorded the claim.",
+      "properties": {
+        "from": { "type": ["string", "null"], "format": "date-time" },
+        "to": { "type": ["string", "null"], "format": "date-time" }
+      }
+    },
+    "observedAt": { "type": "string", "format": "date-time", "description": "Point-in-time observation." },
+    "assertedAt": { "type": "string", "format": "date-time", "description": "Recorded (system) time." },
+    "assertedBy": { "type": "string", "minLength": 1, "description": "Actor id — human, service, or agent." },
+    "runId": {
+      "type": "string",
+      "description": "LogicSRC-compatible run record. REQUIRED for agent-created claims."
+    },
+    "sources": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "evidence": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "firstParty": {
+      "type": "boolean",
+      "description": "Explicit declaration that this is a manual/first-party assertion with no external source."
+    },
+    "derivedFrom": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "REQUIRED for status 'derived': what produced this claim.",
+      "properties": {
+        "rule": { "type": "string" },
+        "query": { "type": "string" },
+        "transformation": { "type": "string" },
+        "inputs": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
+      }
+    },
+    "supersedes": { "type": "string", "description": "Claim id this claim replaces." },
+    "supersededBy": { "type": "string", "description": "Claim id that replaced this claim." },
+    "disputes": { "type": "string", "description": "Claim id this claim disputes." },
+    "retractionReason": { "type": "string" },
+    "changeSet": { "type": "string", "description": "Change set that introduced this claim." },
+    "license": { "type": "string" },
+    "visibility": {
+      "type": "string",
+      "enum": ["public", "internal", "private"],
+      "default": "public"
+    },
+    "retention": { "type": "string", "description": "Retention policy identifier." },
+    "tags": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "model": { "$ref": "#/$defs/modelProvenance" },
+    "extensions": { "type": "object" }
+  },
+  "$defs": {
+    "claimObject": {
+      "description": "Exactly one of an entity reference or a typed scalar value — never both.",
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["entity"],
+          "additionalProperties": false,
+          "properties": {
+            "entity": { "type": "string", "minLength": 1 }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["value"],
+          "additionalProperties": false,
+          "properties": {
+            "value": {},
+            "datatype": {
+              "type": "string",
+              "enum": [
+                "string",
+                "number",
+                "integer",
+                "boolean",
+                "date",
+                "date-time",
+                "duration",
+                "url",
+                "email",
+                "enum",
+                "object",
+                "array",
+                "binary-reference"
+              ]
+            },
+            "language": { "type": "string", "pattern": "^[A-Za-z]{2,3}(-[A-Za-z0-9]{2,8})*$" },
+            "unit": { "type": "string" }
+          }
+        }
+      ]
+    },
+    "modelProvenance": {
+      "type": "object",
+      "required": ["provider", "model"],
+      "additionalProperties": false,
+      "description": "Recorded for AI-extracted proposals. Never stores chain-of-thought.",
+      "properties": {
+        "provider": { "type": "string", "minLength": 1 },
+        "model": { "type": "string", "minLength": 1 },
+        "modelVersion": { "type": "string" },
+        "promptVersion": { "type": "string" },
+        "extractedAt": { "type": "string", "format": "date-time" },
+        "rationale": { "type": "string", "description": "Concise user-facing rationale only." }
+      }
+    }
+  }
+}

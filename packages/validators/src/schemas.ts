@@ -23,6 +23,23 @@ import credentialSyncPlanSchema from "../../schemas/schemas/logicsrc-credential-
 import credentialSyncRunSchema from "../../schemas/schemas/logicsrc-credential-sync-run.schema.json" with { type: "json" };
 import credentialAuditEventSchema from "../../schemas/schemas/logicsrc-credential-audit-event.schema.json" with { type: "json" };
 import openprdPrdSchema from "../../schemas/schemas/openprd-prd.schema.json" with { type: "json" };
+import ontologyManifestSchema from "../../schemas/schemas/logicsrc-openontology-manifest.schema.json" with { type: "json" };
+import ontologyNamespaceSchema from "../../schemas/schemas/logicsrc-openontology-namespace.schema.json" with { type: "json" };
+import ontologyEntityTypeSchema from "../../schemas/schemas/logicsrc-openontology-entity-type.schema.json" with { type: "json" };
+import ontologyPropertySchema from "../../schemas/schemas/logicsrc-openontology-property.schema.json" with { type: "json" };
+import ontologyRelationshipTypeSchema from "../../schemas/schemas/logicsrc-openontology-relationship-type.schema.json" with { type: "json" };
+import ontologyConstraintSchema from "../../schemas/schemas/logicsrc-openontology-constraint.schema.json" with { type: "json" };
+import ontologyQuerySchema from "../../schemas/schemas/logicsrc-openontology-query.schema.json" with { type: "json" };
+import ontologyActionSchema from "../../schemas/schemas/logicsrc-openontology-action.schema.json" with { type: "json" };
+import ontologyEntitySchema from "../../schemas/schemas/logicsrc-openontology-entity.schema.json" with { type: "json" };
+import ontologyClaimSchema from "../../schemas/schemas/logicsrc-openontology-claim.schema.json" with { type: "json" };
+import ontologySourceSchema from "../../schemas/schemas/logicsrc-openontology-source.schema.json" with { type: "json" };
+import ontologyEvidenceSchema from "../../schemas/schemas/logicsrc-openontology-evidence.schema.json" with { type: "json" };
+import ontologyChangeSetSchema from "../../schemas/schemas/logicsrc-openontology-changeset.schema.json" with { type: "json" };
+import ontologyReviewSchema from "../../schemas/schemas/logicsrc-openontology-review.schema.json" with { type: "json" };
+import ontologyApprovalSchema from "../../schemas/schemas/logicsrc-openontology-approval.schema.json" with { type: "json" };
+import ontologyEventSchema from "../../schemas/schemas/logicsrc-openontology-event.schema.json" with { type: "json" };
+import ontologyPackageSchema from "../../schemas/schemas/logicsrc-openontology-package.schema.json" with { type: "json" };
 
 export const schemas = {
   agent: agentSchema,
@@ -49,7 +66,24 @@ export const schemas = {
   "credential-sync-plan": credentialSyncPlanSchema,
   "credential-sync-run": credentialSyncRunSchema,
   "credential-audit-event": credentialAuditEventSchema,
-  "openprd-prd": openprdPrdSchema
+  "openprd-prd": openprdPrdSchema,
+  "openontology-manifest": ontologyManifestSchema,
+  "openontology-namespace": ontologyNamespaceSchema,
+  "openontology-entity-type": ontologyEntityTypeSchema,
+  "openontology-property": ontologyPropertySchema,
+  "openontology-relationship-type": ontologyRelationshipTypeSchema,
+  "openontology-constraint": ontologyConstraintSchema,
+  "openontology-query": ontologyQuerySchema,
+  "openontology-action": ontologyActionSchema,
+  "openontology-entity": ontologyEntitySchema,
+  "openontology-claim": ontologyClaimSchema,
+  "openontology-source": ontologySourceSchema,
+  "openontology-evidence": ontologyEvidenceSchema,
+  "openontology-changeset": ontologyChangeSetSchema,
+  "openontology-review": ontologyReviewSchema,
+  "openontology-approval": ontologyApprovalSchema,
+  "openontology-event": ontologyEventSchema,
+  "openontology-package": ontologyPackageSchema
 } as const;
 
 export type SchemaKind = keyof typeof schemas;

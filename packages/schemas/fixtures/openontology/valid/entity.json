@@ -1,0 +1,16 @@
+{
+  "openontology": "0.1",
+  "kind": "Entity",
+  "id": "ex:person:alice",
+  "type": "Person",
+  "canonicalName": "Alice Reyes",
+  "aliases": [
+    "alice.eth"
+  ],
+  "externalIds": {
+    "github": "alice"
+  },
+  "status": "active",
+  "createdAt": "2026-07-26T00:00:00Z",
+  "createdBy": "mailto:curator@example.org"
+}

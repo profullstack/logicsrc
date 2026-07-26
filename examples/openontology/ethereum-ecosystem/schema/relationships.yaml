@@ -1,0 +1,185 @@
+- openontology: "0.1"
+  kind: RelationshipType
+  id: worksAt
+  label: works at
+  description: A person is affiliated with an organization.
+  from:
+    - Person
+  to:
+    - Organization
+  cardinality: many-to-many
+  temporal: true
+- openontology: "0.1"
+  kind: RelationshipType
+  id: memberOf
+  label: member of
+  description: An organization belongs to a larger body.
+  from:
+    - Organization
+  to:
+    - Organization
+  cardinality: many-to-many
+  temporal: true
+- openontology: "0.1"
+  kind: RelationshipType
+  id: worksOn
+  label: works on
+  description: A person actively contributes work to a project.
+  from:
+    - Person
+  to:
+    - Project
+  cardinality: many-to-many
+  temporal: true
+  inverse: hasContributor
+- openontology: "0.1"
+  kind: RelationshipType
+  id: hasContributor
+  label: has contributor
+  description: Inverse of worksOn.
+  from:
+    - Project
+  to:
+    - Person
+  cardinality: many-to-many
+- openontology: "0.1"
+  kind: RelationshipType
+  id: contributesTo
+  label: contributes to
+  description: A person contributes to a codebase.
+  from:
+    - Person
+  to:
+    - Codebase
+  cardinality: many-to-many
+  temporal: true
+- openontology: "0.1"
+  kind: RelationshipType
+  id: maintains
+  label: maintains
+  description: An organization is responsible for a codebase.
+  from:
+    - Organization
+  to:
+    - Codebase
+  cardinality: many-to-many
+- openontology: "0.1"
+  kind: RelationshipType
+  id: builds
+  label: builds
+  description: An organization builds a project.
+  from:
+    - Organization
+  to:
+    - Project
+  cardinality: many-to-many
+  temporal: true
+- openontology: "0.1"
+  kind: RelationshipType
+  id: funds
+  label: funds
+  description: A funding program supports a project or research topic.
+  from:
+    - FundingProgram
+  to:
+    - Project
+    - ResearchTopic
+  cardinality: many-to-many
+  temporal: true
+- openontology: "0.1"
+  kind: RelationshipType
+  id: investigates
+  label: investigates
+  description: A project or person investigates a research topic.
+  from:
+    - Project
+    - Person
+    - Organization
+  to:
+    - ResearchTopic
+  cardinality: many-to-many
+  temporal: true
+- openontology: "0.1"
+  kind: RelationshipType
+  id: implements
+  label: implements
+  description: A codebase implements a protocol.
+  from:
+    - Codebase
+  to:
+    - Protocol
+  cardinality: many-to-many
+- openontology: "0.1"
+  kind: RelationshipType
+  id: uses
+  label: uses
+  description: A project or application uses a protocol or codebase.
+  from:
+    - Project
+    - Application
+  to:
+    - Protocol
+    - Codebase
+  cardinality: many-to-many
+- openontology: "0.1"
+  kind: RelationshipType
+  id: runsOn
+  label: runs on
+  description: An application runs on a network or layer 2.
+  from:
+    - Application
+  to:
+    - Network
+    - Layer2
+  cardinality: many-to-many
+- openontology: "0.1"
+  kind: RelationshipType
+  id: deployedOn
+  label: deployed on
+  description: A layer 2 settles to a base network.
+  from:
+    - Layer2
+  to:
+    - Network
+  cardinality: many-to-many
+- openontology: "0.1"
+  kind: RelationshipType
+  id: dependsOn
+  label: depends on
+  description: A codebase depends on another codebase.
+  from:
+    - Codebase
+  to:
+    - Codebase
+  cardinality: many-to-many
+- openontology: "0.1"
+  kind: RelationshipType
+  id: authored
+  label: authored
+  description: A person authored a publication.
+  from:
+    - Person
+  to:
+    - Publication
+  cardinality: many-to-many
+- openontology: "0.1"
+  kind: RelationshipType
+  id: collaboratesWith
+  label: collaborates with
+  description: Two people work together.
+  from:
+    - Person
+  to:
+    - Person
+  cardinality: many-to-many
+  symmetric: true
+- openontology: "0.1"
+  kind: RelationshipType
+  id: forkedFrom
+  label: forked from
+  description: A codebase was forked from another.
+  from:
+    - Codebase
+  to:
+    - Codebase
+  cardinality: many-to-many

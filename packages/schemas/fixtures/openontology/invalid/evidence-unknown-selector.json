@@ -1,0 +1,10 @@
+{
+  "openontology": "0.1",
+  "kind": "Evidence",
+  "id": "ex:evidence:bad",
+  "source": "ex:source:repo",
+  "selector": {
+    "type": "vibes",
+    "hint": "somewhere in the file"
+  }
+}

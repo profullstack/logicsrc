@@ -1,0 +1,34 @@
+{
+  "openontology": "0.1",
+  "kind": "ChangeSet",
+  "id": "changeset:0001",
+  "ontology": "example-ontology@0.1.0",
+  "title": "Add Alice as a contributor",
+  "rationale": "Repository activity identifies the contribution.",
+  "createdAt": "2026-07-26T00:00:00Z",
+  "createdBy": "agent:research-mapper",
+  "actorType": "agent",
+  "runId": "run_01J3EXAMPLE",
+  "operations": [
+    {
+      "op": "add-entity",
+      "value": {
+        "id": "ex:person:alice",
+        "type": "Person",
+        "canonicalName": "Alice Reyes"
+      }
+    },
+    {
+      "op": "assert-claim",
+      "value": {
+        "subject": "ex:person:alice",
+        "predicate": "worksOn",
+        "object": {
+          "entity": "ex:project:zk"
+        }
+      }
+    }
+  ],
+  "requiredApprovals": 1,
+  "status": "proposed"
+}

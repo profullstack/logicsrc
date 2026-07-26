@@ -1,0 +1,11 @@
+{
+  "openontology": "0.1",
+  "kind": "RelationshipType",
+  "id": "worksOn",
+  "label": "works on",
+  "description": "Missing to.",
+  "from": [
+    "Person"
+  ],
+  "to": []
+}

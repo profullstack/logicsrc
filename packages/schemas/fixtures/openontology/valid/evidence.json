@@ -1,0 +1,12 @@
+{
+  "openontology": "0.1",
+  "kind": "Evidence",
+  "id": "ex:evidence:0001",
+  "source": "ex:source:repo",
+  "selector": {
+    "type": "line-range",
+    "start": 41,
+    "end": 48
+  },
+  "excerpt": "Alice authored the prover module."
+}

@@ -1,0 +1,16 @@
+{
+  "openontologyQuery": "0.1",
+  "ontology": "example-ontology@0.1.0",
+  "match": [
+    {
+      "subject": "?person",
+      "predicate": "worksOn",
+      "object": "ex:project:zk"
+    }
+  ],
+  "select": [
+    "?person"
+  ],
+  "asOf": "2026-07-26T00:00:00Z",
+  "limit": 100
+}

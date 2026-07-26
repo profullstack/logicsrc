@@ -1,0 +1,13 @@
+{
+  "openontology": "0.1",
+  "kind": "Claim",
+  "id": "ex:claim:bad2",
+  "subject": "ex:person:alice",
+  "predicate": "worksOn",
+  "object": {
+    "entity": "ex:project:zk"
+  },
+  "status": "probably",
+  "assertedAt": "2026-07-26T00:00:00Z",
+  "assertedBy": "curator"
+}

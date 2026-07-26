@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://logicsrc.com/schemas/openontology/approval.schema.json",
+  "title": "LogicSRC OpenOntology Approval",
+  "description": "A recorded approval that satisfies policy for a change set or governed action. Model confidence never substitutes for an approval.",
+  "type": "object",
+  "required": ["openontology", "kind", "id", "changeSet", "approver", "createdAt"],
+  "additionalProperties": false,
+  "properties": {
+    "openontology": { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+    "kind": { "const": "Approval" },
+    "id": { "type": "string", "minLength": 1 },
+    "changeSet": { "type": "string", "minLength": 1 },
+    "approver": { "type": "string", "minLength": 1 },
+    "approverType": { "type": "string", "enum": ["human", "service", "agent"], "default": "human" },
+    "scopes": {
+      "type": "array",
+      "items": { "type": "string" },
+      "uniqueItems": true,
+      "description": "Scopes the approver held at approval time."
+    },
+    "policy": { "type": "string", "description": "Policy rule id that required this approval." },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "comment": { "type": "string" },
+    "signature": {
+      "type": "object",
+      "required": ["algorithm", "signer", "value"],
+      "additionalProperties": false,
+      "properties": {
+        "algorithm": { "type": "string" },
+        "signer": { "type": "string" },
+        "value": { "type": "string" },
+        "created": { "type": "string", "format": "date-time" },
+        "keyId": { "type": "string" }
+      }
+    },
+    "extensions": { "type": "object" }
+  }
+}

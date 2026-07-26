@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://logicsrc.com/schemas/openontology/package.schema.json",
+  "title": "LogicSRC OpenOntology Built Package",
+  "description": "The deterministic build artifact: the compiled manifest, every schema and knowledge object inlined, a per-file digest table, and the package digest. This is what gets hashed, signed, diffed, and published — never private runtime state or credentials.",
+  "type": "object",
+  "required": ["openontology", "kind", "manifest", "digest", "files", "schema", "data"],
+  "additionalProperties": false,
+  "properties": {
+    "openontology": { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+    "kind": { "const": "BuiltOntologyPackage" },
+    "manifest": { "type": "object", "description": "The canonical manifest object." },
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "description": "sha256 over the canonical JSON of the manifest plus the sorted per-file digest table."
+    },
+    "builtAt": { "type": "string", "format": "date-time" },
+    "files": {
+      "type": "array",
+      "description": "Per-file digests covering every declared schema and data file.",
+      "items": {
+        "type": "object",
+        "required": ["path", "digest", "count"],
+        "additionalProperties": false,
+        "properties": {
+          "path": { "type": "string" },
+          "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+          "count": { "type": "integer", "minimum": 0 }
+        }
+      }
+    },
+    "schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "namespaces": { "type": "array", "items": { "type": "object" } },
+        "entityTypes": { "type": "array", "items": { "type": "object" } },
+        "properties": { "type": "array", "items": { "type": "object" } },
+        "relationships": { "type": "array", "items": { "type": "object" } },
+        "constraints": { "type": "array", "items": { "type": "object" } },
+        "queries": { "type": "array", "items": { "type": "object" } },
+        "actions": { "type": "array", "items": { "type": "object" } }
+      }
+    },
+    "data": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "entities": { "type": "array", "items": { "type": "object" } },
+        "claims": { "type": "array", "items": { "type": "object" } },
+        "sources": { "type": "array", "items": { "type": "object" } },
+        "evidence": { "type": "array", "items": { "type": "object" } }
+      }
+    },
+    "context": { "type": "object", "description": "Inlined JSON-LD 1.1 context, when the package declares one." },
+    "signatures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["algorithm", "signer", "value"],
+        "additionalProperties": false,
+        "properties": {
+          "algorithm": { "type": "string" },
+          "signer": { "type": "string" },
+          "value": { "type": "string" },
+          "created": { "type": "string", "format": "date-time" },
+          "keyId": { "type": "string" }
+        }
+      }
+    }
+  }
+}

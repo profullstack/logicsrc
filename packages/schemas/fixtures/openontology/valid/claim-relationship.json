@@ -1,0 +1,23 @@
+{
+  "openontology": "0.1",
+  "kind": "Claim",
+  "id": "ex:claim:0001",
+  "ontology": "example-ontology@0.1.0",
+  "subject": "ex:person:alice",
+  "predicate": "worksOn",
+  "object": {
+    "entity": "ex:project:zk"
+  },
+  "status": "asserted",
+  "confidence": 0.94,
+  "validTime": {
+    "from": "2026-04-01T00:00:00Z",
+    "to": null
+  },
+  "assertedAt": "2026-07-26T00:00:00Z",
+  "assertedBy": "agent:research-mapper",
+  "runId": "run_01J3EXAMPLE",
+  "sources": [
+    "ex:source:repo"
+  ]
+}

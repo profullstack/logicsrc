@@ -1,0 +1,18 @@
+openontology: "0.1"
+kind: ChangeSet
+id: changeset:merge-haddad
+ontology: ethereum-ecosystem@0.1.0
+title: Merge S. Haddad into Samir Haddad
+rationale: "Both records point at the same contributor: identical alias handle, same organization, overlapping
+  commits on light-client-rs."
+createdAt: 2026-07-26T00:00:00Z
+createdBy: agent:research-mapper
+actorType: agent
+runId: run_01J3EXAMPLE
+operations:
+  - op: merge-entity
+    source: eth:person:s-haddad
+    target: eth:person:samir-haddad
+    reason: Same person; the shorter record was created from a commit signature.
+requiredApprovals: 1
+status: proposed

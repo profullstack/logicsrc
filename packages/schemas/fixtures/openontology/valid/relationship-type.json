@@ -1,0 +1,16 @@
+{
+  "openontology": "0.1",
+  "kind": "RelationshipType",
+  "id": "worksOn",
+  "label": "works on",
+  "description": "A person contributes work to a project.",
+  "from": [
+    "Person"
+  ],
+  "to": [
+    "Project"
+  ],
+  "cardinality": "many-to-many",
+  "temporal": true,
+  "inverse": "hasContributor"
+}

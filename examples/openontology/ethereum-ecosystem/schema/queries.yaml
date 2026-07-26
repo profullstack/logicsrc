@@ -1,0 +1,122 @@
+- openontology: "0.1"
+  kind: SavedQuery
+  id: people-working-on-topic
+  label: People and organizations working on a research topic
+  description: Every person working on a project that investigates the given research topic.
+  parameters:
+    topic:
+      type: string
+      required: true
+      default: eth:topic:zero-knowledge
+  query:
+    match:
+      - subject: ?person
+        predicate: worksOn
+        object: ?project
+      - subject: ?project
+        predicate: investigates
+        object: $topic
+    select:
+      - ?person
+      - ?project
+    include:
+      claimStatus:
+        - asserted
+      labels: true
+    orderBy:
+      - variable: ?person
+        direction: asc
+- openontology: "0.1"
+  kind: SavedQuery
+  id: codebases-implementing-protocol
+  label: Codebases implementing a protocol
+  description: Which codebases implement the given protocol, and who maintains them.
+  parameters:
+    protocol:
+      type: string
+      required: true
+      default: eth:protocol:proof-envelope
+  query:
+    match:
+      - subject: ?codebase
+        predicate: implements
+        object: $protocol
+      - subject: ?org
+        predicate: maintains
+        object: ?codebase
+    select:
+      - ?codebase
+      - ?org
+    include:
+      claimStatus:
+        - asserted
+      labels: true
+- openontology: "0.1"
+  kind: SavedQuery
+  id: orgs-behind-a-network
+  label: Organizations behind the codebases a network depends on
+  description: "Three hops: layer 2 → application → codebase → maintaining organization."
+  query:
+    match:
+      - subject: ?l2
+        predicate: deployedOn
+        object: ?network
+      - subject: ?app
+        predicate: runsOn
+        object: ?l2
+      - subject: ?app
+        predicate: uses
+        object: ?codebase
+      - subject: ?org
+        predicate: maintains
+        object: ?codebase
+    select:
+      - ?network
+      - ?l2
+      - ?app
+      - ?org
+    include:
+      claimStatus:
+        - asserted
+      labels: true
+    distinct: true
+- openontology: "0.1"
+  kind: SavedQuery
+  id: funded-work
+  label: Funded projects and research directions
+  description: Which funding programs support which projects or research topics.
+  query:
+    match:
+      - subject: ?fund
+        predicate: funds
+        object: ?target
+    select:
+      - ?fund
+      - ?target
+    include:
+      claimStatus:
+        - asserted
+      labels: true
+    orderBy:
+      - variable: ?fund
+        direction: asc
+- openontology: "0.1"
+  kind: SavedQuery
+  id: claims-needing-review
+  label: Claims that still need a human decision
+  description: Proposed and disputed claims, which a curator should accept, reject, or resolve.
+  query:
+    match:
+      - subject: ?subject
+        predicate: ?predicate
+        object: ?object
+        bindClaim: ?claim
+    select:
+      - ?claim
+      - ?subject
+      - ?predicate
+      - ?object
+    include:
+      claimStatus:
+        - proposed
+        - disputed

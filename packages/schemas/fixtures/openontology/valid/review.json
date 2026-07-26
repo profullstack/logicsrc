@@ -1,0 +1,17 @@
+{
+  "openontology": "0.1",
+  "kind": "Review",
+  "id": "review:0001",
+  "changeSet": "changeset:0001",
+  "reviewer": "mailto:curator@example.org",
+  "state": "changes-requested",
+  "comment": "Second operation lacks a source.",
+  "createdAt": "2026-07-26T00:00:00Z",
+  "operationDecisions": [
+    {
+      "index": 1,
+      "decision": "reject",
+      "comment": "no evidence"
+    }
+  ]
+}

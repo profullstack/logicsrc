@@ -1,0 +1,13 @@
+{
+  "openontology": "0.1",
+  "kind": "Action",
+  "id": "doThing",
+  "label": "Do thing",
+  "executor": {
+    "type": "http",
+    "endpoint": "https://example.org/do"
+  },
+  "approval": {
+    "mode": "none"
+  }
+}

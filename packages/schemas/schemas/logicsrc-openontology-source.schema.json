@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://logicsrc.com/schemas/openontology/source.schema.json",
+  "title": "LogicSRC OpenOntology Source",
+  "description": "Where a claim came from. Content hashes let implementations detect changed or unavailable source material.",
+  "type": "object",
+  "required": ["openontology", "kind", "id", "sourceType", "uri", "retrievedAt"],
+  "additionalProperties": false,
+  "properties": {
+    "openontology": { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+    "kind": { "const": "Source" },
+    "id": { "type": "string", "minLength": 1 },
+    "sourceType": {
+      "type": "string",
+      "minLength": 1,
+      "description": "e.g. git-commit, web-page, api-response, csv, markdown, database-row, manual."
+    },
+    "uri": { "type": "string", "minLength": 1 },
+    "title": { "type": "string" },
+    "publisher": { "type": "string" },
+    "author": { "type": "string" },
+    "retrievedAt": { "type": "string", "format": "date-time" },
+    "publishedAt": { "type": "string", "format": "date-time" },
+    "contentHash": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "mediaType": { "type": "string" },
+    "license": {
+      "type": "string",
+      "description": "SPDX id, license URL, or 'unknown'. Governs whether excerpts may be redistributed."
+    },
+    "visibility": {
+      "type": "string",
+      "enum": ["public", "internal", "private"],
+      "default": "public"
+    },
+    "stale": {
+      "type": "boolean",
+      "description": "Set when a re-fetch found different content or the source became unavailable."
+    },
+    "lastCheckedAt": { "type": "string", "format": "date-time" },
+    "adapter": { "type": "string", "description": "Source adapter that produced this record." },
+    "extensions": { "type": "object" }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "openontology": "0.1",
+  "kind": "Event",
+  "id": "event:0001",
+  "type": "changeset.applied",
+  "ontology": "example-ontology",
+  "at": "2026-07-26T00:00:00Z",
+  "actor": "mailto:curator@example.org",
+  "actorType": "human",
+  "changeSet": "changeset:0001",
+  "revision": "data-000042",
+  "policyDecision": {
+    "rule": "apply.scope",
+    "decision": "allow",
+    "reason": "Actor holds ontology:claim:write"
+  }
+}

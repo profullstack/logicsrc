@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://logicsrc.com/schemas/openontology/action.schema.json",
+  "title": "LogicSRC OpenOntology Action",
+  "description": "A governed operation that turns a passive knowledge map into an operational layer. Actions reference approved LogicSRC plugin/tool capabilities; ontology packages never embed executable code.",
+  "type": "object",
+  "required": ["openontology", "kind", "id", "label", "executor", "permissions", "approval"],
+  "additionalProperties": false,
+  "properties": {
+    "openontology": { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+    "kind": { "const": "Action" },
+    "id": { "type": "string", "minLength": 1 },
+    "label": { "type": "string", "minLength": 1 },
+    "description": { "type": "string" },
+    "input": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/$defs/parameter" }
+    },
+    "output": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/$defs/parameter" }
+    },
+    "preconditions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "query": { "type": "string", "description": "Saved query id that must return rows." },
+        "constraints": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "executor": {
+      "type": "object",
+      "required": ["type"],
+      "additionalProperties": false,
+      "properties": {
+        "type": { "type": "string", "enum": ["logicsrc-plugin-tool", "mcp-tool", "http"] },
+        "plugin": { "type": "string" },
+        "tool": { "type": "string" },
+        "endpoint": { "type": "string" }
+      }
+    },
+    "permissions": {
+      "type": "object",
+      "required": ["required"],
+      "additionalProperties": false,
+      "properties": {
+        "required": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" },
+          "uniqueItems": true
+        }
+      }
+    },
+    "approval": {
+      "type": "object",
+      "required": ["mode"],
+      "additionalProperties": false,
+      "properties": {
+        "mode": { "type": "string", "enum": ["none", "policy", "always"] },
+        "approvals": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "sideEffects": {
+      "type": "array",
+      "items": { "type": "string" },
+      "uniqueItems": true,
+      "description": "Declared effects. An undeclared side effect means the action is denied."
+    },
+    "idempotencyKey": {
+      "type": "string",
+      "description": "Input field used to make retries safe for non-idempotent effects."
+    },
+    "events": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "extensions": { "type": "object" }
+  },
+  "$defs": {
+    "parameter": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": { "type": "string" },
+        "entityType": { "type": "string" },
+        "required": { "type": "boolean", "default": false },
+        "description": { "type": "string" },
+        "default": {}
+      }
+    }
+  }
+}

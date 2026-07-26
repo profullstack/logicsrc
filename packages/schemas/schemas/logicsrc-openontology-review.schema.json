@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://logicsrc.com/schemas/openontology/review.schema.json",
+  "title": "LogicSRC OpenOntology Review",
+  "description": "A reviewer's assessment of a change set. Rejected change sets remain inspectable together with their reviews.",
+  "type": "object",
+  "required": ["openontology", "kind", "id", "changeSet", "reviewer", "state", "createdAt"],
+  "additionalProperties": false,
+  "properties": {
+    "openontology": { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+    "kind": { "const": "Review" },
+    "id": { "type": "string", "minLength": 1 },
+    "changeSet": { "type": "string", "minLength": 1 },
+    "reviewer": { "type": "string", "minLength": 1 },
+    "state": {
+      "type": "string",
+      "enum": ["commented", "changes-requested", "approved", "rejected"]
+    },
+    "comment": { "type": "string" },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "operationDecisions": {
+      "type": "array",
+      "description": "Per-operation accept/reject, so a curator can take part of an AI-generated change set.",
+      "items": {
+        "type": "object",
+        "required": ["index", "decision"],
+        "additionalProperties": false,
+        "properties": {
+          "index": { "type": "integer", "minimum": 0 },
+          "decision": { "type": "string", "enum": ["accept", "reject"] },
+          "comment": { "type": "string" }
+        }
+      }
+    },
+    "extensions": { "type": "object" }
+  }
+}

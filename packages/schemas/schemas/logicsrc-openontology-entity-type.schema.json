@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://logicsrc.com/schemas/openontology/entity-type.schema.json",
+  "title": "LogicSRC OpenOntology Entity Type",
+  "description": "An identity-bearing noun of a domain — the kind of thing an entity is.",
+  "type": "object",
+  "required": ["openontology", "kind", "id", "label", "description"],
+  "additionalProperties": false,
+  "properties": {
+    "openontology": { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+    "kind": { "const": "EntityType" },
+    "id": { "type": "string", "minLength": 1 },
+    "label": { "type": "string", "minLength": 1 },
+    "labels": { "$ref": "#/$defs/languageMap" },
+    "description": { "type": "string", "minLength": 1 },
+    "descriptions": { "$ref": "#/$defs/languageMap" },
+    "extends": {
+      "description": "Parent entity type ids. Inherited properties MUST NOT conflict.",
+      "type": "array",
+      "items": { "type": "string" },
+      "uniqueItems": true
+    },
+    "keyProperties": {
+      "description": "Properties that together identify an entity of this type for resolution and uniqueness checks.",
+      "type": "array",
+      "items": { "type": "string" },
+      "uniqueItems": true
+    },
+    "properties": {
+      "type": "object",
+      "description": "Property name to inline property definition.",
+      "additionalProperties": { "$ref": "#/$defs/propertyDefinition" }
+    },
+    "deprecated": { "type": "boolean", "default": false },
+    "deprecationNote": { "type": "string" },
+    "extensions": { "type": "object" }
+  },
+  "$defs": {
+    "valueType": {
+      "type": "string",
+      "enum": [
+        "string",
+        "number",
+        "integer",
+        "boolean",
+        "date",
+        "date-time",
+        "duration",
+        "url",
+        "email",
+        "enum",
+        "object",
+        "array",
+        "binary-reference",
+        "entity-reference"
+      ]
+    },
+    "propertyDefinition": {
+      "type": "object",
+      "required": ["type"],
+      "additionalProperties": false,
+      "properties": {
+        "label": { "type": "string" },
+        "labels": { "$ref": "#/$defs/languageMap" },
+        "description": { "type": "string" },
+        "descriptions": { "$ref": "#/$defs/languageMap" },
+        "type": { "$ref": "#/$defs/valueType" },
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "type": { "$ref": "#/$defs/valueType" },
+            "entityType": { "type": "string" },
+            "enum": { "type": "array", "items": {} }
+          }
+        },
+        "entityType": {
+          "anyOf": [
+            { "type": "string" },
+            { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
+          ]
+        },
+        "required": { "type": "boolean", "default": false },
+        "cardinality": { "type": "string", "enum": ["one", "many"], "default": "one" },
+        "unique": { "type": "boolean", "default": false },
+        "default": {},
+        "examples": { "type": "array", "items": {} },
+        "enum": { "type": "array", "items": {} },
+        "pattern": { "type": "string" },
+        "minimum": { "type": "number" },
+        "maximum": { "type": "number" },
+        "minLength": { "type": "integer", "minimum": 0 },
+        "maxLength": { "type": "integer", "minimum": 0 },
+        "deprecated": { "type": "boolean", "default": false },
+        "deprecationNote": { "type": "string" },
+        "extensions": { "type": "object" }
+      }
+    },
+    "languageMap": {
+      "type": "object",
+      "patternProperties": {
+        "^[A-Za-z]{2,3}(-[A-Za-z0-9]{2,8})*$": { "type": "string" }
+      },
+      "additionalProperties": false
+    }
+  }
+}

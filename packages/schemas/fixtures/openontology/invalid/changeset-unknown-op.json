@@ -1,0 +1,15 @@
+{
+  "openontology": "0.1",
+  "kind": "ChangeSet",
+  "id": "changeset:bad2",
+  "title": "Delete everything",
+  "createdAt": "2026-07-26T00:00:00Z",
+  "createdBy": "curator",
+  "operations": [
+    {
+      "op": "delete-claim",
+      "target": "ex:claim:0001"
+    }
+  ],
+  "status": "proposed"
+}

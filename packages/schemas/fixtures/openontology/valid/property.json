@@ -1,0 +1,8 @@
+{
+  "openontology": "0.1",
+  "kind": "Property",
+  "id": "homepage",
+  "label": "homepage",
+  "description": "Canonical URL.",
+  "type": "url"
+}

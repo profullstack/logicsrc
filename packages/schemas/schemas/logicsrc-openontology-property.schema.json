@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://logicsrc.com/schemas/openontology/property.schema.json",
+  "title": "LogicSRC OpenOntology Property Definition",
+  "description": "A scalar or structured attribute of an entity type. Property values are carried by claims whose object is a typed value.",
+  "type": "object",
+  "required": ["openontology", "kind", "id", "label", "type"],
+  "additionalProperties": false,
+  "properties": {
+    "openontology": { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+    "kind": { "const": "Property" },
+    "id": { "type": "string", "minLength": 1 },
+    "label": { "type": "string", "minLength": 1 },
+    "labels": { "$ref": "#/$defs/languageMap" },
+    "description": { "type": "string" },
+    "descriptions": { "$ref": "#/$defs/languageMap" },
+    "type": { "$ref": "#/$defs/valueType" },
+    "items": {
+      "description": "Element definition when type is 'array'.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": { "$ref": "#/$defs/valueType" },
+        "entityType": { "type": "string" },
+        "enum": { "type": "array", "items": {} }
+      }
+    },
+    "entityType": {
+      "description": "Allowed entity type when type is 'entity-reference'.",
+      "anyOf": [
+        { "type": "string" },
+        { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
+      ]
+    },
+    "required": { "type": "boolean", "default": false },
+    "cardinality": {
+      "type": "string",
+      "enum": ["one", "many"],
+      "default": "one"
+    },
+    "unique": { "type": "boolean", "default": false },
+    "default": {},
+    "examples": { "type": "array", "items": {} },
+    "enum": { "type": "array", "items": {}, "description": "Allowed values when type is 'enum'." },
+    "pattern": { "type": "string" },
+    "minimum": { "type": "number" },
+    "maximum": { "type": "number" },
+    "minLength": { "type": "integer", "minimum": 0 },
+    "maxLength": { "type": "integer", "minimum": 0 },
+    "deprecated": { "type": "boolean", "default": false },
+    "deprecationNote": { "type": "string" },
+    "extensions": { "type": "object" }
+  },
+  "$defs": {
+    "valueType": {
+      "type": "string",
+      "enum": [
+        "string",
+        "number",
+        "integer",
+        "boolean",
+        "date",
+        "date-time",
+        "duration",
+        "url",
+        "email",
+        "enum",
+        "object",
+        "array",
+        "binary-reference",
+        "entity-reference"
+      ]
+    },
+    "languageMap": {
+      "type": "object",
+      "description": "BCP-47 language tag to translated text.",
+      "patternProperties": {
+        "^[A-Za-z]{2,3}(-[A-Za-z0-9]{2,8})*$": { "type": "string" }
+      },
+      "additionalProperties": false
+    }
+  }
+}

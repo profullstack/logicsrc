@@ -1,0 +1,21 @@
+{
+  "openontology": "0.1",
+  "kind": "OntologyPackage",
+  "id": "example-ontology",
+  "name": "Example Ontology",
+  "version": "0.1.0",
+  "namespace": "https://logicsrc.com/ontology/example/",
+  "description": "A minimal conforming package manifest.",
+  "license": "CC-BY-4.0",
+  "maintainers": [
+    {
+      "id": "mailto:curator@example.org"
+    }
+  ],
+  "schema": {
+    "entityTypes": "schema/entity-types.yaml"
+  },
+  "data": {
+    "entities": "data/entities.ndjson"
+  }
+}

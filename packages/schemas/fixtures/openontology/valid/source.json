@@ -1,0 +1,13 @@
+{
+  "openontology": "0.1",
+  "kind": "Source",
+  "id": "ex:source:repo",
+  "sourceType": "git-commit",
+  "uri": "https://example.org/repo/commit/abc123",
+  "title": "Repository commit",
+  "publisher": "example.org",
+  "retrievedAt": "2026-07-26T00:00:00Z",
+  "contentHash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "mediaType": "text/plain",
+  "license": "MIT"
+}

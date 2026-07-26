@@ -15,8 +15,9 @@
   },
   "dependencies": {
     "@logicsrc/account-core": "file:../account-core",
-    "@logicsrc/plugin-core": "file:../plugin-core",
+    "@logicsrc/openontology": "file:../openontology",
     "@logicsrc/plugin-coinpay": "file:../../plugins/coinpay",
+    "@logicsrc/plugin-core": "file:../plugin-core",
     "@logicsrc/plugin-credential-sharing": "file:../../plugins/credential-sharing",
     "@logicsrc/plugin-email-accounts": "file:../../plugins/email-accounts",
     "@logicsrc/plugin-feed-discovery": "file:../../plugins/feed-discovery",

@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://logicsrc.com/schemas/openontology/constraint.schema.json",
+  "title": "LogicSRC OpenOntology Constraint",
+  "description": "A deterministic validation rule over the knowledge layer. Constraints never require an LLM to decide conformance.",
+  "type": "object",
+  "required": ["openontology", "kind", "id", "description", "rule"],
+  "additionalProperties": false,
+  "properties": {
+    "openontology": { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+    "kind": { "const": "Constraint" },
+    "id": { "type": "string", "minLength": 1 },
+    "description": { "type": "string", "minLength": 1 },
+    "severity": {
+      "type": "string",
+      "enum": ["error", "warning", "info", "policy"],
+      "default": "error"
+    },
+    "code": {
+      "type": "string",
+      "description": "Stable machine-readable code reported on violation, e.g. 'OO-C-REQUIRED-PREDICATE'."
+    },
+    "remediation": { "type": "string", "description": "Hint shown with the violation." },
+    "rule": { "$ref": "#/$defs/rule" },
+    "extensions": { "type": "object" }
+  },
+  "$defs": {
+    "rule": {
+      "type": "object",
+      "required": ["type"],
+      "oneOf": [
+        {
+          "additionalProperties": false,
+          "required": ["type", "entityType", "predicate"],
+          "properties": {
+            "type": { "const": "required-predicate" },
+            "entityType": { "type": "string" },
+            "predicate": { "type": "string" }
+          }
+        },
+        {
+          "additionalProperties": false,
+          "required": ["type", "predicate"],
+          "properties": {
+            "type": { "const": "cardinality" },
+            "predicate": { "type": "string" },
+            "entityType": { "type": "string" },
+            "min": { "type": "integer", "minimum": 0 },
+            "max": { "type": "integer", "minimum": 0 }
+          }
+        },
+        {
+          "additionalProperties": false,
+          "required": ["type", "predicate"],
+          "properties": {
+            "type": { "const": "unique" },
+            "predicate": { "type": "string" },
+            "entityType": { "type": "string" },
+            "scope": { "type": "string", "enum": ["ontology", "entity-type"], "default": "ontology" }
+          }
+        },
+        {
+          "additionalProperties": false,
+          "required": ["type", "predicate", "values"],
+          "properties": {
+            "type": { "const": "allowed-values" },
+            "predicate": { "type": "string" },
+            "values": { "type": "array", "items": {}, "minItems": 1 }
+          }
+        },
+        {
+          "additionalProperties": false,
+          "required": ["type", "predicate"],
+          "properties": {
+            "type": { "const": "domain-range" },
+            "predicate": { "type": "string" },
+            "from": { "type": "array", "items": { "type": "string" } },
+            "to": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        {
+          "additionalProperties": false,
+          "required": ["type", "predicate"],
+          "properties": {
+            "type": { "const": "temporal-bounds" },
+            "predicate": { "type": "string" },
+            "notBefore": { "type": "string", "format": "date-time" },
+            "notAfter": { "type": "string", "format": "date-time" },
+            "requireValidFrom": { "type": "boolean" }
+          }
+        },
+        {
+          "additionalProperties": false,
+          "required": ["type", "query"],
+          "properties": {
+            "type": { "const": "query" },
+            "query": { "type": "string", "description": "Saved query id. Any result row is a violation." },
+            "expect": { "type": "string", "enum": ["empty", "non-empty"], "default": "empty" }
+          }
+        }
+      ]
+    }
+  }
+}

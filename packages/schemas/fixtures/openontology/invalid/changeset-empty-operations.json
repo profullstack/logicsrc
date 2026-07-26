@@ -1,0 +1,10 @@
+{
+  "openontology": "0.1",
+  "kind": "ChangeSet",
+  "id": "changeset:bad",
+  "title": "Nothing",
+  "createdAt": "2026-07-26T00:00:00Z",
+  "createdBy": "curator",
+  "operations": [],
+  "status": "proposed"
+}
