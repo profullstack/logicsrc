@@ -1,0 +1,5 @@
+- openontology: "0.1"
+  kind: Namespace
+  prefix: eth
+  uri: https://logicsrc.com/ontology/ethereum/
+  description: Compact id prefix for the Ethereum ecosystem example.

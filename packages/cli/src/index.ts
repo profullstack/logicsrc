@@ -27,6 +27,7 @@ import { boards, tasks } from "./fixtures.js";
 import { print, type OutputFormat } from "./format.js";
 import { parsePositiveInteger } from "./numeric-options.js";
 import { exportOpenSpecSummary, importOpenSpec, writeOpenSpecChange } from "./openspec.js";
+import { registerOntologyCommands } from "./ontology.js";
 import { defaultPluginRegistry } from "./registry.js";
 
 process.stdout.on("error", (error: NodeJS.ErrnoException) => {
@@ -828,6 +829,8 @@ async function runYoloArcade(game: string, repo?: string) {
     logs: ["AgentSwarm master session started.", "Task continues while Waiting Arcade is active."]
   });
 }
+
+registerOntologyCommands(program);
 
 program.parseAsync(process.argv).catch((error: unknown) => {
   console.error(error instanceof Error ? error.message : String(error));

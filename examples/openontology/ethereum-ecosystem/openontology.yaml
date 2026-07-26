@@ -1,0 +1,25 @@
+openontology: "0.1"
+kind: OntologyPackage
+id: ethereum-ecosystem
+name: Ethereum Ecosystem Ontology
+version: 0.1.0
+namespace: https://logicsrc.com/ontology/ethereum/
+description: An open map of people, organizations, projects, codebases, research topics, protocols, networks,
+  and applications. All data in this package is fictional and exists to demonstrate the OpenOntology contract.
+license: CC-BY-4.0
+maintainers:
+  - id: mailto:curator@example.org
+    name: Example Curator
+imports: []
+schema:
+  namespaces: schema/namespaces.yaml
+  entityTypes: schema/entity-types.yaml
+  properties: schema/properties.yaml
+  relationships: schema/relationships.yaml
+  constraints: schema/constraints.yaml
+  queries: schema/queries.yaml
+data:
+  entities: data/entities.ndjson
+  claims: data/claims.ndjson
+  sources: data/sources.ndjson
+  evidence: data/evidence.ndjson

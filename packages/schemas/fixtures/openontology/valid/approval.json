@@ -1,0 +1,12 @@
+{
+  "openontology": "0.1",
+  "kind": "Approval",
+  "id": "approval:0001",
+  "changeSet": "changeset:0001",
+  "approver": "mailto:curator@example.org",
+  "approverType": "human",
+  "scopes": [
+    "ontology:changeset:approve"
+  ],
+  "createdAt": "2026-07-26T00:00:00Z"
+}

@@ -1,0 +1,158 @@
+{
+  "openontologyConformance": "0.1",
+  "description": "Conformance fixtures for LogicSRC OpenOntology. A third-party implementation can run these against the published JSON Schemas with no LogicSRC code: every valid fixture must validate, every invalid fixture must fail.",
+  "valid": [
+    {
+      "fixture": "valid/manifest.json",
+      "kind": "openontology-manifest"
+    },
+    {
+      "fixture": "valid/namespace.json",
+      "kind": "openontology-namespace"
+    },
+    {
+      "fixture": "valid/entity-type.json",
+      "kind": "openontology-entity-type"
+    },
+    {
+      "fixture": "valid/property.json",
+      "kind": "openontology-property"
+    },
+    {
+      "fixture": "valid/relationship-type.json",
+      "kind": "openontology-relationship-type"
+    },
+    {
+      "fixture": "valid/constraint.json",
+      "kind": "openontology-constraint"
+    },
+    {
+      "fixture": "valid/query.json",
+      "kind": "openontology-query"
+    },
+    {
+      "fixture": "valid/query-adhoc.json",
+      "kind": "openontology-query"
+    },
+    {
+      "fixture": "valid/action.json",
+      "kind": "openontology-action"
+    },
+    {
+      "fixture": "valid/entity.json",
+      "kind": "openontology-entity"
+    },
+    {
+      "fixture": "valid/claim-relationship.json",
+      "kind": "openontology-claim"
+    },
+    {
+      "fixture": "valid/claim-value.json",
+      "kind": "openontology-claim"
+    },
+    {
+      "fixture": "valid/source.json",
+      "kind": "openontology-source"
+    },
+    {
+      "fixture": "valid/evidence.json",
+      "kind": "openontology-evidence"
+    },
+    {
+      "fixture": "valid/changeset.json",
+      "kind": "openontology-changeset"
+    },
+    {
+      "fixture": "valid/review.json",
+      "kind": "openontology-review"
+    },
+    {
+      "fixture": "valid/approval.json",
+      "kind": "openontology-approval"
+    },
+    {
+      "fixture": "valid/event.json",
+      "kind": "openontology-event"
+    }
+  ],
+  "invalid": [
+    {
+      "fixture": "invalid/claim-both-objects.json",
+      "kind": "openontology-claim",
+      "mustFail": true,
+      "reason": "A claim object carries an entity reference or a typed value, never both."
+    },
+    {
+      "fixture": "invalid/claim-unknown-status.json",
+      "kind": "openontology-claim",
+      "mustFail": true,
+      "reason": "status must be one of the six declared claim states."
+    },
+    {
+      "fixture": "invalid/claim-confidence-out-of-range.json",
+      "kind": "openontology-claim",
+      "mustFail": true,
+      "reason": "confidence must be between 0 and 1."
+    },
+    {
+      "fixture": "invalid/claim-extra-property.json",
+      "kind": "openontology-claim",
+      "mustFail": true,
+      "reason": "Undeclared properties are rejected; extensions must go in the namespaced extensions object."
+    },
+    {
+      "fixture": "invalid/entity-missing-canonical-name.json",
+      "kind": "openontology-entity",
+      "mustFail": true,
+      "reason": "canonicalName is required on every entity."
+    },
+    {
+      "fixture": "invalid/manifest-no-maintainer.json",
+      "kind": "openontology-manifest",
+      "mustFail": true,
+      "reason": "At least one maintainer is required."
+    },
+    {
+      "fixture": "invalid/manifest-bad-version.json",
+      "kind": "openontology-manifest",
+      "mustFail": true,
+      "reason": "Package versions must be semantic versions."
+    },
+    {
+      "fixture": "invalid/manifest-bad-id.json",
+      "kind": "openontology-manifest",
+      "mustFail": true,
+      "reason": "Package ids are lowercase kebab-case."
+    },
+    {
+      "fixture": "invalid/relationship-no-range.json",
+      "kind": "openontology-relationship-type",
+      "mustFail": true,
+      "reason": "A relationship type must declare at least one allowed object type."
+    },
+    {
+      "fixture": "invalid/evidence-unknown-selector.json",
+      "kind": "openontology-evidence",
+      "mustFail": true,
+      "reason": "Evidence selectors must use one of the declared machine-readable shapes."
+    },
+    {
+      "fixture": "invalid/changeset-empty-operations.json",
+      "kind": "openontology-changeset",
+      "mustFail": true,
+      "reason": "A change set must contain at least one operation."
+    },
+    {
+      "fixture": "invalid/changeset-unknown-op.json",
+      "kind": "openontology-changeset",
+      "mustFail": true,
+      "reason": "Hard deletion is not an operation; use retract-claim or archive-entity."
+    },
+    {
+      "fixture": "invalid/action-no-permissions.json",
+      "kind": "openontology-action",
+      "mustFail": true,
+      "reason": "Actions must declare the scopes they require."
+    }
+  ]
+}

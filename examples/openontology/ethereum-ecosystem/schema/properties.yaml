@@ -1,0 +1,84 @@
+- openontology: "0.1"
+  kind: Property
+  id: focus
+  label: focus
+  description: A person's primary area of work.
+  type: string
+- openontology: "0.1"
+  kind: Property
+  id: startedIn
+  label: startedIn
+  description: Year a person began working in the ecosystem.
+  type: integer
+- openontology: "0.1"
+  kind: Property
+  id: homepage
+  label: homepage
+  description: Canonical URL.
+  type: url
+- openontology: "0.1"
+  kind: Property
+  id: kind
+  label: kind
+  description: Organization kind.
+  type: string
+- openontology: "0.1"
+  kind: Property
+  id: startedOn
+  label: startedOn
+  description: Date a project began.
+  type: date
+- openontology: "0.1"
+  kind: Property
+  id: language
+  label: language
+  description: Primary implementation language of a codebase.
+  type: string
+- openontology: "0.1"
+  kind: Property
+  id: license
+  label: license
+  description: SPDX license of a codebase.
+  type: string
+- openontology: "0.1"
+  kind: Property
+  id: repository
+  label: repository
+  description: Repository URL.
+  type: url
+- openontology: "0.1"
+  kind: Property
+  id: specification
+  label: specification
+  description: Specification URL.
+  type: url
+- openontology: "0.1"
+  kind: Property
+  id: chainId
+  label: chainId
+  description: Network chain id.
+  type: integer
+- openontology: "0.1"
+  kind: Property
+  id: proofSystem
+  label: proofSystem
+  description: Layer-2 proof system.
+  type: string
+- openontology: "0.1"
+  kind: Property
+  id: budgetUsd
+  label: budgetUsd
+  description: Program budget in USD.
+  type: number
+- openontology: "0.1"
+  kind: Property
+  id: published
+  label: published
+  description: Publication date.
+  type: date
+- openontology: "0.1"
+  kind: Property
+  id: held
+  label: held
+  description: Event date.
+  type: date

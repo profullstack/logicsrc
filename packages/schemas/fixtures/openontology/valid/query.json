@@ -1,0 +1,24 @@
+{
+  "openontology": "0.1",
+  "kind": "SavedQuery",
+  "id": "contributors",
+  "description": "People working on a project.",
+  "query": {
+    "match": [
+      {
+        "subject": "?person",
+        "predicate": "worksOn",
+        "object": "?project"
+      }
+    ],
+    "select": [
+      "?person",
+      "?project"
+    ],
+    "include": {
+      "claimStatus": [
+        "asserted"
+      ]
+    }
+  }
+}

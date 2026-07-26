@@ -1,0 +1,16 @@
+{
+  "openontology": "0.1",
+  "kind": "EntityType",
+  "id": "Person",
+  "label": "Person",
+  "description": "A human participant.",
+  "keyProperties": [
+    "canonicalName"
+  ],
+  "properties": {
+    "role": {
+      "type": "string",
+      "required": false
+    }
+  }
+}

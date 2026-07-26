@@ -1,0 +1,207 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://logicsrc.com/schemas/openontology/query.schema.json",
+  "title": "LogicSRC OpenOntology Query",
+  "description": "The portable triple-pattern query AST, in either ad-hoc form (openontologyQuery) or saved form (kind: SavedQuery with parameters and an expected result shape). Database-specific languages are adapters over this AST, never a substitute for it.",
+  "oneOf": [
+    { "$ref": "#/$defs/adHocQuery" },
+    { "$ref": "#/$defs/savedQuery" }
+  ],
+  "$defs": {
+    "adHocQuery": {
+      "type": "object",
+      "required": ["openontologyQuery", "match"],
+      "additionalProperties": false,
+      "properties": {
+        "openontologyQuery": { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+        "ontology": { "type": "string" },
+        "match": { "$ref": "#/$defs/match" },
+        "where": { "$ref": "#/$defs/where" },
+        "select": { "$ref": "#/$defs/select" },
+        "include": { "$ref": "#/$defs/include" },
+        "orderBy": { "$ref": "#/$defs/orderBy" },
+        "distinct": { "type": "boolean", "default": false },
+        "asOf": { "type": "string", "format": "date-time" },
+        "recordedAsOf": {
+          "type": "string",
+          "format": "date-time",
+          "description": "System-time axis for bitemporal queries."
+        },
+        "limit": { "type": "integer", "minimum": 1 },
+        "offset": { "type": "integer", "minimum": 0 },
+        "maxDepth": { "type": "integer", "minimum": 1 },
+        "explain": { "type": "boolean", "default": false }
+      }
+    },
+    "savedQuery": {
+      "type": "object",
+      "required": ["openontology", "kind", "id", "description", "query"],
+      "additionalProperties": false,
+      "properties": {
+        "openontology": { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+        "kind": { "const": "SavedQuery" },
+        "id": { "type": "string", "minLength": 1 },
+        "label": { "type": "string" },
+        "description": { "type": "string", "minLength": 1 },
+        "version": { "type": "string" },
+        "parameters": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "type": { "type": "string" },
+              "required": { "type": "boolean", "default": false },
+              "default": {},
+              "description": { "type": "string" }
+            }
+          }
+        },
+        "expects": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Expected result shape, used by tests and UI.",
+          "properties": {
+            "columns": { "type": "array", "items": { "type": "string" } },
+            "minRows": { "type": "integer", "minimum": 0 },
+            "maxRows": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "query": { "$ref": "#/$defs/queryBody" },
+        "extensions": { "type": "object" }
+      }
+    },
+    "queryBody": {
+      "type": "object",
+      "required": ["match"],
+      "additionalProperties": false,
+      "properties": {
+        "match": { "$ref": "#/$defs/match" },
+        "where": { "$ref": "#/$defs/where" },
+        "select": { "$ref": "#/$defs/select" },
+        "include": { "$ref": "#/$defs/include" },
+        "orderBy": { "$ref": "#/$defs/orderBy" },
+        "distinct": { "type": "boolean", "default": false },
+        "asOf": { "type": "string" },
+        "recordedAsOf": { "type": "string" },
+        "limit": { "type": "integer", "minimum": 1 },
+        "offset": { "type": "integer", "minimum": 0 },
+        "maxDepth": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "match": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["subject", "predicate", "object"],
+        "additionalProperties": false,
+        "description": "A triple pattern. Terms starting with '?' are variables; everything else is a constant.",
+        "properties": {
+          "subject": { "type": "string", "minLength": 1 },
+          "predicate": { "type": "string", "minLength": 1 },
+          "object": {
+            "anyOf": [
+              { "type": "string", "minLength": 1 },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "entity": { "type": "string" },
+                  "value": {},
+                  "variable": { "type": "string" }
+                }
+              }
+            ]
+          },
+          "optional": { "type": "boolean", "default": false },
+          "bindClaim": {
+            "type": "string",
+            "description": "Variable bound to the matched claim id, for explanations."
+          }
+        }
+      }
+    },
+    "where": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["variable", "operator"],
+        "additionalProperties": false,
+        "properties": {
+          "variable": { "type": "string", "minLength": 1 },
+          "field": {
+            "type": "string",
+            "description": "Entity field or property predicate to compare. Defaults to the bound term itself."
+          },
+          "operator": {
+            "type": "string",
+            "enum": [
+              "eq",
+              "neq",
+              "lt",
+              "lte",
+              "gt",
+              "gte",
+              "in",
+              "not-in",
+              "exists",
+              "not-exists",
+              "contains",
+              "starts-with",
+              "matches",
+              "before",
+              "after"
+            ]
+          },
+          "value": {}
+        }
+      }
+    },
+    "select": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "include": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Claim-status inclusion policy. Each status is filterable independently.",
+      "properties": {
+        "claimStatus": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["asserted", "proposed", "disputed", "retracted", "superseded", "derived"]
+          },
+          "uniqueItems": true
+        },
+        "derived": { "type": "boolean" },
+        "labels": { "type": "boolean", "description": "Expand entity labels in results." },
+        "properties": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Additional entity properties to expand in results."
+        },
+        "visibility": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["public", "internal", "private"] },
+          "uniqueItems": true
+        }
+      }
+    },
+    "orderBy": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["variable"],
+        "additionalProperties": false,
+        "properties": {
+          "variable": { "type": "string" },
+          "field": { "type": "string" },
+          "direction": { "type": "string", "enum": ["asc", "desc"], "default": "asc" }
+        }
+      }
+    }
+  }
+}

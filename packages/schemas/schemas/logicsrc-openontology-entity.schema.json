@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://logicsrc.com/schemas/openontology/entity.schema.json",
+  "title": "LogicSRC OpenOntology Entity",
+  "description": "A specific thing with a stable identity. Entity ids never change when display names or aliases change; deletion is expressed as tombstone/archived/superseded state, never erasure.",
+  "type": "object",
+  "required": ["openontology", "kind", "id", "type", "canonicalName", "createdAt", "createdBy"],
+  "additionalProperties": false,
+  "properties": {
+    "openontology": { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+    "kind": { "const": "Entity" },
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Stable id. Package-qualified compact form (prefix:type:slug), an http(s) IRI, or a urn:logicsrc: identifier."
+    },
+    "type": { "type": "string", "minLength": 1, "description": "Entity type id." },
+    "canonicalName": { "type": "string", "minLength": 1 },
+    "labels": { "$ref": "#/$defs/languageMap" },
+    "aliases": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "externalIds": {
+      "type": "object",
+      "description": "Namespaced external identifiers (github, wikidata, orcid, did, ...). External services are never treated as canonical identity authorities.",
+      "additionalProperties": { "type": "string" }
+    },
+    "status": {
+      "type": "string",
+      "enum": ["active", "archived", "tombstone", "superseded", "merged"],
+      "default": "active"
+    },
+    "supersededBy": {
+      "type": "string",
+      "description": "Entity id that replaced this one after a merge. Old ids remain resolvable as redirects."
+    },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "createdBy": { "type": "string", "minLength": 1 },
+    "updatedAt": { "type": "string", "format": "date-time" },
+    "visibility": {
+      "type": "string",
+      "enum": ["public", "internal", "private"],
+      "default": "public"
+    },
+    "tags": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "extensions": { "type": "object" }
+  },
+  "$defs": {
+    "languageMap": {
+      "type": "object",
+      "patternProperties": {
+        "^[A-Za-z]{2,3}(-[A-Za-z0-9]{2,8})*$": { "type": "string" }
+      },
+      "additionalProperties": false
+    }
+  }
+}

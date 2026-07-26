@@ -1,0 +1,32 @@
+{
+  "name": "@logicsrc/openontology",
+  "version": "0.1.0",
+  "description": "Reference implementation of the LogicSRC OpenOntology standard: entities, source-backed claims, provenance, temporal history, a portable query AST, and governed change sets.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/profullstack/logicsrc.git",
+    "directory": "packages/openontology"
+  },
+  "homepage": "https://logicsrc.com/openontology",
+  "keywords": ["logicsrc", "openontology", "ontology", "knowledge-graph", "provenance", "agents", "json-schema"],
+  "publishConfig": { "access": "public" },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run src"
+  },
+  "dependencies": {
+    "@logicsrc/validators": "file:../validators",
+    "yaml": "^2.8.1"
+  },
+  "devDependencies": {
+    "vitest": "^4.0.8"
+  }
+}

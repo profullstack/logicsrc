@@ -1,7 +1,7 @@
 {
   "name": "@logicsrc/schemas",
   "version": "0.1.0",
-  "description": "LogicSRC JSON schemas for tasks, agents, runs, events, plugins, and the AgentAd ad standard.",
+  "description": "LogicSRC JSON schemas for tasks, agents, runs, events, plugins, the AgentAd ad standard, and the OpenOntology knowledge contracts.",
   "license": "MIT",
   "type": "module",
   "repository": {
@@ -10,7 +10,18 @@
     "directory": "packages/schemas"
   },
   "homepage": "https://github.com/profullstack/logicsrc/tree/master/packages/schemas",
-  "keywords": ["logicsrc", "agentad", "json-schema", "agents", "cli", "advertising", "standards"],
+  "keywords": [
+    "advertising",
+    "agentad",
+    "agents",
+    "cli",
+    "json-schema",
+    "knowledge-graph",
+    "logicsrc",
+    "ontology",
+    "openontology",
+    "standards"
+  ],
   "publishConfig": {
     "access": "public"
   },
@@ -36,10 +47,29 @@
     "./credential-provider": "./schemas/logicsrc-credential-provider.schema.json",
     "./credential-sync-plan": "./schemas/logicsrc-credential-sync-plan.schema.json",
     "./credential-sync-run": "./schemas/logicsrc-credential-sync-run.schema.json",
-    "./credential-audit-event": "./schemas/logicsrc-credential-audit-event.schema.json"
+    "./credential-audit-event": "./schemas/logicsrc-credential-audit-event.schema.json",
+    "./openontology-manifest": "./schemas/logicsrc-openontology-manifest.schema.json",
+    "./openontology-namespace": "./schemas/logicsrc-openontology-namespace.schema.json",
+    "./openontology-entity-type": "./schemas/logicsrc-openontology-entity-type.schema.json",
+    "./openontology-property": "./schemas/logicsrc-openontology-property.schema.json",
+    "./openontology-relationship-type": "./schemas/logicsrc-openontology-relationship-type.schema.json",
+    "./openontology-constraint": "./schemas/logicsrc-openontology-constraint.schema.json",
+    "./openontology-query": "./schemas/logicsrc-openontology-query.schema.json",
+    "./openontology-action": "./schemas/logicsrc-openontology-action.schema.json",
+    "./openontology-entity": "./schemas/logicsrc-openontology-entity.schema.json",
+    "./openontology-claim": "./schemas/logicsrc-openontology-claim.schema.json",
+    "./openontology-source": "./schemas/logicsrc-openontology-source.schema.json",
+    "./openontology-evidence": "./schemas/logicsrc-openontology-evidence.schema.json",
+    "./openontology-changeset": "./schemas/logicsrc-openontology-changeset.schema.json",
+    "./openontology-review": "./schemas/logicsrc-openontology-review.schema.json",
+    "./openontology-approval": "./schemas/logicsrc-openontology-approval.schema.json",
+    "./openontology-event": "./schemas/logicsrc-openontology-event.schema.json",
+    "./openontology-package": "./schemas/logicsrc-openontology-package.schema.json",
+    "./openontology-conformance": "./fixtures/openontology/conformance.json"
   },
   "files": [
-    "schemas"
+    "schemas",
+    "fixtures"
   ],
   "scripts": {
     "build": "node -e \"console.log('schemas: no build step')\""

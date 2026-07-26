@@ -1,0 +1,43 @@
+- openontology: "0.1"
+  kind: Constraint
+  id: codebase-has-language
+  description: Every codebase should record its primary implementation language.
+  severity: info
+  remediation: Add a language claim for the codebase.
+  rule:
+    type: required-predicate
+    entityType: Codebase
+    predicate: language
+- openontology: "0.1"
+  kind: Constraint
+  id: layer2-settles-somewhere
+  description: Every layer 2 must declare the network it settles to.
+  severity: error
+  remediation: Add a deployedOn claim from the layer 2 to its base network.
+  rule:
+    type: cardinality
+    predicate: deployedOn
+    entityType: Layer2
+    min: 1
+    max: 1
+- openontology: "0.1"
+  kind: Constraint
+  id: chain-ids-unique
+  description: Two networks must not share a chain id.
+  severity: error
+  remediation: Correct the duplicated chainId claim.
+  rule:
+    type: unique
+    predicate: chainId
+- openontology: "0.1"
+  kind: Constraint
+  id: proof-system-known
+  description: A layer 2's proof system must be one of the three recognised kinds.
+  severity: error
+  rule:
+    type: allowed-values
+    predicate: proofSystem
+    values:
+      - validity
+      - fraud
+      - hybrid

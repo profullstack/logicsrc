@@ -8,6 +8,9 @@ const DOCS_DIR = resolve(process.cwd(), "../../docs");
 // Curated, public-facing reference docs. Internal notes (roadmap, positioning,
 // arcade) are intentionally excluded.
 export const DOC_SLUGS = [
+  "openontology",
+  "openontology-governance",
+  "openontology-interoperability",
   "openspec-comparison",
   "data-model",
   "cli",

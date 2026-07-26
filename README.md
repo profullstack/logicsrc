@@ -14,6 +14,7 @@ apps/
   commandboard-web   PWA shell
 packages/
   cli                logicsrc OpenSpec CLI
+  openontology       OpenOntology reference engine (entities, claims, queries, change sets)
   logicsrc-mcp       @profullstack/logicsrc-mcp standards MCP server
   sdk                SDK contract types and helpers
   tui                terminal UI
@@ -27,6 +28,10 @@ plugins/
   c0mpute            work-in-progress compute jobs and worker pools plugin
 docs/
   specs, CLI conventions, permissions, and roadmap notes
+examples/
+  openontology/ethereum-ecosystem   fictional ecosystem map demonstrating OpenOntology
+prd/
+  numbered OpenPRD proposals
 scripts/
   install.sh         curl | sh installer
 ```
@@ -46,6 +51,33 @@ npm --workspace @logicsrc/cli run dev -- tui
 npm --workspace @profullstack/logicsrc-mcp run build
 node packages/logicsrc-mcp/dist/index.js
 ```
+
+## OpenOntology
+
+[LogicSRC OpenOntology](docs/openontology.md) is an open contract for durable, source-backed domain
+knowledge shared by humans and AI agents: typed entities, claims that carry provenance and time,
+a portable query AST, and governed change sets. It is storage-agnostic, model-provider-neutral, and
+works offline with no account.
+
+```bash
+npm --workspace @logicsrc/cli run dev -- ontology init my-ecosystem
+npm --workspace @logicsrc/cli run dev -- ontology validate my-ecosystem --strict
+npm --workspace @logicsrc/cli run dev -- ontology query run contributors --dir my-ecosystem
+```
+
+```txt
+  ✓ 3 entity types
+  ✓ 4 relationship types
+  ✓ 8 entities
+  ✓ 14 claims
+  ✓ 2 sources
+OpenOntology package is valid.
+```
+
+Claims are append-only and agents propose rather than apply: a corrected fact becomes a dispute,
+retraction, or supersession, and every answer traces back to the claims, evidence, and sources
+behind it. See also [governance](docs/openontology-governance.md) and
+[interoperability](docs/openontology-interoperability.md).
 
 ## MCP
 

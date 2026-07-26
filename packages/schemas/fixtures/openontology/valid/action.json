@@ -1,0 +1,29 @@
+{
+  "openontology": "0.1",
+  "kind": "Action",
+  "id": "createProjectReviewTask",
+  "label": "Create project review task",
+  "input": {
+    "project": {
+      "entityType": "Project",
+      "required": true
+    }
+  },
+  "executor": {
+    "type": "logicsrc-plugin-tool",
+    "plugin": "commandboard",
+    "tool": "task.create"
+  },
+  "permissions": {
+    "required": [
+      "ontology:action:execute"
+    ]
+  },
+  "approval": {
+    "mode": "policy"
+  },
+  "sideEffects": [
+    "creates-task",
+    "emits-event"
+  ]
+}

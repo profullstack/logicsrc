@@ -1,0 +1,15 @@
+{
+  "openontology": "0.1",
+  "kind": "Claim",
+  "id": "ex:claim:0002",
+  "subject": "ex:project:zk",
+  "predicate": "homepage",
+  "object": {
+    "value": "https://example.org/zk",
+    "datatype": "url"
+  },
+  "status": "asserted",
+  "assertedAt": "2026-07-26T00:00:00Z",
+  "assertedBy": "mailto:curator@example.org",
+  "firstParty": true
+}

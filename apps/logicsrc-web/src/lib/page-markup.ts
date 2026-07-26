@@ -17,7 +17,8 @@ const schemas = [
   { name: "logicsrc-agent", path: "packages/schemas/schemas/logicsrc-agent.schema.json" },
   { name: "logicsrc-run", path: "packages/schemas/schemas/logicsrc-run.schema.json" },
   { name: "logicsrc-event", path: "packages/schemas/schemas/logicsrc-event.schema.json" },
-  { name: "logicsrc-plugin", path: "packages/schemas/schemas/logicsrc-plugin.schema.json" }
+  { name: "logicsrc-plugin", path: "packages/schemas/schemas/logicsrc-plugin.schema.json" },
+  { name: "logicsrc-openontology-claim", path: "packages/schemas/schemas/logicsrc-openontology-claim.schema.json" }
 ];
 
 const implementations = [
@@ -124,6 +125,7 @@ export function renderPageMarkup(): string {
         <a href="/agent-swarm">Soon</a>
         <a href="/agentbyte">AgentByte</a>
         <a href="/credential-sharing">Credentials</a>
+        <a href="/openontology">OpenOntology</a>
         <a href="#cli">CLI</a>
         <a href="/docs">Docs</a>
         <a href="/blog">Blog</a>
@@ -191,6 +193,26 @@ export function renderPageMarkup(): string {
               </article>
             `).join("")}
           </div>
+        </div>
+      </section>
+
+      <section id="openontology" class="band two-col">
+        <div>
+          <div class="section-head">
+            <h2>OpenOntology</h2>
+            <p>An open contract for durable, source-backed domain knowledge shared by humans and AI agents.</p>
+          </div>
+          <p>Define the things in a domain, connect them with typed claims, preserve where each fact came from, and let agents query or propose changes through governed interfaces. Storage-agnostic, model-provider-neutral, and usable with no account.</p>
+          <p><a class="button-primary" href="/openontology">Read the specification</a></p>
+        </div>
+        <div class="cli-panel">
+          <h2>Five nouns</h2>
+          <pre><code>Type       Person, Project, Codebase
+Entity     eth:person:avery-lindqvist
+Claim      Avery --worksOn--&gt; ZK Prover
+Source     the commit it came from
+ChangeSet  a reviewable proposal</code></pre>
+          <p>Claims are append-only. Agents propose; humans apply.</p>
         </div>
       </section>
 

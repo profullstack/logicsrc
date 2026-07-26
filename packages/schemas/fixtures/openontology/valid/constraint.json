@@ -1,0 +1,12 @@
+{
+  "openontology": "0.1",
+  "kind": "Constraint",
+  "id": "project-has-homepage",
+  "description": "Projects should record a homepage.",
+  "severity": "warning",
+  "rule": {
+    "type": "required-predicate",
+    "entityType": "Project",
+    "predicate": "homepage"
+  }
+}

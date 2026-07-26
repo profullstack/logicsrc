@@ -1,0 +1,148 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://logicsrc.com/schemas/openontology/manifest.schema.json",
+  "title": "LogicSRC OpenOntology Package Manifest",
+  "description": "The openontology.yaml (or canonical JSON equivalent) that opens every OpenOntology package. Declares identity, namespace, license, maintainers, imports, and the schema/data files that make up the package.",
+  "type": "object",
+  "required": [
+    "openontology",
+    "kind",
+    "id",
+    "name",
+    "version",
+    "namespace",
+    "description",
+    "license",
+    "maintainers"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "openontology": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+(\\.\\d+)?$",
+      "description": "OpenOntology standard version this package conforms to, e.g. '0.1'."
+    },
+    "kind": { "const": "OntologyPackage" },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+      "description": "Lowercase kebab-case package id, globally disambiguated by namespace when imported."
+    },
+    "name": { "type": "string", "minLength": 1 },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+(-[0-9A-Za-z.-]+)?(\\+[0-9A-Za-z.-]+)?$",
+      "description": "Semantic version."
+    },
+    "namespace": {
+      "type": "string",
+      "format": "uri",
+      "description": "Base IRI that compact package-qualified ids canonicalize against."
+    },
+    "description": { "type": "string", "minLength": 1 },
+    "license": {
+      "type": "string",
+      "minLength": 1,
+      "description": "SPDX identifier, license URL, or the literal 'unknown'."
+    },
+    "maintainers": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/maintainer" }
+    },
+    "imports": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/import" },
+      "description": "Other ontology packages imported by immutable version or digest."
+    },
+    "schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Relative paths (or inline arrays) for each schema-layer file.",
+      "properties": {
+        "namespaces": { "$ref": "#/$defs/fileOrInline" },
+        "entityTypes": { "$ref": "#/$defs/fileOrInline" },
+        "properties": { "$ref": "#/$defs/fileOrInline" },
+        "relationships": { "$ref": "#/$defs/fileOrInline" },
+        "constraints": { "$ref": "#/$defs/fileOrInline" },
+        "queries": { "$ref": "#/$defs/fileOrInline" },
+        "actions": { "$ref": "#/$defs/fileOrInline" }
+      }
+    },
+    "data": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Relative paths (or inline arrays) for each knowledge-layer file.",
+      "properties": {
+        "entities": { "$ref": "#/$defs/fileOrInline" },
+        "claims": { "$ref": "#/$defs/fileOrInline" },
+        "sources": { "$ref": "#/$defs/fileOrInline" },
+        "evidence": { "$ref": "#/$defs/fileOrInline" }
+      }
+    },
+    "context": {
+      "type": "string",
+      "description": "Relative path to the package's JSON-LD 1.1 context document."
+    },
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "description": "Content digest over the canonical manifest and every declared file. Present on published packages."
+    },
+    "signatures": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/signature" },
+      "description": "Detached maintainer signatures over the package digest."
+    },
+    "extensions": {
+      "type": "object",
+      "description": "Namespaced extension point. Keys SHOULD be prefixed to avoid collisions."
+    }
+  },
+  "$defs": {
+    "maintainer": {
+      "type": "object",
+      "required": ["id"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "URI-shaped identity: mailto:, did:, https:, or urn:."
+        },
+        "name": { "type": "string" }
+      }
+    },
+    "import": {
+      "type": "object",
+      "required": ["id"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+        "version": { "type": "string" },
+        "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+        "namespace": { "type": "string", "format": "uri" },
+        "prefix": { "type": "string" }
+      }
+    },
+    "fileOrInline": {
+      "anyOf": [
+        { "type": "string", "minLength": 1 },
+        { "type": "array", "items": { "type": "object" } }
+      ]
+    },
+    "signature": {
+      "type": "object",
+      "required": ["algorithm", "signer", "value"],
+      "additionalProperties": false,
+      "description": "Pluggable signature envelope. 'jws-ed25519' is the minimal profile every implementation SHOULD understand.",
+      "properties": {
+        "algorithm": { "type": "string", "minLength": 1 },
+        "signer": { "type": "string", "minLength": 1 },
+        "value": { "type": "string", "minLength": 1 },
+        "created": { "type": "string", "format": "date-time" },
+        "keyId": { "type": "string" }
+      }
+    }
+  }
+}

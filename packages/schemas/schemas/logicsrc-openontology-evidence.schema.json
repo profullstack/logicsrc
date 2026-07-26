@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://logicsrc.com/schemas/openontology/evidence.schema.json",
+  "title": "LogicSRC OpenOntology Evidence",
+  "description": "A machine-readable pointer into a source that supports a claim. Excerpts are optional and bounded by source licensing, privacy, and configured excerpt limits.",
+  "type": "object",
+  "required": ["openontology", "kind", "id", "source", "selector"],
+  "additionalProperties": false,
+  "properties": {
+    "openontology": { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+    "kind": { "const": "Evidence" },
+    "id": { "type": "string", "minLength": 1 },
+    "source": { "type": "string", "minLength": 1, "description": "Source id." },
+    "selector": { "$ref": "#/$defs/selector" },
+    "excerpt": {
+      "type": "string",
+      "description": "Optional short excerpt. Omitted when licensing, privacy, or excerpt limits forbid it."
+    },
+    "contentHash": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "visibility": {
+      "type": "string",
+      "enum": ["public", "internal", "private"],
+      "default": "public"
+    },
+    "extensions": { "type": "object" }
+  },
+  "$defs": {
+    "selector": {
+      "type": "object",
+      "required": ["type"],
+      "description": "One selector shape per source medium.",
+      "oneOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": { "const": "line-range" },
+            "start": { "type": "integer", "minimum": 1 },
+            "end": { "type": "integer", "minimum": 1 },
+            "path": { "type": "string" }
+          },
+          "required": ["type", "start", "end"]
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": { "const": "page" },
+            "page": { "type": "integer", "minimum": 1 }
+          },
+          "required": ["type", "page"]
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": { "const": "time-range" },
+            "start": { "type": "number", "minimum": 0 },
+            "end": { "type": "number", "minimum": 0 }
+          },
+          "required": ["type", "start", "end"]
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": { "const": "json-pointer" },
+            "pointer": { "type": "string" }
+          },
+          "required": ["type", "pointer"]
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": { "const": "xpath" },
+            "expression": { "type": "string" }
+          },
+          "required": ["type", "expression"]
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": { "const": "css-selector" },
+            "expression": { "type": "string" }
+          },
+          "required": ["type", "expression"]
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": { "const": "database-key" },
+            "table": { "type": "string" },
+            "key": { "type": "string" }
+          },
+          "required": ["type", "key"]
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": { "const": "commit-path" },
+            "path": { "type": "string" },
+            "commit": { "type": "string" }
+          },
+          "required": ["type", "path"]
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": { "const": "api-field" },
+            "field": { "type": "string" },
+            "endpoint": { "type": "string" }
+          },
+          "required": ["type", "field"]
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": { "const": "whole-document" }
+          },
+          "required": ["type"]
+        }
+      ]
+    }
+  }
+}

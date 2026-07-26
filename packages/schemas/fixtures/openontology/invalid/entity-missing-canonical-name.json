@@ -1,0 +1,8 @@
+{
+  "openontology": "0.1",
+  "kind": "Entity",
+  "id": "ex:person:bob",
+  "type": "Person",
+  "createdAt": "2026-07-26T00:00:00Z",
+  "createdBy": "curator"
+}

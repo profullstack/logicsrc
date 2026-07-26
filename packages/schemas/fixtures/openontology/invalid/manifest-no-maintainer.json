@@ -1,0 +1,11 @@
+{
+  "openontology": "0.1",
+  "kind": "OntologyPackage",
+  "id": "example-ontology",
+  "name": "Example",
+  "version": "0.1.0",
+  "namespace": "https://logicsrc.com/ontology/example/",
+  "description": "Missing maintainers.",
+  "license": "CC-BY-4.0",
+  "maintainers": []
+}

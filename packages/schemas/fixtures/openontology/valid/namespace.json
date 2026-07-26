@@ -1,0 +1,7 @@
+{
+  "openontology": "0.1",
+  "kind": "Namespace",
+  "prefix": "ex",
+  "uri": "https://logicsrc.com/ontology/example/",
+  "description": "Compact prefix for the example package."
+}

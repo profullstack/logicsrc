@@ -1,0 +1,168 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://logicsrc.com/schemas/openontology/changeset.schema.json",
+  "title": "LogicSRC OpenOntology Change Set",
+  "description": "An atomic, reviewable proposal to add, correct, merge, dispute, or retract knowledge. Agent-created change sets default to 'proposed'; rollback creates a compensating change set rather than deleting history.",
+  "type": "object",
+  "required": ["openontology", "kind", "id", "title", "createdAt", "createdBy", "operations", "status"],
+  "additionalProperties": false,
+  "properties": {
+    "openontology": { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+    "kind": { "const": "ChangeSet" },
+    "id": { "type": "string", "minLength": 1 },
+    "ontology": { "type": "string", "description": "Target package reference, e.g. 'ethereum-ecosystem@0.1.0'." },
+    "title": { "type": "string", "minLength": 1 },
+    "rationale": { "type": "string" },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "createdBy": { "type": "string", "minLength": 1 },
+    "actorType": { "type": "string", "enum": ["human", "service", "agent"] },
+    "runId": { "type": "string", "description": "REQUIRED for agent-created change sets." },
+    "operations": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/operation" }
+    },
+    "requiredApprovals": { "type": "integer", "minimum": 0, "default": 1 },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "proposed", "approved", "applied", "rejected", "conflicted", "withdrawn"]
+    },
+    "baseRevision": {
+      "type": "string",
+      "description": "Data revision the change set was authored against. Used for optimistic concurrency."
+    },
+    "resultRevision": { "type": "string", "description": "Revision produced by applying the change set." },
+    "validation": { "$ref": "#/$defs/validationSummary" },
+    "appliedAt": { "type": "string", "format": "date-time" },
+    "appliedBy": { "type": "string" },
+    "compensates": { "type": "string", "description": "Change set id this one rolls back." },
+    "conflictsWith": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "signatures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["algorithm", "signer", "value"],
+        "additionalProperties": false,
+        "properties": {
+          "algorithm": { "type": "string" },
+          "signer": { "type": "string" },
+          "value": { "type": "string" },
+          "created": { "type": "string", "format": "date-time" },
+          "keyId": { "type": "string" }
+        }
+      }
+    },
+    "extensions": { "type": "object" }
+  },
+  "$defs": {
+    "validationSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "ok": { "type": "boolean" },
+        "errors": { "type": "integer", "minimum": 0 },
+        "warnings": { "type": "integer", "minimum": 0 },
+        "info": { "type": "integer", "minimum": 0 },
+        "policy": { "type": "integer", "minimum": 0 },
+        "validatedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "operation": {
+      "type": "object",
+      "required": ["op"],
+      "oneOf": [
+        {
+          "additionalProperties": false,
+          "required": ["op", "value"],
+          "properties": {
+            "op": { "const": "add-entity" },
+            "value": { "type": "object" },
+            "note": { "type": "string" }
+          }
+        },
+        {
+          "additionalProperties": false,
+          "required": ["op", "target", "value"],
+          "properties": {
+            "op": { "const": "update-metadata" },
+            "target": { "type": "string" },
+            "value": { "type": "object" },
+            "note": { "type": "string" }
+          }
+        },
+        {
+          "additionalProperties": false,
+          "required": ["op", "value"],
+          "properties": {
+            "op": { "const": "assert-claim" },
+            "value": { "type": "object" },
+            "note": { "type": "string" }
+          }
+        },
+        {
+          "additionalProperties": false,
+          "required": ["op", "target"],
+          "properties": {
+            "op": { "const": "dispute-claim" },
+            "target": { "type": "string" },
+            "reason": { "type": "string" },
+            "value": { "type": "object" },
+            "note": { "type": "string" }
+          }
+        },
+        {
+          "additionalProperties": false,
+          "required": ["op", "target"],
+          "properties": {
+            "op": { "const": "retract-claim" },
+            "target": { "type": "string" },
+            "reason": { "type": "string" },
+            "note": { "type": "string" }
+          }
+        },
+        {
+          "additionalProperties": false,
+          "required": ["op", "target", "value"],
+          "properties": {
+            "op": { "const": "supersede-claim" },
+            "target": { "type": "string" },
+            "value": { "type": "object" },
+            "reason": { "type": "string" },
+            "note": { "type": "string" }
+          }
+        },
+        {
+          "additionalProperties": false,
+          "required": ["op", "source", "target"],
+          "properties": {
+            "op": { "const": "merge-entity" },
+            "source": { "type": "string", "description": "Entity id being merged away; kept as a redirect." },
+            "target": { "type": "string", "description": "Surviving entity id." },
+            "reason": { "type": "string" },
+            "note": { "type": "string" }
+          }
+        },
+        {
+          "additionalProperties": false,
+          "required": ["op", "target"],
+          "properties": {
+            "op": { "const": "archive-entity" },
+            "target": { "type": "string" },
+            "reason": { "type": "string" },
+            "note": { "type": "string" }
+          }
+        },
+        {
+          "additionalProperties": false,
+          "required": ["op", "value"],
+          "properties": {
+            "op": { "const": "schema-migration" },
+            "value": { "type": "object" },
+            "breaking": { "type": "boolean", "default": false },
+            "note": { "type": "string" }
+          }
+        }
+      ]
+    }
+  }
+}

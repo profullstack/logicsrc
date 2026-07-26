@@ -1,0 +1,113 @@
+- openontology: "0.1"
+  kind: EntityType
+  id: Person
+  label: Person
+  description: A human participant in the ecosystem.
+  keyProperties:
+    - canonicalName
+  properties:
+    focus:
+      type: string
+      description: Primary area of work.
+    startedIn:
+      type: integer
+      description: Year they began working in the ecosystem.
+- openontology: "0.1"
+  kind: EntityType
+  id: Organization
+  label: Organization
+  description: A company, foundation, DAO, collective, or working group.
+  properties:
+    homepage:
+      type: url
+    kind:
+      type: enum
+      enum:
+        - company
+        - foundation
+        - dao
+        - collective
+- openontology: "0.1"
+  kind: EntityType
+  id: Project
+  label: Project
+  description: A named body of work people and organizations contribute to.
+  properties:
+    homepage:
+      type: url
+    startedOn:
+      type: date
+- openontology: "0.1"
+  kind: EntityType
+  id: Codebase
+  label: Codebase
+  description: A specific repository or source tree.
+  properties:
+    language:
+      type: string
+    license:
+      type: string
+    repository:
+      type: url
+- openontology: "0.1"
+  kind: EntityType
+  id: ResearchTopic
+  label: Research Topic
+  description: A research direction the ecosystem is actively working on.
+- openontology: "0.1"
+  kind: EntityType
+  id: Protocol
+  label: Protocol
+  description: A specified protocol or standard.
+  properties:
+    specification:
+      type: url
+- openontology: "0.1"
+  kind: EntityType
+  id: Network
+  label: Network
+  description: A live chain or network.
+  properties:
+    chainId:
+      type: integer
+- openontology: "0.1"
+  kind: EntityType
+  id: Layer2
+  label: Layer 2
+  description: A layer-2 network settling to a base layer.
+  properties:
+    proofSystem:
+      type: enum
+      enum:
+        - validity
+        - fraud
+        - hybrid
+- openontology: "0.1"
+  kind: EntityType
+  id: Application
+  label: Application
+  description: A user-facing application deployed on a network.
+- openontology: "0.1"
+  kind: EntityType
+  id: FundingProgram
+  label: Funding Program
+  description: A grants program, fund, or funding round.
+  properties:
+    budgetUsd:
+      type: number
+- openontology: "0.1"
+  kind: EntityType
+  id: Publication
+  label: Publication
+  description: A paper, spec, or long-form writeup.
+  properties:
+    published:
+      type: date
+- openontology: "0.1"
+  kind: EntityType
+  id: Event
+  label: Event
+  description: A conference, workshop, or summit.
+  properties:
+    held:
+      type: date

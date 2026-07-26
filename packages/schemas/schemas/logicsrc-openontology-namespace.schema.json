@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://logicsrc.com/schemas/openontology/namespace.schema.json",
+  "title": "LogicSRC OpenOntology Namespace",
+  "description": "A prefix binding used to disambiguate ids and to canonicalize compact package-qualified ids into resolvable IRIs.",
+  "type": "object",
+  "required": ["openontology", "kind", "prefix", "uri"],
+  "additionalProperties": false,
+  "properties": {
+    "openontology": { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+    "kind": { "const": "Namespace" },
+    "prefix": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+      "description": "Compact prefix, e.g. 'ethereum' in 'ethereum:person:alice'."
+    },
+    "uri": { "type": "string", "format": "uri" },
+    "description": { "type": "string" },
+    "extensions": { "type": "object" }
+  }
+}
