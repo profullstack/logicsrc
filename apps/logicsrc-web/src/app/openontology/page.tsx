@@ -225,6 +225,14 @@ OpenOntology package is valid.`}</pre>
         </div>
         <ul style={{ color: "#41505d", lineHeight: 1.9, paddingLeft: "1.1rem" }}>
           <li>
+            <Link href="/openontology/explore">Explorer</Link> — browse the example package: types,
+            entities, claims with provenance, and the history behind each one
+          </li>
+          <li>
+            <a href="/api/ontologies/openapi">REST API</a> — OpenAPI description of the reference
+            service, with SSE events
+          </li>
+          <li>
             <Link href="/docs/openontology">Specification</Link> — the model, packages, claims,
             queries, validation, CLI, SDK, conformance
           </li>

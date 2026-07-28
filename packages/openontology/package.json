@@ -15,14 +15,27 @@
     "directory": "packages/openontology"
   },
   "homepage": "https://logicsrc.com/openontology",
-  "keywords": ["logicsrc", "openontology", "ontology", "knowledge-graph", "provenance", "agents", "json-schema"],
-  "publishConfig": { "access": "public" },
-  "files": ["dist"],
+  "keywords": [
+    "logicsrc",
+    "openontology",
+    "ontology",
+    "knowledge-graph",
+    "provenance",
+    "agents",
+    "json-schema"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "test": "vitest run src"
   },
   "dependencies": {
+    "@libsql/client": "^0.17.4",
     "@logicsrc/validators": "file:../validators",
     "yaml": "^2.8.1"
   },

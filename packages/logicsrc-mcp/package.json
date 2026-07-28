@@ -1,7 +1,7 @@
 {
   "name": "@profullstack/logicsrc-mcp",
   "version": "0.1.0",
-  "description": "MCP server for LogicSRC standards, schemas, prompts, and validators.",
+  "description": "MCP server for LogicSRC standards, schemas, prompts, validators, OpenOntology, and OpenPRD.",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -13,6 +13,8 @@
     "test": "vitest run src"
   },
   "dependencies": {
+    "@logicsrc/openontology": "file:../openontology",
+    "@logicsrc/openprd": "file:../openprd",
     "@logicsrc/validators": "file:../validators",
     "@modelcontextprotocol/sdk": "^1.29.0",
     "zod": "^4.1.13"

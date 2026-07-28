@@ -9,8 +9,9 @@
     "build": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@logicsrc/plugin-core": "file:../plugin-core",
+    "@logicsrc/openontology": "file:../openontology",
     "@logicsrc/plugin-coinpay": "file:../../plugins/coinpay",
+    "@logicsrc/plugin-core": "file:../plugin-core",
     "@logicsrc/plugin-email-accounts": "file:../../plugins/email-accounts",
     "@logicsrc/plugin-social-accounts": "file:../../plugins/social-accounts",
     "@logicsrc/plugin-ugig": "file:../../plugins/ugig"

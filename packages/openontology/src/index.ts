@@ -52,6 +52,15 @@ export {
 } from "./query.js";
 
 export {
+  createLibsqlStore,
+  migrate as migrateLibsql,
+  searchEntities,
+  MIGRATIONS,
+  type LibsqlStore,
+  type LibsqlStoreOptions
+} from "./libsql.js";
+
+export {
   createMemoryStore,
   type ClaimFilter,
   type EntityFilter,
@@ -92,6 +101,30 @@ export {
   PROV,
   type JsonLdExport
 } from "./jsonld.js";
+
+export {
+  ADAPTERS,
+  csvAdapter,
+  githubAdapter,
+  httpApiAdapter,
+  jsonAdapter,
+  listAdapters,
+  markdownAdapter,
+  ndjsonAdapter,
+  parseCsv,
+  yamlAdapter,
+  type AdapterCapabilities,
+  type AdapterId,
+  type FetchLike,
+  type IngestContext,
+  type IngestResult,
+  type RecordMapping,
+  type SourceAdapter
+} from "./adapters.js";
+
+export { exportTurtle, importTurtle, type TurtleExport } from "./rdf.js";
+
+export { constraintsToShacl, type ShaclExport } from "./shacl.js";
 
 export {
   createEd25519Provider,

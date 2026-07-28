@@ -9,7 +9,7 @@ const NAV: Array<{ href: string; label: string; external?: boolean }> = [
   { href: "/agentbyte", label: "AgentByte" },
   { href: "/credential-sharing", label: "Credentials" },
   { href: "/openontology", label: "OpenOntology" },
-  { href: "/docs/openprd", label: "OpenPRD" },
+  { href: "/openprd", label: "OpenPRD" },
   { href: "/#cli", label: "CLI" },
   { href: "/docs", label: "Docs" },
   { href: "/blog", label: "Blog" },
