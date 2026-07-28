@@ -38,8 +38,37 @@ export function identityPath(): string {
     : join(logicsrcHome(), "identity.json");
 }
 
+/**
+ * The hosted LogicSRC credentials app (`apps/pwa`) — where `logicsrc login`
+ * goes when nothing else is configured. This is deliberately NOT logicsrc.com:
+ * that origin serves the marketing site and has no /cli routes.
+ */
+export const DEFAULT_API_URL = "https://logicsrc-credentials-production.up.railway.app";
+
+/** An explicitly configured API origin, if any. `LOGICSRC_API` is the documented one. */
+export function envApiUrl(): string | undefined {
+  return (
+    process.env.LOGICSRC_API ||
+    process.env.LOGICSRC_API_URL ||
+    // Legacy: CommandBoard is a different service, so this is the last resort.
+    process.env.COMMANDBOARD_API_URL ||
+    undefined
+  );
+}
+
 export function defaultApiUrl(): string {
-  return process.env.COMMANDBOARD_API_URL || process.env.LOGICSRC_API_URL || "http://localhost:4010";
+  return envApiUrl() || DEFAULT_API_URL;
+}
+
+/**
+ * Resolve the API origin for a command: an explicit `--api-url` wins, then the
+ * environment, then whatever a *logged-in* identity was registered against.
+ * A stored URL from an identity that never completed login is ignored — that
+ * is how machines got stuck pointing at a dev `localhost` server.
+ */
+export function resolveApiUrl(identity?: Pick<LocalIdentity, "apiUrl" | "apiToken">, override?: string): string {
+  const stored = identity?.apiToken ? identity.apiUrl : undefined;
+  return (override || envApiUrl() || stored || DEFAULT_API_URL).replace(/\/+$/, "");
 }
 
 function writeSecure(file: string, data: unknown): void {
@@ -96,7 +125,7 @@ export async function updateIdentity(
 export function requireAuth(file = identityPath()): LocalIdentity & { apiToken: string; email: string } {
   const identity = readIdentity(file);
   if (!identity?.apiToken || !identity.email) {
-    throw new Error('Not logged in. Run "logicsrc login --email you@example.com" first.');
+    throw new Error('Not logged in. Run "logicsrc login" first.');
   }
   return identity as LocalIdentity & { apiToken: string; email: string };
 }

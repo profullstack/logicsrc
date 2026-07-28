@@ -89,6 +89,9 @@ export {
   identityPath,
   logicsrcHome,
   defaultApiUrl,
+  envApiUrl,
+  resolveApiUrl,
+  DEFAULT_API_URL,
   type LocalIdentity
 } from "./identity.js";
 export {

@@ -10,6 +10,7 @@ import {
   updateIdentity,
   requireAuth,
   defaultApiUrl,
+  resolveApiUrl,
   createCredentialEngine,
   unwrapVaultKey,
   wrapVaultKey,
@@ -25,11 +26,23 @@ import { print, type OutputFormat } from "./format.js";
 
 function authedClient(): { client: TeamClient; identity: ReturnType<typeof requireAuth> } {
   const identity = requireAuth();
-  const client = new TeamClient({ apiUrl: identity.apiUrl || defaultApiUrl(), token: identity.apiToken });
+  const client = new TeamClient({ apiUrl: resolveApiUrl(identity), token: identity.apiToken });
   return { client, identity };
 }
 
 const b64url = (buf: Buffer): string => buf.toString("base64url");
+
+/**
+ * Can a browser on THIS machine reach a loopback server on THIS machine?
+ * Over SSH (or in a container/CI) it can't — the human's browser is elsewhere,
+ * so its 127.0.0.1 is a different machine and the callback never arrives.
+ */
+function hasLocalBrowser(): boolean {
+  if (process.env.SSH_CONNECTION || process.env.SSH_TTY || process.env.SSH_CLIENT) return false;
+  if (process.env.CI) return false;
+  if (process.platform === "darwin" || process.platform === "win32") return true;
+  return Boolean(process.env.DISPLAY || process.env.WAYLAND_DISPLAY);
+}
 
 function openBrowser(url: string): void {
   const [cmd, args] =
@@ -102,6 +115,67 @@ function loopbackLogin(apiUrl: string, timeoutMs = 180000): Promise<{ token: str
   });
 }
 
+interface LoginResult { token: string; email: string | null; userId?: string }
+
+const sleep = (ms: number): Promise<void> => new Promise((r) => setTimeout(r, ms));
+
+/**
+ * Device-authorization login — for machines with no browser of their own.
+ * We print a short code; the human approves it from any browser, anywhere.
+ */
+async function deviceLogin(apiUrl: string, timeoutMs = 600000): Promise<LoginResult> {
+  const base = apiUrl.replace(/\/+$/, "");
+  const startRes = await fetch(`${base}/cli/device/code`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ name: `logicsrc cli @ ${hostname()}` })
+  });
+  if (startRes.status === 404) throw new DeviceFlowUnsupported();
+  if (!startRes.ok) throw new Error(`could not start device login (${startRes.status})`);
+  const start = (await startRes.json()) as {
+    device_code: string; user_code: string; verification_uri: string;
+    verification_uri_complete?: string; expires_in?: number; interval?: number;
+  };
+
+  console.error("\n🔑 Authorize the LogicSRC CLI from any browser:");
+  console.error(`   1. open ${start.verification_uri}`);
+  console.error(`   2. enter the code: ${start.user_code}\n`);
+  if (hasLocalBrowser() && start.verification_uri_complete) openBrowser(start.verification_uri_complete);
+
+  let interval = Math.max(1, start.interval ?? 5);
+  const deadline = Date.now() + Math.min(timeoutMs, (start.expires_in ?? 600) * 1000);
+  process.stderr.write("   waiting for approval…");
+  try {
+    while (Date.now() < deadline) {
+      await sleep(interval * 1000);
+      const res = await fetch(`${base}/cli/device/token`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ device_code: start.device_code })
+      });
+      const body = (await res.json().catch(() => ({}))) as {
+        error?: string; interval?: number; access_token?: string; user?: { email?: string; id?: string };
+      };
+      if (res.ok && body.access_token) {
+        return { token: body.access_token, email: body.user?.email ?? null, userId: body.user?.id };
+      }
+      if (body.error === "authorization_pending") { process.stderr.write("."); continue; }
+      if (body.error === "slow_down") { interval = Math.max(interval + 2, body.interval ?? interval); continue; }
+      if (body.error === "access_denied") throw new Error("authorization was denied in the browser");
+      if (body.error === "expired_token") throw new Error("the code expired — run `logicsrc login` again");
+      throw new Error(`device login failed (${body.error || res.status})`);
+    }
+  } finally {
+    process.stderr.write("\n");
+  }
+  throw new Error("login timed out — run `logicsrc login` again");
+}
+
+/** Thrown when the server predates the device flow, so we can fall back. */
+class DeviceFlowUnsupported extends Error {
+  constructor() { super("device flow not supported by this server"); }
+}
+
 async function resolveVaultId(client: TeamClient, slug: string, vault: string): Promise<string> {
   const { vaults } = await client.listVaults(slug);
   const found = vaults.find((v) => v.name === vault);
@@ -109,11 +183,12 @@ async function resolveVaultId(client: TeamClient, slug: string, vault: string): 
   return found.id;
 }
 
-export async function loginAction(options: { apiUrl?: string; token?: string }): Promise<void> {
+export async function loginAction(options: { apiUrl?: string; token?: string; device?: boolean; web?: boolean }): Promise<void> {
   const identity = await loadOrCreateIdentity();
-  const apiUrl = (options.apiUrl || identity.apiUrl || defaultApiUrl()).replace(/\/+$/, "");
+  const apiUrl = resolveApiUrl(identity, options.apiUrl);
 
-  // Loopback browser OAuth-PKCE (like `moshcode login`), or a --token for CI.
+  // --token for CI; otherwise a browser flow: loopback OAuth-PKCE when this
+  // machine has its own browser, device-code when it doesn't (SSH, containers).
   let token = options.token;
   let email: string | null = null;
   let userId: string | undefined;
@@ -123,7 +198,20 @@ export async function loginAction(options: { apiUrl?: string; token?: string }):
     email = me.user.email;
     userId = me.user.id;
   } else {
-    const result = await loopbackLogin(apiUrl);
+    const useDevice = options.device ?? (options.web ? false : !hasLocalBrowser());
+    let result: LoginResult;
+    if (useDevice) {
+      try {
+        result = await deviceLogin(apiUrl);
+      } catch (error) {
+        if (!(error instanceof DeviceFlowUnsupported)) throw error;
+        console.error("⚠️  This server has no device flow — falling back to the loopback flow.");
+        console.error("   If your browser is on another machine, forward the callback port over SSH.");
+        result = await loopbackLogin(apiUrl);
+      }
+    } else {
+      result = await loopbackLogin(apiUrl);
+    }
     token = result.token;
     email = result.email;
     userId = result.userId;
@@ -145,12 +233,12 @@ export async function logoutAction(): Promise<void> {
 export async function whoamiAction(format: OutputFormat): Promise<void> {
   const identity = readIdentity();
   if (!identity?.apiToken) {
-    print({ loggedIn: false, apiUrl: defaultApiUrl(), hint: "Run: logicsrc login --email you@example.com" }, format);
+    print({ loggedIn: false, apiUrl: defaultApiUrl(), hint: "Run: logicsrc login" }, format);
     return;
   }
   const { client } = authedClient();
   const me = await client.me();
-  print({ loggedIn: true, email: me.user.email, apiUrl: identity.apiUrl, publicKey: me.user.publicKey, teams: me.teams.map((t) => t.slug) }, format);
+  print({ loggedIn: true, email: me.user.email, apiUrl: resolveApiUrl(identity), publicKey: me.user.publicKey, teams: me.teams.map((t) => t.slug) }, format);
 }
 
 export async function teamsCreateAction(slug: string, options: { name?: string; format: OutputFormat }): Promise<void> {

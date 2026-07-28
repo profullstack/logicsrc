@@ -179,8 +179,8 @@ re-wraps (seals) it to the new member's public key. The private key lives only i
 ### CLI
 
 ```bash
-# One-time: log in by email (registers this device's identity key).
-logicsrc login --email you@example.com
+# One-time: log in through your browser (registers this device's identity key).
+logicsrc login
 
 # Owner: create a team, push a local .env into an encrypted vault, invite people.
 logicsrc teams create acme --name "Acme Inc"
@@ -188,7 +188,7 @@ logicsrc teams push acme prod --env .env        # encrypt + upload
 logicsrc teams invite acme teammate@example.com # emails an accept link
 
 # Teammate: accept, then get granted, then pull + decrypt locally.
-logicsrc login --email teammate@example.com
+logicsrc login
 logicsrc teams accept <token-from-email>
 # …an existing member runs:  logicsrc teams grant acme prod teammate@example.com
 logicsrc teams pull acme prod --env .env        # download + decrypt
@@ -198,6 +198,21 @@ logicsrc teams list
 logicsrc teams members acme
 logicsrc teams vaults acme
 ```
+
+`logicsrc login` picks its flow from the machine it runs on:
+
+- **Has its own browser** → loopback OAuth-PKCE: a `127.0.0.1` listener catches
+  the callback. Force it with `--web`.
+- **No browser** (SSH, droplet, container, CI) → device authorization: the CLI
+  prints a short code, you approve it from a browser on any other machine.
+  Force it with `--device`. A loopback redirect would be useless here — the
+  browser's `127.0.0.1` is not the CLI's machine.
+- **Unattended** → `--token lsk_…` from **Settings ▸ API keys**.
+
+It talks to the hosted credentials app by default. Point it elsewhere (local dev,
+self-hosted) with `LOGICSRC_API=http://localhost:8080 logicsrc login` or
+`logicsrc login --api-url …`; the chosen origin is remembered in
+`~/.logicsrc/identity.json` once login succeeds.
 
 Because `team` is a normal provider, the generic sync surface works too — e.g.
 `logicsrc credentials plan --from env --from-path .env --to team --to-project acme
