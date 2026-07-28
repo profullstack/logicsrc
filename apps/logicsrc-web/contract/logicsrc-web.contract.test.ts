@@ -173,18 +173,20 @@ describe("POST /api/hire-us/coinpay-checkout", () => {
     expect(createCall?.[1]?.headers).toMatchObject({ authorization: "Bearer cp_test_key" });
     expect(createBody).toMatchObject({
       business_id: "business-123",
-      amount_usd: 250,
+      amount_usd: 4000,
       payment_method: "both",
       currency: "usdc_pol",
       blockchain: "USDC_POL",
-      description: "LogicSRC Hire Us - $250/week",
+      description: "LogicSRC Hire Us - 10h @ $400/hour",
       success_url: "https://logicsrc.test/hire-us?payment=success",
       cancel_url: "https://logicsrc.test/hire-us?payment=cancelled",
       redirect_url: "https://logicsrc.test/hire-us?payment=coinpay",
       webhook_url: "https://logicsrc.test/api/webhooks/coinpay",
       metadata: {
         product: "logicsrc-hire-us",
-        interval: "week",
+        billing: "metered_hours",
+        hours: 10,
+        rate_usd_per_hour: 400,
         source: "logicsrc.com/hire-us",
         buyer_email: "buyer@example.com"
       }
@@ -241,7 +243,71 @@ describe("POST /api/hire-us/coinpay-checkout", () => {
     const body = await response.json();
 
     expect(response.status).toBe(201);
-    expect(body.payment.amount_usd).toBe(250);
+    expect(body.payment.amount_usd).toBe(4000);
+  });
+
+  it("prices the checkout from the approved hours", async () => {
+    process.env.COINPAY_API_KEY = "cp_test_key";
+    process.env.COINPAY_API_URL = "https://coinpayportal.example";
+    process.env.COINPAY_BUSINESS_ID = "business-123";
+    process.env.COINPAY_ELIGIBILITY_MERCHANT_ID = "merchant-123";
+    process.env.COINPAY_HIRE_US_BLOCKCHAIN = "USDC_POL";
+
+    const fetchMock = vi.spyOn(globalThis, "fetch").mockImplementation(async (input) => {
+      const url = typeof input === "string" ? input : input.toString();
+      if (url.includes("/api/payments/merchant-eligibility")) {
+        return jsonResponse({ success: true, accepts_card: true, accepts_crypto: true, chains: ["USDC_POL"] });
+      }
+      return jsonResponse({ success: true, payment: { id: "pay_123", amount_usd: 10100 } }, 201);
+    });
+
+    const response = await coinpayCheckout(
+      new NextRequest("http://localhost/api/hire-us/coinpay-checkout", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ hours: 25.25 })
+      })
+    );
+    const body = await response.json();
+
+    const createCall = fetchMock.mock.calls.find(([input]) =>
+      (typeof input === "string" ? input : input.toString()).includes("/api/payments/create")
+    );
+    const createBody = JSON.parse((createCall?.[1]?.body as string) ?? "{}");
+
+    expect(response.status).toBe(201);
+    expect(createBody.amount_usd).toBe(10100);
+    expect(createBody.description).toBe("LogicSRC Hire Us - 25.25h @ $400/hour");
+    expect(createBody.metadata).toMatchObject({ billing: "metered_hours", hours: 25.25, rate_usd_per_hour: 400 });
+    expect(body.payment).toMatchObject({ amount_usd: 10100, hours: 25.25, rate_usd_per_hour: 400 });
+  });
+
+  it("rejects hours below the minimum engagement or off the quarter-hour", async () => {
+    process.env.COINPAY_API_KEY = "cp_test_key";
+    process.env.COINPAY_API_URL = "https://coinpayportal.example";
+    process.env.COINPAY_BUSINESS_ID = "business-123";
+    process.env.COINPAY_ELIGIBILITY_MERCHANT_ID = "merchant-123";
+
+    const fetchMock = vi.spyOn(globalThis, "fetch");
+
+    for (const hours of [9.75, 12.3, "many", -40]) {
+      const response = await coinpayCheckout(
+        new NextRequest("http://localhost/api/hire-us/coinpay-checkout", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ hours })
+        })
+      );
+      const body = await response.json();
+
+      expect(response.status).toBe(422);
+      expect(body).toEqual({
+        success: false,
+        error: "Approved hours must be a quarter-hour increment of at least 10"
+      });
+    }
+
+    expect(fetchMock).not.toHaveBeenCalled();
   });
 
   it("does not create checkout when no payment rail is available", async () => {
@@ -290,7 +356,13 @@ describe("POST /api/hire-us/project-request", () => {
     expect(response.status).toBe(202);
     expect(body).toMatchObject({
       success: true,
-      request: { status: "pending_acceptance", amount_usd: 250, interval: "week", invoice: "created_after_acceptance" }
+      request: {
+        status: "pending_acceptance",
+        rate_usd_per_hour: 400,
+        billing: "metered_hours",
+        minimum_hours: 10,
+        invoice: "created_after_acceptance"
+      }
     });
     expect(body.request.id).toMatch(/^hire_/);
   });

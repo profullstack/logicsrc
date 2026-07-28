@@ -24,7 +24,7 @@ export function GET(): Response {
 ## Company & legal
 
 - [About](${SITE_URL}/about): What LogicSRC is and who maintains it (Profullstack, Inc.).
-- [Hire Us](${SITE_URL}/hire-us): Implementation help at $250/week for accepted LogicSRC work.
+- [Hire Us](${SITE_URL}/hire-us): Implementation help at $400/hour for accepted LogicSRC work.
 - [Terms](${SITE_URL}/terms)
 - [Privacy](${SITE_URL}/privacy)
 `;

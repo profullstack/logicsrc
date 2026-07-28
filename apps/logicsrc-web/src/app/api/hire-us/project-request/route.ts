@@ -3,8 +3,12 @@ import { json } from "@/lib/http";
 
 export const dynamic = "force-dynamic";
 
-// POST /api/hire-us/project-request — accept a Hire Us project request before a
-// recurring CoinPay invoice is created (invoice is created after acceptance).
+// POST /api/hire-us/project-request — accept a Hire Us project request before any
+// CoinPay invoice is created. Hire Us bills metered hours at $400/hour, so there is
+// no amount until we accept the project and hours are approved.
+const RATE_USD_PER_HOUR = 400;
+const MINIMUM_HOURS = 10;
+
 export async function POST(request: NextRequest) {
   try {
     const body = (await request.json().catch(() => ({}))) as Record<string, unknown>;
@@ -20,7 +24,7 @@ export async function POST(request: NextRequest) {
       id: requestId,
       contact,
       project_length: project.length,
-      plan: "250/week",
+      plan: "400/hour",
       invoice: "pending_acceptance"
     });
 
@@ -30,8 +34,9 @@ export async function POST(request: NextRequest) {
         request: {
           id: requestId,
           status: "pending_acceptance",
-          amount_usd: 250,
-          interval: "week",
+          rate_usd_per_hour: RATE_USD_PER_HOUR,
+          billing: "metered_hours",
+          minimum_hours: MINIMUM_HOURS,
           invoice: "created_after_acceptance"
         }
       },

@@ -4,8 +4,23 @@ import { choosePaymentRail, fetchMerchantEligibility, parseJson } from "@/lib/co
 
 export const dynamic = "force-dynamic";
 
-// POST /api/hire-us/coinpay-checkout — create a $250/week CoinPay checkout for
-// the Hire Us plan, choosing card/crypto/both based on merchant eligibility.
+// POST /api/hire-us/coinpay-checkout — create a CoinPay checkout for approved
+// Hire Us hours at $400/hour, choosing card/crypto/both based on merchant
+// eligibility. Billing is metered: the caller supplies the approved hours and the
+// amount is derived from them, never a fixed recurring figure.
+const RATE_USD_PER_HOUR = 400;
+const MINIMUM_HOURS = 10;
+
+// Hours are quoted in quarter-hour increments; anything finer is a rounding
+// artifact rather than a real billing unit.
+function parseHours(value: unknown): number | null {
+  const hours = typeof value === "number" ? value : Number(value);
+  if (!Number.isFinite(hours) || hours < MINIMUM_HOURS) return null;
+  const quarters = Math.round(hours * 4);
+  if (Math.abs(hours * 4 - quarters) > 1e-9) return null;
+  return quarters / 4;
+}
+
 export async function POST(request: NextRequest) {
   const apiKey = process.env.COINPAY_API_KEY;
   const eligibilityApiKey = process.env.COINPAY_ELIGIBILITY_API_KEY || process.env.COINPAY_AGENT_API_KEY || apiKey;
@@ -22,6 +37,19 @@ export async function POST(request: NextRequest) {
   try {
     const body = (await request.json().catch(() => ({}))) as Record<string, unknown>;
     const buyerEmail = typeof body.email === "string" ? body.email.trim().slice(0, 160) : "";
+    const hours = body.hours === undefined ? MINIMUM_HOURS : parseHours(body.hours);
+
+    if (hours === null) {
+      return json(
+        {
+          success: false,
+          error: `Approved hours must be a quarter-hour increment of at least ${MINIMUM_HOURS}`
+        },
+        422
+      );
+    }
+
+    const amountUsdDue = Math.round(hours * RATE_USD_PER_HOUR * 100) / 100;
     const eligibility = await fetchMerchantEligibility(apiUrl, eligibilityApiKey, eligibilityMerchantId);
     const paymentRail = choosePaymentRail(eligibility, blockchain);
 
@@ -37,18 +65,20 @@ export async function POST(request: NextRequest) {
       },
       body: JSON.stringify({
         business_id: businessId,
-        amount_usd: 250,
+        amount_usd: amountUsdDue,
         payment_method: paymentRail.method,
         currency: paymentRail.currency,
         ...(paymentRail.blockchain ? { blockchain: paymentRail.blockchain } : {}),
-        description: "LogicSRC Hire Us - $250/week",
+        description: `LogicSRC Hire Us - ${hours}h @ $${RATE_USD_PER_HOUR}/hour`,
         success_url: `${publicUrl}/hire-us?payment=success`,
         cancel_url: `${publicUrl}/hire-us?payment=cancelled`,
         redirect_url: `${publicUrl}/hire-us?payment=coinpay`,
         webhook_url: `${publicUrl}/api/webhooks/coinpay`,
         metadata: {
           product: "logicsrc-hire-us",
-          interval: "week",
+          billing: "metered_hours",
+          hours,
+          rate_usd_per_hour: RATE_USD_PER_HOUR,
           source: "logicsrc.com/hire-us",
           ...(buyerEmail ? { buyer_email: buyerEmail } : {})
         }
@@ -70,13 +100,15 @@ export async function POST(request: NextRequest) {
     }
 
     const payment = (payload.payment as Record<string, unknown>) || {};
-    const amountUsd = Number(payment.amount_usd ?? payment.amount ?? 250);
+    const amountUsd = Number(payment.amount_usd ?? payment.amount ?? amountUsdDue);
     return json(
       {
         success: true,
         payment: {
           id: payment.id,
-          amount_usd: Number.isFinite(amountUsd) ? amountUsd : 250,
+          amount_usd: Number.isFinite(amountUsd) ? amountUsd : amountUsdDue,
+          hours,
+          rate_usd_per_hour: RATE_USD_PER_HOUR,
           payment_method: payment.stripe_checkout_url ? "card" : paymentRail.method,
           currency: payment.currency ?? payment.blockchain ?? paymentRail.blockchain ?? paymentRail.currency,
           crypto_amount: payment.amount_crypto ?? payment.crypto_amount ?? null,
