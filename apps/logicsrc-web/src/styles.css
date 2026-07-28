@@ -484,6 +484,17 @@ pre {
   font-weight: 800;
 }
 
+.price-terms {
+  color: #b5beb2;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin: -0.5rem 0 0;
+}
+
+.price-terms a {
+  color: inherit;
+}
+
 .cta-row {
   display: flex;
   flex-wrap: wrap;

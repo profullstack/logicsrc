@@ -69,9 +69,9 @@ const pages = [
   { id: "blog", title: "Blog", detail: "Project notes for LogicSRC, AgentSwarm, AgentByte, OpenSpec workflows, and reference implementations." },
   { id: "openspec", title: "OpenSpec", detail: "Comparison and compatibility notes for OpenSpec.dev-style repo-local specs, proposals, tasks, and deltas." },
   { id: "credential-sharing", title: "Credential Sharing", detail: "Open replacement architecture for portable secret sync across .env, Doppler, Railway variables, GitHub Secrets, and future providers." },
-  { id: "hire-us", title: "Hire Us", detail: "$250/week LogicSRC work on open infrastructure, specs, AI agent workflows, and reference implementations paid through CoinPay after project acceptance." },
+  { id: "hire-us", title: "Hire Us", detail: "$400/hour LogicSRC work on open infrastructure, specs, AI agent workflows, and reference implementations paid through CoinPay after project acceptance." },
   { id: "about", title: "About", detail: "LogicSRC is the Profullstack open specification project for human and AI agent coordination." },
-  { id: "terms", title: "Terms", detail: "Draft terms will cover acceptable use, reference implementation boundaries, and hosted-product responsibilities." },
+  { id: "terms", title: "Terms", detail: "Terms of engagement: the $400/hour rate, what is billable, how approved hours are invoiced, the 10-hour minimum, cancellation, acceptable use, and reference implementation boundaries." },
   { id: "privacy", title: "Privacy", detail: "Draft privacy notes will cover telemetry, audit events, identity data, and hosted-product data boundaries." }
 ];
 
@@ -358,7 +358,7 @@ logicsrc credentials rollback --run &lt;runId&gt;</code></pre>
       <section id="hire-us" class="band hire-us">
         <div class="section-head">
           <h2>Hire Us</h2>
-          <p>$250/week for accepted LogicSRC work using open infrastructure and open specs for AI agent systems.</p>
+          <p>$400/hour for accepted LogicSRC work using open infrastructure and open specs for AI agent systems.</p>
         </div>
         <div class="hire-layout">
           <article class="hire-panel">
@@ -366,9 +366,10 @@ logicsrc credentials rollback --run &lt;runId&gt;</code></pre>
             <h3>Open-spec AI agent implementation help</h3>
             <p>Hire us to turn agent ideas into portable LogicSRC specs, CLIs, SDKs, MCP resources, PWAs, APIs, and provider-neutral plugin workflows. We prioritize auditable contracts, repo-local artifacts, and integrations that can move between model providers and infrastructure.</p>
             <div class="price-row">
-              <strong>$250</strong>
-              <span>per week</span>
+              <strong>$400</strong>
+              <span>per hour</span>
             </div>
+            <p class="price-terms">Billed against actual hours worked, invoiced after you approve them. Ten-hour minimum engagement; cancel any time with one week&rsquo;s notice and pay only for hours already approved. See <a href="/terms">Terms</a>.</p>
             <form id="project-request-form" class="project-request-form">
               <label>
                 <span>Contact</span>
@@ -395,12 +396,13 @@ logicsrc credentials rollback --run &lt;runId&gt;</code></pre>
               `).join("")}
             </div>
             <article id="coinpay-setup" class="coinpay-panel">
-              <h3>CoinPay recurring invoice</h3>
-              <p>After we accept the project, we create a recurring CoinPay invoice for the weekly plan without exposing merchant credentials to the browser.</p>
+              <h3>CoinPay hourly invoice</h3>
+              <p>After we accept the project, we invoice approved hours at $400/hour through CoinPay without exposing merchant credentials to the browser.</p>
               <pre><code>COINPAY_ORG=profullstack
 COINPAY_PRODUCT=logicsrc-hire-us
-COINPAY_AMOUNT_USD=250
-COINPAY_INTERVAL=week
+COINPAY_RATE_USD_PER_HOUR=400
+COINPAY_BILLING=metered_hours
+COINPAY_MINIMUM_HOURS=10
 COINPAY_STATUS=pending_acceptance</code></pre>
             </article>
           </div>

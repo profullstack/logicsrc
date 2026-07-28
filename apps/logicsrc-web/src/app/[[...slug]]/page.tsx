@@ -8,8 +8,9 @@ import { HomeInteractivity } from "@/components/home-interactivity";
 // scrolled to the matching section. We preserve those URLs (they are canonical
 // in sitemap.xml) by rendering the same page for each known route and 404ing
 // anything else.
-// /about and /docs are now real routes (app/about, app/docs); the rest still
-// render the homepage SPA scrolled to their section.
+// /about, /docs, /pricing, and /terms are now real routes (app/about, app/docs,
+// app/pricing, app/terms); the rest still render the homepage SPA scrolled to
+// their section.
 const ROUTE_META: Record<string, { title: string; description: string }> = {
   openspec: {
     title: "LogicSRC vs OpenSpec.dev · LogicSRC",
@@ -21,9 +22,8 @@ const ROUTE_META: Record<string, { title: string; description: string }> = {
   },
   "hire-us": {
     title: "Hire Us · LogicSRC",
-    description: "Implementation help for LogicSRC, AgentSwarm, and Credential Sharing at $250/week for accepted work, paid via CoinPay.",
+    description: "Implementation help for LogicSRC, AgentSwarm, and Credential Sharing at $400/hour for accepted work, paid via CoinPay.",
   },
-  terms: { title: "Terms · LogicSRC", description: "LogicSRC terms of use." },
   privacy: { title: "Privacy · LogicSRC", description: "LogicSRC privacy notes." },
   "agent-swarm": {
     title: "AgentSwarm · LogicSRC",

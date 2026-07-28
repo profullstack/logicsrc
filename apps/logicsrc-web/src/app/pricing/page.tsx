@@ -5,7 +5,7 @@ import { SiteShell } from "@/components/site-shell";
 export const metadata: Metadata = {
   title: "Pricing · LogicSRC",
   description:
-    "LogicSRC the open specification, schemas, SDKs, and CLI are free and open source. Implementation help is $250/week for accepted work, paid via CoinPay.",
+    "LogicSRC the open specification, schemas, SDKs, and CLI are free and open source. Implementation help is $400/hour for accepted work, paid via CoinPay.",
   alternates: { canonical: "/pricing" },
 };
 
@@ -16,7 +16,7 @@ const FAQ: Array<{ q: string; a: string }> = [
   },
   {
     q: "How does pricing work?",
-    a: "The standard is free. If you want Profullstack to build a LogicSRC-based system for you, implementation work is billed at $250/week for accepted work, paid via a CoinPay recurring invoice.",
+    a: "The standard is free. If you want Profullstack to build a LogicSRC-based system for you, implementation work is billed at $400/hour against actual hours worked, invoiced through CoinPay after you approve them. The minimum engagement is 10 hours.",
   },
   {
     q: "Who is LogicSRC for?",
@@ -24,7 +24,7 @@ const FAQ: Array<{ q: string; a: string }> = [
   },
   {
     q: "How do I pay or get started?",
-    a: "Read the docs and adopt the schemas for free, or submit a project through the Hire Us form. Accepted projects are invoiced weekly via CoinPay.",
+    a: "Read the docs and adopt the schemas for free, or submit a project through the Hire Us form. Accepted projects are invoiced for approved hours via CoinPay.",
   },
 ];
 
@@ -61,9 +61,11 @@ export default function PricingPage(): ReactNode {
               CLI, TUI, and reference plugins are open source.
             </li>
             <li>
-              <strong>Implementation — $250/week.</strong> Profullstack builds
-              LogicSRC-based systems for accepted projects, billed weekly via
-              CoinPay. See <a href="/hire-us">Hire Us</a>.
+              <strong>Implementation — $400/hour.</strong> Profullstack builds
+              LogicSRC-based systems for accepted projects, billed against actual
+              hours worked and invoiced via CoinPay once you approve them.
+              Ten-hour minimum engagement. See <a href="/hire-us">Hire Us</a> and{" "}
+              <a href="/terms">Terms</a>.
             </li>
           </ul>
 

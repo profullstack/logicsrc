@@ -39,14 +39,17 @@ test.describe("LogicSRC PWA", () => {
     await page.goto("/hire-us");
 
     await expect(page.getByRole("heading", { name: "Hire Us", exact: true })).toBeVisible();
-    await expect(page.locator(".price-row strong", { hasText: "$250" })).toBeVisible();
-    await expect(page.getByText("per week")).toBeVisible();
+    await expect(page.locator(".price-row strong", { hasText: "$400" })).toBeVisible();
+    await expect(page.getByText("per hour")).toBeVisible();
+    await expect(page.getByText("Ten-hour minimum engagement")).toBeVisible();
     await expect(page.getByText("open infrastructure and open specs for AI agent systems")).toBeVisible();
     await expect(page.getByRole("button", { name: "Request review" })).toBeVisible();
     await expect(page.getByPlaceholder("you@example.com")).toBeVisible();
     await expect(page.getByPlaceholder("Describe the agent workflow")).toBeVisible();
     await expect(page.getByText("without exposing merchant credentials to the browser")).toBeVisible();
     await expect(page.getByText("COINPAY_PRODUCT=logicsrc-hire-us")).toBeVisible();
+    await expect(page.getByText("COINPAY_RATE_USD_PER_HOUR=400")).toBeVisible();
+    await expect(page.getByText("COINPAY_BILLING=metered_hours")).toBeVisible();
     await expect(page.getByText("COINPAY_STATUS=pending_acceptance")).toBeVisible();
   });
 

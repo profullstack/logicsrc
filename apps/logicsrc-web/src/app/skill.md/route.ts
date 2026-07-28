@@ -25,7 +25,7 @@ Base URL: ${SITE_URL}
 - Read the LogicSRC coordination schemas and conventions.
 - Compare LogicSRC with OpenSpec.dev.
 - Request paid implementation help via the Hire Us flow (${SITE_URL}/hire-us),
-  billed at $250/week for accepted work and paid through CoinPay.
+  billed at $400/hour for accepted work and paid through CoinPay.
 
 ## Notes
 

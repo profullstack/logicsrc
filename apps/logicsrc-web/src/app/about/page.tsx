@@ -84,7 +84,7 @@ export default function AboutPage(): ReactNode {
 
           <h3>Work with us</h3>
           <p>
-            Profullstack implements LogicSRC-based systems at $250/week for
+            Profullstack implements LogicSRC-based systems at $400/hour for
             accepted work, paid via CoinPay. See <a href="/hire-us">Hire Us</a>.
           </p>
         </div>
