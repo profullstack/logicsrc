@@ -12,6 +12,8 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
+    "@logicsrc/openontology": "file:../../packages/openontology",
+    "@logicsrc/openprd": "file:../../packages/openprd",
     "@profullstack/autoblog": "github:profullstack/autoblog#75e54af",
     "@profullstack/stack": "^0.1.3",
     "@supabase/supabase-js": "^2.105.4",

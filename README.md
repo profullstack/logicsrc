@@ -95,7 +95,13 @@ OpenOntology package is valid.
 
 Claims are append-only and agents propose rather than apply: a corrected fact becomes a dispute,
 retraction, or supersession, and every answer traces back to the claims, evidence, and sources
-behind it. See also [governance](docs/openontology-governance.md) and
+behind it.
+
+Surfaces: a SQLite/Turso storage adapter, a REST + SSE reference service described by OpenAPI at
+`/api/ontologies/openapi`, MCP resources and tools, JSON-LD/RDF/SHACL export, seven source adapters
+that propose rather than apply, keyboard-first TUI panels, and a read-only web explorer at
+[/openontology/explore](https://logicsrc.com/openontology/explore). See also
+[governance](docs/openontology-governance.md) and
 [interoperability](docs/openontology-interoperability.md).
 
 ## MCP

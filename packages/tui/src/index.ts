@@ -3,6 +3,7 @@ import { coinPayPlugin } from "@logicsrc/plugin-coinpay";
 import { emailAccountsPlugin } from "@logicsrc/plugin-email-accounts";
 import { socialAccountsPlugin } from "@logicsrc/plugin-social-accounts";
 import { uGigPlugin } from "@logicsrc/plugin-ugig";
+export { renderOntologyTui, renderOntologyKeyHelp, PANEL_KEYS, type OntologyPanel, type OntologyTuiOptions } from "./openontology.js";
 export { ArcadeRegistry, createDefaultArcadeRegistry, renderArcadeList, renderArcadeSnapshot, runArcadeSession } from "./arcade/index.js";
 export type { ArcadeEvent, GameAction, GameContext, GameControl, KeyEvent, TaskEvent, TaskSnapshot, TerminalFrame, WaitingGame } from "./arcade/index.js";
 

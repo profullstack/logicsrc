@@ -1,6 +1,8 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { assertSchemaKind, parseDocument, schemas, validate, type SchemaKind } from "@logicsrc/validators";
+import { registerOpenOntology } from "./openontology.js";
+import { registerOpenPrd } from "./openprd.js";
 
 const docs = {
   "communication-accounts": `LogicSRC Communication Accounts defines shared contracts for connecting social and email identities, granting scoped human/agent/plugin access, evaluating policy gates, brokering credentials, and auditing every account action without exposing raw secrets.`,
@@ -25,7 +27,7 @@ export function createLogicSrcMcpServer() {
         tools: {},
         prompts: {}
       },
-      instructions: "Use this server for LogicSRC standards, schema resources, validation, and draft object generation. Treat CommandBoard.run as a reference implementation, not the standards identity."
+      instructions: "Use this server for LogicSRC standards, schema resources, validation, draft object generation, OpenOntology knowledge (entities, claims, provenance, governed change sets), and OpenPRD product requirements documents. Treat CommandBoard.run as a reference implementation, not the standards identity. Ontology and PRD write tools propose; they never apply."
     }
   );
 
@@ -150,6 +152,9 @@ export function createLogicSrcMcpServer() {
       ]
     })
   );
+
+  registerOpenOntology(server);
+  registerOpenPrd(server);
 
   return server;
 }

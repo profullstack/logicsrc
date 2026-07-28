@@ -272,8 +272,10 @@ logicsrc ontology entity   get|list|find|merge
 logicsrc ontology claim    get|list|history|propose|assert|dispute|retract
 logicsrc ontology query    run|explain|list
 logicsrc ontology changeset list|create|diff|apply
-logicsrc ontology import|export|audit
+logicsrc ontology import|export|audit|tui
 ```
+
+`logicsrc ontology tui` renders keyboard-first panels — types, entities, claims, sources, queries, change sets, validation, audit — as plain strings that survive SSH, tmux, and a 60-column terminal. Claim status is shown as a glyph *and* the word, never colour alone.
 
 Read commands take `--format table|json|yaml|markdown|ndjson`. Write commands produce a **proposal** by default. Exit codes are stable for CI: `0` ok, `1` validation failed, `2` usage error, `3` not found, `4` denied or approval required.
 
@@ -302,9 +304,49 @@ engine.applyOntologyChangeSet(changeSet.id);
 
 Storage, source adapters, query engine, identity, policy, events, and signatures are all injectable interfaces. The clock and id factory are injectable too, so a build, an applied change set, and a test run produce byte-identical output under both Node.js and Bun.
 
+## Storage
+
+The store is an interface, so nothing about the model depends on where it lives.
+
+```ts
+import { createClient } from "@libsql/client";
+import { createLibsqlStore, createOntologyEngine } from "@logicsrc/openontology";
+
+const store = await createLibsqlStore({ client: createClient({ url }), seed: pkg });
+const engine = createOntologyEngine({ store, actor });
+// … apply a change set …
+await store.flush();               // one transaction, then it is durable
+```
+
+The libSQL adapter hydrates the read model at open, serves reads synchronously, and buffers mutations as SQL that `flush()` writes in a single transaction. Callers that mutate must await it — the REST layer does after every applied change set. Everything persisted is append-only, so a crash before flush loses the last change set rather than corrupting history.
+
+Migrations are versioned and idempotent. Indexes cover entity ids, types, aliases, external ids, subject, predicate, entity-valued object, status, valid time, recorded time, and sources; FTS5 backs label and alias search.
+
+## REST, SSE, and MCP
+
+The reference service is described by OpenAPI at `/api/ontologies/openapi` and shares the published JSON Schemas rather than restating them.
+
+```txt
+GET  /api/ontologies
+GET  /api/ontologies/{id}/manifest | /schema | /entities | /entities/{entityId}
+GET  /api/ontologies/{id}/claims | /claims/{claimId}
+POST /api/ontologies/{id}/query | /explain | /validate
+GET  /api/ontologies/{id}/changesets            POST to propose
+GET  /api/ontologies/{id}/changesets/{id}       POST .../review | /approve | /apply
+GET  /api/ontologies/{id}/events                Accept: text/event-stream for SSE
+```
+
+No token is read-only. A curator token can apply; an agent token can propose and **cannot** apply. Mutating requests accept `Idempotency-Key`; a change set authored against a stale revision fails with 409 rather than overwriting.
+
+The MCP server exposes the spec, manifest, schema, and saved queries as resources, plus tools for validate, get/find entities, query, explain, export, and propose. Write tools default to proposals, and applying is denied to agent actors by the same policy the SDK enforces — not by a separate rule that could drift.
+
+## Ingestion
+
+Seven source adapters — CSV, JSON, YAML, NDJSON, Markdown, a generic JSON HTTP endpoint, and GitHub — turn foreign data into **proposed** change-set operations with sources and evidence selectors attached. Each declares what it can and cannot do, so "nothing was deleted upstream" is never confused with "this adapter cannot see deletions." See [interoperability](./openontology-interoperability.md#source-adapters).
+
 ## Interoperability
 
-JSON Schema Draft 2020-12 is the canonical contract. JSON-LD 1.1 is the interoperability profile, aliasing W3C PROV-O for provenance where the semantics genuinely match. Exports report every field the target format cannot carry rather than dropping it silently. See [OpenOntology interoperability](./openontology-interoperability.md).
+JSON Schema Draft 2020-12 is the canonical contract. JSON-LD 1.1 and RDF/Turtle are interoperability profiles, aliasing W3C PROV-O for provenance where the semantics genuinely match, and SHACL covers five of the seven constraint kinds. Exports report every field the target format cannot carry rather than dropping it silently. See [OpenOntology interoperability](./openontology-interoperability.md).
 
 ## Conformance
 

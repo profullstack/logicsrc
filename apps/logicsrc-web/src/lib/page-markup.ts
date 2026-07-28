@@ -126,7 +126,7 @@ export function renderPageMarkup(): string {
         <a href="/agentbyte">AgentByte</a>
         <a href="/credential-sharing">Credentials</a>
         <a href="/openontology">OpenOntology</a>
-        <a href="/docs/openprd">OpenPRD</a>
+        <a href="/openprd">OpenPRD</a>
         <a href="#cli">CLI</a>
         <a href="/docs">Docs</a>
         <a href="/blog">Blog</a>
@@ -204,7 +204,7 @@ export function renderPageMarkup(): string {
             <p>An open contract for durable, source-backed domain knowledge shared by humans and AI agents.</p>
           </div>
           <p>Define the things in a domain, connect them with typed claims, preserve where each fact came from, and let agents query or propose changes through governed interfaces. Storage-agnostic, model-provider-neutral, and usable with no account.</p>
-          <p><a class="button-primary" href="/openontology">Read the specification</a></p>
+          <p><a class="button-primary" href="/openontology">Read the specification</a> <a href="/openontology/explore">Explore the example</a></p>
         </div>
         <div class="cli-panel">
           <h2>Five nouns</h2>

@@ -68,15 +68,34 @@ Lookup works by exact id, canonical name, alias, or external id. `findEntities` 
 
 `sameAs` is a reviewable claim, not an implicit merge. Two records only become one through an approved `merge-entity` operation, and the losing id survives as a redirect.
 
-## RDF, SHACL, OWL
+## RDF and Turtle
 
-Planned for a later phase, deliberately not faked in 0.1:
+```bash
+logicsrc ontology export --dir ./ethereum-ecosystem --format turtle --out graph.ttl
+```
 
-- **RDF/Turtle** — export and import of the losslessly mappable subset, using the same reified-claim shape as JSON-LD.
-- **SHACL** — the constraint kinds with genuinely equivalent semantics (`required-predicate`, `cardinality`, `unique`, `allowed-values`, `domain-range`) map to shapes. Query-based constraints do not, and will be reported as unmapped.
-- **OWL/RDFS** — an optional mapping for consumers needing formal reasoning. OpenOntology itself infers nothing: transitivity, symmetry, and inverses apply only when the schema declares them *and* a query asks.
+Claims are reified, exactly as in JSON-LD, and an **asserted relationship claim additionally emits the plain triple** — so a consumer that only wants the current accepted graph gets one without unpacking provenance.
 
-Until those ship, the compatibility matrix below says "planned", not "supported". Claiming compatibility that has not been implemented and tested is the thing this document exists to prevent.
+Import parses the profile this exporter produces rather than pretending to be a general Turtle parser. Anything it cannot interpret is listed in `unsupported`, never dropped silently.
+
+## SHACL
+
+```bash
+logicsrc ontology export --dir ./ethereum-ecosystem --format shacl --out shapes.ttl
+```
+
+Five constraint kinds map onto SHACL Core: `required-predicate`, `cardinality`, `allowed-values`, `domain-range`, and `temporal-bounds`. Severity carries across (`error` → `sh:Violation`, `warning` → `sh:Warning`).
+
+Two do **not**, and are reported as unmapped in the returned value *and* as comments in the generated Turtle:
+
+- `unique` — graph-wide uniqueness has no portable SHACL Core equivalent; it needs a `sh:SPARQLConstraint`.
+- `query` — an OpenOntology saved query is a triple-pattern AST, not SPARQL.
+
+A shape that silently means something narrower than the constraint it came from is worse than no shape, so those stay unmapped until the mapping is real.
+
+## OWL/RDFS
+
+Still planned. An optional mapping for consumers needing formal reasoning. OpenOntology itself infers nothing: transitivity, symmetry, and inverses apply only when the schema declares them *and* a query asks.
 
 ## Compatibility matrix
 
@@ -88,14 +107,18 @@ Until those ship, the compatibility matrix below says "planned", not "supported"
 | NDJSON | **supported** | Streaming entity/claim/source/evidence files |
 | JSON-LD 1.1 export | **supported** | Reified claims, PROV-O aliases, lossy report |
 | JSON-LD 1.1 import | **supported** | Round-trips the reference profile |
-| PROV-O | **partial** | Provenance terms aliased; full mapping later |
-| RDF / Turtle | planned | Phase 3 |
-| SHACL | planned | Phase 3, constraint subset only |
+| PROV-O | **partial** | Provenance terms aliased in JSON-LD and Turtle; full mapping later |
+| RDF / Turtle export | **supported** | Reified claims + plain triples for asserted relationships |
+| RDF / Turtle import | **supported** | Round-trips the reference profile; reports what it cannot read |
+| SHACL | **partial** | 5 of 7 constraint kinds; `unique` and `query` reported as unmapped |
 | OWL / RDFS | planned | Optional, for external reasoners |
 | SPARQL | planned | Query AST → SPARQL adapter |
 | Cypher | planned | Query AST → Cypher adapter |
 | Datalog | planned | Query AST → Datalog adapter |
-| SQLite / Turso | **supported** | Reference storage adapters |
+| SQLite / Turso | **supported** | `createLibsqlStore`, versioned migrations, FTS5 entity search |
+| REST + OpenAPI | **supported** | 16 paths, described at `/api/ontologies/openapi` |
+| Server-Sent Events | **supported** | Same event objects as the JSON endpoint |
+| MCP | **supported** | Resources, tools, and prompts; writes propose, never apply |
 | Neo4j / vector DBs | not required | Optional adapters; never mandatory |
 
 ## Query portability

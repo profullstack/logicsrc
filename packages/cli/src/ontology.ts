@@ -2,6 +2,7 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { Command } from "commander";
 import { parse as parseYaml, stringify as toYaml } from "yaml";
+import { renderOntologyKeyHelp, renderOntologyTui, type OntologyPanel } from "@logicsrc/tui";
 import {
   buildOntologyPackage,
   createOntologyEngine,
@@ -685,6 +686,26 @@ export function registerOntologyCommands(program: Command): void {
       { entities: result.entities, claims: result.claims, proposedOperations: result.operations.length },
       options.format as Format
     );
+  });
+
+  actorOptions(
+    ontology
+      .command("tui")
+      .option("--dir <dir>", "package directory", ".")
+      .option("--panel <panel>", "types|entities|claims|sources|queries|changesets|violations|audit", "entities")
+      .option("--width <n>", "terminal width", String(process.stdout.columns || 78))
+      .option("--rows <n>", "detail rows", "10")
+      .description("Render the keyboard-first ontology panels.")
+  ).action((options) => {
+    const e = openEngine(options.dir, options);
+    console.log(
+      renderOntologyTui(e, {
+        panel: options.panel as OntologyPanel,
+        width: Number.parseInt(options.width, 10),
+        rows: Number.parseInt(options.rows, 10)
+      })
+    );
+    console.log(renderOntologyKeyHelp());
   });
 
   actorOptions(
