@@ -16,6 +16,7 @@
   "dependencies": {
     "@logicsrc/account-core": "file:../account-core",
     "@logicsrc/openontology": "file:../openontology",
+    "@logicsrc/openprd": "file:../openprd",
     "@logicsrc/plugin-coinpay": "file:../../plugins/coinpay",
     "@logicsrc/plugin-core": "file:../plugin-core",
     "@logicsrc/plugin-credential-sharing": "file:../../plugins/credential-sharing",

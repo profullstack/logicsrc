@@ -4,7 +4,7 @@ OpenPRD is a lightweight, open standard for **product requirements documents** a
 
 It borrows the shape of a BIP/EIP/DIP process: a repo keeps a **numbered, committed collection** of PRDs under `prd/`, each one a single Markdown file with a fixed set of sections and a lifecycle. Where [OpenSpec](./openspec-comparison.md) models a *change* as a multi-file bundle, OpenPRD models a *product decision* as **one numbered file** you can read a year from now to recover the *why*.
 
-Tools such as the moshcode CLI consume this standard to publish PRDs into whatever repo you're working in.
+Tools such as the moshcode CLI consume this standard to publish PRDs into whatever repo you're working in. LogicSRC ships its own reference implementation — see [Implementation](#implementation).
 
 ## When to write one
 
@@ -86,6 +86,54 @@ See [`0000-template.md`](./openprd/0000-template.md) for the copy-paste template
 ## Relationship to LogicSRC
 
 OpenPRD is intentionally decoupled from the rest of LogicSRC: a PRD is just a file and needs no service to exist. When coordination is wanted, a PRD's `Requirements` map cleanly onto LogicSRC `task` documents (each `R#` → one task), and `owner`/`repo` reuse LogicSRC identity and repo conventions. That bridge is optional and lives in tooling, not in this standard.
+
+## Implementation
+
+`@logicsrc/openprd` is the reference implementation, exposed through the LogicSRC CLI. A PRD is
+still just a file: nothing below is required for a document to conform.
+
+```bash
+logicsrc prd init                      # create prd/ with the template and an index
+logicsrc prd new "Expand the service"  # next free number, filled front-matter, eight stub sections
+logicsrc prd list                       # id, title, status, tags, requirement count
+logicsrc prd show 0001                  # front-matter, sections, and parsed requirements
+logicsrc prd validate --strict          # conformance + lint, exit 1 on error
+logicsrc prd index --write              # regenerate prd/README.md from what is on disk
+logicsrc prd status 0001 Review         # lifecycle move, refusing illegal transitions
+logicsrc prd tasks 0001                 # the optional LogicSRC task bridge
+```
+
+Validation separates the four conformance rules below from lint. Conformance failures are errors;
+everything else — an empty section, a requirement with no priority tag, numbering that skips, a
+stale index, a one-sided supersession link — is a warning or a note, and `--strict` promotes them.
+Findings carry stable codes (`OP-C-SECTION-ORDER`, `OP-L-REQ-DUPLICATE`, …), the file, the line,
+and a remediation hint. Exit codes: `0` ok, `1` invalid, `2` usage, `3` not found.
+
+The lifecycle is enforced rather than advisory: `Draft` cannot jump to `Final`, terminal statuses
+do not resume, and moving to `Superseded` requires naming the PRD that replaces it.
+
+Requirement numbering, id uniqueness, and "no gaps" are checked across the whole collection, not
+just per file — a repo with `0001` and `0003` and no `0002` fails.
+
+### Task bridge
+
+The optional mapping described above lives in tooling:
+
+```bash
+logicsrc prd tasks 0001 --priority P0 --format ndjson
+```
+
+Each `R#` becomes one `logicsrc.task` document, validated against `logicsrc-task.schema.json`
+before it is emitted. The board defaults to `/prd/<id>`, `repo` carries over to `github_repo`, and
+the creator DID is derived from the first author (`anthony@profullstack.com` →
+`anthony.profullstack`) unless `--creator` says otherwise.
+
+### Conformance bundle
+
+`packages/schemas/fixtures/openprd/` holds fixtures a third-party implementation can run:
+`conformance.json` lists documents that must validate and documents that must fail, each with the
+error code it must produce. Because several rules depend on the filename, each fixture records the
+name it must be validated as.
 
 ## Conformance
 
