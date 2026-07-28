@@ -28,6 +28,7 @@ import { print, type OutputFormat } from "./format.js";
 import { parsePositiveInteger } from "./numeric-options.js";
 import { exportOpenSpecSummary, importOpenSpec, writeOpenSpecChange } from "./openspec.js";
 import { registerOntologyCommands } from "./ontology.js";
+import { registerPrdCommands } from "./prd.js";
 import { defaultPluginRegistry } from "./registry.js";
 
 process.stdout.on("error", (error: NodeJS.ErrnoException) => {
@@ -831,6 +832,7 @@ async function runYoloArcade(game: string, repo?: string) {
 }
 
 registerOntologyCommands(program);
+registerPrdCommands(program);
 
 program.parseAsync(process.argv).catch((error: unknown) => {
   console.error(error instanceof Error ? error.message : String(error));

@@ -15,6 +15,7 @@ apps/
 packages/
   cli                logicsrc OpenSpec CLI
   openontology       OpenOntology reference engine (entities, claims, queries, change sets)
+  openprd            OpenPRD reference implementation (numbered PRDs, lifecycle, task bridge)
   logicsrc-mcp       @profullstack/logicsrc-mcp standards MCP server
   sdk                SDK contract types and helpers
   tui                terminal UI
@@ -51,6 +52,24 @@ npm --workspace @logicsrc/cli run dev -- tui
 npm --workspace @profullstack/logicsrc-mcp run build
 node packages/logicsrc-mcp/dist/index.js
 ```
+
+## OpenPRD
+
+[OpenPRD](docs/openprd.md) is a lightweight standard for product requirements documents: a repo
+keeps a numbered, committed collection under `prd/`, one Markdown file each, with front-matter, a
+fixed set of eight sections, and a lifecycle. `@logicsrc/openprd` implements it.
+
+```bash
+npm --workspace @logicsrc/cli run dev -- prd new "Expand the parked-domain service"
+npm --workspace @logicsrc/cli run dev -- prd validate ./prd --strict
+npm --workspace @logicsrc/cli run dev -- prd status 0001 Review
+npm --workspace @logicsrc/cli run dev -- prd tasks 0001 --priority P0
+```
+
+Conformance failures (filename, front-matter, id match, the eight sections in order) are errors;
+lint findings are warnings that `--strict` promotes. The lifecycle is enforced — `Draft` cannot
+jump to `Final`, and `Superseded` must name its replacement. `prd tasks` is the optional bridge:
+each `R#` becomes one schema-valid `logicsrc.task`.
 
 ## OpenOntology
 

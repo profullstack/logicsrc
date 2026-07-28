@@ -1,0 +1,104 @@
+{
+  "openprdConformance": "0.2",
+  "description": "Conformance fixtures for OpenPRD 0.2. Every valid fixture must parse and validate with no errors; every invalid fixture must fail with the stated code. `file` is the filename the fixture must be validated as, since the standard's rules depend on it.",
+  "valid": [
+    {
+      "fixture": "valid/minimal.md",
+      "file": "0001-expand-the-parked-domain-service.md"
+    },
+    {
+      "fixture": "valid/full.md",
+      "file": "0001-expand-the-parked-domain-service.md"
+    },
+    {
+      "fixture": "valid/bold-requirements.md",
+      "file": "0002-use-bold-requirement-markers.md"
+    },
+    {
+      "fixture": "valid/subsections.md",
+      "file": "0003-organize-a-long-requirements-section.md"
+    },
+    {
+      "fixture": "valid/superseded.md",
+      "file": "0004-retire-the-old-flow.md"
+    },
+    {
+      "fixture": "valid/none-sections.md",
+      "file": "0005-keep-every-section-even-when-empty.md"
+    }
+  ],
+  "invalid": [
+    {
+      "fixture": "invalid/missing-section.md",
+      "file": "0001-missing-a-section.md",
+      "code": "OP-C-SECTION-MISSING",
+      "reason": "The eight body sections are all required; Users is absent."
+    },
+    {
+      "fixture": "invalid/out-of-order.md",
+      "file": "0001-sections-out-of-order.md",
+      "code": "OP-C-SECTION-ORDER",
+      "reason": "Sections must appear in the order the standard fixes."
+    },
+    {
+      "fixture": "invalid/id-mismatch.md",
+      "file": "0001-id-does-not-match.md",
+      "code": "OP-C-ID-MISMATCH",
+      "reason": "front-matter id must equal the filename's numeric prefix."
+    },
+    {
+      "fixture": "invalid/bad-status.md",
+      "file": "0001-unknown-status.md",
+      "code": "OP-C-FRONTMATTER",
+      "reason": "status must be one of the seven lifecycle values."
+    },
+    {
+      "fixture": "invalid/missing-title.md",
+      "file": "0001-no-title.md",
+      "code": "OP-C-FRONTMATTER",
+      "reason": "title is required."
+    },
+    {
+      "fixture": "invalid/bad-id-format.md",
+      "file": "0001-two-digit-id.md",
+      "code": "OP-C-FRONTMATTER",
+      "reason": "id must be four digits, zero-padded."
+    },
+    {
+      "fixture": "invalid/unknown-key.md",
+      "file": "0001-unknown-front-matter-key.md",
+      "code": "OP-C-FRONTMATTER",
+      "reason": "Unknown front-matter keys are rejected."
+    },
+    {
+      "fixture": "invalid/superseded-without-replacement.md",
+      "file": "0001-superseded-with-no-replacement.md",
+      "code": "OP-L-SUPERSEDED-BY",
+      "reason": "Superseded must name the PRD that replaces it."
+    },
+    {
+      "fixture": "invalid/duplicate-requirement.md",
+      "file": "0001-duplicate-requirement-id.md",
+      "code": "OP-L-REQ-DUPLICATE",
+      "reason": "Requirement ids must be unique within a PRD."
+    },
+    {
+      "fixture": "invalid/dates-backwards.md",
+      "file": "0001-updated-before-created.md",
+      "code": "OP-L-DATE-ORDER",
+      "reason": "updated cannot precede created."
+    },
+    {
+      "fixture": "invalid/no-front-matter.md",
+      "file": "0001-no-front-matter.md",
+      "code": "OP-P-PARSE",
+      "reason": "A PRD must open with a YAML front-matter block."
+    },
+    {
+      "fixture": "invalid/bad-filename.md",
+      "file": "notes.md",
+      "code": "OP-C-FILENAME",
+      "reason": "A PRD lives at prd/<id>-<slug>.md with a four-digit id."
+    }
+  ]
+}

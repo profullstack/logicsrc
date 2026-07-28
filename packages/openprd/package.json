@@ -1,0 +1,32 @@
+{
+  "name": "@logicsrc/openprd",
+  "version": "0.1.0",
+  "description": "Reference implementation of the OpenPRD standard: numbered product requirements documents with front-matter, fixed sections, a lifecycle, and a LogicSRC task bridge.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/profullstack/logicsrc.git",
+    "directory": "packages/openprd"
+  },
+  "homepage": "https://logicsrc.com/docs/openprd",
+  "keywords": ["logicsrc", "openprd", "prd", "product-requirements", "standards", "cli"],
+  "publishConfig": { "access": "public" },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run src"
+  },
+  "dependencies": {
+    "@logicsrc/validators": "file:../validators",
+    "yaml": "^2.8.1"
+  },
+  "devDependencies": {
+    "vitest": "^4.0.8"
+  }
+}

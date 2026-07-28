@@ -126,6 +126,7 @@ export function renderPageMarkup(): string {
         <a href="/agentbyte">AgentByte</a>
         <a href="/credential-sharing">Credentials</a>
         <a href="/openontology">OpenOntology</a>
+        <a href="/docs/openprd">OpenPRD</a>
         <a href="#cli">CLI</a>
         <a href="/docs">Docs</a>
         <a href="/blog">Blog</a>
