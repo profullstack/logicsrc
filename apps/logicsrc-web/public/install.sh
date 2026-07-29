@@ -56,15 +56,40 @@ check_node() {
   need npm
 }
 
+# Commit the tracked ref currently points at. The .sha media type returns it as
+# bare text, so this needs no jq. Empty on failure — never fatal, since a missing
+# sha only costs `logicsrc update` its precision.
+resolve_sha() {
+  curl -fsSL -H "Accept: application/vnd.github.sha" \
+    "https://api.github.com/repos/$GH_REPO/commits/$LOGICSRC_REF" 2>/dev/null || true
+}
+
+# Records what we installed so `logicsrc update` can compare against the remote.
+# Without this the CLI has no way to know which commit it is running, and can
+# only ever guess that it is current.
+write_manifest() {
+  _version="$(node -p "require('$SRC_DIR/packages/cli/package.json').version" 2>/dev/null || echo '')"
+  cat > "$LOGICSRC_HOME/install.json" <<EOF
+{
+  "ref": "$LOGICSRC_REF",
+  "commit": "$1",
+  "version": "$_version",
+  "installed_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+}
+EOF
+}
+
 do_install() {
   detect_os; check_node
   need curl; need tar
   info "fetching logicsrc@$LOGICSRC_REF from GitHub…"
   mkdir -p "$SRC_DIR"
+  sha="$(resolve_sha)"
+  short_sha="$(printf '%.7s' "$sha")"
   tmp="$(mktemp -d)"
   curl -fsSL "$TARBALL_URL" | tar -xz -C "$tmp" --strip-components=1
   rm -rf "$SRC_DIR"; mkdir -p "$(dirname "$SRC_DIR")"; mv "$tmp" "$SRC_DIR"
-  ok "downloaded to $SRC_DIR"
+  ok "downloaded to $SRC_DIR${short_sha:+ ($short_sha)}"
 
   info "installing dependencies (this can take a minute)…"
   ( cd "$SRC_DIR" && npm install --no-audit --no-fund --ignore-scripts >/dev/null 2>&1 ) || fail "npm install failed — run it by hand in $SRC_DIR"
@@ -77,6 +102,7 @@ do_install() {
 exec node "$SRC_DIR/packages/cli/dist/index.js" "\$@"
 EOF
   chmod +x "$WRAPPER"
+  write_manifest "$sha"
   ok "installed logicsrc → $WRAPPER"
 
   case ":$PATH:" in
