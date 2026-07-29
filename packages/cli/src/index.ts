@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { spawnSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { evaluateAccountPolicy, scoreAccountActionRisk } from "@logicsrc/account-core";
 import { Command } from "commander";
@@ -30,6 +31,17 @@ import { exportOpenSpecSummary, importOpenSpec, writeOpenSpecChange } from "./op
 import { registerOntologyCommands } from "./ontology.js";
 import { registerPrdCommands } from "./prd.js";
 import { defaultPluginRegistry } from "./registry.js";
+import {
+  GH_REPO,
+  INSTALL_URL,
+  fetchRemoteState,
+  installHome,
+  localVersion,
+  readManifest,
+  short,
+  trackedRef,
+  updateStatus
+} from "./update.js";
 
 process.stdout.on("error", (error: NodeJS.ErrnoException) => {
   if (error.code === "EPIPE") {
@@ -51,7 +63,7 @@ program
   .option("--waiting-arcade", "Alias for --arcade.")
   .option("--waiting-game <game>", "Alias for --arcade=<game>.")
   .option("--no-arcade", "Disable Waiting Arcade.")
-  .version("0.1.0");
+  .version(localVersion());
 
 program.action(async (options) => {
   if (!options.yolo) {
@@ -744,12 +756,45 @@ program.command("tui").description("Launch the tmux-friendly TUI.").action(() =>
   console.log("\nPlugin status:\n" + renderPluginStatus());
 });
 
-program.command("update").alias("upgrade").description("Update the local LogicSRC CLI.").action(() => {
-  console.log("Current version: 0.1.0");
-  console.log("Latest version: 0.1.0");
-  console.log("LogicSRC CLI is already up to date.");
-  console.log("Config preserved at $HOME/.logicsrc");
-});
+program
+  .command("update")
+  .alias("upgrade")
+  .description("Update the local LogicSRC CLI.")
+  .option("--check", "Report whether an update is available without installing it")
+  .action(async (options) => {
+    const manifest = readManifest();
+    const ref = trackedRef(manifest);
+    const local = { version: localVersion(), commit: manifest?.commit ?? null };
+
+    console.log(`Tracking: ${GH_REPO}@${ref}`);
+    const remote = await fetchRemoteState(ref);
+    const status = updateStatus(local, remote);
+
+    console.log(`Current version: ${status.currentVersion}${local.commit ? ` (${short(local.commit)})` : ""}`);
+    console.log(
+      `Latest version: ${status.latestVersion ?? "unknown"}${status.latestCommit ? ` (${short(status.latestCommit)})` : ""}`
+    );
+
+    if (status.upToDate) {
+      console.log(`LogicSRC CLI is already up to date — ${status.reason}.`);
+      return;
+    }
+
+    console.log(`Update available — ${status.reason}.`);
+    if (options.check) {
+      console.log(`Run 'logicsrc update' (or: curl -fsSL ${INSTALL_URL} | sh -s -- update) to install it.`);
+      return;
+    }
+
+    console.log(`Reinstalling from ${INSTALL_URL}…`);
+    const result = spawnSync("sh", ["-c", `curl -fsSL ${INSTALL_URL} | sh -s -- update`], { stdio: "inherit" });
+    if (result.status !== 0) {
+      console.error(`Update failed (exit ${result.status ?? "signal"}). Re-run by hand: curl -fsSL ${INSTALL_URL} | sh -s -- update`);
+      process.exitCode = 1;
+      return;
+    }
+    console.log(`Updated. Install root: ${installHome()} — config preserved at ~/.logicsrc`);
+  });
 
 program.command("remove").alias("uninstall").option("--purge", "Remove config and auth tokens").description("Remove local LogicSRC CLI.").action((options) => {
   console.log("Removed LogicSRC CLI.");
