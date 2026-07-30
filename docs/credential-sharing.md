@@ -183,15 +183,16 @@ re-wraps (seals) it to the new member's public key. The private key lives only i
 logicsrc login
 
 # Owner: create a team, push a local .env into an encrypted vault, invite people.
+# A vault is addressed as <project> <env>, stored as the vault name project/env.
 logicsrc teams create acme --name "Acme Inc"
-logicsrc teams push acme prod --env .env        # encrypt + upload
+logicsrc teams push acme web prod --env .env    # encrypt + upload
 logicsrc teams invite acme teammate@example.com # emails an accept link
 
 # Teammate: accept, then get granted, then pull + decrypt locally.
 logicsrc login
 logicsrc teams accept <token-from-email>
-# …an existing member runs:  logicsrc teams grant acme prod teammate@example.com
-logicsrc teams pull acme prod --env .env        # download + decrypt
+# …an existing member runs:  logicsrc teams grant acme web prod teammate@example.com
+logicsrc teams pull acme web prod --env .env    # download + decrypt
 
 # Inspect / manage
 logicsrc teams list

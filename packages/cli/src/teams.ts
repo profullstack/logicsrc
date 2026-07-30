@@ -176,11 +176,48 @@ class DeviceFlowUnsupported extends Error {
   constructor() { super("device flow not supported by this server"); }
 }
 
+// A vault is addressed as <project>/<env>, so one team can hold web/prod,
+// web/staging and api/prod side by side. The split lives entirely in the CLI —
+// the server still stores a single opaque vault name — so this join and
+// splitVaultName() below are the only places that know about the convention.
+// Neither half may contain a slash, which keeps the join unambiguous and makes
+// splitVaultName a true inverse.
+export function vaultName(project: string, env: string): string {
+  const parts: ReadonlyArray<readonly [string, string]> = [
+    ["project", project],
+    ["env", env]
+  ];
+  for (const [label, value] of parts) {
+    if (!value || !value.trim()) {
+      throw new Error(`Missing ${label}. Usage: logicsrc teams push <team> <project> <env>`);
+    }
+    if (value.includes("/")) {
+      throw new Error(`The ${label} "${value}" cannot contain "/" — it separates project from env in a vault name.`);
+    }
+  }
+  return `${project}/${env}`;
+}
+
+/** Inverse of vaultName; null for names that predate the convention. */
+export function splitVaultName(name: string): { project: string; env: string } | null {
+  const slash = name.indexOf("/");
+  if (slash <= 0 || slash === name.length - 1) return null;
+  const env = name.slice(slash + 1);
+  if (env.includes("/")) return null;
+  return { project: name.slice(0, slash), env };
+}
+
 async function resolveVaultId(client: TeamClient, slug: string, vault: string): Promise<string> {
   const { vaults } = await client.listVaults(slug);
   const found = vaults.find((v) => v.name === vault);
-  if (!found) throw new Error(`Vault "${vault}" not found in team "${slug}". Create it by pushing to it.`);
-  return found.id;
+  if (found) return found.id;
+  // Vault names were a single word before they became <project>/<env>, so a
+  // team can still hold legacy rows. Name them instead of silently retargeting
+  // — picking a different vault than the one asked for would mean pushing
+  // secrets somewhere the caller didn't say.
+  const known = vaults.map((v) => v.name);
+  const hint = known.length ? ` Existing vaults: ${known.join(", ")}.` : "";
+  throw new Error(`Vault "${vault}" not found in team "${slug}". Create it by pushing to it.${hint}`);
 }
 
 export async function loginAction(options: { apiUrl?: string; token?: string; device?: boolean; web?: boolean }): Promise<void> {
@@ -288,13 +325,25 @@ export async function teamsVaultsAction(slug: string, format: OutputFormat): Pro
   const { client } = authedClient();
   const { vaults } = await client.listVaults(slug);
   print(
-    vaults.length ? vaults.map((v) => ({ vault: v.name, secrets: v.secretCount, youHaveAccess: v.hasAccess })) : [{ note: "No vaults yet. Push to create one: logicsrc teams push <team> <vault>" }],
+    vaults.length
+      ? vaults.map((v) => {
+          const parts = splitVaultName(v.name);
+          return {
+            vault: v.name,
+            project: parts?.project ?? v.name,
+            env: parts?.env ?? "—",
+            secrets: v.secretCount,
+            youHaveAccess: v.hasAccess
+          };
+        })
+      : [{ note: "No vaults yet. Push to create one: logicsrc teams push <team> <project> <env>" }],
     format
   );
 }
 
-export async function teamsGrantAction(slug: string, vault: string, email: string, format: OutputFormat): Promise<void> {
+export async function teamsGrantAction(slug: string, project: string, env: string, email: string, format: OutputFormat): Promise<void> {
   const { client, identity } = authedClient();
+  const vault = vaultName(project, env);
   const vaultId = await resolveVaultId(client, slug, vault);
 
   // Unwrap the vault DEK with our own key, then re-wrap it to the target member.
@@ -314,44 +363,48 @@ export async function teamsGrantAction(slug: string, vault: string, email: strin
   if (!target.publicKey) throw new Error(`${email} has not registered a key yet. Ask them to run: logicsrc login --email ${email}`);
 
   await client.putGrant(vaultId, email, await wrapVaultKey(dek, target.publicKey));
-  console.error(`Granted ${email} access to ${slug}/${vault}. They can now: logicsrc teams pull ${slug} ${vault}`);
-  print({ granted: email, team: slug, vault }, format);
+  console.error(`Granted ${email} access to ${slug}/${vault}. They can now: logicsrc teams pull ${slug} ${project} ${env}`);
+  print({ granted: email, team: slug, project, env, vault }, format);
 }
 
 function teamEndpoint(slug: string, vault: string): CredentialEndpoint {
   return { provider: "team", project: slug, config: vault };
 }
 
-export async function teamsPushAction(slug: string, vault: string, options: { env: string; format: OutputFormat }): Promise<void> {
+// Note the two different "env"s: `envName` is the environment half of the vault
+// address (prod, staging), while `options.env` is the local .env file path.
+export async function teamsPushAction(slug: string, project: string, envName: string, options: { env: string; format: OutputFormat }): Promise<void> {
   requireAuth();
+  const vault = vaultName(project, envName);
   const engine = createCredentialEngine();
   const from: CredentialEndpoint = { provider: "env", path: options.env };
   const plan = await engine.createCredentialSyncPlan({ from, to: teamEndpoint(slug, vault) });
   if (plan.changes.length === 0) {
     console.error(`${slug}/${vault} is already up to date with ${options.env}.`);
-    print({ team: slug, vault, changes: 0 }, options.format);
+    print({ team: slug, project, env: envName, vault, changes: 0 }, options.format);
     return;
   }
   const approval = engine.approveCredentialSync(plan.id);
   const run = await engine.runCredentialSync(plan.id, { dryRun: false, approval });
   const applied = run.results.filter((r) => r.applied).length;
   console.error(`Pushed ${applied} secret(s) from ${options.env} to ${slug}/${vault} (end-to-end encrypted).`);
-  print({ team: slug, vault, applied, keys: run.results.map((r) => ({ key: r.key, op: r.op, applied: r.applied })) }, options.format);
+  print({ team: slug, project, env: envName, vault, applied, keys: run.results.map((r) => ({ key: r.key, op: r.op, applied: r.applied })) }, options.format);
 }
 
-export async function teamsPullAction(slug: string, vault: string, options: { env: string; format: OutputFormat }): Promise<void> {
+export async function teamsPullAction(slug: string, project: string, envName: string, options: { env: string; format: OutputFormat }): Promise<void> {
   requireAuth();
+  const vault = vaultName(project, envName);
   const engine = createCredentialEngine();
   const to: CredentialEndpoint = { provider: "env", path: options.env };
   const plan = await engine.createCredentialSyncPlan({ from: teamEndpoint(slug, vault), to });
   if (plan.changes.length === 0) {
     console.error(`${options.env} is already up to date with ${slug}/${vault}.`);
-    print({ team: slug, vault, changes: 0 }, options.format);
+    print({ team: slug, project, env: envName, vault, changes: 0 }, options.format);
     return;
   }
   const approval = engine.approveCredentialSync(plan.id);
   const run = await engine.runCredentialSync(plan.id, { dryRun: false, approval });
   const applied = run.results.filter((r) => r.applied).length;
   console.error(`Pulled ${applied} secret(s) from ${slug}/${vault} into ${options.env}.`);
-  print({ team: slug, vault, applied, keys: run.results.map((r) => ({ key: r.key, op: r.op, applied: r.applied })) }, options.format);
+  print({ team: slug, project, env: envName, vault, applied, keys: run.results.map((r) => ({ key: r.key, op: r.op, applied: r.applied })) }, options.format);
 }
