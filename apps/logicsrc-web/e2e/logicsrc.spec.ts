@@ -24,15 +24,40 @@ test.describe("LogicSRC PWA", () => {
     await expect(page.getByText("logicsrc credentials providers")).toBeVisible();
   });
 
-  test("renders top-level docs and legal route targets", async ({ page }) => {
-    await page.goto("/privacy");
+  test("links every Top-Level Pages card at its route", async ({ page }) => {
+    await page.goto("/");
 
     await expect(page.getByRole("heading", { name: "Top-Level Pages" })).toBeVisible();
-    await expect(page.getByText("/docs · Docs")).toBeVisible();
-    await expect(page.getByText("/blog · Blog")).toBeVisible();
-    await expect(page.getByText("/credential-sharing · Credential Sharing")).toBeVisible();
-    await expect(page.getByText("/terms · Terms")).toBeVisible();
-    await expect(page.getByText("/privacy · Privacy")).toBeVisible();
+
+    // Each card advertises a stable route, so each card has to be a link to it.
+    for (const route of [
+      "docs",
+      "blog",
+      "openspec",
+      "credential-sharing",
+      "hire-us",
+      "about",
+      "terms",
+      "privacy",
+    ]) {
+      await expect(
+        page.locator(`#page-${route} a[href="/${route}"]`),
+        `/${route} card should link to /${route}`,
+      ).toBeVisible();
+    }
+  });
+
+  test("renders a real Privacy page rather than the homepage", async ({ page }) => {
+    await page.goto("/privacy");
+
+    await expect(page.getByRole("heading", { name: "Privacy", exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Analytics" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Cookies" })).toBeVisible();
+    await expect(page.getByText("Secret values are encrypted end-to-end")).toBeVisible();
+
+    // The old /privacy fell through to [[...slug]] and served the whole
+    // homepage; the Top-Level Pages band is the tell that it regressed.
+    await expect(page.getByRole("heading", { name: "Top-Level Pages" })).toHaveCount(0);
   });
 
   test("renders Hire Us project request flow", async ({ page }) => {
