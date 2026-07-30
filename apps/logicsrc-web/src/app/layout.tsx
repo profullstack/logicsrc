@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import "../styles.css";
 import Script from "next/script";
 import { FeedbackWidget } from "@profullstack/stack/feedback";
+import { CopyButtons } from "@/components/copy-buttons";
 
 const SITE_URL = (process.env.PUBLIC_URL ?? "https://logicsrc.com").replace(/\/$/, "");
 const DESCRIPTION =
@@ -82,6 +83,8 @@ export default function RootLayout({ children }: { children: ReactNode }): React
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         {children}
+        {/* one delegated handler for every [data-copy] button, site-wide */}
+        <CopyButtons />
         <Script
           data-site="56a0c760-e6cb-4875-844e-8b8aaa80b59b"
           src="https://crawlproof.com/stats.js"
