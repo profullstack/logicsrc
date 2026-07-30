@@ -17,6 +17,7 @@ import { token, sha256 } from "../lib/crypto.mjs";
 import { page, footer, appBar, esc } from "../lib/html.mjs";
 import { requireAuth, csrfInput } from "../lib/session.mjs";
 import { createApiKey, bearer, userForApiKey } from "../lib/apikey.mjs";
+import { requestOrigin } from "../lib/origin.mjs";
 import { config } from "../config.mjs";
 
 export const cliRouter = Router();
@@ -127,11 +128,14 @@ cliRouter.post("/cli/device/code", async (req, res) => {
     `INSERT INTO cli_device_codes (device_code_hash,user_code,name,status,created_at,expires_at) VALUES (?,?,?,'pending',?,?)`,
     [sha256(deviceCode), code, name, now, now + DEVICE_TTL_MS]
   );
+  // Echo back the host the CLI actually called us on, not $PUBLIC_ORIGIN — the
+  // user is told to open this link, and it has to be a domain they can reach.
+  const origin = requestOrigin(req, config.origin);
   res.json({
     device_code: deviceCode,
     user_code: code,
-    verification_uri: `${config.origin}/cli/device`,
-    verification_uri_complete: `${config.origin}/cli/device?user_code=${encodeURIComponent(code)}`,
+    verification_uri: `${origin}/cli/device`,
+    verification_uri_complete: `${origin}/cli/device?user_code=${encodeURIComponent(code)}`,
     expires_in: Math.floor(DEVICE_TTL_MS / 1000),
     interval: DEVICE_POLL_SECONDS
   });
