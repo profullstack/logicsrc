@@ -601,29 +601,32 @@ teams
 teams
   .command("grant")
   .argument("<slug>", "Team slug")
-  .argument("<vault>", "Vault name")
+  .argument("<project>", "Project name")
+  .argument("<env>", "Environment name (prod, staging, …)")
   .argument("<email>", "Teammate email to grant vault access")
   .option("--format <format>", "table, json, or markdown", "table")
   .description("Grant a member decryption access to a vault (re-wraps the vault key to their key).")
-  .action((slug, vault, email, options) => teamsGrantAction(slug, vault, email, options.format as OutputFormat));
+  .action((slug, project, env, email, options) => teamsGrantAction(slug, project, env, email, options.format as OutputFormat));
 
 teams
   .command("push")
   .argument("<slug>", "Team slug")
-  .argument("<vault>", "Vault name")
+  .argument("<project>", "Project name")
+  .argument("<env>", "Environment name (prod, staging, …)")
   .option("--env <path>", "Source .env file", ".env")
   .option("--format <format>", "table, json, or markdown", "table")
-  .description("Encrypt and push a local .env into a team vault.")
-  .action((slug, vault, options) => teamsPushAction(slug, vault, { env: options.env, format: options.format as OutputFormat }));
+  .description("Encrypt and push a local .env into a team vault (<project>/<env>).")
+  .action((slug, project, env, options) => teamsPushAction(slug, project, env, { env: options.env, format: options.format as OutputFormat }));
 
 teams
   .command("pull")
   .argument("<slug>", "Team slug")
-  .argument("<vault>", "Vault name")
+  .argument("<project>", "Project name")
+  .argument("<env>", "Environment name (prod, staging, …)")
   .option("--env <path>", "Destination .env file", ".env")
   .option("--format <format>", "table, json, or markdown", "table")
-  .description("Pull a team vault and decrypt it into a local .env.")
-  .action((slug, vault, options) => teamsPullAction(slug, vault, { env: options.env, format: options.format as OutputFormat }));
+  .description("Pull a team vault (<project>/<env>) and decrypt it into a local .env.")
+  .action((slug, project, env, options) => teamsPullAction(slug, project, env, { env: options.env, format: options.format as OutputFormat }));
 
 const accounts = program.command("accounts").description("Manage connected social and email accounts.");
 
