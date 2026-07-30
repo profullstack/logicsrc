@@ -183,7 +183,9 @@ re-wraps (seals) it to the new member's public key. The private key lives only i
 logicsrc login
 
 # Owner: create a team, push a local .env into an encrypted vault, invite people.
-# A vault is addressed as <project> <env>, stored as the vault name project/env.
+# A vault is addressed as <project> <env>, stored as the vault name
+# project--env (a double dash: the server slugs vault names through
+# /^[a-z0-9][a-z0-9-]{0,62}$/, so a "/" would be rejected).
 logicsrc teams create acme --name "Acme Inc"
 logicsrc teams push acme web prod --env .env    # encrypt + upload
 logicsrc teams invite acme teammate@example.com # emails an accept link

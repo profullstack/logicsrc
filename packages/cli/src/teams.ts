@@ -176,12 +176,22 @@ class DeviceFlowUnsupported extends Error {
   constructor() { super("device flow not supported by this server"); }
 }
 
-// A vault is addressed as <project>/<env>, so one team can hold web/prod,
+// A vault is addressed as <project> <env>, so one team can hold web/prod,
 // web/staging and api/prod side by side. The split lives entirely in the CLI —
-// the server still stores a single opaque vault name — so this join and
+// the server stores a single opaque vault name — so this join and
 // splitVaultName() below are the only places that know about the convention.
-// Neither half may contain a slash, which keeps the join unambiguous and makes
-// splitVaultName a true inverse.
+//
+// The separator is "--", NOT "/". The server slugifies vault names through
+// /^[a-z0-9][a-z0-9-]{0,62}$/ and rejects anything else, so a "/" join is
+// refused outright with "Vault name must be lowercase letters, numbers, and
+// dashes." A double dash is inside the allowed character set and still splits
+// unambiguously, because neither half may contain one.
+export const VAULT_SEP = "--";
+
+// Mirrors the server's slugify(). Enforced here so a bad name fails locally
+// with a useful message instead of a 422 after the file has been read.
+const VAULT_NAME = /^[a-z0-9][a-z0-9-]{0,62}$/;
+
 export function vaultName(project: string, env: string): string {
   const parts: ReadonlyArray<readonly [string, string]> = [
     ["project", project],
@@ -191,20 +201,26 @@ export function vaultName(project: string, env: string): string {
     if (!value || !value.trim()) {
       throw new Error(`Missing ${label}. Usage: logicsrc teams push <team> <project> <env>`);
     }
-    if (value.includes("/")) {
-      throw new Error(`The ${label} "${value}" cannot contain "/" — it separates project from env in a vault name.`);
+    if (value.includes(VAULT_SEP)) {
+      throw new Error(`The ${label} "${value}" cannot contain "${VAULT_SEP}" — it separates project from env in a vault name.`);
     }
   }
-  return `${project}/${env}`;
+  const name = `${project}${VAULT_SEP}${env}`;
+  if (!VAULT_NAME.test(name)) {
+    throw new Error(
+      `"${name}" is not a valid vault name. Project and env must be lowercase letters, numbers and dashes, and together at most 63 characters.`
+    );
+  }
+  return name;
 }
 
 /** Inverse of vaultName; null for names that predate the convention. */
 export function splitVaultName(name: string): { project: string; env: string } | null {
-  const slash = name.indexOf("/");
-  if (slash <= 0 || slash === name.length - 1) return null;
-  const env = name.slice(slash + 1);
-  if (env.includes("/")) return null;
-  return { project: name.slice(0, slash), env };
+  const at = name.indexOf(VAULT_SEP);
+  if (at <= 0) return null;
+  const env = name.slice(at + VAULT_SEP.length);
+  if (!env || env.includes(VAULT_SEP)) return null;
+  return { project: name.slice(0, at), env };
 }
 
 async function resolveVaultId(client: TeamClient, slug: string, vault: string): Promise<string> {

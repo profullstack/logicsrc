@@ -615,7 +615,7 @@ teams
   .argument("<env>", "Environment name (prod, staging, …)")
   .option("--env <path>", "Source .env file", ".env")
   .option("--format <format>", "table, json, or markdown", "table")
-  .description("Encrypt and push a local .env into a team vault (<project>/<env>).")
+  .description("Encrypt and push a local .env into a team vault (<project>--<env>).")
   .action((slug, project, env, options) => teamsPushAction(slug, project, env, { env: options.env, format: options.format as OutputFormat }));
 
 teams
@@ -625,7 +625,7 @@ teams
   .argument("<env>", "Environment name (prod, staging, …)")
   .option("--env <path>", "Destination .env file", ".env")
   .option("--format <format>", "table, json, or markdown", "table")
-  .description("Pull a team vault (<project>/<env>) and decrypt it into a local .env.")
+  .description("Pull a team vault (<project>--<env>) and decrypt it into a local .env.")
   .action((slug, project, env, options) => teamsPullAction(slug, project, env, { env: options.env, format: options.format as OutputFormat }));
 
 const accounts = program.command("accounts").description("Manage connected social and email accounts.");
