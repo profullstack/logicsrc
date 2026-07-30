@@ -308,7 +308,7 @@ export async function teamsInviteAction(slug: string, email: string, options: { 
 export async function teamsAcceptAction(token: string, format: OutputFormat): Promise<void> {
   const { client } = authedClient();
   const result = await client.acceptInvite(token);
-  console.error(`Joined ${result.team?.slug ?? "team"}. Ask a member to grant you a vault, then: logicsrc teams pull <team> <vault>`);
+  console.error(`Joined ${result.team?.slug ?? "team"}. Ask a member to grant you a vault, then: logicsrc teams pull <team> <project> <env>`);
   print({ joined: result.team?.slug ?? null }, format);
 }
 

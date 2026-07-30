@@ -8,20 +8,13 @@ import { page, footer, appBar, esc } from "../lib/html.mjs";
 import { requireAuth, csrfInput } from "../lib/session.mjs";
 import { createApiKey, listApiKeys, revokeApiKey } from "../lib/apikey.mjs";
 import { requestOrigin } from "../lib/origin.mjs";
+import { CLI_HINT } from "../lib/cli-hint.mjs";
 import { config } from "../config.mjs";
 
 export const pagesRouter = Router();
 
 // placeholder replaced per-request (teamCard can't see req to render csrfInput)
 const CSRF = "__CSRF__";
-
-const CLI_HINT = (origin) => `<div class="card" style="margin-bottom:22px"><div class="card-head"><span class="h">Connect the CLI</span><span class="pill on">end-to-end encrypted</span></div>
-  <div class="card-body">
-    <p class="dim" style="margin-top:0;font-size:.9rem">Secrets are encrypted on your machine — decrypt them with the <code>logicsrc</code> CLI, never here.</p>
-    <pre class="mono" style="background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:12px;overflow:auto;font-size:.8rem;margin:0">LOGICSRC_API=${esc(origin)} logicsrc login
-logicsrc teams push &lt;team&gt; prod --env .env   # share
-logicsrc teams pull &lt;team&gt; prod --env .env   # receive</pre>
-  </div></div>`;
 
 async function teamCard(team, uid) {
   const members = await all(`SELECT * FROM credshare_members WHERE team_id = ? ORDER BY created_at`, [team.id]);
@@ -50,7 +43,7 @@ async function teamCard(team, uid) {
         <input type="email" name="email" placeholder="teammate@example.com" required style="flex:1"><button class="btn">Invite</button></form>` : ""}
       <div class="label" style="margin:18px 0 6px">Vaults</div>
       ${vaults.length ? `<table><thead><tr><th>Vault</th><th>Secrets</th><th>Your access</th></tr></thead><tbody>${vaultRows.join("")}</tbody></table>`
-        : `<p class="faint mono" style="font-size:.82rem">No vaults yet — create one from the CLI: <code>logicsrc teams push ${esc(team.slug)} prod</code></p>`}
+        : `<p class="faint mono" style="font-size:.82rem">No vaults yet — create one from the CLI: <code>logicsrc teams push ${esc(team.slug)} &lt;project&gt; &lt;env&gt;</code></p>`}
     </div></div>`;
 }
 
