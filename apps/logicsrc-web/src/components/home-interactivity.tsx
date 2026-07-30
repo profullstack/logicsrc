@@ -65,10 +65,11 @@ export function HomeInteractivity(): null {
     } else if (pathname === "/agentbyte") {
       document.querySelector("#agentbyte")?.scrollIntoView();
     } else {
+      // Only the paths [[...slug]] still serves from the homepage belong here.
+      // /docs, /blog, /about, /privacy, and /terms are real routes now, and
+      // listing them just aimed scrollIntoView at a Top-Level Pages card.
       const pageRoute = pathname.slice(1);
-      if (
-        ["docs", "blog", "openspec", "credential-sharing", "hire-us", "about", "terms", "privacy"].includes(pageRoute)
-      ) {
+      if (["openspec", "credential-sharing", "hire-us"].includes(pageRoute)) {
         document.querySelector(`#${pageRoute}`)?.scrollIntoView();
       }
     }

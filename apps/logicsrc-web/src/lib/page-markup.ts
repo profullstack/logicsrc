@@ -65,6 +65,11 @@ const hireUsWork = [
   { name: "Open infrastructure", detail: "Portable code and specs first: no closed workflow lock-in, no one-off agent scripts that cannot be audited." }
 ];
 
+// The stable top-level routes, each a real page. `id` is the route segment, so
+// the card links straight to it. The rendered article ids are prefixed
+// (`page-docs`) because three of these -- openspec, credential-sharing, hire-us
+// -- are also section ids further up this same document, and duplicate ids made
+// the in-page scroll targets ambiguous.
 const pages = [
   { id: "docs", title: "Docs", detail: "Specification guides, CLI conventions, schemas, plugin contracts, SDK conventions, and MCP resources." },
   { id: "blog", title: "Blog", detail: "Project notes for LogicSRC, AgentSwarm, AgentByte, OpenSpec workflows, and reference implementations." },
@@ -73,7 +78,7 @@ const pages = [
   { id: "hire-us", title: "Hire Us", detail: "$400/hour LogicSRC work on open infrastructure, specs, AI agent workflows, and reference implementations paid through CoinPay after project acceptance." },
   { id: "about", title: "About", detail: "LogicSRC is the Profullstack open specification project for human and AI agent coordination." },
   { id: "terms", title: "Terms", detail: "Terms of engagement: the $400/hour rate, what is billable, how approved hours are invoiced, the 10-hour minimum, cancellation, acceptable use, and reference implementation boundaries." },
-  { id: "privacy", title: "Privacy", detail: "Draft privacy notes will cover telemetry, audit events, identity data, and hosted-product data boundaries." }
+  { id: "privacy", title: "Privacy", detail: "What this site collects and what it does not: analytics, the Hire Us form, the CoinPay sign-in cookie, and where credential data does and does not go." }
 ];
 
 const comparisonRows = [
@@ -419,10 +424,10 @@ COINPAY_STATUS=pending_acceptance</code></pre>
         </div>
         <div class="implementation-list">
           ${pages.map((page) => `
-            <article id="${page.id}">
+            <article id="page-${page.id}">
               <span></span>
               <div>
-                <h3>/${page.id} · ${page.title}</h3>
+                <h3><a href="/${page.id}">/${page.id} · ${page.title}</a></h3>
                 <p>${page.detail}</p>
               </div>
             </article>
