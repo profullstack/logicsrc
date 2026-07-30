@@ -36,7 +36,7 @@ cliRouter.get("/cli/authorize", requireAuth, (req, res) => {
     return res.status(400).type("html").send(page({ body: `<main class="wrap" style="padding-top:12vh"><h1>Bad CLI request</h1><p class="dim mono">missing/invalid redirect_uri, state, or code_challenge.</p></main>` }));
   }
   const name = String(req.query.name || "logicsrc cli").slice(0, 40);
-  const body = `${appBar(req.user)}
+  const body = `${appBar(req)}
   <main class="wrap" style="max-width:460px;padding-top:8vh">
     <div class="card"><div class="card-body" style="text-align:center">
       <div style="font-size:2rem">🔑</div>
@@ -142,7 +142,7 @@ cliRouter.post("/cli/device/code", async (req, res) => {
 });
 
 const devicePage = (req, body) =>
-  page({ title: "LogicSRC ▸ authorize CLI", body: `${appBar(req.user)}<main class="wrap" style="max-width:460px;padding-top:8vh">${body}</main>${footer}` });
+  page({ title: "LogicSRC ▸ authorize CLI", body: `${appBar(req)}<main class="wrap" style="max-width:460px;padding-top:8vh">${body}</main>${footer}` });
 
 const deviceResult = (req, res, status, heading, detail) =>
   res.status(status).type("html").send(devicePage(req, `<div class="card"><div class="card-body" style="text-align:center">

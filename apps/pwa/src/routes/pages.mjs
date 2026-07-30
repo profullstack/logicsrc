@@ -7,6 +7,7 @@ import { id, token, sha256 } from "../lib/crypto.mjs";
 import { page, footer, appBar, esc } from "../lib/html.mjs";
 import { requireAuth, csrfInput } from "../lib/session.mjs";
 import { createApiKey, listApiKeys, revokeApiKey } from "../lib/apikey.mjs";
+import { requestOrigin } from "../lib/origin.mjs";
 import { config } from "../config.mjs";
 
 export const pagesRouter = Router();
@@ -60,10 +61,10 @@ export async function dashboardHandler(req, res) {
   for (const t of teams) cards += await teamCard(t, uid);
   cards = cards.split(CSRF).join(csrfInput(req));
 
-  const body = `${appBar(req.user)}
+  const body = `${appBar(req)}
   <main class="wrap" style="max-width:820px;padding:26px 0 40px">
     <div class="section-title"><h1 style="font-size:1.6rem">Your teams</h1><span class="count">${teams.length}</span></div>
-    ${CLI_HINT(config.origin)}
+    ${CLI_HINT(requestOrigin(req, config.origin))}
     ${cards || `<div class="card"><div class="card-body dim">You're not on any teams yet. Create one below or accept an invite.</div></div>`}
     <div class="card" style="margin-top:22px"><div class="card-head"><span class="h">New team</span></div>
       <div class="card-body"><form method="post" action="/teams" style="display:flex;gap:8px">${csrfInput(req)}
@@ -109,7 +110,7 @@ pagesRouter.get("/teams/accept", requireAuth, (req, res) => {
   const tok = String(req.query.token || "");
   const shared = req.query.shared;
   const err = req.query.err;
-  const body = `${appBar(req.user)}
+  const body = `${appBar(req)}
   <main class="wrap" style="max-width:460px;padding-top:8vh">
     <div class="card"><div class="card-body" style="text-align:center">
       <h1 style="font-size:1.4rem;margin-bottom:12px">Accept team invite</h1>
@@ -143,7 +144,7 @@ pagesRouter.get("/settings", requireAuth, async (req, res) => {
       <span style="flex:1">${esc(k.name)} <span class="faint">${esc(k.prefix)}…</span></span>
       <form method="post" action="/settings/apikeys/${k.id}/delete" style="margin:0">${csrfInput(req)}<button class="btn danger" style="padding:5px 10px;font-size:.72rem">revoke</button></form>
     </div>`).join("") : `<div class="faint mono" style="font-size:.78rem;padding:6px 0">no keys yet</div>`;
-  const body = `${appBar(req.user)}
+  const body = `${appBar(req)}
   <main class="wrap" style="max-width:640px;padding-top:30px">
     <h1 style="font-size:1.5rem;margin-bottom:20px">Settings</h1>
     ${newKey ? `<div class="notice ok">New API key (copy it now — shown once):<br><b class="mono" style="word-break:break-all">${esc(newKey)}</b></div>` : ""}

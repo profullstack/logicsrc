@@ -101,14 +101,22 @@ ${head}
 </html>`;
 }
 
-export function appBar(user) {
+// Takes the request, not just the user: signing out is a POST, and csrfGuard
+// rejects any POST whose _csrf does not match the cookie. Without the hidden
+// field here every "Sign out" click answered "bad csrf token".
+//
+// The field is written out rather than imported from session.mjs on purpose --
+// this module is the view layer and has no imports, and pulling in session.mjs
+// would drag the database driver along with it.
+export function appBar(req) {
+  const user = req?.user;
   return `<header class="bar"><div class="wrap bar-inner">
     <a class="brand" href="/"><span class="mark">LS</span>LogicSRC<span class="app">credentials</span></a>
     <div class="bar-right">
       ${user
         ? `<span class="mono faint" style="font-size:.78rem">${esc(user.email || user.display_name || "signed in")}</span>
       <a class="btn" href="/settings">Settings</a>
-      <form method="post" action="/auth/logout" style="margin:0"><button class="btn">Sign out</button></form>`
+      <form method="post" action="/auth/logout" style="margin:0"><input type="hidden" name="_csrf" value="${esc(req?.csrfToken)}"><button class="btn">Sign out</button></form>`
         : `<a class="btn acid" href="/">Sign in</a>`}
     </div>
   </div></header>`;
