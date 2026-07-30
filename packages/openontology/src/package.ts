@@ -1,5 +1,5 @@
 import { existsSync, readFileSync } from "node:fs";
-import { isAbsolute, join, resolve } from "node:path";
+import { dirname, isAbsolute, join, resolve } from "node:path";
 import { parse as parseYaml } from "yaml";
 import { canonicalObject, digest, packageDigest } from "./canonical.js";
 import { OPENONTOLOGY_VERSION } from "./types.js";
@@ -75,7 +75,7 @@ function loadFromDir(dirOrFile: string): LoadedPackage {
     ? base
     : findManifest(base);
 
-  const dir = manifestPath.slice(0, manifestPath.lastIndexOf("/")) || ".";
+  const dir = dirname(manifestPath);
   const manifest = canonicalObject(parseFile(manifestPath) as Manifest);
 
   if (manifest?.kind !== "OntologyPackage") {
