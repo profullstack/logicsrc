@@ -109,7 +109,8 @@ EOF
     *":$LOGICSRC_BIN:"*) : ;;
     *) warn "add $LOGICSRC_BIN to your PATH:  export PATH=\"$LOGICSRC_BIN:\$PATH\"";;
   esac
-  printf '\n%s🔐 logicsrc installed.%s  Next:\n   logicsrc login\n   logicsrc teams push <team> prod --env .env\n\n' "$G" "$X"
+  # <team> <project> <env> -- three positionals. Two exits with a usage error.
+  printf '\n%s🔐 logicsrc installed.%s  Next:\n   logicsrc login\n   logicsrc teams push <team> <project> <env>\n\n' "$G" "$X"
 }
 
 do_uninstall() {
