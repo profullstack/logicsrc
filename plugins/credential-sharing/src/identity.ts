@@ -39,16 +39,18 @@ export function identityPath(): string {
 }
 
 /**
- * Where `logicsrc login` goes when nothing else is configured: the production
- * origin, not a generated Railway hostname.
+ * Where `logicsrc login` goes when nothing else is configured.
  *
- * REQUIRES that logicsrc.com serve the credentials app's CLI routes
- * (`/cli/device/code`, `/cli/device/token`, `/cli/authorize`, `/cli/token`,
- * `/api/me` — see apps/pwa/src/routes/cli.mjs). Until the apex is pointed at
- * that service, login fails with a 404 on the first request; set $LOGICSRC_API
- * to the deployment origin to work around it.
+ * This is the credentials app (apps/pwa) on its own hostname, which is what
+ * actually serves the CLI routes — /cli/device/code, /cli/device/token,
+ * /cli/authorize, /cli/token and /api/me (see apps/pwa/src/routes/cli.mjs).
+ *
+ * NOT the apex: logicsrc.com runs the marketing app, so every one of those
+ * paths 404s there. The apex can forward them (see the rewrites in
+ * apps/logicsrc-web/next.config.ts), but pointing straight at the host that
+ * serves them needs no proxy hop and no deploy of a second service to work.
  */
-export const DEFAULT_API_URL = "https://logicsrc.com";
+export const DEFAULT_API_URL = "https://app.logicsrc.com";
 
 /** An explicitly configured API origin, if any. `LOGICSRC_API` is the documented one. */
 export function envApiUrl(): string | undefined {
