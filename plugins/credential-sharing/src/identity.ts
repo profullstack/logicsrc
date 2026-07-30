@@ -39,11 +39,16 @@ export function identityPath(): string {
 }
 
 /**
- * The hosted LogicSRC credentials app (`apps/pwa`) — where `logicsrc login`
- * goes when nothing else is configured. This is deliberately NOT logicsrc.com:
- * that origin serves the marketing site and has no /cli routes.
+ * Where `logicsrc login` goes when nothing else is configured: the production
+ * origin, not a generated Railway hostname.
+ *
+ * REQUIRES that logicsrc.com serve the credentials app's CLI routes
+ * (`/cli/device/code`, `/cli/device/token`, `/cli/authorize`, `/cli/token`,
+ * `/api/me` — see apps/pwa/src/routes/cli.mjs). Until the apex is pointed at
+ * that service, login fails with a 404 on the first request; set $LOGICSRC_API
+ * to the deployment origin to work around it.
  */
-export const DEFAULT_API_URL = "https://logicsrc-credentials-production.up.railway.app";
+export const DEFAULT_API_URL = "https://logicsrc.com";
 
 /** An explicitly configured API origin, if any. `LOGICSRC_API` is the documented one. */
 export function envApiUrl(): string | undefined {
