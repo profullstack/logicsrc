@@ -761,3 +761,134 @@ pre {
   padding-left: 1rem;
   color: #5b6b7a;
 }
+
+/* --------------------------------------------------- install command ----- */
+/* Two placements of one command: `.install-cta` on the homepage hero, meant to
+   be the first thing anyone sees, and `.install-rail` riding in the dark chrome
+   on every page -- present, but never competing with the nav. */
+
+.install-copy {
+  flex: 0 0 auto;
+  padding: 0.55rem 0.9rem;
+  border-radius: 6px;
+  background: #5ac8a6;
+  color: #101418;
+  font-weight: 800;
+  line-height: 1;
+  transition: background 120ms ease;
+}
+
+.install-copy:hover {
+  background: #7ad9bd;
+}
+
+/* Confirmation has to survive the button's own text changing width, so the
+   label is centred in a fixed box rather than reflowing the row. */
+.install-copy.is-copied {
+  background: #2d6f60;
+  color: #f6f7f4;
+}
+
+.install-copy-sm {
+  padding: 0.35rem 0.5rem;
+  font-size: 0.72rem;
+}
+
+/* ---- homepage hero ---- */
+
+.install-cta {
+  margin: 1rem 0 0.25rem;
+  padding: 0.9rem 1rem 0.8rem;
+  border: 2px solid #5ac8a6;
+  border-radius: 10px;
+  background: #101418;
+  color: #f6f7f4;
+}
+
+.install-cta-label {
+  margin: 0 0 0.5rem;
+  color: #5ac8a6;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.install-cta-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* The command is the point of the box, so it gets the room: it scrolls on its
+   own rather than wrapping mid-flag or pushing the Copy button off the edge. */
+.install-cta-cmd {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-x: auto;
+  padding: 0.55rem 0.7rem;
+  border-radius: 6px;
+  background: #1b2229;
+  color: #f6f7f4;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 1rem;
+  white-space: nowrap;
+}
+
+.install-cta-note {
+  margin: 0.6rem 0 0;
+  color: #b5beb2;
+  font-size: 0.8rem;
+}
+
+.install-cta-note a {
+  color: #5ac8a6;
+}
+
+/* ---- site chrome ---- */
+
+.install-rail {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.6rem;
+  border: 1px solid #3f5049;
+  border-radius: 8px;
+  background: #171d24;
+}
+
+.install-rail-label {
+  color: #8fa39a;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.install-rail-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.install-rail-row code {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-x: auto;
+  color: #d7ded8;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.66rem;
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  /* Stacked layout: the row would otherwise squeeze the command to nothing. */
+  .install-cta-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .install-cta-cmd {
+    font-size: 0.85rem;
+  }
+}

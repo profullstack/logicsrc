@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { renderInstallCommand } from "@/lib/install-command";
 
 // Mirrors the rail/nav from page-markup.ts so standalone routes (e.g. /blog)
 // share the site chrome. Anchor links point at the homepage sections.
@@ -40,6 +41,9 @@ export function SiteShell({
             <small>Open coordination standards</small>
           </div>
         </a>
+        {/* Same markup the homepage uses, so the two can never drift apart.
+            Static content from a module constant -- nothing user-supplied. */}
+        <div dangerouslySetInnerHTML={{ __html: renderInstallCommand("rail") }} />
         <nav aria-label="LogicSRC sections">
           {NAV.map((item) => (
             <a

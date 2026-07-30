@@ -3,6 +3,7 @@
 // same class hooks — now rendered on the server for SEO instead of in the
 // browser. Interactivity (hire-us form, CoinPay button, section scroll) lives in
 // the `home-interactivity` client component.
+import { renderInstallCommand } from "./install-command";
 
 const primitives = [
   { name: "Identity", detail: "DIDs, OAuth accounts, profiles, and organization membership." },
@@ -119,6 +120,7 @@ export function renderPageMarkup(): string {
           <small>Open coordination standards</small>
         </div>
       </div>
+      ${renderInstallCommand("rail")}
       <nav aria-label="LogicSRC sections">
         <a class="active" href="#overview">Overview</a>
         <a href="#schemas">Schemas</a>
@@ -146,6 +148,7 @@ export function renderPageMarkup(): string {
           <p class="eyebrow">Profullstack open spec project</p>
           <h1>LogicSRC</h1>
           <p class="lede">Open schemas, primitives, and conventions for coordination between humans, AI agents, plugins, payment systems, and hosted products.</p>
+          ${renderInstallCommand("hero")}
           <div class="hero-actions">
             <a class="button-primary" href="/api/oauth/coinpay/start">Connect CoinPay</a>
           </div>
