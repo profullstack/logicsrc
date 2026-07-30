@@ -60,6 +60,18 @@ label.field span{display:block;font-family:var(--mono);font-size:.66rem;letter-s
 .brand .mark{width:26px;height:26px;border-radius:6px;border:1px solid var(--mint);color:var(--mint);display:grid;place-items:center;font-family:var(--mono);font-weight:800;font-size:.8rem;background:transparent}
 .brand .app{font-family:var(--mono);font-weight:600;font-size:.62rem;letter-spacing:.2em;color:var(--faint);text-transform:uppercase;border:1px solid var(--line-2);padding:2px 6px;border-radius:5px}
 .bar .brand .app{color:var(--rail-dim);border-color:var(--rail-line)}
+/* .btn is skinned for the light page ground (white fill, ink text). Dropped in
+   the dark rail it reads as a stray light-mode chip, and worse: ".bar a" above
+   outranks ".btn" on color, so <a class="btn"> ended up rail-text on white --
+   1.05:1, effectively invisible. Give the rail its own button skin. */
+/* 38% is the floor that keeps the button outline at 3:1 against the rail
+   (WCAG non-text contrast); --rail-line is only 1.4:1 and disappears here. */
+.bar .btn{background:transparent;color:var(--rail-text);border-color:color-mix(in srgb,var(--rail-text) 38%,transparent)}
+.bar .btn:hover{background:color-mix(in srgb,var(--rail-text) 12%,transparent);border-color:var(--rail-dim)}
+.bar .btn.acid,.bar .btn.primary{background:var(--green);color:var(--green-ink);border-color:var(--green)}
+.bar .btn.acid:hover,.bar .btn.primary:hover{background:var(--green-2);border-color:var(--green-2)}
+.bar .btn:focus-visible{outline-color:var(--mint)}
+.bar .faint,.bar .dim{color:var(--rail-dim)}
 .bar-right{margin-left:auto;display:flex;align-items:center;gap:12px}
 .grid{display:grid;grid-template-columns:1.55fr .95fr;gap:22px;align-items:start}
 .col{display:flex;flex-direction:column;gap:22px}
