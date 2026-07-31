@@ -48,6 +48,13 @@ describe("init + validate", () => {
     expect(pkg.files.map((f) => f.path)).toContain("data/claims.ndjson");
   });
 
+  it("loads a package from an explicit manifest path", () => {
+    const { dir } = scaffold();
+    const pkg = loadOntologyPackage(join(dir, "openontology.yaml"));
+    expect(pkg.dir).toBe(dir);
+    expect(pkg.manifest.id).toBe("test-ecosystem");
+  });
+
   it("builds a deterministic digest that survives a rebuild", () => {
     const { pkg } = scaffold();
     const first = buildOntologyPackage(pkg);
