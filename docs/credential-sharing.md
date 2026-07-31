@@ -55,12 +55,30 @@ env
 doppler
 railway
 github-secrets
+sh1pt
 ```
 
 - `.env`: read, diff, redact, and write local environment files.
 - Doppler: sync project/config scoped secrets.
 - Railway: sync service variables.
 - GitHub Secrets: sync repository, organization, and environment secrets.
+- sh1pt: sync the distribution credential vault — App Store Connect keys, Play
+  service accounts, npm and Docker tokens, Cloudflare tokens.
+
+`sh1pt` is the one adapter driven through a **CLI** rather than an HTTP API,
+because sh1pt publishes `sh1pt secret set|get|list|rm` as the interface to its
+vault and documents no REST endpoint for it. That is a transport choice inside
+an adapter, which is the layer where product-specific I/O belongs; it does not
+move product-specific commands into the core contract. Two consequences worth
+stating:
+
+- Values are written on the child process's **stdin**, never as argv. A secret
+  passed as a command-line argument is readable by any user on the host via
+  `ps` for the lifetime of the call.
+- `sh1pt secret get` requires interactive confirmation and so cannot be
+  scripted. The adapter is therefore write-only for values (`readValues:
+  false`), exactly like `github-secrets`: it can be a sync target but never a
+  source, and it supports no value-restoring rollback.
 
 ## Core Objects
 
@@ -96,10 +114,13 @@ plan
 diff
 approve
 sync
+rotate
 rollback
 audit
 export
 ```
+
+`logicsrc secrets …` is an accepted alias for `logicsrc credentials …`.
 
 Examples:
 
@@ -201,6 +222,45 @@ logicsrc teams list
 logicsrc teams members acme
 logicsrc teams vaults acme
 ```
+
+### Rotating a vault key
+
+```bash
+# Dry run (the default): show what a rotation would re-key and revoke.
+logicsrc credentials rotate acme web prod
+
+# Apply it.
+logicsrc credentials rotate acme web prod --approve
+
+# Every vault in the team that you can open.
+logicsrc secrets rotate acme --approve
+```
+
+Rotation replaces the vault DEK, re-seals it to the members who keep access, and
+re-encrypts every secret under it. **Secret values do not change** — nothing that
+consumes them breaks. What changes is that every wrapped key issued before the
+rotation is dead, so a copy of an old grant buys nothing.
+
+Who keeps access:
+
+- **`--active`** (default): only members whose team status is `active` *and* who
+  hold a grant today. This is the "someone left the team" rotation — everyone
+  else is revoked.
+- **`--all`**: everyone holding a grant today, whatever their status. Pure
+  crypto hygiene, no revocation.
+
+A member who holds access but has never uploaded a public key cannot be re-sealed
+to; they are reported under `skipped` and revoked rather than dropped silently.
+
+Safety properties, all enforced rather than documented:
+
+- The whole next state is applied in **one transaction**. The DEK is recoverable
+  only through the grants, so a half-applied rotation — new grants over old
+  ciphertext, or the reverse — would make the vault permanently unreadable.
+- The server requires every submitted fingerprint to equal the stored one. It
+  cannot see values, but it can prove a rotation did not swap any.
+- A rotation that would leave the caller ungranted, grant nobody, or cover the
+  wrong number of secrets is rejected before anything is written.
 
 `logicsrc login` picks its flow from the machine it runs on:
 

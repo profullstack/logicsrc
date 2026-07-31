@@ -24,6 +24,7 @@ import {
   teamsPushAction,
   teamsPullAction
 } from "./teams.js";
+import { credentialsRotateAction } from "./rotate.js";
 import { boards, tasks } from "./fixtures.js";
 import { print, type OutputFormat } from "./format.js";
 import { parsePositiveInteger } from "./numeric-options.js";
@@ -404,7 +405,13 @@ program.command("plugins").option("--format <format>", "table, json, or markdown
   print(snapshot.plugins, options.format as OutputFormat);
 });
 
-const credentials = program.command("credentials").alias("creds").description("Credential Sharing OpenSpec: portable, auditable secret sync.");
+const credentials = program
+  .command("credentials")
+  .alias("creds")
+  // `secrets` is what people reach for; keep it pointing at the same group
+  // rather than growing a second, divergent surface.
+  .alias("secrets")
+  .description("Credential Sharing OpenSpec: portable, auditable secret sync.");
 
 function endpointFromOptions(options: Record<string, unknown>, prefix: "" | "from" | "to"): CredentialEndpoint {
   const pick = (name: string) => {
@@ -542,6 +549,25 @@ credentials
   .action((options) => {
     print(credentialEngine().exportCredentialAudit(options.run), options.format as OutputFormat);
   });
+
+credentials
+  .command("rotate")
+  .argument("<team>", "Team slug")
+  .argument("[project]", "Project name (omit with env to rotate every vault in the team)")
+  .argument("[env]", "Environment name (prod, staging, …)")
+  .option("--all", "Re-seal to everyone who holds access today, whatever their member status")
+  .option("--active", "Re-seal only to active members, dropping the rest (default)")
+  .option("--approve", "Apply the rotation (dry run by default)")
+  .option("--format <format>", "table, json, or markdown", "table")
+  .description("Re-key a vault: new vault key, secrets re-encrypted, values unchanged.")
+  .action((team, project, env, options) =>
+    credentialsRotateAction(team, project, env, {
+      // --all widens the keep-list; --active is the default and needs no flag.
+      scope: options.all ? "all" : "active",
+      approve: Boolean(options.approve),
+      format: options.format as OutputFormat
+    })
+  );
 
 credentials
   .command("export")

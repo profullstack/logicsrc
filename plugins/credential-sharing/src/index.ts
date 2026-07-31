@@ -101,4 +101,11 @@ export {
   type CredentialStore
 } from "./store.js";
 export { fingerprintValue, fingerprintsEqual } from "./fingerprint.js";
+export {
+  planVaultRekey,
+  type RekeyPlan,
+  type RekeyPlanInput,
+  type RekeyMember,
+  type SealedSecret
+} from "./rekey.js";
 export * from "./types.js";

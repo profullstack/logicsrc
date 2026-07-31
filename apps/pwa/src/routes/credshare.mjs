@@ -6,7 +6,7 @@
 // Auth: the acting user comes from a browser session (req.user) OR a
 // `Bearer lsk_…` API key (the logicsrc CLI). Mounted at /api/credshare.
 import { Router } from "express";
-import { get, all, run } from "../db.mjs";
+import { get, all, run, batch } from "../db.mjs";
 import { id, token, sha256 } from "../lib/crypto.mjs";
 import { bearer, userForApiKey } from "../lib/apikey.mjs";
 import { config } from "../config.mjs";
@@ -200,8 +200,115 @@ credshareRouter.get("/api/credshare/vaults/:id/grants", api(async (req, res, use
   const granted = new Set((await all(`SELECT user_id FROM credshare_vault_grants WHERE vault_id = ?`, [vault.id])).map((r) => r.user_id));
   const members = await all(`SELECT * FROM credshare_members WHERE team_id = ?`, [vault.team_id]);
   const grants = [];
-  for (const m of members) grants.push({ email: m.email, hasPublicKey: m.user_id ? Boolean(await publicKeyFor(m.user_id)) : false, hasAccess: Boolean(m.user_id && granted.has(m.user_id)) });
+  for (const m of members) {
+    // The public key is included so a client can re-seal the vault key to every
+    // member in one pass (see rekey). Public keys are public by construction --
+    // they exist to be sealed against -- and this route is already member-only.
+    const publicKey = m.user_id ? await publicKeyFor(m.user_id) : null;
+    grants.push({
+      email: m.email,
+      publicKey,
+      status: m.status,
+      hasPublicKey: Boolean(publicKey),
+      hasAccess: Boolean(m.user_id && granted.has(m.user_id))
+    });
+  }
   res.json({ grants });
+}));
+
+// Re-key a vault: swap in a fresh DEK, re-seal it to the members who keep
+// access, and re-encrypt every secret under it. Values do not change, which the
+// server enforces by requiring each submitted fingerprint to equal the stored
+// one -- it cannot see values, but it can prove they were not swapped.
+//
+// This is ONE transaction on purpose. The DEK is recoverable only through the
+// grants, so a half-applied rotation (new grants over old ciphertext, or the
+// reverse) would make the vault permanently unreadable by everyone.
+credshareRouter.post("/api/credshare/vaults/:id/rekey", api(async (req, res, user) => {
+  const vault = await vaultCtx(res, req.params.id, user.id); if (!vault) return;
+  const iHold = await get(`SELECT 1 FROM credshare_vault_grants WHERE vault_id = ? AND user_id = ?`, [vault.id, user.id]);
+  if (!iHold) return res.status(403).json({ error: "Only a member with vault access can re-key it." });
+
+  const grants = Array.isArray(req.body?.grants) ? req.body.grants : null;
+  const secrets = Array.isArray(req.body?.secrets) ? req.body.secrets : null;
+  const revoke = Array.isArray(req.body?.revoke) ? req.body.revoke.map(norm) : [];
+  if (!grants || !secrets) return res.status(422).json({ error: "Expected { grants, secrets, revoke? }." });
+  if (grants.length === 0) return res.status(422).json({ error: "A re-key must keep at least one member, or the vault becomes unreadable." });
+
+  // The caller must keep their own access; otherwise they lock themselves out
+  // the moment the transaction commits.
+  const me = await get(`SELECT email FROM users WHERE id = ?`, [user.id]);
+  if (!grants.some((g) => norm(g?.email) === norm(me?.email))) {
+    return res.status(422).json({ error: "A re-key must include your own grant." });
+  }
+
+  // Every secret must be accounted for, with an unchanged fingerprint. This is
+  // what makes "re-key" distinct from "write": no value may change here.
+  const stored = await all(`SELECT name, fingerprint FROM credshare_secrets WHERE vault_id = ?`, [vault.id]);
+  const storedByName = new Map(stored.map((s) => [s.name, s.fingerprint]));
+  if (secrets.length !== stored.length) {
+    return res.status(409).json({ error: `Re-key covers ${secrets.length} secret(s) but the vault holds ${stored.length}. Re-read the vault and retry.` });
+  }
+  for (const s of secrets) {
+    if (!s || typeof s.name !== "string" || typeof s.nonce !== "string" || typeof s.ciphertext !== "string" || typeof s.fingerprint !== "string") {
+      return res.status(422).json({ error: "Each secret needs { name, nonce, ciphertext, fingerprint }." });
+    }
+    if (!storedByName.has(s.name)) {
+      return res.status(409).json({ error: `"${s.name}" is not in this vault. Re-read the vault and retry.` });
+    }
+    if (storedByName.get(s.name) !== s.fingerprint) {
+      return res.status(409).json({ error: `Re-key would change the value of "${s.name}". A re-key re-encrypts; it never changes values.` });
+    }
+  }
+
+  // Resolve grant targets before writing anything.
+  const resolved = [];
+  for (const g of grants) {
+    const email = norm(g?.email);
+    if (!email || typeof g?.wrappedDek !== "string" || !g.wrappedDek) {
+      return res.status(422).json({ error: "Each grant needs { email, wrappedDek }." });
+    }
+    const target = await get(`SELECT id FROM users WHERE email = ?`, [email]);
+    if (!target) return res.status(409).json({ error: `${email} has not logged in yet, so the vault key cannot be sealed to them.` });
+    resolved.push({ email, userId: target.id, wrappedDek: g.wrappedDek });
+  }
+
+  const revokedUsers = [];
+  for (const email of revoke) {
+    const target = await get(`SELECT id FROM users WHERE email = ?`, [email]);
+    if (target) revokedUsers.push({ email, userId: target.id });
+  }
+
+  const now = Date.now();
+  const statements = [];
+  for (const s of secrets) {
+    statements.push({
+      sql: `UPDATE credshare_secrets SET nonce = ?, ciphertext = ?, version = version + 1, updated_by = ?, updated_at = ? WHERE vault_id = ? AND name = ?`,
+      args: [s.nonce, s.ciphertext, user.id, now, vault.id, s.name]
+    });
+  }
+  for (const g of resolved) {
+    statements.push({
+      sql: `INSERT INTO credshare_vault_grants (vault_id, user_id, wrapped_dek, granted_by, created_at) VALUES (?,?,?,?,?) ON CONFLICT(vault_id, user_id) DO UPDATE SET wrapped_dek = excluded.wrapped_dek, granted_by = excluded.granted_by, created_at = excluded.created_at`,
+      args: [vault.id, g.userId, g.wrappedDek, user.id, now]
+    });
+  }
+  for (const r of revokedUsers) {
+    statements.push({ sql: `DELETE FROM credshare_vault_grants WHERE vault_id = ? AND user_id = ?`, args: [vault.id, r.userId] });
+  }
+  statements.push({
+    sql: `INSERT INTO credshare_audit (id, team_id, vault_id, actor_user_id, action, key_name, fingerprint, created_at) VALUES (?,?,?,?,?,?,?,?)`,
+    args: [id(), vault.team_id, vault.id, user.id, "vault:rekey", null, null, now]
+  });
+  for (const r of revokedUsers) {
+    statements.push({
+      sql: `INSERT INTO credshare_audit (id, team_id, vault_id, actor_user_id, action, key_name, fingerprint, created_at) VALUES (?,?,?,?,?,?,?,?)`,
+      args: [id(), vault.team_id, vault.id, user.id, "vault:revoke", r.email, null, now]
+    });
+  }
+
+  await batch(statements);
+  res.json({ ok: true, rekeyed: secrets.length, granted: resolved.map((g) => g.email), revoked: revokedUsers.map((r) => r.email) });
 }));
 
 credshareRouter.post("/api/credshare/vaults/:id/grants", api(async (req, res, user) => {

@@ -48,7 +48,8 @@ const credentialProviders = [
   { name: ".env", detail: "Parse, diff, redact, and write local env files without leaking values into logs." },
   { name: "Doppler", detail: "Sync project/config scoped secrets through provider adapters and auditable key fingerprints." },
   { name: "Railway", detail: "Read and write service variables as a deployment target with explicit approval gates." },
-  { name: "GitHub Secrets", detail: "Manage repo, organization, and environment secrets through provider-neutral operations." }
+  { name: "GitHub Secrets", detail: "Manage repo, organization, and environment secrets through provider-neutral operations." },
+  { name: "sh1pt", detail: "Sync the distribution credential vault — App Store Connect, Play, npm, Docker, and Cloudflare tokens — through the sh1pt CLI." }
 ];
 
 const credentialSurfaces = [

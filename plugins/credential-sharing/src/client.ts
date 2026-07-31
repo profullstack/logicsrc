@@ -50,8 +50,18 @@ export interface RemoteSecret {
 
 export interface RemoteGrantRow {
   email: string;
+  /** X25519 public key, so a client can re-seal to every member in one pass. */
+  publicKey: string | null;
+  status: "active" | "invited";
   hasPublicKey: boolean;
   hasAccess: boolean;
+}
+
+export interface RekeyResult {
+  ok: boolean;
+  rekeyed: number;
+  granted: string[];
+  revoked: string[];
 }
 
 export class TeamApiError extends Error {
@@ -157,6 +167,21 @@ export class TeamClient {
   }
   putSecrets(vaultId: string, upserts: Array<{ name: string; nonce: string; ciphertext: string; fingerprint: string }>, deletes: string[]) {
     return this.request<{ ok: boolean; applied: string[] }>("PUT", `/vaults/${encodeURIComponent(vaultId)}/secrets`, { upserts, deletes });
+  }
+  /**
+   * Swap the vault to a fresh DEK. The whole next state goes over in one call
+   * because the server applies it in a single transaction — see rekey.ts for
+   * why a partial rotation is unrecoverable.
+   */
+  rekeyVault(
+    vaultId: string,
+    body: {
+      grants: Array<{ email: string; wrappedDek: string }>;
+      secrets: Array<{ name: string; nonce: string; ciphertext: string; fingerprint: string }>;
+      revoke: string[];
+    }
+  ) {
+    return this.request<RekeyResult>("POST", `/vaults/${encodeURIComponent(vaultId)}/rekey`, body);
   }
   listAudit(vaultId: string) {
     return this.request<{ audit: Array<Record<string, unknown>> }>("GET", `/vaults/${encodeURIComponent(vaultId)}/audit`);
