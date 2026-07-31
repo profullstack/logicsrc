@@ -11,7 +11,7 @@ import type { LogicSrcPrincipal, LogicSrcPolicyDecision } from "@logicsrc/accoun
  * - Adapters declare read/write capabilities before a plan is generated.
  */
 
-export type CredentialProviderId = "env" | "doppler" | "railway" | "github-secrets" | (string & {});
+export type CredentialProviderId = "env" | "doppler" | "railway" | "github-secrets" | "sh1pt" | "team" | (string & {});
 
 export interface CredentialProviderCapabilities {
   /** Adapter can read raw secret values (enables value-level fingerprint diffs). */

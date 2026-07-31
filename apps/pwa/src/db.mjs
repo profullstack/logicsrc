@@ -27,3 +27,11 @@ export async function all(sql, args = []) {
   const r = await db.execute({ sql, args });
   return r.rows;
 }
+
+/**
+ * Run many statements in ONE write transaction — all of them commit, or none
+ * do. Needed anywhere a partial write would leave unrecoverable state, e.g.
+ * re-keying a vault, where new grants over old ciphertext locks out every
+ * member permanently.
+ */
+export const batch = (statements) => db.batch(statements, "write");
