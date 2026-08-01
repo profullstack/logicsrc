@@ -21,7 +21,7 @@ logicsrc credentials inspect --provider env --path .env
 logicsrc credentials diff --from env --from-path .env --to railway \
   --to-project <projectId> --to-config <environmentId>
 
-# Build a plan (stored under .logicsrc/credentials), then dry-run, then apply
+# Build a plan (stored under ~/.config/logicsrc/credentials), then dry-run, then apply
 logicsrc credentials plan --from env --from-path .env --to doppler \
   --to-project <project> --to-config <config>
 logicsrc credentials sync --plan <planId>            # dry-run (no writes)
@@ -40,8 +40,9 @@ Implementation notes:
 - `github-secrets` is write-only for values (GitHub never returns secret values), so
   it cannot be a sync source or a value-restoring rollback target. Secret writes are
   libsodium sealed-box encrypted against the repo/org/environment public key.
-- Rollback captures the target's prior values into a 0600 vault under `.logicsrc/`
-  (gitignored) — the only place raw values touch disk. Plans, runs, and audit records
+- Rollback captures the target's prior values into a 0600 vault under
+  `~/.config/logicsrc/` — outside any project, so there is nothing to gitignore
+  and nothing lands in a repo. The only place raw values touch disk. Plans, runs, and audit records
   contain fingerprints only.
 
 Credential Sharing is a LogicSRC OpenSpec for portable, auditable secret synchronization across local files and infrastructure providers. It is intended to replace closed, proprietary credential-sharing workflows with a provider-neutral contract.
@@ -195,7 +196,7 @@ relay for secret values**. It stores only:
 Plaintext secret values and the raw DEK never leave a member's machine. Granting a
 teammate access = an existing member unwraps the DEK with their private key and
 re-wraps (seals) it to the new member's public key. The private key lives only in
-`~/.logicsrc/identity.json` (mode 0600) and is never uploaded.
+`~/.config/logicsrc/identity.json` (mode 0600) and is never uploaded.
 
 ### CLI
 
@@ -275,7 +276,7 @@ Safety properties, all enforced rather than documented:
 It talks to the hosted credentials app by default. Point it elsewhere (local dev,
 self-hosted) with `LOGICSRC_API=http://localhost:8080 logicsrc login` or
 `logicsrc login --api-url …`; the chosen origin is remembered in
-`~/.logicsrc/identity.json` once login succeeds.
+`~/.config/logicsrc/identity.json` once login succeeds.
 
 Because `team` is a normal provider, the generic sync surface works too — e.g.
 `logicsrc credentials plan --from env --from-path .env --to team --to-project acme

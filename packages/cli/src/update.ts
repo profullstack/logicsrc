@@ -26,7 +26,7 @@ export type UpdateStatus = {
   latestCommit: string | null;
 };
 
-/** Install root the installer uses (not the config dir, which is ~/.logicsrc). */
+/** Install root the installer uses (not the config dir, which is ~/.config/logicsrc). */
 export function installHome(env: NodeJS.ProcessEnv = process.env): string {
   return env.LOGICSRC_HOME || join(env.HOME || homedir(), ".logicsrc-cli");
 }

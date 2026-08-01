@@ -3,7 +3,7 @@
 Logicsrc stores user config at:
 
 ```text
-$HOME/.logicsrc/config.json
+$HOME/.config/logicsrc/config.json
 ```
 
 Read and write values with dot paths:

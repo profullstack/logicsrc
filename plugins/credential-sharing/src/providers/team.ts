@@ -17,7 +17,7 @@ import type {
  * vault). Secret values are encrypted/decrypted on THIS machine with the vault
  * DEK; the server only ever sees ciphertext and the DEK sealed to member keys.
  *
- * Auth + identity come from the local `~/.logicsrc/identity.json` (via
+ * Auth + identity come from the local `~/.config/logicsrc/identity.json` (via
  * `logicsrc login`), mirroring how `env` reads files and `github-secrets` reads
  * GITHUB_TOKEN — the provider is pure I/O over ambient credentials.
  */
@@ -77,7 +77,7 @@ export const teamProvider: CredentialProvider = {
   name: "LogicSRC Team Vault",
   description: "End-to-end-encrypted team credential vault. Share secrets with teammates by email — the server never sees plaintext.",
   status: "available",
-  authRequirements: ["logicsrc login (identity at ~/.logicsrc/identity.json)"],
+  authRequirements: ["logicsrc login (identity at ~/.config/logicsrc/identity.json)"],
   capabilities: { readValues: true, readNames: true, write: true, delete: true, rollback: true, audit: true },
 
   async inspect(endpoint: CredentialEndpoint): Promise<CredentialSnapshot> {
