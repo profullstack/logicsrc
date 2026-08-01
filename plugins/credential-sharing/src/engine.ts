@@ -197,7 +197,7 @@ export class CredentialEngine {
     const runId = this.id("cred_run");
     if (reversible && !dryRun && target.readValues) {
       const preImage = await target.readValues(plan.to, [...upsertKeys, ...deleteKeys]);
-      this.store.saveVault(runId, preImage);
+      await this.store.saveVault(runId, preImage);
     }
 
     const writeResults = await target.write({ endpoint: plan.to, upserts, deletes: deleteKeys, dryRun });
@@ -272,7 +272,7 @@ export class CredentialEngine {
     if (!run.reversible) {
       throw new Error(`Run ${runId} was not reversible (no pre-image captured). Rollbacks require a value-readable target.`);
     }
-    const preImage = this.store.getVault(runId);
+    const preImage = await this.store.getVault(runId);
     if (!preImage) {
       throw new Error(`No rollback pre-image found for run ${runId}.`);
     }
@@ -334,7 +334,7 @@ export class CredentialEngine {
       return {};
     }
     if (plan.rollbackOfRunId) {
-      const preImage = this.store.getVault(plan.rollbackOfRunId);
+      const preImage = await this.store.getVault(plan.rollbackOfRunId);
       if (!preImage) {
         throw new Error(`Rollback plan ${plan.id} references missing vault for run ${plan.rollbackOfRunId}.`);
       }
