@@ -1,6 +1,7 @@
 import { mkdirSync, readFileSync, writeFileSync, existsSync, readdirSync } from "node:fs";
 import { join, resolve } from "node:path";
-import { logicsrcHome } from "./identity.js";
+import { identityPath, loadOrCreateIdentity, logicsrcHome, readIdentity } from "./identity.js";
+import { decryptValue, encryptValue, generateVaultKey, unwrapVaultKey, wrapVaultKey, type SealedValue } from "./crypto.js";
 import type { CredentialSyncPlan, CredentialSyncRun, CredentialAuditEvent, CredentialValueBag } from "./types.js";
 
 /**
@@ -11,13 +12,15 @@ import type { CredentialSyncPlan, CredentialSyncRun, CredentialAuditEvent, Crede
  *   plans/<id>.json     redacted sync plans (fingerprints only)
  *   runs/<id>.json      run records (fingerprints only)
  *   audit/<runId>.json  audit events (fingerprints only)
- *   vault/<runId>.json  rollback pre-image — RAW prior target values, mode 0600
+ *   vault/<runId>.json  rollback pre-image — sealed to this machine's identity, mode 0600
  *
- * The vault is the only place raw values touch disk, and only to make rollback
- * possible. It is written 0600 and lives in the user's config dir, outside any
- * project — so there is nothing for a caller to gitignore, and nothing that
- * lands in a repo because the CLI was run from inside one. Audit and plan
- * records never contain raw values.
+ * The vault is the only place prior values touch disk, and only to make
+ * rollback possible. It is encrypted at rest — sealed to this machine's
+ * identity key, so the file opens with the secret key in identity.json and
+ * nothing else — written 0600, and kept in the user's config dir, outside any
+ * project. Mode 0600 stops another user on the box; the sealing stops a
+ * backup, a synced home directory or a lifted disk. Audit and plan records
+ * never contain raw values at all.
  */
 export interface CredentialStore {
   baseDir: string;
@@ -27,8 +30,29 @@ export interface CredentialStore {
   getRun(id: string): CredentialSyncRun | undefined;
   saveAudit(runId: string, events: CredentialAuditEvent[]): void;
   getAudit(runId: string): CredentialAuditEvent[];
-  saveVault(runId: string, preImage: CredentialValueBag): void;
-  getVault(runId: string): CredentialValueBag | undefined;
+  saveVault(runId: string, preImage: CredentialValueBag): Promise<void>;
+  getVault(runId: string): Promise<CredentialValueBag | undefined>;
+}
+
+/**
+ * A vault file, sealed to this machine's identity key.
+ *
+ * The DEK is fresh per write and sealed to the identity public key, so the
+ * file is openable by the secret key in `identity.json` and nothing else —
+ * mode 0600 stops another user on the box reading it, and this stops a backup,
+ * a synced home directory, or a stolen disk from doing the same.
+ *
+ * `version` is what tells a sealed file from the plaintext ones written before
+ * this existed. Those are still readable; see getVault.
+ */
+interface SealedVaultFile {
+  version: 2;
+  wrappedKey: string;
+  sealed: SealedValue;
+}
+
+function isSealed(value: unknown): value is SealedVaultFile {
+  return typeof value === "object" && value !== null && (value as { version?: unknown }).version === 2;
 }
 
 /**
@@ -95,12 +119,41 @@ export function createFileCredentialStore(baseDir = defaultCredentialHome()): Cr
     getAudit(runId) {
       return readJson<CredentialAuditEvent[]>(join(dirs.audit, `${runId}.json`)) ?? [];
     },
-    saveVault(runId, preImage) {
+    async saveVault(runId, preImage) {
       ensure(dirs.vault, 0o700);
-      writeFileSync(join(dirs.vault, `${runId}.json`), JSON.stringify(preImage, null, 2), { mode: 0o600 });
+      // A fresh DEK per run, sealed to this machine's identity. Reusing one key
+      // across runs would make a single compromise open every rollback ever
+      // captured, and there is no reason to: the DEK travels with the file.
+      const identity = await loadOrCreateIdentity();
+      const dek = await generateVaultKey();
+      const file: SealedVaultFile = {
+        version: 2,
+        wrappedKey: await wrapVaultKey(dek, identity.keys.publicKey),
+        sealed: await encryptValue(JSON.stringify(preImage), dek)
+      };
+      writeFileSync(join(dirs.vault, `${runId}.json`), JSON.stringify(file, null, 2), { mode: 0o600 });
     },
-    getVault(runId) {
-      return readJson<CredentialValueBag>(join(dirs.vault, `${runId}.json`));
+    async getVault(runId) {
+      const raw = readJson<SealedVaultFile | CredentialValueBag>(join(dirs.vault, `${runId}.json`));
+      if (!raw) {
+        return undefined;
+      }
+      // Plaintext files written before vaults were sealed still open. Refusing
+      // them would strand the rollback data they exist to hold — the point of
+      // the vault is that a bad rotation can be undone, and a reader that
+      // cannot read yesterday's vault takes that away.
+      if (!isSealed(raw)) {
+        return raw as CredentialValueBag;
+      }
+      const identity = readIdentity();
+      if (!identity?.keys?.secretKey) {
+        throw new Error(
+          `Vault for run ${runId} is sealed to this machine's identity, which is missing. ` +
+            `Restore ${identityPath()} to roll this run back.`
+        );
+      }
+      const dek = await unwrapVaultKey(raw.wrappedKey, identity.keys);
+      return JSON.parse(await decryptValue(raw.sealed, dek)) as CredentialValueBag;
     }
   };
 }
@@ -119,8 +172,8 @@ export function createMemoryCredentialStore(): CredentialStore {
     getRun: (id) => runs.get(id),
     saveAudit: (runId, events) => void audit.set(runId, events),
     getAudit: (runId) => audit.get(runId) ?? [],
-    saveVault: (runId, preImage) => void vault.set(runId, preImage),
-    getVault: (runId) => vault.get(runId)
+    saveVault: async (runId, preImage) => void vault.set(runId, preImage),
+    getVault: async (runId) => vault.get(runId)
   };
 }
 
