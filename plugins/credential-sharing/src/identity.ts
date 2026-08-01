@@ -1,4 +1,4 @@
-import { mkdirSync, readFileSync, writeFileSync, existsSync, chmodSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync, existsSync, chmodSync, renameSync } from "node:fs";
 import { homedir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { generateIdentityKeyPair, publicKeyForSecret, type IdentityKeyPair } from "./crypto.js";
@@ -6,7 +6,7 @@ import { generateIdentityKeyPair, publicKeyForSecret, type IdentityKeyPair } fro
 /**
  * Local, machine-bound member identity for team credential sharing.
  *
- * Stored at `$LOGICSRC_HOME/identity.json` (default `~/.logicsrc/identity.json`),
+ * Stored at `$LOGICSRC_HOME/identity.json` (default `~/.config/logicsrc/identity.json`),
  * mode 0600 — it holds the member's X25519 SECRET key and the server API token.
  * The secret key never leaves this file; only the public key is uploaded.
  */
@@ -25,11 +25,61 @@ export interface LocalIdentity {
   updatedAt: string;
 }
 
+/**
+ * The one logicsrc directory for this user, on this machine.
+ *
+ * `$LOGICSRC_HOME`, else `$XDG_CONFIG_HOME/logicsrc`, else
+ * `~/.config/logicsrc`. Never anything derived from the working directory:
+ * there is a single identity and a single vault per user, and a path that
+ * moves when you `cd` gives you one of each per directory you happened to be
+ * standing in — which is how a machine ends up with a `.logicsrc/` inside
+ * unrelated git repos, holding a directory called `credentials/vault`.
+ *
+ * A previous install kept this at `~/.logicsrc`. That directory holds the
+ * X25519 secret key, so it is moved rather than abandoned — losing it means
+ * losing access to every team vault the member was ever given.
+ */
 export function logicsrcHome(): string {
   if (process.env.LOGICSRC_HOME) {
     return resolve(process.env.LOGICSRC_HOME);
   }
+  const configHome = process.env.XDG_CONFIG_HOME
+    ? resolve(process.env.XDG_CONFIG_HOME)
+    : join(homedir(), ".config");
+  const home = join(configHome, "logicsrc");
+  migrateLegacyHome(home);
+  return home;
+}
+
+/** Where this lived before the move, kept only to be migrated away from. */
+export function legacyLogicsrcHome(): string {
   return join(homedir(), ".logicsrc");
+}
+
+/**
+ * Move `~/.logicsrc` to the config dir, once, if the new one is not there yet.
+ *
+ * Deliberately a move and not a copy: two directories both claiming to be the
+ * identity is the state where a login writes to one and a read finds the
+ * other. If it cannot be moved the failure is named on stderr rather than
+ * swallowed, because the alternative is a member silently logged out with a
+ * secret key still sitting somewhere they were not told about.
+ */
+function migrateLegacyHome(target: string): void {
+  const legacy = legacyLogicsrcHome();
+  if (legacy === target || existsSync(target) || !existsSync(legacy)) {
+    return;
+  }
+  try {
+    mkdirSync(dirname(target), { recursive: true });
+    renameSync(legacy, target);
+  } catch (error) {
+    const why = error instanceof Error ? error.message : String(error);
+    process.emitWarning(
+      `logicsrc: could not move ${legacy} to ${target} (${why}). ` +
+        `Move it by hand — it holds your identity key.`
+    );
+  }
 }
 
 export function identityPath(): string {

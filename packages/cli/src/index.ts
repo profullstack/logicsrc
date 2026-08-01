@@ -3,7 +3,7 @@ import { spawnSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { evaluateAccountPolicy, scoreAccountActionRisk } from "@logicsrc/account-core";
 import { Command } from "commander";
-import { createCredentialEngine, listCredentialProviders, type CredentialEndpoint } from "@logicsrc/plugin-credential-sharing";
+import { createCredentialEngine, listCredentialProviders, logicsrcHome, type CredentialEndpoint } from "@logicsrc/plugin-credential-sharing";
 import { listEmailAccountProviders } from "@logicsrc/plugin-email-accounts";
 import { discoverFeeds, listFeedProviders, probeSite, renderDiscoveryOutput, validateFeed, type FeedKind, type FeedOutputFormat } from "@logicsrc/plugin-feed-discovery";
 import { listSocialAccountProviders } from "@logicsrc/plugin-social-accounts";
@@ -822,12 +822,14 @@ program
       process.exitCode = 1;
       return;
     }
-    console.log(`Updated. Install root: ${installHome()} — config preserved at ~/.logicsrc`);
+    console.log(`Updated. Install root: ${installHome()} — config preserved at ${logicsrcHome()}`);
   });
 
 program.command("remove").alias("uninstall").option("--purge", "Remove config and auth tokens").description("Remove local LogicSRC CLI.").action((options) => {
   console.log("Removed LogicSRC CLI.");
-  console.log(options.purge ? "Removed config and auth tokens from $HOME/.logicsrc." : "Preserved config at $HOME/.logicsrc. Run with --purge to remove config and auth tokens.");
+  console.log(options.purge
+    ? `Removed config and auth tokens from ${logicsrcHome()}.`
+    : `Preserved config at ${logicsrcHome()}. Run with --purge to remove config and auth tokens.`);
 });
 
 function validateFile(kindArg: string, file: string) {

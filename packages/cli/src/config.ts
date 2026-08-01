@@ -1,6 +1,6 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
-import { homedir } from "node:os";
+import { logicsrcHome } from "@logicsrc/plugin-credential-sharing";
 
 export type JsonObject = Record<string, unknown>;
 
@@ -21,8 +21,14 @@ export const defaultConfig: JsonObject = {
   }
 };
 
+/**
+ * The same one directory the identity and the vault use.
+ *
+ * Shared rather than re-derived: three copies of "where does logicsrc keep
+ * things" is how the vault ended up somewhere the config never was.
+ */
 export function configPath() {
-  return join(homedir(), ".logicsrc", "config.json");
+  return join(logicsrcHome(), "config.json");
 }
 
 export function readConfig() {

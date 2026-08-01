@@ -12,6 +12,7 @@ import {
   defaultApiUrl,
   resolveApiUrl,
   createCredentialEngine,
+  identityPath,
   unwrapVaultKey,
   wrapVaultKey,
   type CredentialEndpoint
@@ -280,7 +281,7 @@ export async function loginAction(options: { apiUrl?: string; token?: string; de
 
 export async function logoutAction(): Promise<void> {
   await updateIdentity({ apiToken: undefined, email: undefined, userId: undefined });
-  console.error("Logged out (local token cleared; revoke the key at /settings). Identity key retained — delete ~/.logicsrc/identity.json to remove it.");
+  console.error(`Logged out (local token cleared; revoke the key at /settings). Identity key retained — delete ${identityPath()} to remove it.`);
 }
 
 export async function whoamiAction(format: OutputFormat): Promise<void> {
