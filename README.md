@@ -116,7 +116,7 @@ It provides read-only resources for docs and schemas, validation/example tools, 
 - LogicSRC CLI, SDK, TUI, PWA, MCP, and curl-compatible API conventions.
 - CommandBoard.run reference implementation.
 - Monorepo-maintained plugin system.
-- Credential Sharing OpenSpec for .env, Doppler, Railway variables, and GitHub Secrets.
+- Credential Sharing OpenSpec for end-to-end-encrypted team vaults, .env, Doppler, Railway variables, GitHub Secrets, and sh1pt.
 - CoinPay as the default payment, DID, wallet, and escrow plugin.
 - uGig as the default jobs and gigs marketplace plugin.
 - c0mpute as a work-in-progress compute jobs and worker pools plugin.
