@@ -19,7 +19,7 @@ export function GET(): Response {
 
 - [AgentSwarm](${SITE_URL}/agent-swarm): Provider-neutral agent orchestration, model routing, and cost controls.
 - [AgentByte](${SITE_URL}/agentbyte): Agent screening sessions, policy events, and APIs.
-- [Credential Sharing](${SITE_URL}/credential-sharing): Source/target credential diffs, approval, sync, rollback, and audit.
+- [Credential Sharing](${SITE_URL}/credential-sharing): End-to-end-encrypted team vaults, plus source/target credential diffs, approval, sync, rollback, and audit.
 
 ## Company & legal
 

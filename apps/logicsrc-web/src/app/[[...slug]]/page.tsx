@@ -21,7 +21,7 @@ const ROUTE_META: Record<string, { title: string; description: string }> = {
   },
   "credential-sharing": {
     title: "Credential Sharing · LogicSRC",
-    description: "Source/target credential diffs, approval, sync, rollback, and audit across .env, Doppler, Railway, and GitHub Secrets.",
+    description: "End-to-end-encrypted team vaults plus source/target credential diffs, approval, sync, rollback, and audit across .env, Doppler, Railway, GitHub Secrets, and sh1pt.",
   },
   "hire-us": {
     title: "Hire Us · LogicSRC",
