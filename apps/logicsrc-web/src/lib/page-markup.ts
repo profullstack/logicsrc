@@ -45,6 +45,7 @@ const agentByteSurfaces = [
 ];
 
 const credentialProviders = [
+  { name: "Team vaults", detail: "Share secrets with teammates by email instead of pasting <code>.env</code> files into chat — a hosted, end-to-end-encrypted vault addressed as <code>team:&lt;team&gt;/&lt;vault&gt;</code>." },
   { name: ".env", detail: "Parse, diff, redact, and write local env files without leaking values into logs." },
   { name: "Doppler", detail: "Sync project/config scoped secrets through provider adapters and auditable key fingerprints." },
   { name: "Railway", detail: "Read and write service variables as a deployment target with explicit approval gates." },
@@ -75,7 +76,7 @@ const pages = [
   { id: "docs", title: "Docs", detail: "Specification guides, CLI conventions, schemas, plugin contracts, SDK conventions, and MCP resources." },
   { id: "blog", title: "Blog", detail: "Project notes for LogicSRC, AgentSwarm, AgentByte, OpenSpec workflows, and reference implementations." },
   { id: "openspec", title: "OpenSpec", detail: "Comparison and compatibility notes for OpenSpec.dev-style repo-local specs, proposals, tasks, and deltas." },
-  { id: "credential-sharing", title: "Credential Sharing", detail: "Open replacement architecture for portable secret sync across .env, Doppler, Railway variables, GitHub Secrets, and future providers." },
+  { id: "credential-sharing", title: "Credential Sharing", detail: "Open replacement architecture for portable secret sync across end-to-end-encrypted team vaults, .env, Doppler, Railway variables, GitHub Secrets, and sh1pt." },
   { id: "hire-us", title: "Hire Us", detail: "$400/hour LogicSRC work on open infrastructure, specs, AI agent workflows, and reference implementations paid through CoinPay after project acceptance." },
   { id: "about", title: "About", detail: "LogicSRC is the Profullstack open specification project for human and AI agent coordination." },
   { id: "terms", title: "Terms", detail: "Terms of engagement: the $400/hour rate, what is billable, how approved hours are invoiced, the 10-hour minimum, cancellation, acceptable use, and reference implementation boundaries." },
@@ -283,7 +284,7 @@ npm --workspace @logicsrc/cli run dev -- \\
       <section id="credential-sharing" class="band credentials">
         <div class="section-head">
           <h2>Credential Sharing</h2>
-          <p>An available LogicSRC OpenSpec for replacing closed credential-sharing workflows with auditable, provider-neutral secret sync. Shipped in <code>@logicsrc/plugin-credential-sharing</code>.</p>
+          <p>An available LogicSRC OpenSpec for replacing closed credential-sharing workflows with auditable, provider-neutral secret sync — including end-to-end-encrypted team vaults you can share by email. Shipped in <code>@logicsrc/plugin-credential-sharing</code>.</p>
         </div>
         <div class="soon-layout">
           <article class="soon-lead">
@@ -299,6 +300,15 @@ logicsrc credentials sync --plan &lt;planId&gt;            # dry-run, no writes
 logicsrc credentials sync --plan &lt;planId&gt; --approve  # writes to the target
 logicsrc credentials audit --run &lt;runId&gt; --format markdown
 logicsrc credentials rollback --run &lt;runId&gt;</code></pre>
+            <h3>Team sharing, end to end encrypted</h3>
+            <p>Teams ship today. The server is a zero-knowledge relay for secret values: it stores member X25519 public keys, the vault data-encryption key sealed once per member, and ciphertext. Plaintext values and the raw DEK never leave a member&rsquo;s machine, and granting access re-seals the key to the new member rather than revealing it. When someone leaves, rotation re-keys the vault and drops their access.</p>
+            <pre><code>logicsrc login                                   # registers this device's identity key
+logicsrc teams create acme --name "Acme Inc"
+logicsrc teams push acme web prod --env .env     # encrypt + upload
+logicsrc teams invite acme teammate@example.com  # emails an accept link
+logicsrc teams grant acme web prod teammate@example.com
+logicsrc teams pull acme web prod --env .env     # download + decrypt
+logicsrc credentials rotate acme web prod --approve</code></pre>
           </article>
           <div class="soon-grid">
             ${credentialProviders.map((item) => `
