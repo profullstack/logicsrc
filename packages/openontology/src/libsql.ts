@@ -225,13 +225,21 @@ export async function migrate(client: Client): Promise<number> {
   let count = 0;
   for (const migration of MIGRATIONS) {
     if (have.has(migration.version)) continue;
-    for (const statement of migration.statements) {
-      await client.execute(statement);
-    }
-    await client.execute({
-      sql: "INSERT INTO schema_migrations (version, name, applied_at) VALUES (?, ?, ?)",
-      args: [migration.version, migration.name, new Date().toISOString()]
-    });
+    // One transaction per migration, rather than one implicit transaction per
+    // statement. Migration 1 alone is ~30 DDL statements, so opening a store
+    // used to cost ~30 durable commits; on a filesystem with slow fsync that
+    // dominated the open. It is also safer: a crash part-way can no longer
+    // leave the schema half-applied while schema_migrations claims it is done.
+    await client.batch(
+      [
+        ...migration.statements,
+        {
+          sql: "INSERT INTO schema_migrations (version, name, applied_at) VALUES (?, ?, ?)",
+          args: [migration.version, migration.name, new Date().toISOString()] as InArgs
+        }
+      ],
+      "write"
+    );
     count += 1;
   }
   return count;
