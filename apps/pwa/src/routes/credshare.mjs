@@ -157,14 +157,33 @@ credshareRouter.post("/api/credshare/invites/accept", api(async (req, res, user)
 // ---- vaults ----
 credshareRouter.get("/api/credshare/teams/:slug/vaults", api(async (req, res, user) => {
   const ctx = await requireMember(res, req.params.slug, user.id); if (!ctx) return;
-  const vaults = await all(`SELECT * FROM credshare_vaults WHERE team_id = ? ORDER BY name`, [ctx.team.id]);
-  const out = [];
-  for (const v of vaults) {
-    const grant = await get(`SELECT 1 FROM credshare_vault_grants WHERE vault_id = ? AND user_id = ?`, [v.id, user.id]);
-    const count = await get(`SELECT COUNT(*) AS n FROM credshare_secrets WHERE vault_id = ?`, [v.id]);
-    out.push({ id: v.id, name: v.name, hasAccess: Boolean(grant), secretCount: Number(count?.n || 0) });
-  }
-  res.json({ vaults: out });
+  // One statement, not one per vault. libSQL is remote, so every execute() is a
+  // network round trip: the previous loop cost 2N+1 of them, and a team with 176
+  // vaults spent ~10s here -- doubled by `teams pull`, which resolves the vault
+  // id twice. Both correlated subqueries are covered by existing primary keys
+  // (credshare_secrets is keyed (vault_id, name), grants (vault_id, user_id)),
+  // so this is an index scan per vault inside the database rather than a
+  // round trip per vault across the network.
+  const vaults = await all(
+    `SELECT v.id,
+            v.name,
+            (SELECT COUNT(*) FROM credshare_secrets s
+              WHERE s.vault_id = v.id) AS secret_count,
+            EXISTS(SELECT 1 FROM credshare_vault_grants g
+                    WHERE g.vault_id = v.id AND g.user_id = ?) AS has_access
+       FROM credshare_vaults v
+      WHERE v.team_id = ?
+      ORDER BY v.name`,
+    [user.id, ctx.team.id]
+  );
+  res.json({
+    vaults: vaults.map((v) => ({
+      id: v.id,
+      name: v.name,
+      hasAccess: Boolean(v.has_access),
+      secretCount: Number(v.secret_count || 0)
+    }))
+  });
 }));
 
 credshareRouter.post("/api/credshare/teams/:slug/vaults", api(async (req, res, user) => {
