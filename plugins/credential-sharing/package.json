@@ -1,6 +1,6 @@
 {
   "name": "@logicsrc/plugin-credential-sharing",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "LogicSRC Credential Sharing OpenSpec plugin: portable, auditable secret sync across .env, Doppler, Railway, and GitHub Secrets.",
   "type": "module",
   "main": "./dist/index.js",

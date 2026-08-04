@@ -45,7 +45,7 @@ h1{font-size:2.2rem;line-height:1.05}
 .btn.block{width:100%}
 .btn:focus-visible{outline:2px solid var(--green);outline-offset:2px}
 input,textarea,select{font-family:var(--mono);font-size:.85rem;color:var(--text);background:var(--surface);border:1px solid var(--line-2);border-radius:9px;padding:11px 13px;width:100%}
-input:focus,textarea:focus{outline:none;border-color:var(--green)}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--green)}
 input::placeholder,textarea::placeholder{color:var(--faint)}
 label.field{display:block;margin-bottom:14px}
 label.field span{display:block;font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:6px}
@@ -86,6 +86,10 @@ label.field span{display:block;font-family:var(--mono);font-size:.66rem;letter-s
 table{width:100%;border-collapse:collapse;font-size:.9rem}
 th{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-weight:600}
 td{padding:8px 10px;border-bottom:1px solid var(--line)}
+.table-scroll{overflow-x:auto}
+.member-role-form,.member-actions{display:flex;align-items:center;gap:6px;margin:0}
+.member-role-form select{width:auto;min-width:94px;padding:6px 9px}
+.btn.compact{padding:6px 9px;font-size:.74rem}
 code{font-family:var(--mono);font-size:.85em;background:var(--surface-2);padding:1px 5px;border-radius:4px}
 footer{border-top:1px solid var(--line);padding:26px 0;margin-top:40px}
 .foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center;font-family:var(--mono);font-size:.74rem;color:var(--faint)}

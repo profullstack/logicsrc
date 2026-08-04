@@ -3,13 +3,20 @@
 // members, vaults (ciphertext metadata), invites, and CLI API keys.
 import { Router } from "express";
 import { get, all, run } from "../db.mjs";
-import { id, token, sha256 } from "../lib/crypto.mjs";
+import { id, sha256 } from "../lib/crypto.mjs";
 import { page, footer, appBar, esc } from "../lib/html.mjs";
 import { requireAuth, csrfInput } from "../lib/session.mjs";
 import { createApiKey, listApiKeys, revokeApiKey } from "../lib/apikey.mjs";
 import { requestOrigin } from "../lib/origin.mjs";
 import { CLI_HINT } from "../lib/cli-hint.mjs";
 import { config } from "../config.mjs";
+import {
+  TeamMemberError,
+  canManageMember,
+  issueTeamInvite,
+  changeMemberRole,
+  removeTeamMember
+} from "../lib/team-members.mjs";
 
 export const pagesRouter = Router();
 
@@ -25,7 +32,18 @@ async function teamCard(team, uid) {
   const memberRows = [];
   for (const m of members) {
     const key = m.user_id ? await get(`SELECT 1 FROM credshare_keys WHERE user_id = ?`, [m.user_id]) : null;
-    memberRows.push(`<tr><td>${esc(m.email)}</td><td>${esc(m.role)}</td><td><span class="pill ${m.status === "active" ? "on" : ""}">${esc(m.status)}</span></td><td>${key ? "✓" : "—"}</td></tr>`);
+    const roleControl = me.role === "owner"
+      ? `<form method="post" action="/teams/${esc(team.slug)}/members/${esc(m.id)}/role" class="member-role-form">${CSRF}
+          <select name="role" aria-label="Permission for ${esc(m.email)}">
+            ${["owner", "admin", "member"].map((role) => `<option value="${role}"${m.role === role ? " selected" : ""}>${role}</option>`).join("")}
+          </select><button class="btn compact">Save</button></form>`
+      : `<span class="pill">${esc(m.role)}</span>`;
+    const canResend = m.status === "invited" && (me.role === "owner" || (me.role === "admin" && m.role === "member"));
+    const actions = [
+      canResend ? `<form method="post" action="/teams/${esc(team.slug)}/members/${esc(m.id)}/resend" style="margin:0">${CSRF}<button class="btn compact">Resend</button></form>` : "",
+      canManageMember(me, m) ? `<form method="post" action="/teams/${esc(team.slug)}/members/${esc(m.id)}/delete" style="margin:0" onsubmit="return confirm('Remove this team member?')">${CSRF}<button class="btn compact danger">Remove</button></form>` : ""
+    ].filter(Boolean).join("");
+    memberRows.push(`<tr><td>${esc(m.email)}</td><td>${roleControl}</td><td><span class="pill ${m.status === "active" ? "on" : "warn"}">${esc(m.status)}</span></td><td>${key ? "✓" : "—"}</td><td><div class="member-actions">${actions || "—"}</div></td></tr>`);
   }
   const vaultRows = [];
   for (const v of vaults) {
@@ -38,9 +56,11 @@ async function teamCard(team, uid) {
     <div class="card-head"><span class="h">${esc(team.name)} <span class="faint">/${esc(team.slug)}</span></span><span class="pill">${me ? esc(me.role) : "member"}</span></div>
     <div class="card-body">
       <div class="label" style="margin-bottom:6px">Members</div>
-      <table><thead><tr><th>Email</th><th>Role</th><th>Status</th><th>Key</th></tr></thead><tbody>${memberRows.join("")}</tbody></table>
+      <div class="table-scroll"><table><thead><tr><th>Email</th><th>Permission</th><th>Status</th><th>Key</th><th>Actions</th></tr></thead><tbody>${memberRows.join("")}</tbody></table></div>
       ${canInvite ? `<form method="post" action="/teams/${esc(team.slug)}/invite" style="display:flex;gap:8px;margin-top:12px">${CSRF}
-        <input type="email" name="email" placeholder="teammate@example.com" required style="flex:1"><button class="btn">Invite</button></form>` : ""}
+        <input type="email" name="email" placeholder="teammate@example.com" required style="flex:1">
+        ${me.role === "owner" ? `<select name="role" aria-label="Permission" style="width:auto"><option value="member">member</option><option value="admin">admin</option><option value="owner">owner</option></select>` : `<input type="hidden" name="role" value="member">`}
+        <button class="btn">Invite</button></form>` : ""}
       <div class="label" style="margin:18px 0 6px">Vaults</div>
       ${vaults.length ? `<table><thead><tr><th>Vault</th><th>Secrets</th><th>Your access</th></tr></thead><tbody>${vaultRows.join("")}</tbody></table>`
         : `<p class="faint mono" style="font-size:.82rem">No vaults yet — create one from the CLI: <code>logicsrc teams push ${esc(team.slug)} &lt;project&gt; &lt;env&gt;</code></p>`}
@@ -54,9 +74,28 @@ export async function dashboardHandler(req, res) {
   for (const t of teams) cards += await teamCard(t, uid);
   cards = cards.split(CSRF).join(csrfInput(req));
 
+  const notices = {
+    "member-updated": "Member permissions updated.",
+    "member-removed": "Team member removed.",
+    "invite-resent": "Invite replaced with a new key.",
+  };
+  const errors = {
+    "already-member": "That person is already an active team member.",
+    "bad-email": "Enter a valid email address.",
+    "bad-role": "Choose a valid permission.",
+    "last-owner": "A team must keep at least one active owner.",
+    "member-not-found": "That team member no longer exists.",
+    "not-allowed": "You do not have permission to make that change.",
+  };
+  const ok = notices[String(req.query.ok || "")];
+  const err = errors[String(req.query.err || "")];
+  const rotation = req.query.rotation === "1";
+
   const body = `${appBar(req)}
   <main class="wrap" style="max-width:820px;padding:26px 0 40px">
     <div class="section-title"><h1 style="font-size:1.6rem">Your teams</h1><span class="count">${teams.length}</span></div>
+    ${ok ? `<div class="notice ok">${esc(ok)}${rotation ? " Vault grants were revoked; rotate affected vault keys before re-adding this person." : ""}</div>` : ""}
+    ${err ? `<div class="notice err">${esc(err)}</div>` : ""}
     ${CLI_HINT(requestOrigin(req, config.origin))}
     ${cards || `<div class="card"><div class="card-body dim">You're not on any teams yet. Create one below or accept an invite.</div></div>`}
     <div class="card" style="margin-top:22px"><div class="card-head"><span class="h">New team</span></div>
@@ -83,32 +122,81 @@ pagesRouter.post("/teams", requireAuth, async (req, res) => {
 pagesRouter.post("/teams/:slug/invite", requireAuth, async (req, res) => {
   const team = await get(`SELECT * FROM credshare_teams WHERE slug = ?`, [req.params.slug]);
   const me = team && await get(`SELECT * FROM credshare_members WHERE team_id = ? AND user_id = ?`, [team.id, req.user.id]);
-  if (!team || !me || (me.role !== "owner" && me.role !== "admin")) return res.redirect("/dashboard?err=not-allowed");
-  const email = String(req.body.email || "").trim().toLowerCase();
-  if (!email) return res.redirect("/dashboard");
-  const now = Date.now();
-  if (!(await get(`SELECT 1 FROM credshare_members WHERE team_id = ? AND email = ?`, [team.id, email]))) {
-    const u = await get(`SELECT id FROM users WHERE email = ?`, [email]);
-    await run(`INSERT INTO credshare_members (id, team_id, user_id, email, role, status, invited_by, created_at) VALUES (?,?,?,?,?,?,?,?)`,
-      [id(), team.id, u?.id ?? null, email, "member", "invited", req.user.id, now]);
+  if (!team || !me) return res.redirect("/dashboard?err=not-allowed");
+  try {
+    const result = await issueTeamInvite({
+      team,
+      actor: { ...me, email: req.user.email },
+      email: req.body.email,
+      role: req.body.role
+    });
+    return res.redirect("/teams/accept?token=" + encodeURIComponent(result.token) + "&shared=1");
+  } catch (error) {
+    if (error instanceof TeamMemberError) return res.redirect("/dashboard?err=" + encodeURIComponent(error.code));
+    throw error;
   }
-  const tok = token(24);
-  await run(`INSERT INTO credshare_invites (id, team_id, email, role, token_hash, created_by, expires_at, created_at) VALUES (?,?,?,?,?,?,?,?)`,
-    [id(), team.id, email, "member", sha256(tok), req.user.id, now + 7 * 864e5, now]);
-  res.redirect("/teams/accept?token=" + encodeURIComponent(tok) + "&shared=1");
+});
+
+async function teamMemberContext(req) {
+  const team = await get(`SELECT * FROM credshare_teams WHERE slug = ?`, [req.params.slug]);
+  const actor = team && await get(`SELECT * FROM credshare_members WHERE team_id = ? AND user_id = ? AND status = 'active'`, [team.id, req.user.id]);
+  return team && actor ? { team, actor } : null;
+}
+
+pagesRouter.post("/teams/:slug/members/:memberId/resend", requireAuth, async (req, res) => {
+  const ctx = await teamMemberContext(req);
+  const target = ctx && await get(`SELECT * FROM credshare_members WHERE id = ? AND team_id = ?`, [req.params.memberId, ctx.team.id]);
+  if (!ctx || !target || target.status !== "invited") return res.redirect("/dashboard?err=member-not-found");
+  try {
+    const result = await issueTeamInvite({
+      team: ctx.team,
+      actor: { ...ctx.actor, email: req.user.email },
+      email: target.email,
+      role: target.role
+    });
+    return res.redirect("/teams/accept?token=" + encodeURIComponent(result.token) + "&shared=1&resent=1");
+  } catch (error) {
+    if (error instanceof TeamMemberError) return res.redirect("/dashboard?err=" + encodeURIComponent(error.code));
+    throw error;
+  }
+});
+
+pagesRouter.post("/teams/:slug/members/:memberId/role", requireAuth, async (req, res) => {
+  const ctx = await teamMemberContext(req);
+  if (!ctx) return res.redirect("/dashboard?err=not-allowed");
+  try {
+    await changeMemberRole({ team: ctx.team, actor: ctx.actor, memberId: req.params.memberId, role: req.body.role });
+    return res.redirect("/dashboard?ok=member-updated");
+  } catch (error) {
+    if (error instanceof TeamMemberError) return res.redirect("/dashboard?err=" + encodeURIComponent(error.code));
+    throw error;
+  }
+});
+
+pagesRouter.post("/teams/:slug/members/:memberId/delete", requireAuth, async (req, res) => {
+  const ctx = await teamMemberContext(req);
+  if (!ctx) return res.redirect("/dashboard?err=not-allowed");
+  try {
+    const result = await removeTeamMember({ team: ctx.team, actor: ctx.actor, memberId: req.params.memberId });
+    return res.redirect(`/dashboard?ok=member-removed${result.rotationRequired ? "&rotation=1" : ""}`);
+  } catch (error) {
+    if (error instanceof TeamMemberError) return res.redirect("/dashboard?err=" + encodeURIComponent(error.code));
+    throw error;
+  }
 });
 
 // ---- accept invite ----
 pagesRouter.get("/teams/accept", requireAuth, (req, res) => {
   const tok = String(req.query.token || "");
   const shared = req.query.shared;
+  const resent = req.query.resent;
   const err = req.query.err;
   const body = `${appBar(req)}
   <main class="wrap" style="max-width:460px;padding-top:8vh">
     <div class="card"><div class="card-body" style="text-align:center">
       <h1 style="font-size:1.4rem;margin-bottom:12px">Accept team invite</h1>
       ${err ? `<div class="notice err">${esc(String(err).replace(/-/g, " "))}</div>` : ""}
-      ${shared ? `<div class="notice ok">Invite created. Share this link with the teammate, or accept below if it's for you.</div>` : ""}
+      ${shared ? `<div class="notice ok">${resent ? "Invite replaced. The previous key is invalid; share this new link with the teammate." : "Invite created. Share this link with the teammate, or accept below if it's for you."}</div>` : ""}
       <form method="post" action="/teams/accept">${csrfInput(req)}
         <label class="field"><span>Invite token</span><input name="token" value="${esc(tok)}" required></label>
         <button class="btn acid block">Accept invite</button>

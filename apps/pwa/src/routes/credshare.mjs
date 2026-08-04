@@ -7,15 +7,19 @@
 // `Bearer lsk_…` API key (the logicsrc CLI). Mounted at /api/credshare.
 import { Router } from "express";
 import { get, all, run, batch } from "../db.mjs";
-import { id, token, sha256 } from "../lib/crypto.mjs";
+import { id, sha256 } from "../lib/crypto.mjs";
 import { bearer, userForApiKey } from "../lib/apikey.mjs";
-import { config } from "../config.mjs";
+import {
+  TeamMemberError,
+  normEmail,
+  issueTeamInvite,
+  changeMemberRole,
+  removeTeamMember
+} from "../lib/team-members.mjs";
 
 export const credshareRouter = Router();
 
-const ROLE_RANK = { member: 0, admin: 1, owner: 2 };
-const INVITE_TTL = 1000 * 60 * 60 * 24 * 7;
-const norm = (e) => String(e || "").trim().toLowerCase();
+const norm = normEmail;
 const slugify = (s) => {
   const v = String(s || "").trim().toLowerCase();
   return /^[a-z0-9][a-z0-9-]{0,62}$/.test(v) ? v : null;
@@ -55,21 +59,6 @@ async function publicKeyFor(userId) {
 async function audit(ev) {
   await run(`INSERT INTO credshare_audit (id, team_id, vault_id, actor_user_id, action, key_name, fingerprint, created_at) VALUES (?,?,?,?,?,?,?,?)`,
     [id(), ev.teamId ?? null, ev.vaultId ?? null, ev.actorUserId, ev.action, ev.keyName ?? null, ev.fingerprint ?? null, Date.now()]);
-}
-
-async function sendInviteEmail(to, tok, team, fromEmail) {
-  if (!config.resend.apiKey) return false;
-  const url = `${config.origin}/teams/accept?token=${encodeURIComponent(tok)}`;
-  const r = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: { authorization: `Bearer ${config.resend.apiKey}`, "content-type": "application/json" },
-    body: JSON.stringify({
-      from: config.resend.from, to,
-      subject: `You're invited to the "${team.name}" credential team on LogicSRC`,
-      text: `${fromEmail} invited you to share credentials on ${team.name} (${team.slug}).\n\nAccept in the CLI:\n  logicsrc login\n  logicsrc teams accept ${tok}\n\nOr on the web: ${url}\n\nSecrets are end-to-end encrypted — the server never sees them.`
-    })
-  }).catch(() => null);
-  return Boolean(r && r.ok);
 }
 
 // ---- identity key + lookup ----
@@ -115,28 +104,61 @@ credshareRouter.get("/api/credshare/teams/:slug/members", api(async (req, res, u
   const ctx = await requireMember(res, req.params.slug, user.id); if (!ctx) return;
   const rows = await all(`SELECT * FROM credshare_members WHERE team_id = ? ORDER BY created_at`, [ctx.team.id]);
   const members = [];
-  for (const m of rows) members.push({ email: m.email, role: m.role, status: m.status, hasPublicKey: m.user_id ? Boolean(await publicKeyFor(m.user_id)) : false, joinedAt: m.joined_at });
+  for (const m of rows) members.push({ id: m.id, email: m.email, role: m.role, status: m.status, hasPublicKey: m.user_id ? Boolean(await publicKeyFor(m.user_id)) : false, joinedAt: m.joined_at });
   res.json({ members });
 }));
 
 credshareRouter.post("/api/credshare/teams/:slug/invites", api(async (req, res, user) => {
   const ctx = await requireMember(res, req.params.slug, user.id); if (!ctx) return;
-  if (ROLE_RANK[ctx.member.role] < ROLE_RANK.admin) return res.status(403).json({ error: "Only owners and admins can invite." });
-  const email = norm(req.body?.email);
-  if (!email) return res.status(422).json({ error: "Expected { email, role? }." });
-  const role = req.body?.role && ROLE_RANK[req.body.role] != null ? req.body.role : "member";
-  const existing = await get(`SELECT 1 FROM credshare_members WHERE team_id = ? AND email = ?`, [ctx.team.id, email]);
-  if (!existing) {
-    const invitedUser = await get(`SELECT id FROM users WHERE email = ?`, [email]);
-    await run(`INSERT INTO credshare_members (id, team_id, user_id, email, role, status, invited_by, created_at) VALUES (?,?,?,?,?,?,?,?)`,
-      [id(), ctx.team.id, invitedUser?.id ?? null, email, role, "invited", user.id, Date.now()]);
+  try {
+    const result = await issueTeamInvite({
+      team: ctx.team,
+      actor: { ...ctx.member, email: user.email },
+      email: req.body?.email,
+      role: req.body?.role
+    });
+    res.status(201).json({
+      invite: result.invite,
+      emailSent: result.emailSent,
+      resent: result.resent,
+      ...(result.emailSent ? {} : { token: result.token })
+    });
+  } catch (error) {
+    if (error instanceof TeamMemberError) return res.status(error.status).json({ error: error.message, code: error.code });
+    throw error;
   }
-  const tok = token(24);
-  await run(`INSERT INTO credshare_invites (id, team_id, email, role, token_hash, created_by, expires_at, created_at) VALUES (?,?,?,?,?,?,?,?)`,
-    [id(), ctx.team.id, email, role, sha256(tok), user.id, Date.now() + INVITE_TTL, Date.now()]);
-  await audit({ teamId: ctx.team.id, actorUserId: user.id, action: "team:invite", keyName: email });
-  const emailSent = await sendInviteEmail(email, tok, ctx.team, user.email);
-  res.status(201).json({ invite: { email, role }, emailSent, ...(emailSent ? {} : { token: tok }) });
+}));
+
+credshareRouter.patch("/api/credshare/teams/:slug/members/:memberId", api(async (req, res, user) => {
+  const ctx = await requireMember(res, req.params.slug, user.id); if (!ctx) return;
+  try {
+    const member = await changeMemberRole({
+      team: ctx.team,
+      actor: ctx.member,
+      memberId: req.params.memberId,
+      role: req.body?.role
+    });
+    res.json({ member: { id: member.id, email: member.email, role: member.role, status: member.status } });
+  } catch (error) {
+    if (error instanceof TeamMemberError) return res.status(error.status).json({ error: error.message, code: error.code });
+    throw error;
+  }
+}));
+
+credshareRouter.delete("/api/credshare/teams/:slug/members/:memberId", api(async (req, res, user) => {
+  const ctx = await requireMember(res, req.params.slug, user.id); if (!ctx) return;
+  try {
+    const result = await removeTeamMember({ team: ctx.team, actor: ctx.member, memberId: req.params.memberId });
+    res.json({
+      ok: true,
+      removed: result.member.email,
+      revokedVaultGrants: result.revokedVaultGrants,
+      rotationRequired: result.rotationRequired
+    });
+  } catch (error) {
+    if (error instanceof TeamMemberError) return res.status(error.status).json({ error: error.message, code: error.code });
+    throw error;
+  }
 }));
 
 credshareRouter.post("/api/credshare/invites/accept", api(async (req, res, user) => {

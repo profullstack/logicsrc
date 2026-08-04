@@ -25,6 +25,7 @@ export interface RemoteTeam {
 }
 
 export interface RemoteMember {
+  id: string;
   email: string;
   role: "owner" | "admin" | "member";
   status: "active" | "invited";
@@ -136,10 +137,23 @@ export class TeamClient {
     return this.request<{ members: RemoteMember[] }>("GET", `/teams/${encodeURIComponent(slug)}/members`);
   }
   invite(slug: string, email: string, role?: "owner" | "admin" | "member") {
-    return this.request<{ invite: { id: string; email: string; role: string; expiresAt: string }; emailSent: boolean; token?: string }>(
+    return this.request<{ invite: { id: string; email: string; role: string; expiresAt: number }; emailSent: boolean; resent: boolean; token?: string }>(
       "POST",
       `/teams/${encodeURIComponent(slug)}/invites`,
       { email, role }
+    );
+  }
+  updateMemberRole(slug: string, memberId: string, role: "owner" | "admin" | "member") {
+    return this.request<{ member: Pick<RemoteMember, "id" | "email" | "role" | "status"> }>(
+      "PATCH",
+      `/teams/${encodeURIComponent(slug)}/members/${encodeURIComponent(memberId)}`,
+      { role }
+    );
+  }
+  removeMember(slug: string, memberId: string) {
+    return this.request<{ ok: boolean; removed: string; revokedVaultGrants: number; rotationRequired: boolean }>(
+      "DELETE",
+      `/teams/${encodeURIComponent(slug)}/members/${encodeURIComponent(memberId)}`
     );
   }
   acceptInvite(token: string) {

@@ -1,6 +1,6 @@
 {
   "name": "@logicsrc/pwa",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "type": "module",
   "description": "LogicSRC credentials — Express + libSQL/Turso app: auth + end-to-end-encrypted team credential sharing.",
