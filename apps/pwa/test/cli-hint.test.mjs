@@ -1,12 +1,6 @@
-// The dashboard's "Connect the CLI" card kept printing commands that no longer
-// ran. It survived two releases of drift: `logicsrc teams push <team> prod` is
-// two positionals, and since vaults became <team> <project> <env> the CLI exits
-// with a usage error on paste. It also told everyone to set LOGICSRC_API to the
-// value the CLI already defaults to, which reads like a required step.
-//
-// A card that hands out commands is only useful if the commands run, so these
-// pin the shape rather than the prose -- restyling the card is free, quietly
-// dropping an argument is not.
+// The dashboard's "Connect the CLI" card is the copy/paste entry point for the
+// directory-linked workflow. Pin the actual commands so the hosted app cannot
+// drift back to verbose targets or imply that up/down work without a link.
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -22,16 +16,14 @@ const commands = (origin) =>
 
 const HOSTED = "https://app.logicsrc.com";
 
-test("push and pull carry all three vault positionals", () => {
-  for (const verb of ["push", "pull"]) {
-    const line = commands(HOSTED).find((l) => l.includes(`teams ${verb}`));
-    assert.ok(line, `no teams ${verb} line`);
-    assert.match(line, /teams (push|pull) <team> <project> <env>/);
-    // Guards the specific regression: two positionals used to be enough.
-    // Drop "logicsrc teams <verb>" and count only what follows.
-    const args = line.split("#")[0].trim().split(/\s+/).slice(3);
-    assert.equal(args.length, 3, `teams ${verb} needs 3 args, got ${args.join(" ")}`);
-  }
+test("the dashboard teaches link before up and down", () => {
+  const lines = commands(HOSTED);
+  const link = lines.findIndex((line) => line.includes("secrets teams link"));
+  const up = lines.findIndex((line) => line.includes("secrets up"));
+  const down = lines.findIndex((line) => line.includes("secrets down [env]"));
+  assert.ok(link >= 0, "no secrets teams link line");
+  assert.ok(up > link, "secrets up must appear after link");
+  assert.ok(down > link, "secrets down must appear after link");
 });
 
 test("the local .env path is left at its default", () => {

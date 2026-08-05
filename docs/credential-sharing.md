@@ -218,11 +218,25 @@ logicsrc teams accept <token-from-email>
 # …an existing member runs:  logicsrc teams grant acme web prod teammate@example.com
 logicsrc teams pull acme web prod --env .env    # download + decrypt
 
+# Link a checkout once, then use the short workflow from that directory.
+# With no arguments, link interactively selects team → project → environment.
+logicsrc secrets teams link
+logicsrc secrets up                 # push .env to the linked default environment
+logicsrc secrets down               # pull the linked default environment
+logicsrc secrets down staging       # pull another env in the linked project
+
 # Inspect / manage
 logicsrc teams list
 logicsrc teams members acme
 logicsrc teams vaults acme
 ```
+
+`secrets up` and `secrets down` require an explicit directory link and fail
+before doing any network or `.env` operation when one is missing. For
+automation, write the link explicitly with
+`logicsrc secrets teams link acme web prod`. Links contain only the resolved
+directory path and team/project/environment names; they live in the user's
+LogicSRC config directory, never in the project and never contain secret values.
 
 ### Rotating a vault key
 

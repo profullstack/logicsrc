@@ -22,7 +22,10 @@ import {
   teamsVaultsAction,
   teamsGrantAction,
   teamsPushAction,
-  teamsPullAction
+  teamsPullAction,
+  secretsTeamsLinkAction,
+  secretsUpAction,
+  secretsDownAction
 } from "./teams.js";
 import { credentialsRotateAction } from "./rotate.js";
 import { boards, tasks } from "./fixtures.js";
@@ -456,6 +459,36 @@ credentials
       options.format as OutputFormat
     );
   });
+
+const secretsTeams = credentials
+  .command("teams")
+  .description("Link this directory to an end-to-end-encrypted team project/environment.");
+
+secretsTeams
+  .command("link")
+  .argument("[team]", "Team slug (selected interactively when omitted)")
+  .argument("[project]", "Project name (selected interactively when omitted)")
+  .argument("[env]", "Default environment (selected interactively when omitted)")
+  .option("--format <format>", "table, json, or markdown", "table")
+  .description("Link the current directory to a team/project/environment.")
+  .action((team, project, env, options) =>
+    secretsTeamsLinkAction(team, project, env, { format: options.format as OutputFormat })
+  );
+
+credentials
+  .command("up")
+  .option("--env <path>", "Source .env file", ".env")
+  .option("--format <format>", "table, json, or markdown", "table")
+  .description("Push .env to this directory's linked team environment.")
+  .action((options) => secretsUpAction({ env: options.env, format: options.format as OutputFormat }));
+
+credentials
+  .command("down")
+  .argument("[env]", "Environment override within the linked project")
+  .option("--env <path>", "Destination .env file", ".env")
+  .option("--format <format>", "table, json, or markdown", "table")
+  .description("Pull the linked team environment into .env.")
+  .action((env, options) => secretsDownAction(env, { env: options.env, format: options.format as OutputFormat }));
 
 withEndpointOptions(
   credentials.command("inspect").requiredOption("--provider <provider>", "Provider id"),

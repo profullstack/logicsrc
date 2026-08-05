@@ -2,6 +2,7 @@ import { createServer } from "node:http";
 import { createHash, randomBytes } from "node:crypto";
 import { hostname } from "node:os";
 import { spawn } from "node:child_process";
+import { createInterface } from "node:readline/promises";
 import {
   TeamClient,
   TeamApiError,
@@ -18,6 +19,7 @@ import {
   type CredentialEndpoint
 } from "@logicsrc/plugin-credential-sharing";
 import { print, type OutputFormat } from "./format.js";
+import { linkedDirectory, requireSecretsLink, writeSecretsLink } from "./secrets-link.js";
 
 /**
  * `logicsrc login` + `logicsrc teams …` — the team credential-sharing surface.
@@ -424,4 +426,80 @@ export async function teamsPullAction(slug: string, project: string, envName: st
   const applied = run.results.filter((r) => r.applied).length;
   console.error(`Pulled ${applied} secret(s) from ${slug}/${vault} into ${options.env}.`);
   print({ team: slug, project, env: envName, vault, applied, keys: run.results.map((r) => ({ key: r.key, op: r.op, applied: r.applied })) }, options.format);
+}
+
+async function selectOne(label: string, values: string[]): Promise<string> {
+  const choices = [...new Set(values)].sort();
+  if (choices.length === 0) throw new Error(`No ${label.toLowerCase()} options are available.`);
+  if (choices.length === 1) {
+    console.error(`Using ${label.toLowerCase()}: ${choices[0]}`);
+    return choices[0]!;
+  }
+  if (!process.stdin.isTTY || !process.stderr.isTTY) {
+    throw new Error(`Cannot select a ${label.toLowerCase()} without an interactive terminal. Pass team, project, and env explicitly.`);
+  }
+
+  console.error(`\nSelect ${label.toLowerCase()}:`);
+  choices.forEach((choice, index) => console.error(`  ${index + 1}) ${choice}`));
+  const prompt = createInterface({ input: process.stdin, output: process.stderr });
+  try {
+    while (true) {
+      const answer = (await prompt.question("> ")).trim();
+      const index = Number(answer) - 1;
+      if (Number.isInteger(index) && index >= 0 && index < choices.length) return choices[index]!;
+      console.error(`Enter a number from 1 to ${choices.length}.`);
+    }
+  } finally {
+    prompt.close();
+  }
+}
+
+/** Link this working directory to one team project/environment vault. */
+export async function secretsTeamsLinkAction(
+  requestedTeam: string | undefined,
+  requestedProject: string | undefined,
+  requestedEnv: string | undefined,
+  options: { cwd?: string; format: OutputFormat }
+): Promise<void> {
+  const { client } = authedClient();
+  const { teams } = await client.listTeams();
+  const teamSlugs = teams.map((candidate) => candidate.slug);
+  const team = requestedTeam ?? await selectOne("Team", teamSlugs);
+  if (!teamSlugs.includes(team)) throw new Error(`You are not an active member of team "${team}".`);
+
+  const { vaults } = await client.listVaults(team);
+  const targets = vaults.flatMap((vault) => {
+    const parts = splitVaultName(vault.name);
+    return parts ? [{ ...parts, hasAccess: vault.hasAccess }] : [];
+  });
+  const accessibleTargets = targets.filter((target) => target.hasAccess);
+  const project = requestedProject ?? await selectOne("Project", accessibleTargets.map((target) => target.project));
+  const projectTargets = targets.filter((target) => target.project === project);
+  if (requestedProject && projectTargets.length === 0 && !requestedEnv) {
+    throw new Error(`Project "${project}" has no environments to select. Pass an env explicitly to link a new target.`);
+  }
+  const env = requestedEnv ?? await selectOne("Environment", projectTargets.filter((target) => target.hasAccess).map((target) => target.env));
+  vaultName(project, env); // use the same target validation as teams push/pull
+
+  const existing = projectTargets.find((target) => target.env === env);
+  if (existing && !existing.hasAccess) {
+    throw new Error(`You do not have access to ${team}/${project}/${env}, so it cannot be linked.`);
+  }
+
+  const cwd = linkedDirectory(options.cwd);
+  const link = writeSecretsLink({ team, project, env }, cwd);
+  console.error(`Linked ${cwd} to ${team}/${project}/${env}.`);
+  print(link, options.format);
+}
+
+/** Push requires a directory link; there is deliberately no target override. */
+export async function secretsUpAction(options: { cwd?: string; env: string; format: OutputFormat }): Promise<void> {
+  const link = requireSecretsLink(options.cwd);
+  await teamsPushAction(link.team, link.project, link.env, { env: options.env, format: options.format });
+}
+
+/** Pull the linked default environment, or another env in the linked project. */
+export async function secretsDownAction(envName: string | undefined, options: { cwd?: string; env: string; format: OutputFormat }): Promise<void> {
+  const link = requireSecretsLink(options.cwd);
+  await teamsPullAction(link.team, link.project, envName ?? link.env, { env: options.env, format: options.format });
 }
