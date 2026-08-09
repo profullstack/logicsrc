@@ -1,54 +1,63 @@
-import agentSchema from "../../schemas/schemas/logicsrc-agent.schema.json" with { type: "json" };
-import accountAuditEventSchema from "../../schemas/schemas/logicsrc-account-audit-event.schema.json" with { type: "json" };
-import accountGrantSchema from "../../schemas/schemas/logicsrc-account-grant.schema.json" with { type: "json" };
-import accountProviderSchema from "../../schemas/schemas/logicsrc-account-provider.schema.json" with { type: "json" };
-import connectedAccountSchema from "../../schemas/schemas/logicsrc-connected-account.schema.json" with { type: "json" };
-import emailMessageSchema from "../../schemas/schemas/logicsrc-email-message.schema.json" with { type: "json" };
-import eventSchema from "../../schemas/schemas/logicsrc-event.schema.json" with { type: "json" };
-import pluginSchema from "../../schemas/schemas/logicsrc-plugin.schema.json" with { type: "json" };
-import pullRequestSchema from "../../schemas/schemas/logicsrc-pull-request.schema.json" with { type: "json" };
-import repoSchema from "../../schemas/schemas/logicsrc-repo.schema.json" with { type: "json" };
-import runSchema from "../../schemas/schemas/logicsrc-run.schema.json" with { type: "json" };
-import socialPostSchema from "../../schemas/schemas/logicsrc-social-post.schema.json" with { type: "json" };
-import taskSchema from "../../schemas/schemas/logicsrc-task.schema.json" with { type: "json" };
-import agentadAdSchema from "../../schemas/schemas/agentad-ad.schema.json" with { type: "json" };
-import agentadPlacementSchema from "../../schemas/schemas/agentad-placement.schema.json" with { type: "json" };
-import agentadAdRequestSchema from "../../schemas/schemas/agentad-ad-request.schema.json" with { type: "json" };
-import agentadAdResponseSchema from "../../schemas/schemas/agentad-ad-response.schema.json" with { type: "json" };
-import agentadImpressionSchema from "../../schemas/schemas/agentad-impression.schema.json" with { type: "json" };
-import agentadClickSchema from "../../schemas/schemas/agentad-click.schema.json" with { type: "json" };
-import agentadCampaignSchema from "../../schemas/schemas/agentad-campaign.schema.json" with { type: "json" };
-import credentialProviderSchema from "../../schemas/schemas/logicsrc-credential-provider.schema.json" with { type: "json" };
-import credentialSyncPlanSchema from "../../schemas/schemas/logicsrc-credential-sync-plan.schema.json" with { type: "json" };
-import credentialSyncRunSchema from "../../schemas/schemas/logicsrc-credential-sync-run.schema.json" with { type: "json" };
-import credentialAuditEventSchema from "../../schemas/schemas/logicsrc-credential-audit-event.schema.json" with { type: "json" };
-import openprdPrdSchema from "../../schemas/schemas/openprd-prd.schema.json" with { type: "json" };
-import ontologyManifestSchema from "../../schemas/schemas/logicsrc-openontology-manifest.schema.json" with { type: "json" };
-import ontologyNamespaceSchema from "../../schemas/schemas/logicsrc-openontology-namespace.schema.json" with { type: "json" };
-import ontologyEntityTypeSchema from "../../schemas/schemas/logicsrc-openontology-entity-type.schema.json" with { type: "json" };
-import ontologyPropertySchema from "../../schemas/schemas/logicsrc-openontology-property.schema.json" with { type: "json" };
-import ontologyRelationshipTypeSchema from "../../schemas/schemas/logicsrc-openontology-relationship-type.schema.json" with { type: "json" };
-import ontologyConstraintSchema from "../../schemas/schemas/logicsrc-openontology-constraint.schema.json" with { type: "json" };
-import ontologyQuerySchema from "../../schemas/schemas/logicsrc-openontology-query.schema.json" with { type: "json" };
-import ontologyActionSchema from "../../schemas/schemas/logicsrc-openontology-action.schema.json" with { type: "json" };
-import ontologyEntitySchema from "../../schemas/schemas/logicsrc-openontology-entity.schema.json" with { type: "json" };
-import ontologyClaimSchema from "../../schemas/schemas/logicsrc-openontology-claim.schema.json" with { type: "json" };
-import ontologySourceSchema from "../../schemas/schemas/logicsrc-openontology-source.schema.json" with { type: "json" };
-import ontologyEvidenceSchema from "../../schemas/schemas/logicsrc-openontology-evidence.schema.json" with { type: "json" };
-import ontologyChangeSetSchema from "../../schemas/schemas/logicsrc-openontology-changeset.schema.json" with { type: "json" };
-import ontologyReviewSchema from "../../schemas/schemas/logicsrc-openontology-review.schema.json" with { type: "json" };
-import ontologyApprovalSchema from "../../schemas/schemas/logicsrc-openontology-approval.schema.json" with { type: "json" };
-import ontologyEventSchema from "../../schemas/schemas/logicsrc-openontology-event.schema.json" with { type: "json" };
-import ontologyPackageSchema from "../../schemas/schemas/logicsrc-openontology-package.schema.json" with { type: "json" };
+/**
+ * Every LogicSRC JSON Schema, keyed by kind.
+ *
+ * Schemas are imported through @logicsrc/schemas package exports rather than by
+ * a relative path across the repository. A relative import works in the
+ * monorepo and breaks the moment this package is published: "../../schemas/..."
+ * resolves outside the published tarball, so an installed @logicsrc/validators
+ * could not load a single schema.
+ */
+import agentSchema from "@logicsrc/schemas/agent" with { type: "json" };
+import accountAuditEventSchema from "@logicsrc/schemas/account-audit-event" with { type: "json" };
+import accountGrantSchema from "@logicsrc/schemas/account-grant" with { type: "json" };
+import accountProviderSchema from "@logicsrc/schemas/account-provider" with { type: "json" };
+import connectedAccountSchema from "@logicsrc/schemas/connected-account" with { type: "json" };
+import emailMessageSchema from "@logicsrc/schemas/email-message" with { type: "json" };
+import eventSchema from "@logicsrc/schemas/event" with { type: "json" };
+import pluginSchema from "@logicsrc/schemas/plugin" with { type: "json" };
+import pullRequestSchema from "@logicsrc/schemas/pull-request" with { type: "json" };
+import repoSchema from "@logicsrc/schemas/repo" with { type: "json" };
+import runSchema from "@logicsrc/schemas/run" with { type: "json" };
+import socialPostSchema from "@logicsrc/schemas/social-post" with { type: "json" };
+import taskSchema from "@logicsrc/schemas/task" with { type: "json" };
+import agentadAdSchema from "@logicsrc/schemas/agentad-ad" with { type: "json" };
+import agentadPlacementSchema from "@logicsrc/schemas/agentad-placement" with { type: "json" };
+import agentadAdRequestSchema from "@logicsrc/schemas/agentad-ad-request" with { type: "json" };
+import agentadAdResponseSchema from "@logicsrc/schemas/agentad-ad-response" with { type: "json" };
+import agentadImpressionSchema from "@logicsrc/schemas/agentad-impression" with { type: "json" };
+import agentadClickSchema from "@logicsrc/schemas/agentad-click" with { type: "json" };
+import agentadCampaignSchema from "@logicsrc/schemas/agentad-campaign" with { type: "json" };
+import credentialProviderSchema from "@logicsrc/schemas/credential-provider" with { type: "json" };
+import credentialSyncPlanSchema from "@logicsrc/schemas/credential-sync-plan" with { type: "json" };
+import credentialSyncRunSchema from "@logicsrc/schemas/credential-sync-run" with { type: "json" };
+import credentialAuditEventSchema from "@logicsrc/schemas/credential-audit-event" with { type: "json" };
+import openprdPrdSchema from "@logicsrc/schemas/openprd-prd" with { type: "json" };
+import ontologyManifestSchema from "@logicsrc/schemas/openontology-manifest" with { type: "json" };
+import ontologyNamespaceSchema from "@logicsrc/schemas/openontology-namespace" with { type: "json" };
+import ontologyEntityTypeSchema from "@logicsrc/schemas/openontology-entity-type" with { type: "json" };
+import ontologyPropertySchema from "@logicsrc/schemas/openontology-property" with { type: "json" };
+import ontologyRelationshipTypeSchema from "@logicsrc/schemas/openontology-relationship-type" with { type: "json" };
+import ontologyConstraintSchema from "@logicsrc/schemas/openontology-constraint" with { type: "json" };
+import ontologyQuerySchema from "@logicsrc/schemas/openontology-query" with { type: "json" };
+import ontologyActionSchema from "@logicsrc/schemas/openontology-action" with { type: "json" };
+import ontologyEntitySchema from "@logicsrc/schemas/openontology-entity" with { type: "json" };
+import ontologyClaimSchema from "@logicsrc/schemas/openontology-claim" with { type: "json" };
+import ontologySourceSchema from "@logicsrc/schemas/openontology-source" with { type: "json" };
+import ontologyEvidenceSchema from "@logicsrc/schemas/openontology-evidence" with { type: "json" };
+import ontologyChangeSetSchema from "@logicsrc/schemas/openontology-changeset" with { type: "json" };
+import ontologyReviewSchema from "@logicsrc/schemas/openontology-review" with { type: "json" };
+import ontologyApprovalSchema from "@logicsrc/schemas/openontology-approval" with { type: "json" };
+import ontologyEventSchema from "@logicsrc/schemas/openontology-event" with { type: "json" };
+import ontologyPackageSchema from "@logicsrc/schemas/openontology-package" with { type: "json" };
 
-import ocManifestSchema from "../../schemas/schemas/logicsrc-opencontext-manifest.schema.json" with { type: "json" };
-import ocObjectSchema from "../../schemas/schemas/logicsrc-opencontext-object.schema.json" with { type: "json" };
-import ocBundleSchema from "../../schemas/schemas/logicsrc-opencontext-bundle.schema.json" with { type: "json" };
-import ocRoleSchema from "../../schemas/schemas/logicsrc-opencontext-role.schema.json" with { type: "json" };
-import ocProvenanceSchema from "../../schemas/schemas/logicsrc-opencontext-provenance.schema.json" with { type: "json" };
-import ocDecisionSchema from "../../schemas/schemas/logicsrc-opencontext-decision.schema.json" with { type: "json" };
-import ocDiagnosticSchema from "../../schemas/schemas/logicsrc-opencontext-diagnostic.schema.json" with { type: "json" };
-import ocAuditEventSchema from "../../schemas/schemas/logicsrc-opencontext-audit-event.schema.json" with { type: "json" };
+import ocManifestSchema from "@logicsrc/schemas/opencontext-manifest" with { type: "json" };
+import ocObjectSchema from "@logicsrc/schemas/opencontext-object" with { type: "json" };
+import ocBundleSchema from "@logicsrc/schemas/opencontext-bundle" with { type: "json" };
+import ocRoleSchema from "@logicsrc/schemas/opencontext-role" with { type: "json" };
+import ocProvenanceSchema from "@logicsrc/schemas/opencontext-provenance" with { type: "json" };
+import ocDecisionSchema from "@logicsrc/schemas/opencontext-decision" with { type: "json" };
+import ocDiagnosticSchema from "@logicsrc/schemas/opencontext-diagnostic" with { type: "json" };
+import ocAuditEventSchema from "@logicsrc/schemas/opencontext-audit-event" with { type: "json" };
 
 export const schemas = {
   agent: agentSchema,
