@@ -108,9 +108,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: npx opencontext validate --strict
-      - run: npx opencontext doctor --strict
-      - run: npx opencontext bundle --role support --output bundle.json
+      - run: npx @logicsrc/opencontext validate --strict
+      - run: npx @logicsrc/opencontext doctor --strict
+      - run: npx @logicsrc/opencontext bundle --role support --output bundle.json
       - uses: actions/upload-artifact@v4
         with:
           name: context-bundle

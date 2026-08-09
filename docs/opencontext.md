@@ -37,7 +37,7 @@ Everything in OpenContext is one of five things.
 Five minutes, no account, no network, no model key.
 
 ```bash
-npx opencontext init my-context
+npx @logicsrc/opencontext init my-context
 cd my-context
 
 opencontext validate --strict
@@ -343,8 +343,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: npx opencontext validate --strict
-      - run: npx opencontext doctor --strict
+      - run: npx @logicsrc/opencontext validate --strict
+      - run: npx @logicsrc/opencontext doctor --strict
 ```
 
 Exit codes are stable: `0` ok, `1` invalid, `2` usage, `3` not found.

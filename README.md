@@ -116,9 +116,9 @@ replaceable workers without losing institutional state.
 > An agent should be replaceable without losing organizational knowledge.
 
 ```bash
-npx opencontext init my-context
-npx opencontext validate --strict
-npx opencontext resolve --role support --task "customer asked for a refund" --explain
+npx @logicsrc/opencontext init my-context
+npx @logicsrc/opencontext validate --strict
+npx @logicsrc/opencontext resolve --role support --task "customer asked for a refund" --explain
 ```
 
 ```txt

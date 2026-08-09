@@ -15,9 +15,9 @@ Five working [OpenContext](../../docs/opencontext.md) repositories. Every one is
 ```bash
 cd minimal
 
-npx opencontext validate --strict
-npx opencontext doctor
-npx opencontext resolve --role everyone --format markdown
+npx @logicsrc/opencontext validate --strict
+npx @logicsrc/opencontext doctor
+npx @logicsrc/opencontext resolve --role everyone --format markdown
 ```
 
 Or from anywhere, since discovery searches upward:

@@ -1,7 +1,7 @@
 # CLI reference
 
 ```bash
-npx opencontext <command>       # standalone
+npx @logicsrc/opencontext <command>       # standalone
 logicsrc context <command>      # inside the LogicSRC CLI
 ```
 
@@ -245,9 +245,9 @@ opencontext version    # the supported specification version
 ## CI
 
 ```yaml
-- run: npx opencontext validate --strict
-- run: npx opencontext doctor --strict
-- run: npx opencontext bundle --role support --output bundle.json
+- run: npx @logicsrc/opencontext validate --strict
+- run: npx @logicsrc/opencontext doctor --strict
+- run: npx @logicsrc/opencontext bundle --role support --output bundle.json
 ```
 
 Common gates:

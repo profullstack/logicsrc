@@ -129,7 +129,7 @@ No. OpenContext is independently usable, and the specification does not depend o
 ### Where do I start?
 
 ```bash
-npx opencontext init my-context
+npx @logicsrc/opencontext init my-context
 ```
 
 Then read [`examples/opencontext/minimal`](../../examples/opencontext/minimal), and when you have two roles that need different things, read [`multi-agent-company`](../../examples/opencontext/multi-agent-company).

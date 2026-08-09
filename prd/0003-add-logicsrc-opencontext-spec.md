@@ -183,6 +183,20 @@ that quietly diverged would become a second contract.
 - **Digest churn.** A resolver bug fix that changes what is selected changes
   bundle digests, which a consumer might read as tampering. Mitigated by calling
   such fixes out explicitly in the changelog.
+- **Blocker: the `opencontext` npm name is taken.** This PRD proposes
+  `opencontext` as the package name and `npx opencontext` as the install path.
+  That name is already published by an unrelated third party
+  (`federicodeponte/opencontext`, currently 2.0.0, "AI-powered company context
+  analysis from your terminal") — and being adjacent in subject matter makes the
+  confusion worse, not better. Documentation therefore ships pointing at
+  `npx @logicsrc/opencontext`, and the `bin` is still named `opencontext` so the
+  command reads as specified once installed. Resolving this needs a decision
+  before any publication: request a transfer, pick a different unscoped name, or
+  commit to the scoped package permanently.
+- **No publication pipeline exists yet.** Neither `@logicsrc/openprd` nor
+  `@logicsrc/openontology` has ever been published to npm, so OpenContext is not
+  slotting into an established release path — one has to be built. Until then
+  the only distribution is this repository.
 - **Open question.** Should interior wildcards (`customers.*.churn-risk`) remain
   single-segment only, or should a future minor version add a bounded multi-
   segment form? Single-segment is shipped in v1 because the alternative silently
