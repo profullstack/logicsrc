@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "@libsql/client": "^0.17.4",
-    "@logicsrc/validators": "file:../validators",
+    "@logicsrc/validators": "^0.1.0",
     "commander": "^14.0.2",
     "yaml": "^2.8.1"
   },
