@@ -1,0 +1,57 @@
+# A young company with real products, real customers, and two roles that
+# need different things. Shows every layer, L0 through L5.
+opencontext: "1.0"
+id: northwind
+name: Northwind
+
+context:
+  mission: ./context/mission.md
+  brand: ./context/brand.md
+  glossary: ./context/glossary.md
+
+collections:
+  products: ./context/products/**
+  policies: ./context/policies/**
+  procedures: ./context/sops/**
+  decisions: ./context/decisions/**
+
+roles:
+  everyone:
+    include:
+      - mission
+      - brand
+      - glossary
+  go-to-market:
+    inherits: [everyone]
+    include:
+      - products.*
+      - policies.pricing
+      - procedures.*
+    permissions:
+      - quote.create
+  builders:
+    inherits: [everyone]
+    include:
+      - products.*
+      - decisions.*
+    permissions:
+      - repo.write
+
+agents:
+  sales-agent:
+    roles: [go-to-market]
+  dev-agent:
+    roles: [builders]
+
+freshness:
+  default_ttl: 180d
+
+provenance:
+  required: true
+
+review:
+  interval: 180d
+
+health:
+  minimum_score: 90
+  require_owner: true

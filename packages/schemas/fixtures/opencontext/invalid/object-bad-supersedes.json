@@ -1,0 +1,7 @@
+{
+  "id": "policy.refunds",
+  "type": "policy",
+  "supersedes": [
+    "policy.refunds@v2"
+  ]
+}

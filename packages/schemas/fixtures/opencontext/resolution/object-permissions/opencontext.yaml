@@ -1,0 +1,14 @@
+opencontext: "1.0"
+id: permissions-test
+name: Object-level permissions
+
+collections:
+  policies: ./context/policies/**
+
+roles:
+  support:
+    include:
+      - policies.*
+  finance:
+    include:
+      - policies.*

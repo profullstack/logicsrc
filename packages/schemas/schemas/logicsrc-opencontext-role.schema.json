@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://logicsrc.com/schemas/opencontext/role.schema.json",
+  "title": "OpenContext Role / Scope",
+  "description": "A named scope: the authorized subset of context available to a human, role, agent, task, or runtime. Roles answer 'may this consumer read it', which OpenContext keeps strictly separate from 'is it relevant'. Exclusions and denials are applied before relevance ranking, so unauthorized context never reaches a ranker, a prompt, or a bundle. This schema governs a single role; the manifest embeds the same shape under its roles map.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_-]*$",
+      "description": "Role name. Optional when the role is embedded in a manifest, where the map key names it."
+    },
+    "description": {
+      "type": "string",
+      "description": "What this role is for, in one line."
+    },
+    "include": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/pattern" },
+      "description": "Id patterns in scope, e.g. mission, products.*, policies.support.*. A role with no include list sees nothing: scope is opt-in, never opt-out."
+    },
+    "exclude": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/pattern" },
+      "description": "Id patterns denied to this role. Deny overrides allow unconditionally — an exclusion cannot be outvoted by a more specific include, by inheritance, or by an object-level read grant."
+    },
+    "permissions": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 },
+      "description": "Capability strings such as customer.read or ticket.write. OpenContext transports and scopes these so a runtime can enforce them; OpenContext does not itself perform your application's actions."
+    },
+    "max_classification": {
+      "$ref": "#/$defs/classification",
+      "description": "Highest classification this role may read. An object above the ceiling is denied even when an include pattern matches it. Defaults to internal, so confidential and restricted context requires an explicit grant."
+    },
+    "redact": {
+      "type": "array",
+      "description": "Redaction rules applied to everything this role reads, unioned with repository-wide and object-level rules.",
+      "items": { "$ref": "#/$defs/redaction" }
+    },
+    "inherits": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$" },
+      "description": "Roles whose scope merges into this one. Includes, excludes, and redactions all union, and the classification ceiling takes the lowest of the parents — inheritance can therefore only narrow what is readable, never widen it. Cycles are a validation error."
+    },
+    "extensions": { "$ref": "#/$defs/extensions" }
+  },
+  "$defs": {
+    "pattern": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^([a-z0-9][a-z0-9_-]*|\\*)(\\.([a-z0-9][a-z0-9_-]*|\\*))*$",
+      "description": "An exact object id (policy.refunds), a trailing wildcard covering a subtree (policies.support.*), an interior wildcard matching exactly one segment (customers.*.churn-risk), or * for everything. Wildcards always match whole dotted segments, never substrings, so products.* matches products.enterprise but never products-internal."
+    },
+    "classification": {
+      "type": "string",
+      "enum": ["public", "internal", "confidential", "restricted"],
+      "description": "Sensitivity band, least to most sensitive."
+    },
+    "redaction": {
+      "type": "object",
+      "required": ["path"],
+      "additionalProperties": false,
+      "description": "A rule removing or masking part of an object's structured content before it reaches a bundle.",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Dotted path into the object's content, with [] or [*] for every element of an array, e.g. customer.ssn or contacts[*].email."
+        },
+        "mode": {
+          "type": "string",
+          "enum": ["remove", "mask", "hash"],
+          "default": "remove",
+          "description": "remove deletes the key; mask replaces the value with the replacement string; hash replaces it with a sha256 digest so equality remains testable without disclosure."
+        },
+        "replacement": { "type": "string", "default": "[REDACTED]" },
+        "reason": { "type": "string", "description": "Why the field is redacted. Surfaced in --explain." }
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "description": "Namespaced custom fields, e.g. com.example.risk.",
+      "propertyNames": { "type": "string", "pattern": "^[a-z0-9]+(\\.[a-z0-9-]+)+$" },
+      "additionalProperties": true
+    }
+  }
+}

@@ -1,0 +1,62 @@
+# Role-scoped customer context with redaction.
+#
+# The support agent is entitled to the customer record and still never
+# receives the SSN or the card number: redaction runs after authorization,
+# so "may read this object" and "may read every field of it" are separate
+# questions.
+opencontext: "1.0"
+id: helpdesk
+name: Helpdesk
+
+context:
+  mission: ./context/mission.md
+
+collections:
+  customers: ./context/customers/**
+  policies: ./context/policies/**
+  procedures: ./context/sops/**
+  operations: ./context/operations/**
+
+roles:
+  support:
+    description: Front-line support. Sees customers, never sees finance.
+    include:
+      - mission
+      - customers.*
+      - policies.*
+      - procedures.*
+      - operations.*
+    exclude:
+      - policies.internal.*
+    permissions:
+      - customer.read
+      - ticket.read
+      - ticket.write
+    max_classification: confidential
+    redact:
+      - path: ssn
+        mode: remove
+        reason: PII, never needed to resolve a ticket
+      - path: payment.card
+        mode: mask
+        replacement: "[REDACTED]"
+      - path: contacts[*].email
+        mode: hash
+        reason: lets an agent match a sender without reading the address
+
+agents:
+  support-agent:
+    roles: [support]
+
+freshness:
+  default_ttl: 180d
+
+provenance:
+  required: true
+
+audit:
+  context_reads: true
+  context_writes: true
+
+health:
+  require_owner: true

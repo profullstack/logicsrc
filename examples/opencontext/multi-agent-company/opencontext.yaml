@@ -1,0 +1,136 @@
+# One shared context repository, five agents, five different bundles.
+#
+# This is the whole thesis in one file: the organization's knowledge lives
+# here, and the agents are interchangeable readers of it. Replace any of
+# them tomorrow and nothing below changes.
+opencontext: "1.0"
+id: meridian
+name: Meridian
+
+context:
+  mission: ./context/mission.md
+  organization: ./context/organization.md
+  glossary: ./context/glossary.md
+
+collections:
+  products: ./context/products/**
+  customers: ./context/customers/**
+  policies: ./context/policies/**
+  procedures: ./context/sops/**
+  decisions: ./context/decisions/**
+  knowledge: ./context/knowledge/**
+
+roles:
+  # Everything every worker needs, human or agent. Everyone inherits it.
+  everyone:
+    description: Shared identity and terminology.
+    include:
+      - mission
+      - organization
+      - glossary
+    max_classification: internal
+
+  sales:
+    inherits: [everyone]
+    include:
+      - products.*
+      - customers.*
+      - policies.pricing
+      - procedures.quote
+    exclude:
+      - customers.*.churn-risk
+    permissions:
+      - quote.create
+      - customer.read
+    redact:
+      - path: payment.card
+        mode: mask
+
+  support:
+    inherits: [everyone]
+    include:
+      - products.*
+      - customers.*
+      - policies.refunds
+      - procedures.refund
+    permissions:
+      - ticket.write
+      - customer.read
+    redact:
+      - path: payment.card
+        mode: mask
+      - path: contacts[*].email
+        mode: hash
+
+  engineering:
+    inherits: [everyone]
+    include:
+      - products.*
+      - knowledge.*
+      - policies.change-management
+      - decisions.*
+    permissions:
+      - repo.write
+
+  finance:
+    inherits: [everyone]
+    include:
+      - policies.*
+      - customers.*
+    permissions:
+      - invoice.write
+    max_classification: confidential
+
+  operations:
+    inherits: [everyone]
+    include:
+      - procedures.*
+      - knowledge.runbooks
+      - policies.change-management
+    permissions:
+      - deploy.production
+
+agents:
+  sales-agent:
+    roles: [sales]
+  support-agent:
+    roles: [support]
+  dev-agent:
+    roles: [engineering]
+  finance-agent:
+    roles: [finance]
+  ops-agent:
+    roles: [operations]
+
+# Repository-wide redaction, applied to every role including finance.
+# A raw card number has no business in a context bundle at all, so this is
+# stated once here rather than repeated in each role that might read it.
+redact:
+  - path: payment.card
+    mode: mask
+    replacement: "[REDACTED]"
+    reason: PAN is never needed to answer a question about an account
+
+authority:
+  precedence:
+    - canonical
+    - approved
+    - reference
+    - observed
+    - inferred
+    - historical
+
+freshness:
+  default_ttl: 365d
+
+provenance:
+  required: true
+
+audit:
+  context_reads: true
+  context_writes: true
+  decisions: true
+
+health:
+  minimum_score: 90
+  require_owner: true

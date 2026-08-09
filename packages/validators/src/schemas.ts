@@ -41,6 +41,15 @@ import ontologyApprovalSchema from "../../schemas/schemas/logicsrc-openontology-
 import ontologyEventSchema from "../../schemas/schemas/logicsrc-openontology-event.schema.json" with { type: "json" };
 import ontologyPackageSchema from "../../schemas/schemas/logicsrc-openontology-package.schema.json" with { type: "json" };
 
+import ocManifestSchema from "../../schemas/schemas/logicsrc-opencontext-manifest.schema.json" with { type: "json" };
+import ocObjectSchema from "../../schemas/schemas/logicsrc-opencontext-object.schema.json" with { type: "json" };
+import ocBundleSchema from "../../schemas/schemas/logicsrc-opencontext-bundle.schema.json" with { type: "json" };
+import ocRoleSchema from "../../schemas/schemas/logicsrc-opencontext-role.schema.json" with { type: "json" };
+import ocProvenanceSchema from "../../schemas/schemas/logicsrc-opencontext-provenance.schema.json" with { type: "json" };
+import ocDecisionSchema from "../../schemas/schemas/logicsrc-opencontext-decision.schema.json" with { type: "json" };
+import ocDiagnosticSchema from "../../schemas/schemas/logicsrc-opencontext-diagnostic.schema.json" with { type: "json" };
+import ocAuditEventSchema from "../../schemas/schemas/logicsrc-opencontext-audit-event.schema.json" with { type: "json" };
+
 export const schemas = {
   agent: agentSchema,
   "account-audit-event": accountAuditEventSchema,
@@ -83,7 +92,15 @@ export const schemas = {
   "openontology-review": ontologyReviewSchema,
   "openontology-approval": ontologyApprovalSchema,
   "openontology-event": ontologyEventSchema,
-  "openontology-package": ontologyPackageSchema
+  "openontology-package": ontologyPackageSchema,
+  "opencontext-manifest": ocManifestSchema,
+  "opencontext-object": ocObjectSchema,
+  "opencontext-bundle": ocBundleSchema,
+  "opencontext-role": ocRoleSchema,
+  "opencontext-provenance": ocProvenanceSchema,
+  "opencontext-decision": ocDecisionSchema,
+  "opencontext-diagnostic": ocDiagnosticSchema,
+  "opencontext-audit-event": ocAuditEventSchema
 } as const;
 
 export type SchemaKind = keyof typeof schemas;

@@ -1,0 +1,11 @@
+{
+  "opencontext": "1.0",
+  "id": "acme",
+  "roles": {
+    "support": {
+      "include": [
+        "policies.*support"
+      ]
+    }
+  }
+}

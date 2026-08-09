@@ -1,0 +1,10 @@
+{
+  "id": "policy.refunds",
+  "type": "policy",
+  "sources": [
+    {
+      "uri": "https://example.com/p",
+      "digest": "md5:abc"
+    }
+  ]
+}

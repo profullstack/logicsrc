@@ -1,0 +1,49 @@
+# Architecture knowledge, engineering policy, runbooks, and ADR-style
+# decisions — including a superseded decision, so history is visible.
+opencontext: "1.0"
+id: platform
+name: Platform Engineering
+
+context:
+  mission: ./context/mission.md
+  glossary: ./context/glossary.md
+
+collections:
+  knowledge: ./context/knowledge/**
+  policies: ./context/policies/**
+  procedures: ./context/sops/**
+  decisions: ./context/decisions/**
+
+roles:
+  engineering:
+    include:
+      - mission
+      - glossary
+      - knowledge.*
+      - policies.*
+      - procedures.*
+      - decisions.*
+    permissions:
+      - repo.write
+      - deploy.staging
+  oncall:
+    inherits: [engineering]
+    include:
+      - procedures.incident
+    permissions:
+      - deploy.production
+
+agents:
+  dev-agent:
+    roles: [engineering]
+  oncall-agent:
+    roles: [oncall]
+
+freshness:
+  default_ttl: 365d
+
+provenance:
+  required: true
+
+health:
+  require_owner: true

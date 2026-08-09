@@ -1,0 +1,21 @@
+{
+  "id": "customers.acme",
+  "type": "customer",
+  "layer": "L2",
+  "title": "ACME Inc.",
+  "authority": "reference",
+  "owner": "support",
+  "classification": "confidential",
+  "canonical_source": true,
+  "content": {
+    "name": "ACME Inc.",
+    "plan": "enterprise",
+    "ssn": "000-00-0000",
+    "contacts": [
+      {
+        "name": "Dana",
+        "email": "dana@acme.example"
+      }
+    ]
+  }
+}

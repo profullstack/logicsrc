@@ -1,0 +1,134 @@
+{
+  "opencontext": "1.0",
+  "id": "acme",
+  "name": "ACME Corporation",
+  "description": "Every durable thing ACME's humans and agents need to know.",
+  "context": {
+    "mission": "./context/mission.md",
+    "glossary": "./context/glossary.md"
+  },
+  "collections": {
+    "policies": "./context/policies/**",
+    "procedures": {
+      "source": "./context/sops/**",
+      "type": "procedure",
+      "layer": "L4",
+      "owner": "support"
+    }
+  },
+  "roles": {
+    "support": {
+      "description": "Front-line support.",
+      "include": [
+        "mission",
+        "glossary",
+        "policies.*",
+        "procedures.*"
+      ],
+      "exclude": [
+        "policies.internal.*"
+      ],
+      "permissions": [
+        "customer.read",
+        "ticket.write"
+      ],
+      "max_classification": "internal",
+      "redact": [
+        {
+          "path": "customer.ssn",
+          "mode": "remove",
+          "reason": "PII"
+        }
+      ]
+    },
+    "finance": {
+      "include": [
+        "mission",
+        "policies.*"
+      ],
+      "max_classification": "confidential",
+      "inherits": [
+        "support"
+      ]
+    }
+  },
+  "agents": {
+    "support-agent": {
+      "roles": [
+        "support"
+      ],
+      "description": "Handles tickets."
+    }
+  },
+  "authority": {
+    "precedence": [
+      "canonical",
+      "approved",
+      "reference",
+      "observed",
+      "inferred",
+      "historical"
+    ],
+    "tie_breakers": [
+      "version",
+      "updated",
+      "confidence",
+      "id"
+    ]
+  },
+  "freshness": {
+    "default_ttl": "30d",
+    "stale_is_error": false,
+    "exclude_expired": true
+  },
+  "provenance": {
+    "required": true,
+    "digest": "sha256",
+    "require_digest": false
+  },
+  "audit": {
+    "context_reads": true,
+    "context_writes": true,
+    "decisions": true,
+    "sink": "file://./context/.audit/events.ndjson"
+  },
+  "redact": [
+    {
+      "path": "payment.card",
+      "mode": "mask",
+      "replacement": "[REDACTED]"
+    }
+  ],
+  "review": {
+    "interval": "180d",
+    "required_approvers": 2
+  },
+  "adapters": {
+    "https": {
+      "enabled": true,
+      "trust": "untrusted",
+      "timeout_ms": 5000
+    }
+  },
+  "defaults": {
+    "classification": "internal",
+    "trust": "trusted"
+  },
+  "health": {
+    "minimum_score": 90,
+    "fail_on": "error",
+    "require_owner": true,
+    "weights": {
+      "stale": 0.2
+    }
+  },
+  "related": {
+    "prd": "./openprd.yaml",
+    "topology": "./opentopology.yaml"
+  },
+  "extensions": {
+    "com.acme.region": {
+      "primary": "eu-west-1"
+    }
+  }
+}

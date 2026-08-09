@@ -1,0 +1,31 @@
+{
+  "id": "customers.acme",
+  "type": "customer",
+  "layer": "L2",
+  "title": "ACME Manufacturing",
+  "authority": "reference",
+  "owner": "sales",
+  "durability": "operational",
+  "classification": "internal",
+  "canonical_source": true,
+  "updated": "2026-08-01T00:00:00Z",
+  "tags": [
+    "customer"
+  ],
+  "content": {
+    "name": "ACME Manufacturing",
+    "plan": "enterprise",
+    "lanes": 34,
+    "payment": {
+      "card": "4111111111111111",
+      "terms": "net-30"
+    },
+    "contacts": [
+      {
+        "name": "Dana Okafor",
+        "role": "ops",
+        "email": "dana@acme.example"
+      }
+    ]
+  }
+}

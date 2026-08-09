@@ -1,0 +1,28 @@
+{
+  "description": "Redaction runs after authorization: the consumer is entitled to the record, and still does not receive the SSN. The bundle discloses that redaction happened without disclosing what was redacted.",
+  "resolve": {
+    "role": "support",
+    "at": "2026-08-09T12:00:00Z"
+  },
+  "expect": {
+    "included": [
+      "customers.acme"
+    ],
+    "redacted": {
+      "customers.acme": [
+        "ssn",
+        "contacts[*].email"
+      ]
+    },
+    "contentAbsent": {
+      "customers.acme": [
+        "ssn"
+      ]
+    },
+    "contentEquals": {
+      "customers.acme": {
+        "contacts.0.email": "[REDACTED]"
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+# The smallest OpenContext repository that does something useful:
+# one mission, one policy, one role.
+opencontext: "1.0"
+id: example
+name: Example Company
+
+context:
+  mission: ./context/mission.md
+
+collections:
+  policies: ./context/policies/**
+
+roles:
+  everyone:
+    description: Everyone who works here, human or agent.
+    include:
+      - mission
+      - policies.*

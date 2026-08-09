@@ -1,0 +1,14 @@
+{
+  "id": "policies.refunds",
+  "sources": [
+    {
+      "uri": "git://github.com/acme/context/policies/refunds.md",
+      "type": "document",
+      "retrieved_at": "2026-08-09T15:00:00Z",
+      "digest": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "trust": "trusted",
+      "author": "support"
+    }
+  ],
+  "retrieved_at": "2026-08-09T15:00:00Z"
+}

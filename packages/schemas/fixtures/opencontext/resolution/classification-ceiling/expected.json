@@ -1,0 +1,32 @@
+{
+  "description": "Classification bounds a role regardless of scope: support includes docs.* and is still denied the restricted document, while legal is not.",
+  "resolve": {
+    "role": "support",
+    "at": "2026-08-09T12:00:00Z"
+  },
+  "expect": {
+    "included": [
+      "docs.handbook"
+    ],
+    "excluded": [
+      {
+        "id": "docs.litigation",
+        "reason": "classification-denied"
+      }
+    ]
+  },
+  "also": [
+    {
+      "resolve": {
+        "role": "legal",
+        "at": "2026-08-09T12:00:00Z"
+      },
+      "expect": {
+        "included": [
+          "docs.handbook",
+          "docs.litigation"
+        ]
+      }
+    }
+  ]
+}

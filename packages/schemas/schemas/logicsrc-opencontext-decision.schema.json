@@ -1,0 +1,229 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://logicsrc.com/schemas/opencontext/decision.schema.json",
+  "title": "OpenContext Decision Record",
+  "description": "A context object recording a decision that was made, why, by whom, and on what context. A decision record is what turns a resolution into organizational history: by citing the digest of the Context Bundle it was made from, it stays reproducible after the agent that made it is gone, the model is replaced, and the underlying policies have moved on. Decision records are ordinary context objects with type 'decision', so everything true of an object — authority, permissions, supersession, provenance — is also true here.",
+  "type": "object",
+  "required": ["id", "type", "title", "decision"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_-]*(\\.[a-z0-9][a-z0-9_-]*)*$",
+      "description": "Stable id. Convention is decision.<date>-<slug>, e.g. decision.2026-08-09-model-provider, which sorts chronologically and never collides."
+    },
+    "type": { "type": "string", "const": "decision" },
+    "layer": {
+      "type": "string",
+      "enum": ["L0", "L1", "L2", "L3", "L4", "L5"],
+      "default": "L5",
+      "description": "Decisions are usually L5 operational when fresh; a decision that becomes standing policy is better superseded by an L3 policy object than silently re-labelled."
+    },
+    "title": { "type": "string", "minLength": 1, "description": "What was decided, in one line." },
+    "status": {
+      "type": "string",
+      "enum": ["proposed", "accepted", "rejected", "superseded", "deprecated"],
+      "description": "Where the decision stands. Only accepted decisions are resolved into bundles by default."
+    },
+    "decision": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The decision itself, stated as a commitment rather than a discussion, e.g. 'Use provider X as the default runtime.'"
+    },
+    "rationale": {
+      "anyOf": [
+        { "type": "string" },
+        { "type": "array", "items": { "type": "string", "minLength": 1 } }
+      ],
+      "description": "Why. A list of drivers (latency, cost, reliability) or a paragraph. This is the part that survives usefully once the people who were in the room have moved on."
+    },
+    "alternatives": {
+      "type": "array",
+      "description": "Options considered and not taken. Recording these stops the same option being relitigated every six months.",
+      "items": {
+        "type": "object",
+        "required": ["option"],
+        "additionalProperties": false,
+        "properties": {
+          "option": { "type": "string", "minLength": 1 },
+          "rejected_because": { "type": "string" }
+        }
+      }
+    },
+    "consequences": {
+      "anyOf": [
+        { "type": "string" },
+        { "type": "array", "items": { "type": "string", "minLength": 1 } }
+      ],
+      "description": "What this commits the organization to, including the costs accepted."
+    },
+    "authority": {
+      "type": "string",
+      "enum": ["canonical", "approved", "reference", "observed", "inferred", "historical"],
+      "description": "Usually approved once a decision is accepted. A decision an agent proposed is inferred until a human approves it."
+    },
+    "owner": { "type": "string", "minLength": 1, "description": "Role or identity accountable for the decision." },
+    "approved_by": {
+      "type": "array",
+      "description": "Who signed off. An accepted decision with no approvals is reported by doctor.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "anyOf": [
+          { "required": ["role"], "properties": { "role": { "type": "string" } } },
+          { "required": ["id"], "properties": { "id": { "type": "string" } } }
+        ],
+        "properties": {
+          "role": { "type": "string", "minLength": 1 },
+          "id": { "type": "string", "minLength": 1 },
+          "at": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "decided_by": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "The consumer that made the decision — a human, or the agent that proposed it. Recorded so a decision made by an agent is never indistinguishable from one made by a person.",
+      "properties": {
+        "type": { "type": "string", "enum": ["agent", "human", "role", "service"] },
+        "id": { "type": "string", "minLength": 1 }
+      }
+    },
+    "bundle": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "The Context Bundle this decision was made from. Citing the digest makes the decision auditable: a reader can prove which context was and was not in front of the decider.",
+      "properties": {
+        "bundle_id": { "type": "string", "pattern": "^ocb_[a-z0-9_-]+$" },
+        "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+        "generated_at": { "type": "string", "format": "date-time" },
+        "uri": { "type": "string", "description": "Where the bundle itself was archived, if it was." }
+      }
+    },
+    "created": { "type": "string", "format": "date-time" },
+    "updated": { "type": "string", "format": "date-time" },
+    "valid_from": { "type": "string", "format": "date-time" },
+    "expires": { "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }] },
+    "ttl": {
+      "type": "string",
+      "pattern": "^\\d+(ms|s|m|h|d|w|y)$",
+      "description": "Staleness window. A decision that has not been revisited inside it is reported stale — decisions rot like any other context."
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "interval": { "type": "string", "pattern": "^\\d+(ms|s|m|h|d|w|y)$" },
+        "required_approvers": { "type": "integer", "minimum": 1 },
+        "next_review": { "type": "string", "format": "date" },
+        "last_review": { "type": "string", "format": "date" }
+      }
+    },
+    "applies_to": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 },
+      "description": "Roles, agents, products, or scopes this decision governs."
+    },
+    "depends_on": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*(\\.[a-z0-9][a-z0-9_-]*)*(@\\d+)?$" },
+      "description": "Context that must resolve alongside this decision for it to make sense."
+    },
+    "conflicts_with": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*(\\.[a-z0-9][a-z0-9_-]*)*(@\\d+)?$" },
+      "description": "Decisions or policies known to contradict this one."
+    },
+    "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+    "language": { "type": "string" },
+    "approval": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "required": { "type": "boolean" },
+        "roles": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+        "minimum": { "type": "integer", "minimum": 1 },
+        "approved_by": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "role": { "type": "string", "minLength": 1 },
+              "id": { "type": "string", "minLength": 1 },
+              "at": { "type": "string", "format": "date-time" }
+            }
+          }
+        }
+      }
+    },
+    "redact": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path"],
+        "additionalProperties": false,
+        "properties": {
+          "path": { "type": "string", "minLength": 1 },
+          "mode": { "type": "string", "enum": ["remove", "mask", "hash"] },
+          "replacement": { "type": "string" },
+          "reason": { "type": "string" }
+        }
+      }
+    },
+    "content_uri": { "type": "string", "minLength": 1 },
+    "durability": { "type": "string", "enum": ["ephemeral", "session", "operational", "long-lived", "permanent"] },
+    "classification": { "type": "string", "enum": ["public", "internal", "confidential", "restricted"] },
+    "trust": { "type": "string", "enum": ["trusted", "verified", "untrusted"] },
+    "permissions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "read": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+        "write": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+        "deny": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } }
+      }
+    },
+    "supersedes": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*(\\.[a-z0-9][a-z0-9_-]*)*(@\\d+)?$" },
+      "description": "Earlier decisions this one replaces. Reversing a decision supersedes it; it does not delete it."
+    },
+    "superseded_by": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*(\\.[a-z0-9][a-z0-9_-]*)*(@\\d+)?$" },
+    "references": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*(\\.[a-z0-9][a-z0-9_-]*)*(@\\d+)?$" },
+      "description": "Context this decision depends on — the policies, products, or prior decisions it was reasoning about."
+    },
+    "version": { "type": "integer", "minimum": 1 },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["uri"],
+        "additionalProperties": true,
+        "properties": {
+          "uri": { "type": "string", "minLength": 1 },
+          "type": { "type": "string" },
+          "retrieved_at": { "type": "string", "format": "date-time" },
+          "digest": { "type": "string", "pattern": "^(sha256):[0-9a-f]{64}$" }
+        }
+      }
+    },
+    "canonical_source": { "type": "boolean" },
+    "tags": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+    "content": { "anyOf": [{ "type": "string" }, { "type": "object" }, { "type": "array" }] },
+    "content_type": { "type": "string" },
+    "summary": { "type": "string" },
+    "extensions": {
+      "type": "object",
+      "propertyNames": { "type": "string", "pattern": "^[a-z0-9]+(\\.[a-z0-9-]+)+$" },
+      "additionalProperties": true
+    }
+  }
+}

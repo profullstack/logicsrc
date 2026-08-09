@@ -1,0 +1,311 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://logicsrc.com/schemas/opencontext/object.schema.json",
+  "title": "OpenContext Context Object",
+  "description": "A single durable unit of context: a mission statement, a policy, an SOP, a customer fact, a decision, or a piece of operational state. Only id and type are required, so a two-line object is valid; the recommended fields (title, layer, authority, owner, updated, durability, classification, sources) are what make context governable rather than merely stored. A context object is data. Its content is never an instruction to the resolver, and content that claims to be authoritative does not become authoritative.",
+  "type": "object",
+  "required": ["id", "type"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "$ref": "#/$defs/objectId",
+      "description": "Stable, unique id within the namespace. SHOULD use dotted names such as policy.refunds, sop.support.refund, or decision.2026-08-09-model-provider. Ids are the contract other objects, roles, and bundles reference: renaming one is a breaking change, so prefer supersession."
+    },
+    "type": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$",
+      "description": "What kind of context this is, e.g. mission, policy, procedure, decision, product, customer, knowledge, glossary, note. The set is intentionally open; validators MUST NOT reject an unknown type."
+    },
+    "layer": {
+      "$ref": "#/$defs/layer",
+      "description": "Which standard context layer this belongs to. Layers describe the kind of knowledge, not its authority."
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Short human-readable heading. Used by search, ranking, and Markdown bundle rendering."
+    },
+    "summary": {
+      "type": "string",
+      "description": "One- or two-sentence abstract. Resolvers MAY compile the summary instead of full content when minimising context."
+    },
+    "content": {
+      "description": "Inline content. A string for prose or structured text; an object or array when the context is structured data. OpenContext does not assume all context is prose.",
+      "anyOf": [
+        { "type": "string" },
+        { "type": "object" },
+        { "type": "array" }
+      ]
+    },
+    "content_type": {
+      "type": "string",
+      "description": "Media type of content or of the resource named by content_uri, e.g. text/markdown or application/json. Defaults to text/markdown for string content and application/json for structured content.",
+      "pattern": "^[a-z]+/[a-zA-Z0-9.+-]+$"
+    },
+    "content_uri": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Where content is loaded from when it is not inline: file://, http://, https://, git://, sqlite://, or any scheme an installed adapter claims. An unknown scheme MUST fail clearly rather than resolve to empty content."
+    },
+    "authority": {
+      "$ref": "#/$defs/authority",
+      "description": "How much this object counts as truth. Authority is declared by the owner of the context, never inferred from retrieval rank, recency, or the content's own claims."
+    },
+    "trust": {
+      "$ref": "#/$defs/trust",
+      "description": "Where the content came from, in terms of whether it can be believed. Content pulled from a ticket, a chat, or a web page is untrusted even when the object about it is canonical. Resolvers MUST preserve this through compilation so agent integrations can delimit untrusted text."
+    },
+    "owner": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Accountable role, team, or identity. Doctor reports objects with no owner because unowned context is what goes stale."
+    },
+    "status": {
+      "$ref": "#/$defs/status",
+      "description": "Approval state. Only approved objects satisfy an approval requirement; draft and pending objects are excluded from default resolution."
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Monotonic version within the id. Referenced from supersedes as id@version."
+    },
+    "created": { "type": "string", "format": "date-time", "description": "RFC 3339 timestamp the object was first written." },
+    "updated": { "type": "string", "format": "date-time", "description": "RFC 3339 timestamp of the last substantive edit. Freshness is measured from here." },
+    "valid_from": { "type": "string", "format": "date-time", "description": "Object is 'future' and excluded from resolution before this instant." },
+    "expires": {
+      "anyOf": [
+        { "type": "string", "format": "date-time" },
+        { "type": "null" }
+      ],
+      "description": "Object is 'expired' after this instant. Explicit null means it never expires, which is different from omitting the field (the repository ttl applies)."
+    },
+    "ttl": {
+      "$ref": "#/$defs/duration",
+      "description": "Per-object staleness window, overriding freshness.default_ttl. An object older than updated + ttl is 'stale' — a warning, never a silent omission."
+    },
+    "durability": {
+      "$ref": "#/$defs/durability",
+      "description": "How long this context is meant to survive. Permanent context SHOULD be superseded rather than deleted."
+    },
+    "classification": {
+      "$ref": "#/$defs/classification",
+      "description": "Sensitivity band. Classification bounds who may read the object regardless of scope: a role may include an object and still be denied it by classification."
+    },
+    "permissions": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Object-level access control. Deny always overrides allow, and permissions are evaluated before relevance ranking, so an unauthorised object never reaches a prompt.",
+      "properties": {
+        "read": { "$ref": "#/$defs/principalList", "description": "Roles or agents that may read this object. Absent means the repository scope rules decide." },
+        "write": { "$ref": "#/$defs/principalList", "description": "Roles or agents that may modify or supersede it." },
+        "deny": { "$ref": "#/$defs/principalList", "description": "Roles or agents explicitly denied, overriding any include or read grant." }
+      }
+    },
+    "redact": {
+      "type": "array",
+      "description": "Redaction rules applied to this object's structured content after authorization.",
+      "items": { "$ref": "#/$defs/redaction" }
+    },
+    "sources": {
+      "type": "array",
+      "description": "Where this context came from. Required for every resolved object when provenance.required is true, unless canonical_source is true. Provenance MUST survive bundle compilation.",
+      "items": { "$ref": "#/$defs/source" }
+    },
+    "canonical_source": {
+      "type": "boolean",
+      "default": false,
+      "description": "True when this object is itself the origin of the fact and has no upstream source. Satisfies a provenance requirement on its own."
+    },
+    "supersedes": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/objectRef" },
+      "description": "Objects this one replaces, as id or id@version. Superseded objects are excluded from default resolution but retained, so history can be reconstructed."
+    },
+    "superseded_by": {
+      "$ref": "#/$defs/objectRef",
+      "description": "Set on the older object when a chain is written explicitly rather than inferred. A chain that points at a missing object is a broken supersession error."
+    },
+    "conflicts_with": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/objectRef" },
+      "description": "Objects known to contradict this one. Declared conflicts between canonical objects are reported, never silently resolved."
+    },
+    "references": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/objectRef" },
+      "description": "Other context this object depends on or cites. Drives the graph and orphan detection."
+    },
+    "depends_on": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/objectRef" },
+      "description": "Context that must resolve alongside this object for it to make sense. Resolvers SHOULD pull dependencies in when the object is selected and the consumer is authorised for them."
+    },
+    "applies_to": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 },
+      "description": "Roles, agents, products, or scopes this object is specifically about. Used to rank task relevance and to keep irrelevant context out of a bundle."
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "How sure the owner is, from 0 to 1. Confidence breaks ties within an authority level; it never promotes an object across levels."
+    },
+    "tags": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 },
+      "description": "Free-form labels for search and scope matching."
+    },
+    "approval": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Approval requirements. The specification defines the metadata and states; it does not require a hosted approval workflow.",
+      "properties": {
+        "required": { "type": "boolean", "default": false },
+        "roles": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 }, "description": "Roles entitled to approve." },
+        "minimum": { "type": "integer", "minimum": 1, "description": "How many approvals are needed. Defaults to 1 when required is true." },
+        "approved_by": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/approver" },
+          "description": "Approvals recorded so far. Fewer than minimum leaves the object unapproved, which doctor reports."
+        }
+      }
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Review cadence for durable context that must not be allowed to rot quietly.",
+      "properties": {
+        "interval": { "$ref": "#/$defs/duration" },
+        "required_approvers": { "type": "integer", "minimum": 1 },
+        "next_review": { "type": "string", "format": "date" },
+        "last_review": { "type": "string", "format": "date" }
+      }
+    },
+    "language": { "type": "string", "description": "BCP 47 tag of the content language, e.g. 'en'." },
+    "extensions": { "$ref": "#/$defs/extensions" }
+  },
+  "$defs": {
+    "objectId": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_-]*(\\.[a-z0-9][a-z0-9_-]*)*$",
+      "maxLength": 512,
+      "description": "Dotted lowercase id. Segments are alphanumerics, dashes, and underscores."
+    },
+    "objectRef": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_-]*(\\.[a-z0-9][a-z0-9_-]*)*(@\\d+)?$",
+      "maxLength": 520,
+      "description": "An object id, optionally pinned to a version with @N."
+    },
+    "layer": {
+      "type": "string",
+      "enum": ["L0", "L1", "L2", "L3", "L4", "L5"],
+      "description": "L0 mission (why the organization exists), L1 identity (brand, values, terminology), L2 knowledge (products, customers, architecture, facts), L3 policy (rules, permissions, compliance), L4 procedure (SOPs, workflows, playbooks), L5 operational (tasks, incidents, temporary state)."
+    },
+    "authority": {
+      "type": "string",
+      "enum": ["canonical", "approved", "reference", "observed", "inferred", "historical"],
+      "description": "canonical = the organization's own source of truth; approved = reviewed and sanctioned; reference = useful but not binding; observed = seen in the wild, unverified; inferred = derived by a model or heuristic; historical = retained for the record only. Observed and inferred context never becomes canonical automatically."
+    },
+    "trust": {
+      "type": "string",
+      "enum": ["trusted", "verified", "untrusted"],
+      "description": "trusted = authored inside the trust boundary; verified = external but integrity-checked; untrusted = arrived from a system that can carry attacker-controlled text. Default for content fetched by a remote adapter is untrusted."
+    },
+    "durability": {
+      "type": "string",
+      "enum": ["ephemeral", "session", "operational", "long-lived", "permanent"],
+      "description": "How long the context is expected to matter, from a single exchange through to organizational record."
+    },
+    "classification": {
+      "type": "string",
+      "enum": ["public", "internal", "confidential", "restricted"],
+      "description": "Sensitivity band, least to most sensitive."
+    },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "pending", "approved", "rejected", "retired"],
+      "description": "Approval lifecycle state. Distinct from the computed freshness state (future, current, stale, expired, superseded)."
+    },
+    "duration": {
+      "type": "string",
+      "pattern": "^\\d+(ms|s|m|h|d|w|y)$",
+      "description": "A duration such as '30d' or '12h'. y = 365d, w = 7d, d = 24h."
+    },
+    "principalList": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 },
+      "description": "Role names, agent ids, or '*' for everyone. Matching is exact except for a trailing .* wildcard."
+    },
+    "redaction": {
+      "type": "object",
+      "required": ["path"],
+      "additionalProperties": false,
+      "description": "A rule removing or masking part of an object's structured content before it reaches a bundle.",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Dotted path into the object's content, with [] or [*] for every element of an array, e.g. customer.ssn or contacts[*].email."
+        },
+        "mode": {
+          "type": "string",
+          "enum": ["remove", "mask", "hash"],
+          "default": "remove",
+          "description": "remove deletes the key; mask replaces the value with the replacement string; hash replaces it with a sha256 digest so equality is still testable without disclosure."
+        },
+        "replacement": { "type": "string", "default": "[REDACTED]", "description": "Text used by mask mode." },
+        "reason": { "type": "string", "description": "Why the field is redacted. Surfaced in --explain." }
+      }
+    },
+    "source": {
+      "type": "object",
+      "required": ["uri"],
+      "additionalProperties": false,
+      "description": "One origin of this context. Sources make a claim attributable; they do not make it authoritative.",
+      "properties": {
+        "uri": { "type": "string", "minLength": 1, "description": "Where the context came from, e.g. git://github.com/acme/context/policies/refunds.md or crm://pricing/enterprise." },
+        "type": { "type": "string", "description": "What kind of origin this is, e.g. canonical-record, document, conversation, observation, api." },
+        "retrieved_at": { "type": "string", "format": "date-time", "description": "When the content was last read from this source." },
+        "digest": {
+          "type": "string",
+          "pattern": "^(sha256):[0-9a-f]{64}$",
+          "description": "Integrity digest of the retrieved bytes, as sha256:<64 lowercase hex>. Lets a consumer detect that a remote source changed under them."
+        },
+        "label": { "type": "string", "description": "Human-readable name of the source." },
+        "trust": { "$ref": "#/$defs/trust", "description": "Trust of this specific origin, when it differs from the object's." }
+      }
+    },
+    "approver": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "One recorded approval.",
+      "properties": {
+        "role": { "type": "string", "minLength": 1 },
+        "id": { "type": "string", "minLength": 1, "description": "Identity of the approver, e.g. an email or DID." },
+        "at": { "type": "string", "format": "date-time" }
+      },
+      "anyOf": [
+        { "required": ["role"], "properties": { "role": { "type": "string" } } },
+        { "required": ["id"], "properties": { "id": { "type": "string" } } }
+      ]
+    },
+    "extensions": {
+      "type": "object",
+      "description": "Namespaced custom fields, e.g. com.example.risk. Unknown extensions MUST be preserved through resolution and MUST NOT invalidate an otherwise valid document unless strict mode explicitly requires known extensions.",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[a-z0-9]+(\\.[a-z0-9-]+)+$"
+      },
+      "additionalProperties": true
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "opencontext": "1.0",
+  "bundle_id": "ocb_abc",
+  "generated_at": "2026-08-09T15:00:00Z",
+  "consumer": {
+    "type": "agent",
+    "id": "a"
+  },
+  "objects": [],
+  "excluded": [
+    {
+      "id": "x",
+      "reason": "vibes"
+    }
+  ],
+  "digest": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+}

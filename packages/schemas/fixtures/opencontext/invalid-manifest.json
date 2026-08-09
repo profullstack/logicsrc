@@ -1,0 +1,177 @@
+[
+  {
+    "fixture": "invalid/manifest-missing-version.json",
+    "kind": "opencontext-manifest",
+    "why": "manifest has no opencontext version"
+  },
+  {
+    "fixture": "invalid/manifest-bad-id.json",
+    "kind": "opencontext-manifest",
+    "why": "namespace id must be a lowercase slug"
+  },
+  {
+    "fixture": "invalid/manifest-unknown-key.json",
+    "kind": "opencontext-manifest",
+    "why": "unknown top-level key (contexts vs context)"
+  },
+  {
+    "fixture": "invalid/manifest-bad-authority.json",
+    "kind": "opencontext-manifest",
+    "why": "authority precedence contains a level that is not defined"
+  },
+  {
+    "fixture": "invalid/manifest-bad-ttl.json",
+    "kind": "opencontext-manifest",
+    "why": "duration must look like 30d"
+  },
+  {
+    "fixture": "invalid/manifest-role-bad-pattern.json",
+    "kind": "opencontext-manifest",
+    "why": "a wildcard must be a whole segment, never a substring"
+  },
+  {
+    "fixture": "invalid/manifest-bad-extension.json",
+    "kind": "opencontext-manifest",
+    "why": "extension keys must be reverse-DNS namespaced"
+  },
+  {
+    "fixture": "invalid/object-missing-type.json",
+    "kind": "opencontext-object",
+    "why": "type is required"
+  },
+  {
+    "fixture": "invalid/object-missing-id.json",
+    "kind": "opencontext-object",
+    "why": "id is required"
+  },
+  {
+    "fixture": "invalid/object-bad-id.json",
+    "kind": "opencontext-object",
+    "why": "id must be a dotted lowercase slug"
+  },
+  {
+    "fixture": "invalid/object-unknown-authority.json",
+    "kind": "opencontext-object",
+    "why": "authority must be one of the six defined levels"
+  },
+  {
+    "fixture": "invalid/object-unknown-classification.json",
+    "kind": "opencontext-object",
+    "why": "classification must be public/internal/confidential/restricted"
+  },
+  {
+    "fixture": "invalid/object-unknown-trust.json",
+    "kind": "opencontext-object",
+    "why": "trust must be trusted/verified/untrusted"
+  },
+  {
+    "fixture": "invalid/object-extra-property.json",
+    "kind": "opencontext-object",
+    "why": "unknown field must go under extensions"
+  },
+  {
+    "fixture": "invalid/object-confidence-out-of-range.json",
+    "kind": "opencontext-object",
+    "why": "confidence must be between 0 and 1"
+  },
+  {
+    "fixture": "invalid/object-bad-digest.json",
+    "kind": "opencontext-object",
+    "why": "source digest must be sha256:<64 hex>"
+  },
+  {
+    "fixture": "invalid/object-bad-layer.json",
+    "kind": "opencontext-object",
+    "why": "layer must be L0 to L5"
+  },
+  {
+    "fixture": "invalid/object-source-without-uri.json",
+    "kind": "opencontext-object",
+    "why": "every source needs a uri"
+  },
+  {
+    "fixture": "invalid/object-bad-supersedes.json",
+    "kind": "opencontext-object",
+    "why": "version pin must be @<integer>"
+  },
+  {
+    "fixture": "invalid/object-bad-redaction-mode.json",
+    "kind": "opencontext-object",
+    "why": "redaction mode must be remove/mask/hash"
+  },
+  {
+    "fixture": "invalid/decision-missing-decision.json",
+    "kind": "opencontext-decision",
+    "why": "a decision record must state the decision"
+  },
+  {
+    "fixture": "invalid/decision-wrong-type.json",
+    "kind": "opencontext-decision",
+    "why": "type must be decision"
+  },
+  {
+    "fixture": "invalid/decision-bad-status.json",
+    "kind": "opencontext-decision",
+    "why": "status must be proposed/accepted/rejected/superseded/deprecated"
+  },
+  {
+    "fixture": "invalid/bundle-missing-digest.json",
+    "kind": "opencontext-bundle",
+    "why": "a bundle must carry a digest"
+  },
+  {
+    "fixture": "invalid/bundle-bad-digest.json",
+    "kind": "opencontext-bundle",
+    "why": "digest must be sha256:<64 hex>"
+  },
+  {
+    "fixture": "invalid/bundle-bad-id.json",
+    "kind": "opencontext-bundle",
+    "why": "bundle_id must be prefixed ocb_"
+  },
+  {
+    "fixture": "invalid/bundle-unknown-exclusion-reason.json",
+    "kind": "opencontext-bundle",
+    "why": "exclusion reasons are a closed set"
+  },
+  {
+    "fixture": "invalid/role-bad-classification.json",
+    "kind": "opencontext-role",
+    "why": "max_classification must be one of the four bands"
+  },
+  {
+    "fixture": "invalid/role-bad-include.json",
+    "kind": "opencontext-role",
+    "why": "scope patterns are lowercase"
+  },
+  {
+    "fixture": "invalid/provenance-no-source.json",
+    "kind": "opencontext-provenance",
+    "why": "must declare sources or canonical_source"
+  },
+  {
+    "fixture": "invalid/provenance-canonical-false.json",
+    "kind": "opencontext-provenance",
+    "why": "canonical_source: false does not satisfy the requirement"
+  },
+  {
+    "fixture": "invalid/diagnostic-unknown-code.json",
+    "kind": "opencontext-diagnostic",
+    "why": "diagnostic codes are normative and closed"
+  },
+  {
+    "fixture": "invalid/diagnostic-missing-ok.json",
+    "kind": "opencontext-diagnostic",
+    "why": "ok is required \u2014 it is what the exit code follows"
+  },
+  {
+    "fixture": "invalid/audit-event-unknown-event.json",
+    "kind": "opencontext-audit-event",
+    "why": "event names are a closed set"
+  },
+  {
+    "fixture": "invalid/audit-event-missing-actor.json",
+    "kind": "opencontext-audit-event",
+    "why": "an audit event without an actor is not attributable"
+  }
+]

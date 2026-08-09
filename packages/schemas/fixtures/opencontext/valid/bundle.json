@@ -1,0 +1,67 @@
+{
+  "opencontext": "1.0",
+  "bundle_id": "ocb_3b541a2e1a933b60",
+  "generated_at": "2026-08-09T15:00:00Z",
+  "namespace": "acme",
+  "consumer": {
+    "type": "agent",
+    "id": "support-agent",
+    "roles": [
+      "support"
+    ]
+  },
+  "task": "Handle refund request for ACME",
+  "as_of": "2026-08-09T15:00:00Z",
+  "objects": [
+    {
+      "id": "mission",
+      "type": "mission",
+      "layer": "L0",
+      "title": "Why ACME exists",
+      "content": "ACME exists to make refunds boring.",
+      "authority": "canonical",
+      "trust": "trusted",
+      "owner": "founders",
+      "lifecycle": "current",
+      "classification": "public"
+    }
+  ],
+  "excluded": [
+    {
+      "id": "finance.payroll",
+      "reason": "permission-denied",
+      "detail": "outside the support scope"
+    },
+    {
+      "id": "policies.refunds.v1",
+      "reason": "superseded",
+      "outranked_by": "policies.refunds"
+    }
+  ],
+  "warnings": [
+    {
+      "code": "stale",
+      "message": "procedures.refund is stale.",
+      "id": "procedures.refund",
+      "severity": "warning"
+    }
+  ],
+  "provenance": [
+    {
+      "id": "mission",
+      "canonical_source": true
+    }
+  ],
+  "permissions": [
+    "customer.read",
+    "ticket.write"
+  ],
+  "stats": {
+    "considered": 12,
+    "included": 1,
+    "excluded": 2,
+    "redacted": 0,
+    "characters": 38
+  },
+  "digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+}

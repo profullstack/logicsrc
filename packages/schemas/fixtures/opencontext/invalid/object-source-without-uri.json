@@ -1,0 +1,9 @@
+{
+  "id": "policy.refunds",
+  "type": "policy",
+  "sources": [
+    {
+      "type": "document"
+    }
+  ]
+}

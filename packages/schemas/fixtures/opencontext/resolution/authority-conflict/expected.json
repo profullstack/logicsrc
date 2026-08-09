@@ -1,0 +1,21 @@
+{
+  "description": "A declared conflict that authority settles is still reported, never silently hidden. Canonical outranks observed, and the losing side is named in the warning.",
+  "resolve": {
+    "role": "everyone",
+    "at": "2026-08-09T12:00:00Z"
+  },
+  "expect": {
+    "included": [
+      "policies.refunds",
+      "policies.refunds-observed"
+    ],
+    "warnings": [
+      "conflict-declared"
+    ]
+  },
+  "validate": {
+    "expectDiagnostics": [
+      "conflict-declared"
+    ]
+  }
+}

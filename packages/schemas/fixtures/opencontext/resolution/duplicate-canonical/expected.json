@@ -1,0 +1,10 @@
+{
+  "description": "Two active canonical objects for one id, with no supersession linking them. Canonical means exactly one source of truth, so this is an error a strict run must fail on.",
+  "validate": {
+    "expectDiagnostics": [
+      "duplicate-canonical",
+      "multiple-active-versions"
+    ],
+    "expectFailure": true
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "opencontext": "1.0",
+  "ok": false,
+  "generated_at": "2026-08-09T15:00:00Z",
+  "namespace": "acme",
+  "score": 91.5,
+  "counts": {
+    "objects": 42,
+    "errors": 1,
+    "warnings": 3,
+    "info": 0,
+    "stale": 3,
+    "expired": 0,
+    "conflicting": 1,
+    "orphaned": 7,
+    "missing_owner": 3,
+    "broken_sources": 1
+  },
+  "findings": [
+    {
+      "code": "duplicate-canonical",
+      "severity": "error",
+      "message": "2 active canonical objects share the id \"policies.refunds\".",
+      "id": "policies.refunds",
+      "ids": [
+        "context/policies/refunds.md",
+        "context/policies/refunds-new.md"
+      ],
+      "file": "context/policies/refunds.md",
+      "line": 3,
+      "field": "authority",
+      "expected": "exactly one canonical object per id",
+      "actual": 2,
+      "remediation": "Supersede the older one, or lower its authority to reference."
+    }
+  ]
+}

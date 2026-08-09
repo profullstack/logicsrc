@@ -1,0 +1,9 @@
+{
+  "opencontext": "1.0",
+  "event": "context.peek",
+  "at": "2026-08-09T15:00:00Z",
+  "actor": {
+    "type": "agent",
+    "id": "a"
+  }
+}
