@@ -1,0 +1,19 @@
+opencontext: "1.0"
+id: redaction-test
+name: Redaction
+
+collections:
+  customers: ./context/customers/**
+
+roles:
+  support:
+    include:
+      - customers.*
+    max_classification: confidential
+    redact:
+      - path: ssn
+        mode: remove
+        reason: PII
+      - path: contacts[*].email
+        mode: mask
+        replacement: "[REDACTED]"

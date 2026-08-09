@@ -1,0 +1,11 @@
+opencontext: "1.0"
+id: supersession-test
+name: Supersession
+
+collections:
+  pricing: ./context/pricing/**
+
+roles:
+  sales:
+    include:
+      - pricing.*

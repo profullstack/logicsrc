@@ -1,0 +1,337 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://logicsrc.com/schemas/opencontext/manifest.schema.json",
+  "title": "OpenContext Manifest",
+  "description": "The root manifest of an OpenContext repository, canonically named opencontext.yaml (opencontext.json is also permitted). It declares which context exists, where it is loaded from, who may read it, how authority is ranked, how freshness is judged, and which audit events are recorded. The manifest is a control plane: it points at systems that remain the sources of truth, and is not itself the database.",
+  "type": "object",
+  "required": ["opencontext", "id"],
+  "additionalProperties": false,
+  "properties": {
+    "opencontext": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+(\\.\\d+)?$",
+      "description": "OpenContext specification version this manifest conforms to, e.g. '1.0'. Implementations MUST refuse a major version they do not support rather than guess."
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$",
+      "description": "Stable identifier for this context namespace, e.g. 'acme'. Object ids are unique within it."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable name of the organization or project this context belongs to."
+    },
+    "description": {
+      "type": "string",
+      "description": "One-paragraph summary of what this context repository covers."
+    },
+    "context": {
+      "type": "object",
+      "description": "Named single-document context entries. Each key becomes a resolvable object id; each value is a path or URI. Example: mission: ./context/mission.md",
+      "additionalProperties": { "type": "string", "minLength": 1 },
+      "propertyNames": { "$ref": "#/$defs/segment" }
+    },
+    "collections": {
+      "type": "object",
+      "description": "Named globs or URIs that expand to many context objects. The key namespaces the ids of everything the collection loads, so ./context/policies/refunds.md under the 'policies' collection becomes policies.refunds unless the document declares its own id.",
+      "additionalProperties": {
+        "anyOf": [
+          { "type": "string", "minLength": 1 },
+          { "$ref": "#/$defs/collectionSpec" }
+        ]
+      },
+      "propertyNames": { "$ref": "#/$defs/segment" }
+    },
+    "roles": {
+      "type": "object",
+      "description": "Named scopes. A role declares which context its holders may read, which context is denied, and which capabilities they hold. Deny always overrides allow.",
+      "additionalProperties": { "$ref": "#/$defs/role" },
+      "propertyNames": { "$ref": "#/$defs/segment" }
+    },
+    "agents": {
+      "type": "object",
+      "description": "Named consumers mapped to the roles they hold. An agent's scope is the union of its roles' includes minus the union of their excludes; an agent holds no context rights of its own.",
+      "additionalProperties": { "$ref": "#/$defs/agentBinding" },
+      "propertyNames": { "$ref": "#/$defs/segment" }
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "How competing objects are ranked. Precedence MAY be overridden but MUST remain a permutation of the standard authority levels — a repository cannot invent a level that outranks canonical.",
+      "properties": {
+        "precedence": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/authority" },
+          "description": "Highest authority first. Default: canonical, approved, reference, observed, inferred, historical."
+        },
+        "tie_breakers": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "enum": ["version", "updated", "created", "confidence", "id"] },
+          "description": "Applied in order when two candidates remain tied after authority and supersession. Default: version, updated, confidence, id. Resolution appends id as a final total tie breaker so the outcome is always deterministic."
+        }
+      }
+    },
+    "freshness": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Defaults for lifecycle evaluation. Per-object metadata always wins over these defaults.",
+      "properties": {
+        "default_ttl": {
+          "$ref": "#/$defs/duration",
+          "description": "How long an object stays 'current' after its updated timestamp before it is reported 'stale', e.g. '30d'. Staleness is a warning: stale context is still resolved, and still flagged."
+        },
+        "stale_is_error": {
+          "type": "boolean",
+          "default": false,
+          "description": "When true, --strict treats stale context as a failure rather than a warning."
+        },
+        "exclude_expired": {
+          "type": "boolean",
+          "default": true,
+          "description": "When true (default), expired objects are excluded from resolution unless historical context is explicitly requested."
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Provenance policy. When required, every resolved object MUST carry a source or declare itself canonical source material.",
+      "properties": {
+        "required": { "type": "boolean", "default": false, "description": "Require every resolved object to be attributable." },
+        "digest": { "type": "string", "enum": ["sha256"], "default": "sha256", "description": "Digest algorithm for source integrity and bundle digests." },
+        "require_digest": { "type": "boolean", "default": false, "description": "Require every declared remote source to carry an integrity digest." }
+      }
+    },
+    "audit": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Which events implementations should record. The specification defines the event shape; it does not mandate a storage backend.",
+      "properties": {
+        "context_reads": { "type": "boolean", "default": false },
+        "context_writes": { "type": "boolean", "default": false },
+        "decisions": { "type": "boolean", "default": false },
+        "conflicts": { "type": "boolean", "default": false },
+        "sink": { "type": "string", "description": "Optional URI the reference implementation appends audit events to, e.g. file://./context/.audit/events.ndjson" }
+      }
+    },
+    "redact": {
+      "type": "array",
+      "description": "Repository-wide redaction rules, applied after authorization and before compilation.",
+      "items": { "$ref": "#/$defs/redaction" }
+    },
+    "review": {
+      "$ref": "#/$defs/review",
+      "description": "Default review cadence for objects that do not declare their own."
+    },
+    "adapters": {
+      "type": "object",
+      "description": "URI schemes this repository expects to resolve, mapped to adapter configuration. A scheme no installed adapter claims MUST fail clearly rather than silently resolve to nothing.",
+      "additionalProperties": { "$ref": "#/$defs/adapterConfig" },
+      "propertyNames": { "type": "string", "pattern": "^[a-z][a-z0-9+.-]*$" }
+    },
+    "defaults": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Field defaults applied to objects that omit them. Defaults describe house style; they never launder authority, and an implementation MUST NOT default observed or inferred content to canonical.",
+      "properties": {
+        "layer": { "$ref": "#/$defs/layer" },
+        "authority": { "$ref": "#/$defs/authority" },
+        "classification": { "$ref": "#/$defs/classification" },
+        "durability": { "$ref": "#/$defs/durability" },
+        "trust": { "$ref": "#/$defs/trust" },
+        "owner": { "type": "string", "minLength": 1 },
+        "ttl": { "$ref": "#/$defs/duration" }
+      }
+    },
+    "health": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Configuration for `opencontext doctor`. The score formula is documented and configurable so a CI threshold means the same thing across repositories.",
+      "properties": {
+        "minimum_score": { "type": "number", "minimum": 0, "maximum": 100, "description": "Doctor exits non-zero below this score when --strict is set." },
+        "weights": {
+          "type": "object",
+          "description": "Per-diagnostic-code weight overriding the documented default. Deductions are weight x affected objects, normalised by object count.",
+          "additionalProperties": { "type": "number", "minimum": 0 },
+          "propertyNames": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" }
+        },
+        "fail_on": { "$ref": "#/$defs/severity", "description": "Lowest severity that fails a strict run. Default: error." },
+        "require_owner": { "type": "boolean", "default": false, "description": "Treat objects with no owner as an error rather than a warning." }
+      }
+    },
+    "related": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Optional links to sibling LogicSRC specifications. These integrations MUST remain optional: OpenContext is independently usable without either of them.",
+      "properties": {
+        "prd": { "type": "string", "description": "Path or URI of an OpenPRD document or collection." },
+        "topology": { "type": "string", "description": "Path or URI of an OpenTopology manifest." },
+        "ontology": { "type": "string", "description": "Path or URI of an OpenOntology package." }
+      }
+    },
+    "extensions": { "$ref": "#/$defs/extensions" }
+  },
+  "$defs": {
+    "segment": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_-]*$",
+      "description": "A single dotted-id segment: lowercase alphanumerics, dashes, underscores."
+    },
+    "duration": {
+      "type": "string",
+      "pattern": "^\\d+(ms|s|m|h|d|w|y)$",
+      "description": "A duration such as '30d', '12h', or '180d'. Units are fixed lengths: y = 365d, w = 7d, d = 24h."
+    },
+    "layer": {
+      "type": "string",
+      "enum": ["L0", "L1", "L2", "L3", "L4", "L5"],
+      "description": "L0 mission, L1 identity, L2 knowledge, L3 policy, L4 procedure, L5 operational."
+    },
+    "authority": {
+      "type": "string",
+      "enum": ["canonical", "approved", "reference", "observed", "inferred", "historical"],
+      "description": "Declared truth level, highest to lowest by default."
+    },
+    "trust": {
+      "type": "string",
+      "enum": ["trusted", "verified", "untrusted"],
+      "description": "Whether the content originated inside the trust boundary."
+    },
+    "durability": {
+      "type": "string",
+      "enum": ["ephemeral", "session", "operational", "long-lived", "permanent"]
+    },
+    "classification": {
+      "type": "string",
+      "enum": ["public", "internal", "confidential", "restricted"]
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["info", "warning", "error"]
+    },
+    "collectionSpec": {
+      "type": "object",
+      "required": ["source"],
+      "additionalProperties": false,
+      "description": "A collection declared with options rather than as a bare glob string.",
+      "properties": {
+        "source": { "type": "string", "minLength": 1, "description": "Glob or URI the collection loads from." },
+        "type": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$", "description": "Default object type for members that omit one." },
+        "layer": { "$ref": "#/$defs/layer" },
+        "authority": { "$ref": "#/$defs/authority" },
+        "classification": { "$ref": "#/$defs/classification" },
+        "durability": { "$ref": "#/$defs/durability" },
+        "trust": { "$ref": "#/$defs/trust" },
+        "owner": { "type": "string", "minLength": 1 },
+        "ttl": { "$ref": "#/$defs/duration" }
+      }
+    },
+    "role": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "A named scope. Relevance and authorization are different questions: include says what is in scope, and nothing in scope is returned if a deny, an exclusion, or a classification ceiling says otherwise.",
+      "properties": {
+        "description": { "type": "string" },
+        "include": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/pattern" },
+          "description": "Id patterns in scope, e.g. mission, products.*, policies.support.*. A role with no include sees nothing."
+        },
+        "exclude": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/pattern" },
+          "description": "Id patterns denied. Applied before relevance ranking and unconditionally overriding include."
+        },
+        "permissions": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 },
+          "description": "Capability strings such as customer.read or ticket.write. OpenContext carries these; it does not enforce your application's actions."
+        },
+        "max_classification": {
+          "$ref": "#/$defs/classification",
+          "description": "Highest classification this role may read. Objects above it are denied even when included. Defaults to internal."
+        },
+        "redact": {
+          "type": "array",
+          "description": "Redaction rules applied to everything this role reads.",
+          "items": { "$ref": "#/$defs/redaction" }
+        },
+        "inherits": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/segment" },
+          "description": "Roles whose scope is merged into this one. Includes union; excludes and redactions also union, so inheriting can only ever narrow what is readable."
+        },
+        "extensions": { "$ref": "#/$defs/extensions" }
+      }
+    },
+    "pattern": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^([a-z0-9][a-z0-9_-]*|\\*)(\\.([a-z0-9][a-z0-9_-]*|\\*))*$",
+      "description": "An exact object id, a trailing wildcard such as policies.support.* covering that subtree, an interior wildcard such as customers.*.churn-risk matching exactly one segment, or * for everything. Wildcards match whole segments only."
+    },
+    "agentBinding": {
+      "type": "object",
+      "required": ["roles"],
+      "additionalProperties": false,
+      "properties": {
+        "roles": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/segment" },
+          "description": "Roles this agent holds. A role named here that the manifest does not define is a validation error."
+        },
+        "description": { "type": "string" },
+        "extensions": { "$ref": "#/$defs/extensions" }
+      }
+    },
+    "adapterConfig": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Adapter options. Unknown keys are passed through to the adapter, which validates them.",
+      "properties": {
+        "enabled": { "type": "boolean", "default": true },
+        "package": { "type": "string", "description": "Module implementing the adapter contract for this scheme." },
+        "offline": { "type": "boolean", "description": "When true this adapter is skipped in --offline runs instead of failing them." },
+        "trust": { "$ref": "#/$defs/trust", "description": "Trust applied to content this adapter returns when the object does not declare its own. Remote adapters SHOULD default to untrusted." },
+        "timeout_ms": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "redaction": {
+      "type": "object",
+      "required": ["path"],
+      "additionalProperties": false,
+      "properties": {
+        "path": { "type": "string", "minLength": 1, "description": "Dotted path into structured content, with [] or [*] for every element of an array." },
+        "mode": { "type": "string", "enum": ["remove", "mask", "hash"], "default": "remove" },
+        "replacement": { "type": "string", "default": "[REDACTED]" },
+        "reason": { "type": "string" }
+      }
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "interval": { "$ref": "#/$defs/duration" },
+        "required_approvers": { "type": "integer", "minimum": 1 },
+        "next_review": { "type": "string", "format": "date" },
+        "last_review": { "type": "string", "format": "date" }
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "description": "Namespaced custom fields, e.g. com.example.risk. Unknown extensions MUST be preserved and MUST NOT invalidate an otherwise valid document unless strict mode explicitly requires known extensions.",
+      "propertyNames": { "type": "string", "pattern": "^[a-z0-9]+(\\.[a-z0-9-]+)+$" },
+      "additionalProperties": true
+    }
+  }
+}

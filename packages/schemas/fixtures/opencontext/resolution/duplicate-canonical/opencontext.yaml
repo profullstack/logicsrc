@@ -1,0 +1,11 @@
+opencontext: "1.0"
+id: duplicate-test
+name: Duplicate canonical
+
+collections:
+  policies: ./context/policies/**
+
+roles:
+  everyone:
+    include:
+      - policies.*

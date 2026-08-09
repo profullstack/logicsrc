@@ -1,0 +1,11 @@
+{
+  "opencontext": "1.0",
+  "ok": false,
+  "findings": [
+    {
+      "code": "vibes-off",
+      "severity": "error",
+      "message": "x"
+    }
+  ]
+}

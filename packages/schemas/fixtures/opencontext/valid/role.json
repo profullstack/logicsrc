@@ -1,0 +1,38 @@
+{
+  "id": "support",
+  "description": "Front-line customer support.",
+  "include": [
+    "mission",
+    "organization.public",
+    "products.*",
+    "customers.current",
+    "policies.support.*"
+  ],
+  "exclude": [
+    "finance.payroll.*",
+    "legal.privileged.*"
+  ],
+  "permissions": [
+    "customer.read",
+    "ticket.read",
+    "ticket.write"
+  ],
+  "max_classification": "internal",
+  "redact": [
+    {
+      "path": "customer.ssn"
+    },
+    {
+      "path": "payment.card",
+      "mode": "mask"
+    }
+  ],
+  "inherits": [
+    "everyone"
+  ],
+  "extensions": {
+    "com.acme.tier": {
+      "level": 1
+    }
+  }
+}

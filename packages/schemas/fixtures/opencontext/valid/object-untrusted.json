@@ -1,0 +1,19 @@
+{
+  "id": "operations.ticket-4821",
+  "type": "operational",
+  "layer": "L5",
+  "title": "Ticket 4821",
+  "content_uri": "https://support.example.com/tickets/4821",
+  "authority": "observed",
+  "trust": "untrusted",
+  "owner": "support",
+  "durability": "session",
+  "classification": "internal",
+  "sources": [
+    {
+      "uri": "https://support.example.com/tickets/4821",
+      "type": "conversation",
+      "trust": "untrusted"
+    }
+  ]
+}

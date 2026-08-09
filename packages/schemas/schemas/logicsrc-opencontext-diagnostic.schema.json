@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://logicsrc.com/schemas/opencontext/diagnostic.schema.json",
+  "title": "OpenContext Diagnostic Report",
+  "description": "The machine-readable output of `opencontext validate` and `opencontext doctor`: every finding, where it came from, how bad it is, and the resulting health score. Diagnostics are the contract CI depends on, so the codes are normative and stable — a pipeline that fails on duplicate-canonical must keep failing on it across implementations and versions.",
+  "type": "object",
+  "required": ["opencontext", "ok", "findings"],
+  "additionalProperties": false,
+  "properties": {
+    "opencontext": { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+    "ok": {
+      "type": "boolean",
+      "description": "True when no finding meets or exceeds the configured failure severity. This is what the exit code follows."
+    },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "namespace": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+    "score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Context health, 0-100. Computed as 100 minus the sum of weight x affected objects for each finding, normalised by the object count and clamped at 0. The weights are documented and configurable, so a score is comparable only within a repository's own configuration."
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Roll-up used by the human-readable report.",
+      "properties": {
+        "objects": { "type": "integer", "minimum": 0 },
+        "errors": { "type": "integer", "minimum": 0 },
+        "warnings": { "type": "integer", "minimum": 0 },
+        "info": { "type": "integer", "minimum": 0 },
+        "stale": { "type": "integer", "minimum": 0 },
+        "expired": { "type": "integer", "minimum": 0 },
+        "conflicting": { "type": "integer", "minimum": 0 },
+        "orphaned": { "type": "integer", "minimum": 0 },
+        "missing_owner": { "type": "integer", "minimum": 0 },
+        "broken_sources": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "description": "Every finding, ordered most severe first, then by code, then by object id, so two runs over the same repository produce byte-identical reports.",
+      "items": { "$ref": "#/$defs/finding" }
+    },
+    "extensions": {
+      "type": "object",
+      "propertyNames": { "type": "string", "pattern": "^[a-z0-9]+(\\.[a-z0-9-]+)+$" },
+      "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "severity": {
+      "type": "string",
+      "enum": ["info", "warning", "error"],
+      "description": "error breaks the contract and fails a strict run; warning is context rot that needs attention but still resolves; info is advisory."
+    },
+    "finding": {
+      "type": "object",
+      "required": ["code", "severity", "message"],
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "type": "string",
+          "enum": [
+            "schema-invalid",
+            "manifest-invalid",
+            "duplicate-id",
+            "duplicate-canonical",
+            "unknown-authority",
+            "conflict-declared",
+            "conflict-ambiguous",
+            "broken-supersession",
+            "supersession-cycle",
+            "multiple-active-versions",
+            "broken-reference",
+            "orphaned",
+            "missing-owner",
+            "missing-provenance",
+            "missing-digest",
+            "stale",
+            "expired",
+            "not-yet-valid",
+            "review-overdue",
+            "unapproved",
+            "unknown-scheme",
+            "source-unavailable",
+            "path-traversal",
+            "invalid-permission",
+            "unknown-role",
+            "role-cycle",
+            "empty-scope",
+            "secret-detected",
+            "untrusted-canonical",
+            "unknown-extension"
+          ],
+          "description": "Stable diagnostic code. duplicate-canonical, conflict-ambiguous, and broken-supersession are the checks that keep the resolver from quietly guessing; secret-detected and path-traversal are security checks; unknown-extension is only ever raised in strict mode."
+        },
+        "severity": { "$ref": "#/$defs/severity" },
+        "message": {
+          "type": "string",
+          "minLength": 1,
+          "description": "What is wrong, in a sentence an author can act on."
+        },
+        "id": { "type": "string", "description": "Context object id the finding concerns." },
+        "ids": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Every object involved, when a finding is about a relationship rather than one object — the two canonical policies that collide, or the chain that broke."
+        },
+        "file": { "type": "string", "description": "Path the object was loaded from, relative to the manifest." },
+        "line": { "type": "integer", "minimum": 1, "description": "1-indexed line, when the source format carries positions." },
+        "column": { "type": "integer", "minimum": 1 },
+        "field": { "type": "string", "description": "Dotted path of the offending field, e.g. permissions.read." },
+        "expected": { "description": "What the field should have been." },
+        "actual": { "description": "What it was." },
+        "remediation": {
+          "type": "string",
+          "description": "The concrete next action, e.g. 'Add owner: support, or set health.require_owner: false'."
+        }
+      }
+    }
+  }
+}

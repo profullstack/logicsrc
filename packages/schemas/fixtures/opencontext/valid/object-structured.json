@@ -1,0 +1,34 @@
+{
+  "id": "customers.acme",
+  "type": "customer",
+  "layer": "L2",
+  "title": "ACME Inc.",
+  "content": {
+    "name": "ACME Inc.",
+    "plan": "enterprise",
+    "ssn": "000-00-0000",
+    "contacts": [
+      {
+        "name": "Dana",
+        "email": "dana@acme.example"
+      }
+    ]
+  },
+  "content_type": "application/json",
+  "authority": "reference",
+  "owner": "support",
+  "classification": "confidential",
+  "redact": [
+    {
+      "path": "ssn",
+      "mode": "remove"
+    },
+    {
+      "path": "contacts[*].email",
+      "mode": "hash"
+    }
+  ],
+  "canonical_source": true,
+  "durability": "operational",
+  "trust": "verified"
+}

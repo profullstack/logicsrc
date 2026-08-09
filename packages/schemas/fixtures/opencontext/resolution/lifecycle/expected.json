@@ -1,0 +1,30 @@
+{
+  "description": "Lifecycle is computed against the resolution timestamp. Expired and not-yet-valid context is excluded; stale context is still resolved, and warned about \u2014 silence would be worse than staleness.",
+  "resolve": {
+    "role": "everyone",
+    "at": "2026-08-09T12:00:00Z"
+  },
+  "expect": {
+    "included": [
+      "notes.current",
+      "notes.stale"
+    ],
+    "excluded": [
+      {
+        "id": "notes.expired",
+        "reason": "expired"
+      },
+      {
+        "id": "notes.future",
+        "reason": "not-yet-valid"
+      }
+    ],
+    "warnings": [
+      "stale"
+    ],
+    "lifecycle": {
+      "notes.current": "current",
+      "notes.stale": "stale"
+    }
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "id": "decision.2026-08-09-model-provider",
+  "type": "decision",
+  "layer": "L5",
+  "title": "Default model provider",
+  "authority": "approved",
+  "owner": "platform",
+  "status": "accepted",
+  "decision": "Use provider X as the default runtime.",
+  "rationale": [
+    "latency",
+    "cost",
+    "reliability"
+  ],
+  "alternatives": [
+    {
+      "option": "provider Y",
+      "rejected_because": "no EU region"
+    }
+  ],
+  "consequences": [
+    "Re-evaluate at renewal."
+  ],
+  "approved_by": [
+    {
+      "role": "CTO",
+      "at": "2026-08-09T15:00:00Z"
+    }
+  ],
+  "decided_by": {
+    "type": "human",
+    "id": "cto@acme.example"
+  },
+  "bundle": {
+    "bundle_id": "ocb_3b541a2e1a933b60",
+    "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "generated_at": "2026-08-09T15:00:00Z"
+  },
+  "created": "2026-08-09T15:00:00Z",
+  "updated": "2026-08-09T15:00:00Z",
+  "durability": "long-lived",
+  "classification": "internal",
+  "canonical_source": true,
+  "references": [
+    "policies.vendor-selection"
+  ],
+  "tags": [
+    "platform"
+  ],
+  "version": 1
+}

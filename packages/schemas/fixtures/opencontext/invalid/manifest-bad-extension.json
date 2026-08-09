@@ -1,0 +1,9 @@
+{
+  "opencontext": "1.0",
+  "id": "acme",
+  "extensions": {
+    "risk": {
+      "score": 1
+    }
+  }
+}

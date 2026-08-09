@@ -1,0 +1,10 @@
+{
+  "opencontext": "1.0",
+  "id": "acme",
+  "authority": {
+    "precedence": [
+      "gospel",
+      "canonical"
+    ]
+  }
+}

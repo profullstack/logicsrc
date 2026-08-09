@@ -1,0 +1,210 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://logicsrc.com/schemas/opencontext/bundle.schema.json",
+  "title": "OpenContext Context Bundle",
+  "description": "The portable output of resolution: the authorized, valid, current subset of context selected for one consumer and one task, with its provenance and a deterministic digest. JSON is the canonical interchange form. A bundle is the unit that makes agents replaceable — the same bundle handed to a different model or runtime carries the same organizational knowledge, and a decision can record exactly which context produced it by citing the digest.",
+  "type": "object",
+  "required": ["opencontext", "bundle_id", "generated_at", "consumer", "objects", "digest"],
+  "additionalProperties": false,
+  "properties": {
+    "opencontext": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+(\\.\\d+)?$",
+      "description": "Specification version the bundle conforms to."
+    },
+    "bundle_id": {
+      "type": "string",
+      "pattern": "^ocb_[a-z0-9_-]+$",
+      "description": "Identifier for this bundle, prefixed ocb_. Derived from the digest by the reference implementation so identical inputs produce an identical id."
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the bundle was compiled. Excluded from the digest so that two runs over unchanged sources are byte-identical apart from this field."
+    },
+    "namespace": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$",
+      "description": "The manifest id the bundle was resolved from."
+    },
+    "consumer": {
+      "type": "object",
+      "required": ["type", "id"],
+      "additionalProperties": false,
+      "description": "Who this bundle was resolved for. Recorded so an audit can answer which agent saw which context.",
+      "properties": {
+        "type": { "type": "string", "enum": ["agent", "human", "role", "service"] },
+        "id": { "type": "string", "minLength": 1 },
+        "roles": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 },
+          "description": "Effective roles applied during authorization."
+        }
+      }
+    },
+    "task": {
+      "type": "string",
+      "description": "The task the context was resolved for, verbatim. Used for relevance ranking and recorded for reproducibility."
+    },
+    "as_of": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The instant resolution was evaluated against. Lifecycle state, supersession, and validity windows are all judged at this timestamp, so passing --at reproduces a past view of context."
+    },
+    "objects": {
+      "type": "array",
+      "description": "The resolved context, in deterministic order: layer, then authority, then id. Content here has already been authorized, filtered, and redacted.",
+      "items": { "$ref": "#/$defs/bundledObject" }
+    },
+    "excluded": {
+      "type": "array",
+      "description": "What was considered and left out, and why. Populated when --explain is requested; a bundle with an empty excluded list is not a claim that nothing was excluded.",
+      "items": { "$ref": "#/$defs/exclusion" }
+    },
+    "warnings": {
+      "type": "array",
+      "description": "Non-fatal findings that survived into the bundle: stale context, unresolved canonical conflicts, missing provenance, untrusted content. Warnings are never silently dropped.",
+      "items": { "$ref": "#/$defs/warning" }
+    },
+    "provenance": {
+      "type": "array",
+      "description": "Flattened source records for every object in the bundle. Provenance MUST survive compilation, so this list stands on its own even if content was summarised.",
+      "items": { "$ref": "#/$defs/provenanceEntry" }
+    },
+    "permissions": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 },
+      "description": "Capability strings the consumer holds, carried through for the runtime to enforce."
+    },
+    "stats": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Counters describing the resolution, useful for context budgeting.",
+      "properties": {
+        "considered": { "type": "integer", "minimum": 0 },
+        "included": { "type": "integer", "minimum": 0 },
+        "excluded": { "type": "integer", "minimum": 0 },
+        "redacted": { "type": "integer", "minimum": 0 },
+        "characters": { "type": "integer", "minimum": 0, "description": "Total characters of compiled content. A proxy for token cost that needs no tokenizer." }
+      }
+    },
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "description": "sha256 over the canonical JSON of the bundle with generated_at and digest themselves omitted. Deterministic: identical source state and inputs produce an identical digest, which is what lets a decision record cite exactly the context that produced it."
+    },
+    "extensions": { "$ref": "#/$defs/extensions" }
+  },
+  "$defs": {
+    "bundledObject": {
+      "type": "object",
+      "required": ["id", "type"],
+      "additionalProperties": true,
+      "description": "A resolved context object. Carries the object's declared fields plus the state the resolver computed for it.",
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "type": { "type": "string", "minLength": 1 },
+        "layer": { "type": "string", "enum": ["L0", "L1", "L2", "L3", "L4", "L5"] },
+        "title": { "type": "string" },
+        "content": { "anyOf": [{ "type": "string" }, { "type": "object" }, { "type": "array" }] },
+        "content_type": { "type": "string" },
+        "authority": { "type": "string", "enum": ["canonical", "approved", "reference", "observed", "inferred", "historical"] },
+        "trust": {
+          "type": "string",
+          "enum": ["trusted", "verified", "untrusted"],
+          "description": "Preserved through resolution. An integration MUST be able to tell canonical policy apart from text a stranger wrote into a ticket."
+        },
+        "owner": { "type": "string" },
+        "version": { "type": "integer", "minimum": 1 },
+        "updated": { "type": "string", "format": "date-time" },
+        "classification": { "type": "string", "enum": ["public", "internal", "confidential", "restricted"] },
+        "durability": { "type": "string", "enum": ["ephemeral", "session", "operational", "long-lived", "permanent"] },
+        "lifecycle": {
+          "type": "string",
+          "enum": ["future", "current", "stale", "expired", "superseded"],
+          "description": "Computed against as_of, not stored on the object."
+        },
+        "redacted": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Paths removed or masked before compilation. The bundle discloses that redaction happened without disclosing what was redacted."
+        },
+        "sources": { "type": "array", "items": { "type": "object" } },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "extensions": { "$ref": "#/$defs/extensions" }
+      }
+    },
+    "exclusion": {
+      "type": "object",
+      "required": ["id", "reason"],
+      "additionalProperties": false,
+      "description": "One object that was considered and rejected, with the pipeline stage that rejected it.",
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "reason": {
+          "type": "string",
+          "enum": [
+            "permission-denied",
+            "classification-denied",
+            "scope-exclusion",
+            "not-in-scope",
+            "superseded",
+            "expired",
+            "not-yet-valid",
+            "outranked",
+            "unapproved",
+            "not-relevant",
+            "conflict",
+            "source-unavailable"
+          ],
+          "description": "Why it was left out. permission-denied and classification-denied are authorization outcomes and are decided before any relevance work is done."
+        },
+        "detail": { "type": "string", "description": "Human-readable specifics, e.g. the pattern that excluded it or the object that outranked it." },
+        "outranked_by": { "type": "string", "description": "Id of the object that won, when reason is outranked or superseded." }
+      }
+    },
+    "warning": {
+      "type": "object",
+      "required": ["code", "message"],
+      "additionalProperties": false,
+      "properties": {
+        "code": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+        "message": { "type": "string", "minLength": 1 },
+        "id": { "type": "string", "description": "Object the warning concerns, when it concerns one." },
+        "severity": { "type": "string", "enum": ["info", "warning", "error"], "default": "warning" }
+      }
+    },
+    "provenanceEntry": {
+      "type": "object",
+      "required": ["id"],
+      "additionalProperties": false,
+      "description": "Where one bundled object came from.",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "description": "The context object id." },
+        "canonical_source": { "type": "boolean", "description": "True when the object is itself the origin and has no upstream source." },
+        "sources": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["uri"],
+            "additionalProperties": true,
+            "properties": {
+              "uri": { "type": "string", "minLength": 1 },
+              "type": { "type": "string" },
+              "retrieved_at": { "type": "string", "format": "date-time" },
+              "digest": { "type": "string", "pattern": "^(sha256):[0-9a-f]{64}$" },
+              "trust": { "type": "string", "enum": ["trusted", "verified", "untrusted"] }
+            }
+          }
+        }
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "propertyNames": { "type": "string", "pattern": "^[a-z0-9]+(\\.[a-z0-9-]+)+$" },
+      "additionalProperties": true
+    }
+  }
+}

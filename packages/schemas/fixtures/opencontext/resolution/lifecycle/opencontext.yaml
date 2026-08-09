@@ -1,0 +1,14 @@
+opencontext: "1.0"
+id: lifecycle-test
+name: Lifecycle
+
+collections:
+  notes: ./context/notes/**
+
+freshness:
+  default_ttl: 30d
+
+roles:
+  everyone:
+    include:
+      - notes.*

@@ -1,0 +1,19 @@
+{
+  "description": "An exclude pattern beats an include that also matches. Deny overrides allow, unconditionally.",
+  "resolve": {
+    "role": "support",
+    "at": "2026-08-09T12:00:00Z"
+  },
+  "expect": {
+    "included": [
+      "mission",
+      "policies.refunds"
+    ],
+    "excluded": [
+      {
+        "id": "policies.internal.margins",
+        "reason": "scope-exclusion"
+      }
+    ]
+  }
+}

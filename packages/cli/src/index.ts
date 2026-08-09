@@ -32,6 +32,7 @@ import { boards, tasks } from "./fixtures.js";
 import { print, type OutputFormat } from "./format.js";
 import { parsePositiveInteger } from "./numeric-options.js";
 import { exportOpenSpecSummary, importOpenSpec, writeOpenSpecChange } from "./openspec.js";
+import { registerOpenContextCommands } from "./context.js";
 import { registerOntologyCommands } from "./ontology.js";
 import { registerPrdCommands } from "./prd.js";
 import { defaultPluginRegistry } from "./registry.js";
@@ -942,6 +943,7 @@ async function runYoloArcade(game: string, repo?: string) {
   });
 }
 
+registerOpenContextCommands(program);
 registerOntologyCommands(program);
 registerPrdCommands(program);
 

@@ -1,7 +1,7 @@
 {
   "name": "@logicsrc/schemas",
   "version": "0.1.0",
-  "description": "LogicSRC JSON schemas for tasks, agents, runs, events, plugins, the AgentAd ad standard, and the OpenOntology knowledge contracts.",
+  "description": "LogicSRC JSON schemas for tasks, agents, runs, events, plugins, the AgentAd ad standard, the OpenOntology knowledge contracts, and the OpenContext context plane.",
   "license": "MIT",
   "type": "module",
   "repository": {
@@ -15,10 +15,12 @@
     "agentad",
     "agents",
     "cli",
+    "context",
     "json-schema",
     "knowledge-graph",
     "logicsrc",
     "ontology",
+    "opencontext",
     "openontology",
     "standards"
   ],
@@ -65,7 +67,16 @@
     "./openontology-approval": "./schemas/logicsrc-openontology-approval.schema.json",
     "./openontology-event": "./schemas/logicsrc-openontology-event.schema.json",
     "./openontology-package": "./schemas/logicsrc-openontology-package.schema.json",
-    "./openontology-conformance": "./fixtures/openontology/conformance.json"
+    "./openontology-conformance": "./fixtures/openontology/conformance.json",
+    "./opencontext-manifest": "./schemas/logicsrc-opencontext-manifest.schema.json",
+    "./opencontext-object": "./schemas/logicsrc-opencontext-object.schema.json",
+    "./opencontext-bundle": "./schemas/logicsrc-opencontext-bundle.schema.json",
+    "./opencontext-role": "./schemas/logicsrc-opencontext-role.schema.json",
+    "./opencontext-provenance": "./schemas/logicsrc-opencontext-provenance.schema.json",
+    "./opencontext-decision": "./schemas/logicsrc-opencontext-decision.schema.json",
+    "./opencontext-diagnostic": "./schemas/logicsrc-opencontext-diagnostic.schema.json",
+    "./opencontext-audit-event": "./schemas/logicsrc-opencontext-audit-event.schema.json",
+    "./opencontext-conformance": "./fixtures/opencontext/conformance.json"
   },
   "files": [
     "schemas",

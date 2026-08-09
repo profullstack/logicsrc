@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@logicsrc/account-core": "file:../account-core",
+    "@logicsrc/opencontext": "file:../opencontext",
     "@logicsrc/openontology": "file:../openontology",
     "@logicsrc/openprd": "file:../openprd",
     "@logicsrc/plugin-agentbbs": "file:../../plugins/agentbbs",

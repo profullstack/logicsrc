@@ -1,0 +1,11 @@
+opencontext: "1.0"
+id: conflict-test
+name: Declared conflicts
+
+collections:
+  policies: ./context/policies/**
+
+roles:
+  everyone:
+    include:
+      - policies.*

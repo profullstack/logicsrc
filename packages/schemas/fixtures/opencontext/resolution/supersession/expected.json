@@ -1,0 +1,33 @@
+{
+  "description": "Superseded versions are retained on disk and excluded from default resolution; --include-historical brings them back so a past view can be reconstructed.",
+  "resolve": {
+    "role": "sales",
+    "at": "2026-08-09T12:00:00Z"
+  },
+  "expect": {
+    "included": [
+      "pricing.enterprise"
+    ],
+    "includedVersions": {
+      "pricing.enterprise": 2
+    },
+    "excluded": [
+      {
+        "id": "pricing.enterprise",
+        "reason": "superseded"
+      }
+    ]
+  },
+  "also": [
+    {
+      "resolve": {
+        "role": "sales",
+        "at": "2026-08-09T12:00:00Z",
+        "includeHistorical": true
+      },
+      "expect": {
+        "objectCount": 2
+      }
+    }
+  ]
+}

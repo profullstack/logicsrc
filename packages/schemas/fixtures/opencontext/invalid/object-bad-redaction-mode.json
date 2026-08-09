@@ -1,0 +1,10 @@
+{
+  "id": "c.acme",
+  "type": "customer",
+  "redact": [
+    {
+      "path": "ssn",
+      "mode": "shred"
+    }
+  ]
+}

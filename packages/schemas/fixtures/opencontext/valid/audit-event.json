@@ -1,0 +1,26 @@
+{
+  "opencontext": "1.0",
+  "event": "context.resolve",
+  "at": "2026-08-09T15:00:00Z",
+  "actor": {
+    "type": "agent",
+    "id": "support-agent",
+    "roles": [
+      "support"
+    ],
+    "on_behalf_of": "dana@acme.example"
+  },
+  "task": "Handle refund request for ACME",
+  "objects": [
+    "mission",
+    "policies.refunds"
+  ],
+  "bundle": {
+    "bundle_id": "ocb_3b541a2e1a933b60",
+    "digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+    "object_count": 2
+  },
+  "outcome": "partial",
+  "reason": "3 objects excluded by scope",
+  "namespace": "acme"
+}

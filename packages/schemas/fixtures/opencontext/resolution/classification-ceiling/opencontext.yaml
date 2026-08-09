@@ -1,0 +1,16 @@
+opencontext: "1.0"
+id: classification-test
+name: Classification ceiling
+
+collections:
+  docs: ./context/docs/**
+
+roles:
+  support:
+    include:
+      - docs.*
+    max_classification: internal
+  legal:
+    include:
+      - docs.*
+    max_classification: restricted

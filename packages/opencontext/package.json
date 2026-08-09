@@ -1,0 +1,53 @@
+{
+  "name": "@logicsrc/opencontext",
+  "version": "0.1.0",
+  "description": "Reference implementation of the LogicSRC OpenContext standard: durable, portable, permissioned, provenance-aware context resolved into deterministic bundles for humans and AI agents.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./adapters": "./dist/adapters/index.js",
+    "./commands": "./dist/commands.js"
+  },
+  "bin": {
+    "opencontext": "./dist/cli.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/profullstack/logicsrc.git",
+    "directory": "packages/opencontext"
+  },
+  "homepage": "https://logicsrc.com/opencontext",
+  "keywords": [
+    "logicsrc",
+    "opencontext",
+    "context",
+    "agents",
+    "provenance",
+    "permissions",
+    "json-schema",
+    "standards"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run src",
+    "bench": "node dist/bench.js"
+  },
+  "dependencies": {
+    "@libsql/client": "^0.17.4",
+    "@logicsrc/validators": "file:../validators",
+    "commander": "^14.0.2",
+    "yaml": "^2.8.1"
+  },
+  "devDependencies": {
+    "vitest": "^4.0.8"
+  }
+}

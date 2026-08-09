@@ -1,0 +1,32 @@
+{
+  "description": "An object-level read grant narrows a role that would otherwise include it. Both roles include policies.*; only finance may read the payroll policy.",
+  "resolve": {
+    "role": "support",
+    "at": "2026-08-09T12:00:00Z"
+  },
+  "expect": {
+    "included": [
+      "policies.refunds"
+    ],
+    "excluded": [
+      {
+        "id": "policies.payroll",
+        "reason": "permission-denied"
+      }
+    ]
+  },
+  "also": [
+    {
+      "resolve": {
+        "role": "finance",
+        "at": "2026-08-09T12:00:00Z"
+      },
+      "expect": {
+        "included": [
+          "policies.payroll",
+          "policies.refunds"
+        ]
+      }
+    }
+  ]
+}

@@ -14,6 +14,7 @@ apps/
   commandboard-web   PWA shell
 packages/
   cli                logicsrc OpenSpec CLI
+  opencontext        OpenContext reference implementation (resolver, scopes, bundles, adapters)
   openontology       OpenOntology reference engine (entities, claims, queries, change sets)
   openprd            OpenPRD reference implementation (numbered PRDs, lifecycle, task bridge)
   logicsrc-mcp       @profullstack/logicsrc-mcp standards MCP server
@@ -31,6 +32,7 @@ docs/
   specs, CLI conventions, permissions, and roadmap notes
 examples/
   openontology/ethereum-ecosystem   fictional ecosystem map demonstrating OpenOntology
+  opencontext/*                     five OpenContext repositories, from minimal to multi-agent
 prd/
   numbered OpenPRD proposals
 scripts/
@@ -103,6 +105,48 @@ that propose rather than apply, keyboard-first TUI panels, and a read-only web e
 [/openontology/explore](https://logicsrc.com/openontology/explore). See also
 [governance](docs/openontology-governance.md) and
 [interoperability](docs/openontology-interoperability.md).
+
+## OpenContext
+
+[LogicSRC OpenContext](docs/opencontext.md) is an open specification for durable, portable,
+permissioned, provenance-aware context shared between humans and AI agents. It defines how
+organizational knowledge is described, authorized, versioned, resolved, audited, and handed between
+replaceable workers without losing institutional state.
+
+> An agent should be replaceable without losing organizational knowledge.
+
+```bash
+npx opencontext init my-context
+npx opencontext validate --strict
+npx opencontext resolve --role support --task "customer asked for a refund" --explain
+```
+
+```txt
+Included:
+  ✓ mission                                 canonical
+  ✓ policies.refunds                        canonical
+  ✓ procedures.refund                       approved
+
+Excluded:
+  - decisions.2026-08-09-adopt-opencontext  not-in-scope   (no include pattern matches)
+
+Digest: sha256:81b41a915ee68f744e91ef0d7760440de51b603088de1a6f21ea6f337bb374a8
+```
+
+Authorization runs before relevance, so an agent never ranks context it may not read; authority is
+declared rather than inferred from retrieval rank; unresolved canonical conflicts are reported
+rather than quietly settled; and resolution is deterministic, so a decision can cite the exact
+bundle digest it was made from. Untrusted content — tickets, chats, scraped pages — keeps its trust
+level through resolution and is fenced and labelled in rendered bundles.
+
+It is not a memory database. Memory is one possible context source; OpenContext is the control
+plane above systems that remain the sources of truth. It runs from a folder and a Git repository
+with no account, no server, and no telemetry.
+
+Also available as `logicsrc context <command>`, sharing one implementation with the standalone
+binary. See the [specification](docs/opencontext/spec.md), [CLI](docs/opencontext/cli.md),
+[SDK](docs/opencontext/sdk.md), [security model](docs/opencontext/security.md), and
+[conformance guide](docs/opencontext/conformance.md).
 
 ## MCP
 

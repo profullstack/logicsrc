@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://logicsrc.com/schemas/opencontext/provenance.schema.json",
+  "title": "OpenContext Provenance Record",
+  "description": "Where one context object came from. Provenance answers 'who says so and when did we last check', which is a different question from 'is it true' (authority) and 'may you read it' (permissions). Provenance MUST survive bundle compilation: summarising or reformatting content may not erase its origin, because an agent that cannot cite its sources cannot be audited or corrected.",
+  "type": "object",
+  "required": ["id"],
+  "additionalProperties": false,
+  "anyOf": [
+    { "required": ["sources"], "properties": { "sources": { "type": "array" } } },
+    { "required": ["canonical_source"], "properties": { "canonical_source": { "const": true } } }
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_-]*(\\.[a-z0-9][a-z0-9_-]*)*$",
+      "description": "The context object this record describes."
+    },
+    "canonical_source": {
+      "type": "boolean",
+      "description": "True when the object is itself the origin of the fact. A mission statement written in this repository has no upstream source and satisfies a provenance requirement on its own; a pricing object mirrored from a CRM does not."
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "description": "Origins, most authoritative first. More than one source is normal — the same fact may be mirrored from a CRM and confirmed in a policy document.",
+      "items": { "$ref": "#/$defs/source" }
+    },
+    "retrieved_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the object as a whole was last refreshed from its sources, when that differs from the per-source timestamps."
+    },
+    "extensions": {
+      "type": "object",
+      "propertyNames": { "type": "string", "pattern": "^[a-z0-9]+(\\.[a-z0-9-]+)+$" },
+      "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "source": {
+      "type": "object",
+      "required": ["uri"],
+      "additionalProperties": false,
+      "properties": {
+        "uri": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Where the content came from, e.g. git://github.com/acme/context/policies/refunds.md, crm://pricing/enterprise, or https://example.com/handbook. The scheme tells a reader which system to go argue with when the fact is wrong."
+        },
+        "type": {
+          "type": "string",
+          "description": "What kind of origin this is: canonical-record, document, conversation, observation, api, inference. An origin of type conversation or observation is a reason to keep the object's authority low."
+        },
+        "retrieved_at": { "type": "string", "format": "date-time", "description": "When these bytes were last read." },
+        "digest": {
+          "type": "string",
+          "pattern": "^(sha256):[0-9a-f]{64}$",
+          "description": "sha256:<64 lowercase hex> over the retrieved bytes. Lets a consumer detect that a remote source changed under them since the context was written, which is the difference between stale context and silently wrong context."
+        },
+        "label": { "type": "string", "description": "Human-readable name of the source." },
+        "trust": {
+          "type": "string",
+          "enum": ["trusted", "verified", "untrusted"],
+          "description": "Trust of this specific origin. A digest-checked external document is verified; a scraped page or a customer message is untrusted no matter how confident the object is."
+        },
+        "author": { "type": "string", "description": "Who produced the source material, when known." },
+        "extensions": {
+          "type": "object",
+          "propertyNames": { "type": "string", "pattern": "^[a-z0-9]+(\\.[a-z0-9-]+)+$" },
+          "additionalProperties": true
+        }
+      }
+    }
+  }
+}

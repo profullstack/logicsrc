@@ -1,0 +1,17 @@
+opencontext: "1.0"
+id: scope-test
+name: Deny overrides allow
+
+context:
+  mission: ./context/mission.md
+
+collections:
+  policies: ./context/policies/**
+
+roles:
+  support:
+    include:
+      - mission
+      - policies.*
+    exclude:
+      - policies.internal.*

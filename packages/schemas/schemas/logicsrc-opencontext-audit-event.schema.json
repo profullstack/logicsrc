@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://logicsrc.com/schemas/opencontext/audit-event.schema.json",
+  "title": "OpenContext Audit Event",
+  "description": "One recorded interaction with the context plane: a read, a bundle generation, a write, a conflict the resolver refused to guess about, or a decision. The specification defines the event shape and leaves storage to the implementation — an NDJSON file in the repository is a conforming sink, and so is a warehouse. The point is that after an agent is retired, its reads and writes remain attributable.",
+  "type": "object",
+  "required": ["opencontext", "event", "at", "actor"],
+  "additionalProperties": false,
+  "properties": {
+    "opencontext": { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+    "event": {
+      "type": "string",
+      "enum": [
+        "context.read",
+        "context.search",
+        "context.resolve",
+        "context.bundle",
+        "context.write",
+        "context.supersede",
+        "context.conflict",
+        "context.denied",
+        "decision.record"
+      ],
+      "description": "What happened. context.denied records an authorization refusal, which is usually the most interesting line in the log."
+    },
+    "at": { "type": "string", "format": "date-time", "description": "When it happened." },
+    "actor": {
+      "type": "object",
+      "required": ["type", "id"],
+      "additionalProperties": false,
+      "description": "Who did it. An agent acting for a person records both, so an action is never attributable to a model alone.",
+      "properties": {
+        "type": { "type": "string", "enum": ["agent", "human", "role", "service"] },
+        "id": { "type": "string", "minLength": 1 },
+        "roles": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+        "on_behalf_of": { "type": "string", "description": "The human or service the actor was acting for." }
+      }
+    },
+    "task": { "type": "string", "description": "The task the context was being used for, when there was one." },
+    "objects": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 },
+      "description": "Context object ids the event touched."
+    },
+    "bundle": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "The bundle produced or consumed. The digest is what makes the record verifiable rather than merely descriptive.",
+      "properties": {
+        "bundle_id": { "type": "string", "pattern": "^ocb_[a-z0-9_-]+$" },
+        "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+        "object_count": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "outcome": {
+      "type": "string",
+      "enum": ["allowed", "denied", "partial", "error"],
+      "description": "partial is the normal outcome of a resolution that excluded some candidates; denied means the consumer was refused everything it asked for."
+    },
+    "reason": { "type": "string", "description": "Why, especially for denied and error outcomes." },
+    "namespace": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+    "extensions": {
+      "type": "object",
+      "propertyNames": { "type": "string", "pattern": "^[a-z0-9]+(\\.[a-z0-9-]+)+$" },
+      "additionalProperties": true
+    }
+  }
+}

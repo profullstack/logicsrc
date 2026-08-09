@@ -1,0 +1,41 @@
+{
+  "id": "customers.acme",
+  "type": "customer",
+  "layer": "L2",
+  "title": "ACME Inc.",
+  "authority": "reference",
+  "owner": "support",
+  "durability": "operational",
+  "classification": "confidential",
+  "canonical_source": true,
+  "updated": "2026-08-01T00:00:00Z",
+  "tags": [
+    "customer",
+    "enterprise"
+  ],
+  "applies_to": [
+    "support"
+  ],
+  "content": {
+    "name": "ACME Inc.",
+    "plan": "enterprise",
+    "since": "2024-03-11",
+    "ssn": "000-00-0000",
+    "payment": {
+      "card": "4111111111111111",
+      "method": "invoice"
+    },
+    "contacts": [
+      {
+        "name": "Dana Okafor",
+        "role": "billing",
+        "email": "dana@acme.example"
+      },
+      {
+        "name": "Rin Alvarez",
+        "role": "ops",
+        "email": "rin@acme.example"
+      }
+    ]
+  }
+}

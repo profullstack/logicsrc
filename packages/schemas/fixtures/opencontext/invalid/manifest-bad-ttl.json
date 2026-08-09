@@ -1,0 +1,7 @@
+{
+  "opencontext": "1.0",
+  "id": "acme",
+  "freshness": {
+    "default_ttl": "30 days"
+  }
+}
