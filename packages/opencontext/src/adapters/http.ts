@@ -20,6 +20,38 @@ export class OfflineError extends Error {
 const DEFAULT_TIMEOUT_MS = 10_000;
 const MAX_BYTES = 5 * 1024 * 1024;
 
+async function readBody(response: Response, uri: string): Promise<string> {
+  if (!response.body) return "";
+
+  const reader = response.body.getReader();
+  const chunks: Uint8Array[] = [];
+  let totalBytes = 0;
+
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      totalBytes += value.byteLength;
+      if (totalBytes > MAX_BYTES) {
+        await reader.cancel().catch(() => undefined);
+        throw new Error(`Refusing to load ${uri}: response exceeds the ${MAX_BYTES} byte limit.`);
+      }
+      chunks.push(value);
+    }
+  } finally {
+    reader.releaseLock();
+  }
+
+  const bytes = new Uint8Array(totalBytes);
+  let offset = 0;
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+  return new TextDecoder().decode(bytes);
+}
+
 export const httpAdapter: Adapter = {
   name: "http",
   schemes: ["http", "https"],
@@ -39,41 +71,40 @@ export const httpAdapter: Adapter = {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), timeoutMs);
 
-    let response: Response;
     try {
-      response = await fetch(url, {
-        signal: controller.signal,
-        // Redirects can move a request to a host the author never named, so the
-        // final URL is reported back rather than followed silently.
-        redirect: "follow",
-        headers: { accept: "text/markdown, text/plain, application/json;q=0.9, */*;q=0.8" }
-      });
-    } catch (error) {
-      throw new Error(`Failed to fetch ${uri}: ${(error as Error).message}`);
+      let response: Response;
+      try {
+        response = await fetch(url, {
+          signal: controller.signal,
+          // Redirects can move a request to a host the author never named, so the
+          // final URL is reported back rather than followed silently.
+          redirect: "follow",
+          headers: { accept: "text/markdown, text/plain, application/json;q=0.9, */*;q=0.8" }
+        });
+      } catch (error) {
+        throw new Error(`Failed to fetch ${uri}: ${(error as Error).message}`);
+      }
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch ${uri}: HTTP ${response.status} ${response.statusText}`);
+      }
+
+      const declaredLength = Number(response.headers.get("content-length") ?? "0");
+      if (declaredLength > MAX_BYTES) {
+        throw new Error(`Refusing to load ${uri}: ${declaredLength} bytes exceeds the ${MAX_BYTES} byte limit.`);
+      }
+
+      const content = await readBody(response, uri);
+
+      return {
+        content,
+        contentType: (response.headers.get("content-type") ?? "text/plain").split(";")[0]!.trim(),
+        digest: sha256Uri(content),
+        retrievedAt: new Date().toISOString(),
+        trust: (ctx.config.trust as AdapterResult["trust"]) ?? "untrusted"
+      };
     } finally {
       clearTimeout(timer);
     }
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch ${uri}: HTTP ${response.status} ${response.statusText}`);
-    }
-
-    const declaredLength = Number(response.headers.get("content-length") ?? "0");
-    if (declaredLength > MAX_BYTES) {
-      throw new Error(`Refusing to load ${uri}: ${declaredLength} bytes exceeds the ${MAX_BYTES} byte limit.`);
-    }
-
-    const content = await response.text();
-    if (content.length > MAX_BYTES) {
-      throw new Error(`Refusing to load ${uri}: response exceeds the ${MAX_BYTES} byte limit.`);
-    }
-
-    return {
-      content,
-      contentType: (response.headers.get("content-type") ?? "text/plain").split(";")[0]!.trim(),
-      digest: sha256Uri(content),
-      retrievedAt: new Date().toISOString(),
-      trust: (ctx.config.trust as AdapterResult["trust"]) ?? "untrusted"
-    };
   }
 };
