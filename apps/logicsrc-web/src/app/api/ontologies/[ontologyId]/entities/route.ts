@@ -1,4 +1,5 @@
 import { handle, apiJson } from "@/lib/ontology-service";
+import { parseBoundedIntegerParam } from "@/lib/pagination";
 
 export const dynamic = "force-dynamic";
 
@@ -8,8 +9,8 @@ export async function GET(request: Request, { params }: { params: Promise<{ onto
   const url = new URL(request.url);
   const type = url.searchParams.get("type") ?? undefined;
   const q = url.searchParams.get("q") ?? undefined;
-  const limit = Math.min(Number(url.searchParams.get("limit") ?? 50), 200);
-  const offset = Math.max(Number(url.searchParams.get("offset") ?? 0), 0);
+  const limit = parseBoundedIntegerParam(url.searchParams.get("limit"), 50, 1, 200);
+  const offset = parseBoundedIntegerParam(url.searchParams.get("offset"), 0, 0, Number.MAX_SAFE_INTEGER);
 
   return handle(request, ontologyId, (engine) => {
     if (q) {

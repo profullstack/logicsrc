@@ -102,6 +102,32 @@ describe("reads", () => {
     expect(payload.total).toBeGreaterThan(3);
   });
 
+  it("falls back safely for negative and malformed pagination values", async () => {
+    const entityResponse = await listEntities(
+      request(`/api/ontologies/${ONTOLOGY}/entities?limit=-1&offset=invalid`),
+      params({ ontologyId: ONTOLOGY })
+    );
+    const entityPayload = await body<{ limit: number; offset: number }>(entityResponse);
+    expect(entityPayload.limit).toBe(50);
+    expect(entityPayload.offset).toBe(0);
+
+    const claimResponse = await listClaims(
+      request(`/api/ontologies/${ONTOLOGY}/claims?limit=1.5`),
+      params({ ontologyId: ONTOLOGY })
+    );
+    expect((await body<{ limit: number }>(claimResponse)).limit).toBe(100);
+
+    const defaultEvents = await events(
+      request(`/api/ontologies/${ONTOLOGY}/events`),
+      params({ ontologyId: ONTOLOGY })
+    );
+    const invalidEvents = await events(
+      request(`/api/ontologies/${ONTOLOGY}/events?limit=-1`),
+      params({ ontologyId: ONTOLOGY })
+    );
+    expect(await body(invalidEvents)).toEqual(await body(defaultEvents));
+  });
+
   it("returns ranked matches with evidence when searching", async () => {
     const response = await listEntities(
       request(`/api/ontologies/${ONTOLOGY}/entities?q=Avery`),
