@@ -1,4 +1,5 @@
 import { handle, apiJson } from "@/lib/ontology-service";
+import { parseBoundedIntegerParam } from "@/lib/pagination";
 
 export const dynamic = "force-dynamic";
 
@@ -6,7 +7,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ onto
   const { ontologyId } = await params;
   const url = new URL(request.url);
   const statusParam = url.searchParams.get("status") ?? "asserted";
-  const limit = Math.min(Number(url.searchParams.get("limit") ?? 100), 500);
+  const limit = parseBoundedIntegerParam(url.searchParams.get("limit"), 100, 1, 500);
 
   return handle(request, ontologyId, (engine) => {
     const claims = engine.store.listClaims({
