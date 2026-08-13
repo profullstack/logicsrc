@@ -27,6 +27,7 @@ import {
   secretsUpAction,
   secretsDownAction
 } from "./teams.js";
+import { sshAgentAction, sshListAction, sshPullAction, sshPushAction } from "./ssh.js";
 import { credentialsRotateAction } from "./rotate.js";
 import { boards, tasks } from "./fixtures.js";
 import { print, type OutputFormat } from "./format.js";
@@ -490,6 +491,52 @@ credentials
   .option("--format <format>", "table, json, or markdown", "table")
   .description("Pull the linked team environment into .env.")
   .action((env, options) => secretsDownAction(env, { env: options.env, format: options.format as OutputFormat }));
+
+const secretsSsh = credentials
+  .command("ssh")
+  .description("Back up ~/.ssh keys and config to an end-to-end-encrypted vault, keyed by username.");
+
+const collect = (value: string, previous: string[]): string[] => [...previous, value];
+
+/** Every ssh subcommand addresses the same `ssh--<username>` vault the same way. */
+function withSshTarget(command: import("commander").Command): import("commander").Command {
+  return command
+    .argument("[team]", "Team slug (selected interactively when omitted)")
+    .argument("[username]", "Vault owner (defaults to your local username)")
+    .option("--dir <path>", "SSH directory", "~/.ssh")
+    .option("--format <format>", "table, json, or markdown", "table");
+}
+
+const sshOptions = (options: Record<string, unknown>) => ({
+  dir: options.dir as string,
+  include: options.include as string[] | undefined,
+  force: Boolean(options.force),
+  dryRun: Boolean(options.dryRun),
+  format: options.format as OutputFormat
+});
+
+withSshTarget(secretsSsh.command("push"))
+  .option("--include <name>", "Also back up this file (authorized_keys, known_hosts…); repeatable", collect, [])
+  .option("--force", "Overwrite vault copies that differ from the local file")
+  .option("--dry-run", "Show what would be pushed without writing")
+  .description("Push key pairs and config from ~/.ssh into the vault.")
+  .action((team, username, options) => sshPushAction(team, username, sshOptions(options)));
+
+withSshTarget(secretsSsh.command("pull"))
+  .option("--force", "Overwrite local files that differ from the vault copy")
+  .option("--dry-run", "Show what would be restored without writing")
+  .description("Restore key pairs and config from the vault into ~/.ssh, permissions included.")
+  .action((team, username, options) => sshPullAction(team, username, sshOptions(options)));
+
+withSshTarget(secretsSsh.command("list"))
+  .description("List the files an ssh vault holds — paths, kinds and modes, never key bodies.")
+  .action((team, username, options) => sshListAction(team, username, sshOptions(options)));
+
+withSshTarget(secretsSsh.command("agent"))
+  .option("--lifetime <seconds>", "Forget the keys after this long (ssh-add -t)")
+  .option("--dry-run", "List the keys that would be added without adding them")
+  .description("Load the vault's private keys into the running ssh-agent, without writing them to disk.")
+  .action((team, username, options) => sshAgentAction(team, username, { ...sshOptions(options), lifetime: options.lifetime as string | undefined }));
 
 withEndpointOptions(
   credentials.command("inspect").requiredOption("--provider <provider>", "Provider id"),

@@ -57,6 +57,7 @@ doppler
 railway
 github-secrets
 sh1pt
+ssh
 ```
 
 - `.env`: read, diff, redact, and write local environment files.
@@ -65,6 +66,8 @@ sh1pt
 - GitHub Secrets: sync repository, organization, and environment secrets.
 - sh1pt: sync the distribution credential vault — App Store Connect keys, Play
   service accounts, npm and Docker tokens, Cloudflare tokens.
+- ssh: read and restore a local `~/.ssh` — key pairs, `config`,
+  `allowed_signers` — with permission bits preserved.
 
 `sh1pt` is the one adapter driven through a **CLI** rather than an HTTP API,
 because sh1pt publishes `sh1pt secret set|get|list|rm` as the interface to its
@@ -80,6 +83,57 @@ stating:
   scripted. The adapter is therefore write-only for values (`readValues:
   false`), exactly like `github-secrets`: it can be a sync target but never a
   source, and it supports no value-restoring rollback.
+
+## SSH Keys
+
+`logicsrc secrets ssh` pairs the `ssh` adapter with a team vault, so private
+keys live encrypted in a vault instead of as plaintext-on-disk files guarded
+only by a passphrase — the same trade Proton Pass makes with its SSH agent.
+
+```bash
+# Back up ~/.ssh (key pairs + config) into the vault for your username
+logicsrc secrets ssh push profullstack           # → vault ssh--anthony
+logicsrc secrets ssh push --dry-run              # show what would go up
+logicsrc secrets ssh push --include authorized_keys
+
+# See what a vault holds — paths, kinds and modes, never key bodies
+logicsrc secrets ssh list profullstack
+
+# Restore onto a new machine, permissions and all
+logicsrc secrets ssh pull profullstack
+
+# Or use the keys without ever writing them to that machine's disk
+logicsrc secrets ssh agent profullstack --lifetime 3600
+```
+
+Key material is addressed by **person, not project**: the vault is
+`ssh--<username>`, which `teams vaults` lists as project `ssh`, env
+`<username>`. One teammate's keys therefore never land in another's restore,
+and sharing a key stays a deliberate `teams grant`.
+
+Implementation notes:
+
+- Each file becomes one secret whose value is a JSON envelope carrying the
+  relative path, permission bits, and body. The envelope exists because the
+  engine only hands `write()` the secrets that CHANGED — a separate manifest
+  secret would be missing from that set whenever a key's contents change but
+  the file list doesn't, leaving nowhere to look up the destination path.
+- Files are selected by sniffing contents, not by filename: anything holding a
+  `PRIVATE KEY` block or an `ssh-*`/`ecdsa-*`/`sk-*` public key line, plus
+  `config`, `config.d/*` and `allowed_signers`. `known_hosts` and
+  `authorized_keys` are host-specific and access-granting, so they are only
+  included when named with `--include`.
+- Both directions hold back anything that would **overwrite a file that already
+  differs**, and say what they skipped; `--force` opts into the overwrite. A
+  restore onto a machine with its own keys is otherwise a way to lose them.
+- Restores recreate the directory `0700` and chmod each file back to its
+  recorded mode — `writeFileSync`'s mode applies only on create, so an existing
+  world-readable key would otherwise stay world-readable.
+- The adapter declares `delete: false`. Removing a local key you still need is
+  unrecoverable from here, so deletions are reported and refused, never applied.
+- `push` warns when a private key has **no passphrase**. It stays end-to-end
+  encrypted in the vault, but everyone granted that vault gets a ready-to-use
+  key.
 
 ## Core Objects
 

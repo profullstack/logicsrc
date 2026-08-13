@@ -53,9 +53,21 @@ export {
   dopplerProvider,
   railwayProvider,
   githubSecretsProvider,
+  sshProvider,
   teamProvider,
   parseEnv,
-  applyEnv
+  applyEnv,
+  classifySshFile,
+  decodeSshFile,
+  defaultSshDirectory,
+  encodeSshFile,
+  isPassphraseless,
+  readSshDirectory,
+  secretNameForPath,
+  sshDirectory,
+  SSH_ENVELOPE_VERSION,
+  type SshFile,
+  type SshFileKind
 } from "./providers/index.js";
 export {
   TeamClient,
