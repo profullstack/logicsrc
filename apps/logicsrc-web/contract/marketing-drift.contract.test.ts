@@ -27,7 +27,13 @@ const MARKETING_PROOF: Record<string, RegExp> = {
   railway: /Railway/,
   "github-secrets": /GitHub Secrets/,
   sh1pt: /sh1pt/,
-  team: /[Tt]eam vault/
+  team: /[Tt]eam vault/,
+  // Deliberately not a bare /SSH/. The provider grid renders every registry
+  // `name`, and this one is "Local SSH directory" -- so /SSH/ would be
+  // satisfied by the grid alone and this provider could ship with no copy
+  // written about it at all, which is the drift these tests exist to catch.
+  // Requiring the path or the phrase means a human wrote a sentence.
+  ssh: /~\/\.ssh|SSH key/
 };
 
 const REPO_ROOT = resolve(process.cwd(), "../..");

@@ -309,6 +309,12 @@ logicsrc teams invite acme teammate@example.com  # emails an accept link
 logicsrc teams grant acme web prod teammate@example.com
 logicsrc teams pull acme web prod --env .env     # download + decrypt
 logicsrc credentials rotate acme web prod --approve</code></pre>
+            <h3>SSH keys, not just environment variables</h3>
+            <p>Not every secret is a <code>KEY=VALUE</code> line. <code>~/.ssh</code> is a directory of files whose permission bits are load-bearing &mdash; a private key restored world-readable is one OpenSSH will refuse to use. The ssh provider moves that directory through the same end-to-end-encrypted vault as everything else and puts each file back with its mode intact, so a new machine is set up rather than merely populated. Restored SSH keys can go straight into <code>ssh-agent</code> instead of onto disk.</p>
+            <pre><code>logicsrc secrets ssh push profullstack   # back up ~/.ssh to vault ssh--&lt;you&gt;
+logicsrc secrets ssh list profullstack   # what the vault holds: paths, kinds, modes
+logicsrc secrets ssh pull profullstack   # restore on another machine, permissions and all
+logicsrc secrets ssh agent profullstack  # load into ssh-agent, never onto disk</code></pre>
           </article>
           <div class="soon-grid">
             ${credentialProviders.map((item) => `
