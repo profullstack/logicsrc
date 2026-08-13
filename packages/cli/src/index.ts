@@ -416,7 +416,34 @@ const credentials = program
   // `secrets` is what people reach for; keep it pointing at the same group
   // rather than growing a second, divergent surface.
   .alias("secrets")
-  .description("Credential Sharing OpenSpec: portable, auditable secret sync.");
+  .description("Credential Sharing OpenSpec: portable, auditable secret sync.")
+  // Commander's usage line only ever shows the first alias, so the everyday
+  // spelling — `logicsrc secrets` — is only discoverable from the examples.
+  .addHelpText(
+    "after",
+    `
+Examples:
+  # .env in this directory, shared with the team
+  logicsrc secrets teams link                    link this directory to a team project/env
+  logicsrc secrets up                            push .env to the linked environment
+  logicsrc secrets down                          pull it back down
+  logicsrc secrets down staging                  pull another env of the same project
+
+  # ~/.ssh keys and config, backed up under your username
+  logicsrc secrets ssh push profullstack         back up ~/.ssh to vault ssh--<you>
+  logicsrc secrets ssh pull profullstack         restore it on another machine
+  logicsrc secrets ssh agent profullstack        load the keys into ssh-agent, not onto disk
+
+  # anywhere to anywhere, one plan at a time
+  logicsrc secrets inspect --provider env --path .env
+  logicsrc secrets plan --from env --from-path .env --to railway \\
+    --to-project <projectId> --to-config <environmentId>
+  logicsrc secrets sync --plan <planId>          dry run — no writes
+  logicsrc secrets sync --plan <planId> --approve
+
+Every command also answers to "credentials" and "creds". Full guide: docs/credential-sharing.md
+`
+  );
 
 function endpointFromOptions(options: Record<string, unknown>, prefix: "" | "from" | "to"): CredentialEndpoint {
   const pick = (name: string) => {
@@ -494,7 +521,26 @@ credentials
 
 const secretsSsh = credentials
   .command("ssh")
-  .description("Back up ~/.ssh keys and config to an end-to-end-encrypted vault, keyed by username.");
+  .description("Back up ~/.ssh keys and config to an end-to-end-encrypted vault, keyed by username.")
+  .addHelpText(
+    "after",
+    `
+Examples:
+  logicsrc secrets ssh push profullstack         back up ~/.ssh to vault ssh--<your username>
+  logicsrc secrets ssh push --dry-run            show what would go up, write nothing
+  logicsrc secrets ssh push --include authorized_keys
+  logicsrc secrets ssh list profullstack         what the vault holds: paths, kinds, modes
+  logicsrc secrets ssh pull profullstack         restore onto this machine, permissions and all
+  logicsrc secrets ssh pull --force              also overwrite local files that differ
+  logicsrc secrets ssh agent profullstack --lifetime 3600
+  logicsrc secrets ssh pull profullstack anthony when this box logs in as someone else
+
+The vault is ssh--<username>, so "teams vaults" lists it as project ssh, env
+<username>. Key pairs, config, config.d/* and allowed_signers travel; known_hosts
+and authorized_keys need --include. Nothing that would overwrite a file which
+already differs is written without --force.
+`
+  );
 
 const collect = (value: string, previous: string[]): string[] => [...previous, value];
 
