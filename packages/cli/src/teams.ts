@@ -27,7 +27,7 @@ import { linkedDirectory, requireSecretsLink, writeSecretsLink } from "./secrets
  * only ever sees ciphertext and per-member wrapped vault keys.
  */
 
-function authedClient(): { client: TeamClient; identity: ReturnType<typeof requireAuth> } {
+export function authedClient(): { client: TeamClient; identity: ReturnType<typeof requireAuth> } {
   const identity = requireAuth();
   const client = new TeamClient({ apiUrl: resolveApiUrl(identity), token: identity.apiToken });
   return { client, identity };
@@ -386,7 +386,7 @@ export async function teamsGrantAction(slug: string, project: string, env: strin
   print({ granted: email, team: slug, project, env, vault }, format);
 }
 
-function teamEndpoint(slug: string, vault: string): CredentialEndpoint {
+export function teamEndpoint(slug: string, vault: string): CredentialEndpoint {
   return { provider: "team", project: slug, config: vault };
 }
 
@@ -428,7 +428,7 @@ export async function teamsPullAction(slug: string, project: string, envName: st
   print({ team: slug, project, env: envName, vault, applied, keys: run.results.map((r) => ({ key: r.key, op: r.op, applied: r.applied })) }, options.format);
 }
 
-async function selectOne(label: string, values: string[]): Promise<string> {
+export async function selectOne(label: string, values: string[]): Promise<string> {
   const choices = [...new Set(values)].sort();
   if (choices.length === 0) throw new Error(`No ${label.toLowerCase()} options are available.`);
   if (choices.length === 1) {
