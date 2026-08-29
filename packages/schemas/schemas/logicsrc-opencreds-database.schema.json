@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://logicsrc.com/schemas/opencreds/database.schema.json",
+  "title": "OpenCreds Portable Database",
+  "description": "A vault as one file: what you hand to another product, keep as a backup, and read to import. Encrypted by default. The plaintext form exists because the products people move to frequently read nothing else, and an export format that cannot express that gets worked around with a script that is worse — no warning, no file mode, no label. So it is specified and made loud: an explicit opt-in, and protected:false in the header so tooling can identify the file without parsing the rest of it. Media type application/vnd.logicsrc.opencreds+json; conventional extension .opencreds.",
+  "type": "object",
+  "required": ["opencreds", "type", "protected", "namespace", "exportedAt", "manifest"],
+  "additionalProperties": false,
+  "properties": {
+    "opencreds": { "type": "string", "const": "0.1" },
+    "type": { "type": "string", "const": "opencreds.database" },
+    "protected": { "type": "boolean" },
+    "namespace": { "type": "string", "pattern": "^[a-z][a-z0-9-]{1,31}$" },
+    "exportedAt": { "type": "string", "format": "date-time" },
+    "generator": {
+      "type": "object",
+      "required": ["name", "version"],
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string" },
+        "version": { "type": "string" }
+      }
+    },
+    "kdf": {
+      "type": "object",
+      "required": ["kdf", "iterations", "salt"],
+      "additionalProperties": false,
+      "description": "Parameters for the export key, which is derived from an export passphrase and is NOT the vault's user key — a file encrypted under the user key would only open inside the vault it came from, which is the opposite of portable. Omitted when a raw 32-byte key was supplied instead.",
+      "properties": {
+        "kdf": { "type": "string", "enum": ["pbkdf2-sha256", "argon2id"] },
+        "iterations": { "type": "integer", "minimum": 100000 },
+        "salt": { "type": "string", "pattern": "^[A-Za-z0-9+/]*={0,2}$" }
+      }
+    },
+    "manifest": { "$ref": "https://logicsrc.com/schemas/opencreds/manifest.schema.json" },
+    "iv": { "type": "string", "pattern": "^[A-Za-z0-9+/]*={0,2}$" },
+    "ciphertext": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9+/]*={0,2}$",
+      "description": "AES-256-GCM over the UTF-8 JSON of {folders, items}, with the header (opencreds, type, protected, namespace, exportedAt, generator, kdf, manifest, in that key order) bound as additional authenticated data. An attacker cannot restate the item count, swap the generator, or downgrade protected without the decryption failing."
+    },
+    "folders": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/folder" },
+      "description": "Plaintext form only."
+    },
+    "items": {
+      "type": "array",
+      "items": { "$ref": "https://logicsrc.com/schemas/opencreds/item.schema.json" },
+      "description": "Plaintext form only. Every secret in the vault, in the clear."
+    }
+  },
+  "allOf": [
+    {
+      "$comment": "The two forms are mutually exclusive: an encrypted database carries a payload it cannot also state in the clear. A false subschema is how JSON Schema says 'this property must be absent'.",
+      "if": { "properties": { "protected": { "const": true } }, "required": ["protected"] },
+      "then": {
+        "required": ["iv", "ciphertext"],
+        "properties": {
+          "iv": { "type": "string" },
+          "ciphertext": { "type": "string" },
+          "items": false,
+          "folders": false
+        }
+      }
+    },
+    {
+      "if": { "properties": { "protected": { "const": false } }, "required": ["protected"] },
+      "then": {
+        "required": ["items"],
+        "properties": {
+          "items": { "type": "array" },
+          "iv": false,
+          "ciphertext": false,
+          "kdf": false
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "folder": {
+      "type": "object",
+      "required": ["id", "name"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        },
+        "name": { "type": "string" }
+      }
+    }
+  }
+}

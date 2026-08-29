@@ -1,0 +1,240 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://logicsrc.com/schemas/opencreds/item.schema.json",
+  "title": "OpenCreds Item",
+  "description": "One credential record: a login, a card, an identity, a note, a key, or an account. These are not six features but one record with a type and a named field group, so that everything the user typed lives inside a single encrypted blob. That is what makes password history free — it is an array in that blob, encrypted by construction, rather than a second table someone can forget to protect. Every field in every group is optional and defaults to an empty string, because a real vault holds half-filled records and a model that requires fields produces importers that invent them.",
+  "type": "object",
+  "required": ["v", "id", "type", "name", "createdAt", "updatedAt"],
+  "additionalProperties": true,
+  "properties": {
+    "v": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Item schema version, stamped into every record from the first write. A record you cannot identify is a record you cannot migrate. 1 for OpenCreds 0.1."
+    },
+    "id": {
+      "$ref": "#/$defs/uuid",
+      "description": "Generated on the client, because it is bound into the ciphertext as additional authenticated data. A ciphertext moved to another row fails to decrypt rather than silently showing the wrong credential."
+    },
+    "type": {
+      "$ref": "#/$defs/itemType",
+      "description": "Selects the field group. An item MUST NOT carry a group other than the one named here."
+    },
+    "name": {
+      "type": "string",
+      "description": "Display name. MAY be empty; importers fall back to the URL host when an export had none."
+    },
+    "favorite": { "type": "boolean", "default": false },
+    "folderId": {
+      "oneOf": [{ "$ref": "#/$defs/uuid" }, { "type": "null" }],
+      "description": "A folder declared in the same vault, or null. Folders are flat: a name may contain a slash and a client may render that as a hierarchy, but the model does not nest, because every product that nests disagrees about what a move does."
+    },
+    "notes": {
+      "type": "string",
+      "description": "Free text. For a note item this is the content."
+    },
+    "fields": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/customField" },
+      "description": "Custom fields. A hidden field is displayed masked; it is not encrypted differently, because everything in the item is already inside one ciphertext."
+    },
+    "attachments": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/attachment" },
+      "description": "Attachment references, never bytes. An implementation that does not store blobs MUST still round-trip these."
+    },
+    "history": {
+      "type": "array",
+      "maxItems": 20,
+      "items": { "$ref": "#/$defs/historyEntry" },
+      "description": "Password history, newest first, defined only for login items. Capped at 20: the item blob is rewritten on every save, so an uncapped array grows the ciphertext without bound and the growth is invisible until sync starts timing out."
+    },
+    "createdAt": { "$ref": "#/$defs/timestamp" },
+    "updatedAt": {
+      "$ref": "#/$defs/timestamp",
+      "description": "Belongs to the item, not to a transfer. An importer that restamps this destroys the only evidence of when a password was last rotated."
+    },
+    "login": { "$ref": "#/$defs/loginGroup" },
+    "card": { "$ref": "#/$defs/cardGroup" },
+    "identity": { "$ref": "#/$defs/identityGroup" },
+    "key": { "$ref": "#/$defs/keyGroup" },
+    "account": { "$ref": "#/$defs/accountGroup" }
+  },
+  "allOf": [
+    {
+      "$comment": "An item MUST NOT carry a field group other than the one named by its type. A card group on a login item is either a broken importer or an attempt to smuggle a field past a type-based permission check; neither should be stored. A false subschema is how JSON Schema says 'this property must be absent'.",
+      "if": { "properties": { "type": { "const": "login" } }, "required": ["type"] },
+      "then": { "properties": { "card": false, "identity": false, "key": false, "account": false } }
+    },
+    {
+      "if": { "properties": { "type": { "const": "card" } }, "required": ["type"] },
+      "then": { "properties": { "login": false, "identity": false, "key": false, "account": false } }
+    },
+    {
+      "if": { "properties": { "type": { "const": "identity" } }, "required": ["type"] },
+      "then": { "properties": { "login": false, "card": false, "key": false, "account": false } }
+    },
+    {
+      "if": { "properties": { "type": { "const": "note" } }, "required": ["type"] },
+      "then": { "properties": { "login": false, "card": false, "identity": false, "key": false, "account": false } }
+    },
+    {
+      "if": { "properties": { "type": { "const": "key" } }, "required": ["type"] },
+      "then": { "properties": { "login": false, "card": false, "identity": false, "account": false } }
+    },
+    {
+      "if": { "properties": { "type": { "const": "account" } }, "required": ["type"] },
+      "then": { "properties": { "login": false, "card": false, "identity": false, "key": false } }
+    },
+    {
+      "$comment": "Password history is defined only for logins.",
+      "if": { "not": { "properties": { "type": { "const": "login" } }, "required": ["type"] } },
+      "then": { "properties": { "history": { "type": "array", "maxItems": 0 } } }
+    }
+  ],
+  "$defs": {
+    "uuid": {
+      "type": "string",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "itemType": {
+      "type": "string",
+      "enum": ["login", "card", "identity", "note", "key", "account"],
+      "description": "Type codes 1 login, 2 card, 3 identity, 4 note, 5 key, 6 account. Codes 1-4 are fixed by a deployed vault and MUST NOT be renumbered; 5 and 6 are introduced by OpenCreds; 7+ are reserved."
+    },
+    "customField": {
+      "type": "object",
+      "required": ["name", "value", "type"],
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string" },
+        "value": { "type": "string" },
+        "type": { "type": "string", "enum": ["text", "hidden", "boolean", "linked"] },
+        "hidden": { "type": "boolean", "default": false }
+      }
+    },
+    "attachment": {
+      "type": "object",
+      "required": ["id", "name"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "size": { "type": "integer", "minimum": 0 },
+        "contentType": { "type": "string" },
+        "digest": { "type": "string", "description": "sha256-<base64> over the plaintext blob." },
+        "key": {
+          "type": "string",
+          "description": "Base64 AES-256 key the blob was encrypted under, held inside the item ciphertext so the blob store never sees it."
+        }
+      }
+    },
+    "historyEntry": {
+      "type": "object",
+      "required": ["password", "changedAt"],
+      "additionalProperties": false,
+      "properties": {
+        "password": { "type": "string" },
+        "changedAt": { "$ref": "#/$defs/timestamp" }
+      }
+    },
+    "uri": {
+      "type": "object",
+      "required": ["uri"],
+      "additionalProperties": false,
+      "properties": {
+        "uri": { "type": "string" },
+        "match": {
+          "type": "string",
+          "enum": ["domain", "host", "startsWith", "exact", "regex", "never"],
+          "default": "domain",
+          "description": "Carried so that a move does not silently widen where a credential will be offered. An implementation that does not autofill still round-trips it."
+        }
+      }
+    },
+    "loginGroup": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "username": { "type": "string" },
+        "password": { "type": "string" },
+        "totp": {
+          "type": "string",
+          "description": "An otpauth:// URI, or a bare base32 seed. Store the URI where you have it: it carries the algorithm, digits and period, and a bare seed loses them."
+        },
+        "uris": { "type": "array", "items": { "$ref": "#/$defs/uri" } }
+      }
+    },
+    "cardGroup": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "cardholderName": { "type": "string" },
+        "brand": { "type": "string", "description": "Free text; issuers add brands." },
+        "number": { "type": "string" },
+        "expMonth": { "type": "string", "description": "1-12, no leading zero required." },
+        "expYear": { "type": "string", "description": "Four digits. Two-digit years from an import are expanded to 20xx." },
+        "code": { "type": "string" }
+      }
+    },
+    "identityGroup": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "title": { "type": "string" },
+        "firstName": { "type": "string" },
+        "middleName": { "type": "string" },
+        "lastName": { "type": "string" },
+        "username": { "type": "string" },
+        "company": { "type": "string" },
+        "email": { "type": "string" },
+        "phone": { "type": "string" },
+        "address1": { "type": "string" },
+        "address2": { "type": "string" },
+        "address3": { "type": "string" },
+        "city": { "type": "string" },
+        "state": { "type": "string" },
+        "postalCode": { "type": "string" },
+        "country": { "type": "string" },
+        "ssn": { "type": "string", "description": "National identity number. Named ssn for import compatibility; it is not US-specific." },
+        "passportNumber": { "type": "string" },
+        "licenseNumber": { "type": "string" }
+      }
+    },
+    "keyGroup": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "SSH and PGP keys, API tokens, certificates, and the .env secrets that Credential Sharing synchronizes. path and mode exist so a restore is total: a private key written back with the wrong mode is a key ssh will refuse to use, and one written to the wrong path is a key nothing finds.",
+      "properties": {
+        "keyType": { "type": "string", "enum": ["ssh", "pgp", "api", "symmetric", "certificate", "env"] },
+        "algorithm": { "type": "string" },
+        "publicKey": { "type": "string" },
+        "privateKey": { "type": "string" },
+        "passphrase": { "type": "string" },
+        "fingerprint": { "type": "string", "description": "SHA256:… — a public, non-secret identifier." },
+        "value": { "type": "string", "description": "The secret for key types that are one opaque string (api, env, symmetric)." },
+        "path": { "type": "string" },
+        "mode": { "type": "string", "pattern": "^0?[0-7]{3}$" },
+        "expiresAt": { "type": "string" }
+      }
+    },
+    "accountGroup": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "A provider account and the tokens that authorize acting as it. Deliberately not a login: a login is what a person types at a sign-in form, an account is what a machine presents to an API. They expire differently and are revoked differently, and conflating them is how a rotated refresh token ends up in a password history array.",
+      "properties": {
+        "provider": { "type": "string", "description": "google, github, x, stripe, … An OpenOntology entity id where one is in use." },
+        "accountId": { "type": "string" },
+        "handle": { "type": "string" },
+        "email": { "type": "string" },
+        "accessToken": { "type": "string" },
+        "refreshToken": { "type": "string" },
+        "tokenType": { "type": "string" },
+        "scopes": { "type": "array", "items": { "type": "string" } },
+        "expiresAt": { "type": "string" },
+        "environment": { "type": "string", "description": "production, sandbox, … A test key and a live key look identical and are not." }
+      }
+    }
+  }
+}

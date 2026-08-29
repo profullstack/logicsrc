@@ -4,7 +4,15 @@ import type { ErrorObject } from "ajv";
 import { parse } from "yaml";
 import { isSchemaKind, schemas, type SchemaKind } from "./schemas.js";
 
-const Ajv2020 = (Ajv2020Module as unknown as { default: new (options: Record<string, unknown>) => { compile: (schema: unknown) => { (data: unknown): boolean; errors?: ErrorObject[] | null } } }).default;
+type CompiledSchema = { (data: unknown): boolean; errors?: ErrorObject[] | null };
+
+type AjvInstance = {
+  compile: (schema: unknown) => CompiledSchema;
+  addSchema: (schema: unknown) => unknown;
+  getSchema: (id: string) => CompiledSchema | undefined;
+};
+
+const Ajv2020 = (Ajv2020Module as unknown as { default: new (options: Record<string, unknown>) => AjvInstance }).default;
 const addFormats = (addFormatsModule as unknown as { default: (ajv: InstanceType<typeof Ajv2020>) => void }).default;
 
 export type ValidationResult =
@@ -18,11 +26,24 @@ export function createValidator() {
 }
 
 const _ajv = createValidator();
-const _compiledValidators = new Map<SchemaKind, ReturnType<typeof _ajv.compile>>();
+
+// Every schema is registered up front, by $id, so that a schema which $refs
+// another one across files resolves. The OpenCreds database schema does this:
+// it refers to the item and manifest schemas rather than restating them, and
+// restating them is how two copies of a definition drift apart.
+for (const schema of Object.values(schemas)) {
+  _ajv.addSchema(schema);
+}
+
+const _compiledValidators = new Map<SchemaKind, CompiledSchema>();
 
 function getCompiledValidator(kind: SchemaKind) {
   if (!_compiledValidators.has(kind)) {
-    _compiledValidators.set(kind, _ajv.compile(schemas[kind]));
+    // Already registered above, so look it up by $id — compiling it a second
+    // time would throw on the duplicate id.
+    const id = (schemas[kind] as { $id?: string }).$id;
+    const registered = id ? _ajv.getSchema(id) : undefined;
+    _compiledValidators.set(kind, registered ?? _ajv.compile(schemas[kind]));
   }
   return _compiledValidators.get(kind)!;
 }

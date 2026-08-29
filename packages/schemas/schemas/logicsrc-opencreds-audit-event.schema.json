@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://logicsrc.com/schemas/opencreds/audit-event.schema.json",
+  "title": "OpenCreds Audit Event",
+  "description": "One recorded vault operation. An audit event MUST NOT contain a secret value. Where a value must be referenced it is referenced by salted, truncated SHA-256 fingerprint — an equality and integrity marker, not secret storage. Item names are also secret-adjacent (a folder list is a good description of someone's life), so an event carries the item id and type rather than its name.",
+  "type": "object",
+  "required": ["type", "id", "action", "createdAt"],
+  "additionalProperties": false,
+  "properties": {
+    "type": { "type": "string", "const": "opencreds.audit_event" },
+    "id": { "type": "string" },
+    "action": {
+      "type": "string",
+      "enum": [
+        "vault.create",
+        "vault.unlock",
+        "vault.unlock_failed",
+        "vault.rekey",
+        "vault.recovery_reset",
+        "item.create",
+        "item.update",
+        "item.delete",
+        "item.restore",
+        "item.purge",
+        "database.export",
+        "database.export_plaintext",
+        "database.import"
+      ]
+    },
+    "itemId": { "type": "string" },
+    "itemType": { "type": "string", "enum": ["login", "card", "identity", "note", "key", "account"] },
+    "namespace": { "type": "string", "pattern": "^[a-z][a-z0-9-]{1,31}$" },
+    "profile": { "type": "string", "enum": ["user", "team"] },
+    "principal": {
+      "type": "object",
+      "description": "Who acted. Shape borrowed from LogicSRC account-core so an OpenCreds event sits alongside the credential-sharing audit trail.",
+      "additionalProperties": true,
+      "properties": {
+        "kind": { "type": "string", "enum": ["user", "agent", "service"] },
+        "id": { "type": "string" },
+        "label": { "type": "string" }
+      }
+    },
+    "fingerprint": {
+      "type": "string",
+      "description": "Salted, truncated SHA-256 of the value observed or written. Never the value."
+    },
+    "itemCount": { "type": "integer", "minimum": 0, "description": "For database.* actions." },
+    "dryRun": { "type": "boolean", "default": false },
+    "outcome": { "type": "string", "enum": ["succeeded", "failed", "refused"] },
+    "reason": { "type": "string", "description": "Why a failed or refused action did not proceed. Never contains a value." },
+    "createdAt": { "type": "string", "format": "date-time" }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://logicsrc.com/schemas/opencreds/envelope.schema.json",
+  "title": "OpenCreds Item Envelope",
+  "description": "One encrypted item as it is stored. AES-256-GCM over the item's UTF-8 JSON, with UTF8(\"<namespace>:vault:item:<v>:<id>\") bound as additional authenticated data. Binding the id means a ciphertext cannot be moved between rows: without it, anyone with write access to the storage could copy a low-value login's ciphertext into a high-value one's row and watch what the user does next. Only id and type are plaintext, and that is the metadata this design accepts leaking — the server learns you hold forty logins and two cards, never which sites or what values.",
+  "type": "object",
+  "required": ["id", "type", "ciphertext", "iv"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
+      "description": "Matches the id inside the ciphertext. A decrypting implementation MUST verify the two agree; the AAD already makes a mismatch unreachable, and the check costs nothing."
+    },
+    "type": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 6,
+      "description": "1 login, 2 card, 3 identity, 4 note, 5 key, 6 account. Plaintext on purpose, so a server can filter and paginate without decrypting."
+    },
+    "ciphertext": { "type": "string", "pattern": "^[A-Za-z0-9+/]*={0,2}$" },
+    "iv": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9+/]*={0,2}$",
+      "description": "96 bits, fresh per encryption. With GCM a repeated IV under one key is not a weakness but a break, leaking the XOR of two plaintexts along with the authentication subkey."
+    },
+    "v": { "type": "integer", "minimum": 1, "description": "Item schema version, when the storage carries it outside the ciphertext. Defaults to 1." },
+    "revision": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Optimistic concurrency. Two devices editing two different passwords at the same moment must not cost anyone a credential; a client that writes with a stale revision is rejected rather than overwriting."
+    },
+    "deletedAt": { "type": ["string", "null"], "description": "Trash bin, not erasure." },
+    "purgeAfter": { "type": ["string", "null"] },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" }
+  }
+}

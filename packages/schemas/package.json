@@ -1,7 +1,7 @@
 {
   "name": "@logicsrc/schemas",
   "version": "0.1.0",
-  "description": "LogicSRC JSON schemas for tasks, agents, runs, events, plugins, the AgentAd ad standard, the OpenOntology knowledge contracts, and the OpenContext context plane.",
+  "description": "LogicSRC JSON schemas for tasks, agents, runs, events, plugins, the AgentAd ad standard, the OpenOntology knowledge contracts, the OpenContext context plane, and the OpenCreds credential vault.",
   "license": "MIT",
   "type": "module",
   "repository": {
@@ -21,8 +21,11 @@
     "logicsrc",
     "ontology",
     "opencontext",
+    "opencreds",
     "openontology",
-    "standards"
+    "password-manager",
+    "standards",
+    "vault"
   ],
   "publishConfig": {
     "access": "public"
@@ -55,6 +58,12 @@
     "./opencontext-object": "./schemas/logicsrc-opencontext-object.schema.json",
     "./opencontext-provenance": "./schemas/logicsrc-opencontext-provenance.schema.json",
     "./opencontext-role": "./schemas/logicsrc-opencontext-role.schema.json",
+    "./opencreds-audit-event": "./schemas/logicsrc-opencreds-audit-event.schema.json",
+    "./opencreds-database": "./schemas/logicsrc-opencreds-database.schema.json",
+    "./opencreds-envelope": "./schemas/logicsrc-opencreds-envelope.schema.json",
+    "./opencreds-item": "./schemas/logicsrc-opencreds-item.schema.json",
+    "./opencreds-manifest": "./schemas/logicsrc-opencreds-manifest.schema.json",
+    "./opencreds-vault-meta": "./schemas/logicsrc-opencreds-vault-meta.schema.json",
     "./openontology-action": "./schemas/logicsrc-openontology-action.schema.json",
     "./openontology-approval": "./schemas/logicsrc-openontology-approval.schema.json",
     "./openontology-changeset": "./schemas/logicsrc-openontology-changeset.schema.json",
