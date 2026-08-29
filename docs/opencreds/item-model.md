@@ -152,7 +152,7 @@ An SSH deploy key:
   "key": {
     "keyType": "ssh", "algorithm": "ed25519",
     "publicKey": "ssh-ed25519 AAAAC3Nza… deploy@railway",
-    "privateKey": "-----BEGIN OPENSSH PRIVATE KEY-----\n…\n-----END OPENSSH PRIVATE KEY-----\n",
+    "privateKey": "<the armoured private key body>",
     "passphrase": "", "fingerprint": "SHA256:9Vt…",
     "path": "~/.ssh/id_ed25519_railway", "mode": "0600", "expiresAt": ""
   },
@@ -170,7 +170,7 @@ A connected account:
   "account": {
     "provider": "stripe", "accountId": "acct_1P…", "handle": "profullstack",
     "email": "billing@profullstack.com",
-    "accessToken": "sk_live_…", "refreshToken": "", "tokenType": "bearer",
+    "accessToken": "<access token>", "refreshToken": "", "tokenType": "bearer",
     "scopes": ["charges:write", "customers:read"],
     "expiresAt": "", "environment": "production"
   },

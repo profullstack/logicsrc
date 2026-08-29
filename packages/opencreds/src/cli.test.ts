@@ -94,8 +94,8 @@ describe("items", () => {
       await authed(["add", "card", "--name", "Visa", "--number", "4242424242424242", "--code", "123"]),
       await authed(["add", "identity", "--name", "Me", "--first-name", "Anthony", "--ssn", "000-00-0000"]),
       await authed(["add", "note", "--name", "WiFi", "--notes", "on the router"]),
-      await authed(["add", "key", "--name", "deploy", "--key-type", "ssh", "--private-key", "-----BEGIN-----", "--mode", "0600"]),
-      await authed(["add", "account", "--name", "Stripe", "--provider", "stripe", "--access-token", "sk_live_x", "--scope", "charges:write"]),
+      await authed(["add", "key", "--name", "deploy", "--key-type", "ssh", "--private-key", "<private key body>", "--mode", "0600"]),
+      await authed(["add", "account", "--name", "Stripe", "--provider", "stripe", "--access-token", "<access token>", "--scope", "charges:write"]),
     ];
     for (const result of added) expect(result.code, result.stderr).toBe(0);
 
@@ -113,7 +113,7 @@ describe("items", () => {
     const json = await authed(["list", "--json"]);
     expect(json.stdout).not.toContain("hunter2");
     expect(json.stdout).not.toContain("4242424242424242");
-    expect(json.stdout).not.toContain("sk_live_x");
+    expect(json.stdout).not.toContain("<access token>");
     expect(json.stdout).not.toContain("000-00-0000");
     // Non-secret fields are still there, or the output would be useless.
     expect(json.stdout).toContain("anthony");
@@ -227,7 +227,7 @@ describe("export and import", () => {
       csv,
       [
         "folder,favorite,type,name,notes,login_uri,login_username,login_password,login_totp",
-        "Imported,1,login,GitLab,,https://gitlab.com,anthony,glpat-xxx,",
+        "Imported,1,login,GitLab,,https://gitlab.com,anthony,<gitlab token>,",
         ",,,,,,,,",
         "",
       ].join("\n"),

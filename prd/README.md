@@ -14,3 +14,4 @@ Status lives in each file's front-matter and is the source of truth:
 | [0001](./0001-add-logicsrc-openontology-spec.md) | Add the LogicSRC OpenOntology specification | Draft | openontology, ontology, knowledge-graph, agents, mcp, schemas |
 | [0002](./0002-hourly-hire-us-rate.md) | Move Hire Us pricing from a weekly retainer to an hourly rate | Accepted | pricing, site, billing |
 | [0003](./0003-add-logicsrc-opencontext-spec.md) | Add the LogicSRC OpenContext specification | Draft | opencontext, context, agents, permissions, provenance, schemas |
+| [0004](./0004-add-logicsrc-opencreds-spec.md) | Add the LogicSRC OpenCreds specification | Draft | opencreds, credentials, vault, encryption, portability, schemas |

@@ -119,13 +119,18 @@ export function fixturePayload(): DatabasePayload {
         identity: { firstName: "Anthony", lastName: "Ettinger", ssn: "000-00-0000" },
       } as Partial<Item>),
       createItem("note", { name: "WiFi", notes: "the password is on the router" }),
+      // The secret-shaped fields hold obvious placeholders rather than
+      // realistic-looking values. A fixture only has to exercise the field, and
+      // a real-looking PEM header or `sk_live_` prefix in the tree trains both
+      // credential scanners and the people reading their output to shrug at the
+      // shape that matters.
       createItem("key", {
         name: "deploy@railway",
-        key: { keyType: "ssh", algorithm: "ed25519", privateKey: "-----BEGIN OPENSSH PRIVATE KEY-----", path: "~/.ssh/id_ed25519", mode: "0600" },
+        key: { keyType: "ssh", algorithm: "ed25519", privateKey: "<private key body>", path: "~/.ssh/id_ed25519", mode: "0600" },
       } as Partial<Item>),
       createItem("account", {
         name: "Stripe",
-        account: { provider: "stripe", accessToken: "sk_live_x", scopes: ["charges:write", "customers:read"], environment: "production" },
+        account: { provider: "stripe", accessToken: "<access token>", scopes: ["charges:write", "customers:read"], environment: "production" },
       } as Partial<Item>),
     ],
   };
