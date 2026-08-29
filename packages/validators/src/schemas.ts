@@ -59,6 +59,15 @@ import ocDecisionSchema from "@logicsrc/schemas/opencontext-decision" with { typ
 import ocDiagnosticSchema from "@logicsrc/schemas/opencontext-diagnostic" with { type: "json" };
 import ocAuditEventSchema from "@logicsrc/schemas/opencontext-audit-event" with { type: "json" };
 
+// OpenCreds. The database schema $refs the item and manifest schemas by $id,
+// so all six are registered together in index.ts before anything is compiled.
+import credsItemSchema from "@logicsrc/schemas/opencreds-item" with { type: "json" };
+import credsEnvelopeSchema from "@logicsrc/schemas/opencreds-envelope" with { type: "json" };
+import credsVaultMetaSchema from "@logicsrc/schemas/opencreds-vault-meta" with { type: "json" };
+import credsManifestSchema from "@logicsrc/schemas/opencreds-manifest" with { type: "json" };
+import credsDatabaseSchema from "@logicsrc/schemas/opencreds-database" with { type: "json" };
+import credsAuditEventSchema from "@logicsrc/schemas/opencreds-audit-event" with { type: "json" };
+
 export const schemas = {
   agent: agentSchema,
   "account-audit-event": accountAuditEventSchema,
@@ -109,7 +118,13 @@ export const schemas = {
   "opencontext-provenance": ocProvenanceSchema,
   "opencontext-decision": ocDecisionSchema,
   "opencontext-diagnostic": ocDiagnosticSchema,
-  "opencontext-audit-event": ocAuditEventSchema
+  "opencontext-audit-event": ocAuditEventSchema,
+  "opencreds-item": credsItemSchema,
+  "opencreds-envelope": credsEnvelopeSchema,
+  "opencreds-vault-meta": credsVaultMetaSchema,
+  "opencreds-manifest": credsManifestSchema,
+  "opencreds-database": credsDatabaseSchema,
+  "opencreds-audit-event": credsAuditEventSchema
 } as const;
 
 export type SchemaKind = keyof typeof schemas;

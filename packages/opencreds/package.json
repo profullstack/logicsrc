@@ -1,0 +1,51 @@
+{
+  "name": "@logicsrc/opencreds",
+  "version": "0.1.0",
+  "description": "Reference implementation of the LogicSRC OpenCreds standard: one credential record for logins, cards, identities, notes, keys and accounts, an end-to-end-encrypted vault, and a portable database that moves between products without a plaintext CSV.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./commands": "./dist/commands.js",
+    "./importers": "./dist/importers.js"
+  },
+  "bin": {
+    "opencreds": "./dist/cli.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/profullstack/logicsrc.git",
+    "directory": "packages/opencreds"
+  },
+  "homepage": "https://logicsrc.com/opencreds",
+  "keywords": [
+    "logicsrc",
+    "opencreds",
+    "credentials",
+    "password-manager",
+    "vault",
+    "encryption",
+    "end-to-end-encryption",
+    "json-schema",
+    "standards"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "fixtures"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run src"
+  },
+  "dependencies": {
+    "commander": "^14.0.2"
+  },
+  "devDependencies": {
+    "vitest": "^4.0.8"
+  }
+}

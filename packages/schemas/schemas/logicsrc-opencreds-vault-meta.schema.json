@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://logicsrc.com/schemas/opencreds/vault-meta.schema.json",
+  "title": "OpenCreds Vault Metadata",
+  "description": "Per-vault key material and parameters. Every value here is encrypted or derived on the client; nothing in this document can be decrypted with anything a server, its backups, or an operator with full access can see. Key material is base64 text rather than binary because this travels as JSON over HTTP, where binary round-trips as an escaped hex string and invites encoding mistakes on exactly the values that must not be corrupted.",
+  "type": "object",
+  "required": ["opencreds", "namespace", "profile", "kdf", "kdfIterations", "kdfSalt", "protectedUserKey", "protectedUserKeyIv"],
+  "additionalProperties": false,
+  "properties": {
+    "opencreds": { "type": "string", "const": "0.1" },
+    "namespace": {
+      "$ref": "#/$defs/namespace",
+      "description": "Domain-separation label prefix. Carried as data because labels are compiled into the additional authenticated data of every ciphertext a vault has written: editing one does not migrate a vault, it makes it undecryptable. Registered: opencreds, marksyncr."
+    },
+    "profile": {
+      "type": "string",
+      "enum": ["user", "team"],
+      "description": "How the user key is managed. user: wrapped by a key derived from a master password. team: sealed to each member's X25519 public key. The item envelope is identical under both. An implementation MUST refuse a profile it does not implement rather than attempting to open the vault."
+    },
+    "kdf": {
+      "type": "string",
+      "enum": ["pbkdf2-sha256", "argon2id"],
+      "description": "argon2id is registered and not yet specified. A client that does not implement it MUST refuse the vault rather than fall back."
+    },
+    "kdfIterations": {
+      "type": "integer",
+      "minimum": 100000,
+      "default": 600000,
+      "description": "Floor enforced in the client before deriving anything. These parameters arrive from a server, which makes them attacker-controlled if the server is compromised: serving 1 would turn every captured auth hash into an offline guessing exercise with no work factor."
+    },
+    "kdfMemoryKib": { "type": "integer", "minimum": 1, "description": "Reserved for argon2id." },
+    "kdfParallelism": { "type": "integer", "minimum": 1, "description": "Reserved for argon2id." },
+    "kdfSalt": { "$ref": "#/$defs/base64", "description": "Per vault, random, at least 16 bytes." },
+    "protectedUserKey": {
+      "$ref": "#/$defs/base64",
+      "description": "The 32-byte random user key, encrypted under the wrap key. Random rather than derived, so a master password change re-wraps 32 bytes instead of re-encrypting every item."
+    },
+    "protectedUserKeyIv": { "$ref": "#/$defs/base64" },
+    "recoveryKeyBlob": {
+      "$ref": "#/$defs/base64",
+      "description": "A second copy of the same user key under the recovery key, so a forgotten master password is survivable without the server learning anything."
+    },
+    "recoveryKeyIv": { "$ref": "#/$defs/base64" },
+    "authHash": {
+      "$ref": "#/$defs/base64",
+      "description": "The only password-derived value that may leave the device. It comes out of a different HKDF label than the wrap key, so holding every auth hash ever sent does not help derive a wrapping key. A server storing it MUST hash it again."
+    },
+    "wrappedKeys": {
+      "type": "array",
+      "description": "team profile only: one sealed copy of the vault key per member. The server holds these and never the key.",
+      "items": {
+        "type": "object",
+        "required": ["memberId", "publicKey", "wrappedKey"],
+        "additionalProperties": false,
+        "properties": {
+          "memberId": { "type": "string" },
+          "publicKey": { "$ref": "#/$defs/base64" },
+          "wrappedKey": { "$ref": "#/$defs/base64" },
+          "grantedAt": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" }
+  },
+  "$defs": {
+    "base64": { "type": "string", "pattern": "^[A-Za-z0-9+/]*={0,2}$" },
+    "namespace": { "type": "string", "pattern": "^[a-z][a-z0-9-]{1,31}$" }
+  }
+}

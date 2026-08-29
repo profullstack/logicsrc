@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://logicsrc.com/schemas/opencreds/manifest.schema.json",
+  "title": "OpenCreds Database Manifest",
+  "description": "The authenticated inventory of a portable database. In an encrypted database the manifest sits in the header, which is bound as additional authenticated data over the payload — so the counts can be shown in a preview before anyone types a passphrase, and they cannot be lied about. After decrypting, an implementation MUST recompute all four fields and MUST refuse the import if any disagrees. This is the difference between an import you can trust and a CSV: a CSV truncated at 3,000 rows imports 3,000 rows and reports success.",
+  "type": "object",
+  "required": ["itemCount", "types", "folderCount", "digest"],
+  "additionalProperties": false,
+  "properties": {
+    "itemCount": { "type": "integer", "minimum": 0 },
+    "types": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Item count per type name. Types with zero items are omitted.",
+      "properties": {
+        "login": { "type": "integer", "minimum": 1 },
+        "card": { "type": "integer", "minimum": 1 },
+        "identity": { "type": "integer", "minimum": 1 },
+        "note": { "type": "integer", "minimum": 1 },
+        "key": { "type": "integer", "minimum": 1 },
+        "account": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "folderCount": { "type": "integer", "minimum": 0 },
+    "digest": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9+/]*={0,2}$",
+      "description": "Base64 SHA-256 over the item ids, sorted lexicographically and joined by a newline. Detects a dropped item and a re-ordered payload alike."
+    }
+  }
+}
