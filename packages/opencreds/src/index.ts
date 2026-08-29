@@ -140,6 +140,17 @@ export { createVaultStore, opencredsHome, type VaultStore } from "./store.js";
 export { auditEvent, fingerprint, type AuditInput } from "./audit.js";
 
 export {
+  runConformance,
+  emitFixtures,
+  fixturePayload,
+  formatReport,
+  type ConformanceLevel,
+  type ConformanceReport,
+  type ConformanceResult,
+  type ConformanceStatus,
+} from "./conformance.js";
+
+export {
   OPENCREDS_VERSION,
   ITEM_TYPE,
   ITEM_TYPE_NAME,

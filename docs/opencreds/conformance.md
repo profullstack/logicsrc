@@ -64,33 +64,53 @@ passing the fixture suite. Run it with `opencreds conformance`.
 | C41 | Reports unmappable rows with row number and reason; never drops silently. | MUST |
 | C42 | Detects sources most-specific first. | MUST |
 
+## Running the suite
+
+```bash
+opencreds conformance            # a table, one row per requirement
+opencreds conformance --json     # the report, for CI
+```
+
+Every requirement above with a C-number in the Items, Crypto, Database and
+Importers tables is executed. The CLI requirements (C30–C34) are asserted by the
+reference implementation's own end-to-end tests, which drive the real binary
+through a child process — a masked value that is only masked in the library is
+not masked — rather than by this command, which cannot meaningfully check its
+own exit codes.
+
 ## Fixtures
 
-Fixtures live in `packages/opencreds/fixtures/` and are published in the package.
+Fixtures are **generated**, not hand-written:
 
-| Fixture | Asserts |
+```bash
+opencreds conformance --emit-fixtures ./fixtures
+```
+
+A vector produced by an implementation and then verified by it is worth more
+than a JSON file someone typed: the typed file drifts silently when the format
+moves, and the generated one cannot. Emit them from the reference
+implementation and test your own code against exactly what it accepts.
+
+| Path | Holds |
 | --- | --- |
-| `items/one-of-each.json` | C1, C2 — one valid item per type. |
-| `items/unknown-fields.json` | C3 — a v1 item carrying fields from a later version. |
-| `items/empty-vs-absent.json` | C4. |
-| `items/history-cap.json` | C5 — 25 history entries in, 20 out, newest kept. |
-| `items/wrong-group.json` | C6 — a `card` group on a `login` item; must be rejected. |
-| `vault/swapped-ciphertext.json` | C11 — two envelopes with ids exchanged; both must fail. |
-| `vault/weak-kdf.json` | C13 — `iterations: 1`; must be refused. |
-| `vault/one-corrupt-item.json` | C16 — three items, one with a flipped tag byte. |
-| `vault/unknown-namespace.json` | C17. |
-| `vault/unknown-profile.json` | C18. |
-| `database/encrypted.opencreds` | C20–C22 — passphrase `opencreds-fixture`. |
-| `database/tampered-manifest.opencreds` | C21 — `itemCount` edited; must fail to decrypt. |
-| `database/short-payload.opencreds` | C22 — one item removed from the payload. |
-| `database/plaintext.json` | C25 — `protected: false`. |
-| `database/roundtrip.json` | C26, C27. |
-| `csv/bitwarden.csv`, `csv/onepassword.csv`, `csv/chrome.csv`, `csv/lastpass.csv`, `csv/keepass.csv` | C40–C42. |
-| `csv/quoting-torture.csv` | C40 — BOM, CRLF, `""` escapes, a note containing commas and newlines. |
+| `README.txt` | The fixture passphrase and what each directory is for. |
+| `items/one-of-each.json` | One valid item per type — C1, C2. |
+| `items/history-cap.json` | 25 changes in, 20 entries out, newest kept — C5. |
+| `items/unknown-fields.json` | A v1 item carrying a field from a later version — C3. |
+| `vault/meta.json` | Vault metadata; opens with the fixture passphrase. |
+| `vault/envelopes.json` | One encrypted envelope per item type. |
+| `vault/user-key.txt` | The base64 key those envelopes are under. |
+| `database/encrypted.opencreds` | A six-item encrypted database — C20–C22. |
+| `database/plaintext.json` | The same vault, unprotected — C25. |
+| `invalid/wrong-group.json` | A `card` group on a `login` item — C6. |
+| `invalid/weak-kdf.json` | `kdfIterations: 1` — C13. |
+| `invalid/unknown-namespace.json` | An unregistered namespace — C17. |
+| `invalid/short-payload.json` | A plaintext database missing three items — C22. |
+| `invalid/tampered-manifest.opencreds` | An edited `itemCount` — C21. |
 
-Each fixture is paired with a `.expected.json` describing what a conforming
-implementation must produce, so a third party can verify without reading
-LogicSRC source.
+Everything under `invalid/` MUST be rejected. The fixture passphrase is
+`opencreds-fixture`; the fixture vaults derive at 100,000 iterations so a test
+run is not dominated by PBKDF2.
 
 ## Reporting
 
@@ -101,11 +121,18 @@ LogicSRC source.
   "type": "opencreds.conformance_report",
   "opencreds": "0.1",
   "implementation": { "name": "@logicsrc/opencreds", "version": "0.1.0" },
-  "results": [ { "id": "C11", "level": "MUST", "status": "pass" } ],
-  "summary": { "pass": 34, "fail": 0, "skip": 1 },
+  "results": [
+    { "id": "C11", "level": "MUST", "title": "Binds the item id as AAD, so a swapped ciphertext fails", "status": "pass" }
+  ],
+  "summary": { "pass": 29, "fail": 0, "skip": 1 },
   "conformant": true
 }
 ```
 
 `conformant` is true only when every MUST passes. A skipped MAY does not affect
-it; a skipped MUST does.
+it; a skipped or failed MUST does. The command exits 2 when the report is not
+conformant, so it can gate CI directly.
+
+The reference implementation reports 29 passed, 0 failed, 1 skipped: the skip is
+C19, because key management for the `team` profile lives in
+`@logicsrc/plugin-credential-sharing` rather than in this package.

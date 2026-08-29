@@ -8,10 +8,12 @@
  * contracts.
  */
 
-import { readFileSync, writeFileSync, chmodSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync, chmodSync } from "node:fs";
+import { dirname, join } from "node:path";
 import type { Command } from "commander";
 
 import { auditEvent } from "./audit.js";
+import { emitFixtures, formatReport, runConformance } from "./conformance.js";
 import {
   DATABASE_EXTENSION,
   buildManifest,
@@ -889,6 +891,37 @@ export function registerCredsCommands(parent: Command): void {
           if (diagnostics.length > 0) process.stdout.write(`${formatDiagnostics(diagnostics)}\n`);
         }
         if (failed) process.exitCode = EXIT.VALIDATION;
+      });
+    });
+
+  parent
+    .command("conformance")
+    .description("run the OpenCreds conformance suite against this implementation")
+    .option("--json", "emit the conformance report as JSON")
+    .option("--emit-fixtures <dir>", "write the generated fixture set to a directory")
+    .action(async function (this: Command, opts: { json?: boolean; emitFixtures?: string }) {
+      await run(async () => {
+        if (opts.emitFixtures) {
+          const fixtures = await emitFixtures();
+          for (const [name, content] of Object.entries(fixtures)) {
+            const target = join(opts.emitFixtures, name);
+            mkdirSync(dirname(target), { recursive: true });
+            writeFileSync(
+              target,
+              typeof content === "string" ? content : `${JSON.stringify(content, null, 2)}\n`,
+              "utf8",
+            );
+          }
+          process.stdout.write(`Wrote ${Object.keys(fixtures).length} fixtures to ${opts.emitFixtures}\n`);
+          return;
+        }
+
+        const report = await runConformance();
+        process.stdout.write(
+          opts.json ? `${JSON.stringify(report, null, 2)}\n` : `${formatReport(report)}\n`,
+        );
+        // A failed MUST is a validation failure, not a crash.
+        if (!report.conformant) process.exitCode = EXIT.VALIDATION;
       });
     });
 

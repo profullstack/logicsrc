@@ -134,12 +134,18 @@ per failure with a JSON pointer into the document:
 ## Conformance
 
 ```bash
-opencreds conformance [--fixtures <dir>] [--json]
+opencreds conformance                          # a table, one row per requirement
+opencreds conformance --json                   # the report, for CI
+opencreds conformance --emit-fixtures <dir>    # generate the fixture set
 ```
 
-Runs the published fixture suite against this implementation and reports each
-requirement as pass or fail. An implementation claiming conformance SHOULD run
-this in CI.
+Runs the suite against this implementation and reports each requirement as pass,
+fail or skip. Exits 2 when a MUST does not pass, so it can gate CI directly. An
+implementation claiming conformance SHOULD run it there.
+
+`--emit-fixtures` writes the generated fixture set, so another implementation
+can be tested against exactly what this one produces and accepts. See
+[conformance.md](./conformance.md).
 
 ## What the CLI never does
 
