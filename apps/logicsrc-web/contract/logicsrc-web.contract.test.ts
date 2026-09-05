@@ -60,21 +60,21 @@ function jsonResponse(body: unknown, status = 200): Response {
 }
 
 describe("www canonical redirect (proxy.ts)", () => {
-  it("301s www to the apex host over https, preserving path + query", () => {
+  it("301s www to the apex host over https, preserving path + query", async () => {
     const request = new NextRequest("https://www.logicsrc.com/openspec?ref=email", {
       headers: { host: "www.logicsrc.com" }
     });
-    const response = proxy(request);
+    const response = await proxy(request);
 
     expect(response.status).toBe(301);
     expect(response.headers.get("location")).toBe("https://logicsrc.com/openspec?ref=email");
   });
 
-  it("passes through apex requests untouched", () => {
+  it("passes through apex requests untouched", async () => {
     const request = new NextRequest("https://logicsrc.com/hire-us", {
       headers: { host: "logicsrc.com" }
     });
-    const response = proxy(request);
+    const response = await proxy(request);
 
     // NextResponse.next() yields a non-redirect response.
     expect(response.status).toBe(200);
