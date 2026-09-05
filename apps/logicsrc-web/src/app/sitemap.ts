@@ -18,6 +18,7 @@ const STATIC_ROUTES: Array<{
   { path: "/docs", changeFrequency: "weekly", priority: 0.9 },
   { path: "/openontology", changeFrequency: "weekly", priority: 0.9 },
   { path: "/opencreds", changeFrequency: "weekly", priority: 0.9 },
+  { path: "/openswarm", changeFrequency: "weekly", priority: 0.9 },
   { path: "/openprd", changeFrequency: "weekly", priority: 0.9 },
   { path: "/openontology/explore", changeFrequency: "daily", priority: 0.7 },
   { path: "/openspec", changeFrequency: "weekly", priority: 0.8 },

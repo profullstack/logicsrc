@@ -11,6 +11,7 @@ const NAV: Array<{ href: string; label: string; external?: boolean }> = [
   { href: "/credential-sharing", label: "Credentials" },
   { href: "/openontology", label: "OpenOntology" },
   { href: "/opencreds", label: "OpenCreds" },
+  { href: "/openswarm", label: "OpenSwarm" },
   { href: "/openprd", label: "OpenPRD" },
   { href: "/#cli", label: "CLI" },
   { href: "/docs", label: "Docs" },
