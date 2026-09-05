@@ -17,7 +17,8 @@ const PROTOCOLS: Array<[name: string, line: string]> = [
   ["ipaudio", "Audio releases and tracks on ipfile swarms: renditions, seek tables, gapless, royalties"],
   ["ipvideo", "Video on demand: CMAF renditions, segment index, subtitles, thumbnails, an HLS bridge"],
   ["iplive", "Live streams: segment fan-out over paid relays with backpressure"],
-  ["ipname", "How a Moshpit name or a domain resolves to a publisher key and a catalogue"]
+  ["ipname", "How a Moshpit name or a domain resolves to a publisher key and a catalogue"],
+  ["pay2seed", "Consent at upload, seed offers with escrowed budgets, leases, proof of seeding, and the market a seeder client picks work from"]
 ];
 
 const ROLES: Array<[role: string, work: string, paid: string]> = [

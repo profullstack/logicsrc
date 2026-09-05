@@ -130,6 +130,29 @@ ip node hello <peer address>                       # diagnostic: handshake and p
 A c0mpute worker embeds the same library; `c0mpute worker start --openswarm`
 is the daemon form and `ip` is the operator's tool.
 
+### 2.10 Seed market
+
+```
+ip seed attest (<file key> | <infohash> | <magnet>) --basis own|licensed|open-license|public-domain|personal
+              [--license <spdx>] [--notice <url|mailto>] [--description <text>] [--public | --private]
+ip seed offer  (<file key> | <infohash> | --feed <feed key>) --hub <url> --days <n> --seeders <min>[,<max>]
+              [--price <usd per GiB-month>] [--proof-hours <n>] [--tracker <url>]...
+ip seed offers [--hub <url>] [--public | --private] [--basis <b>] [--min-price <usd>] [--max-size <bytes>]
+ip seed take   <offer id> --hub <url>                # take a lease, fetch, seed until it ends
+ip seed leases [--hub <url>] [--status proven|fetching|lapsed|ended]
+ip seed status <offer id | lease id>
+ip seed void   <offer id>                            # requester: void and refund the unearned budget
+ip seed notice <attestation id> --kind rights|illegal|personal-data|other --statement <text>
+```
+
+`ip seed attest` is the consent step and is what `ip file add --public` and
+`ip file pin` call first; `ip seed offer` on a private file key includes a
+pass for the seeders when the manifest charges per GiB. `ip seed take` is
+what a torlink daemon does on its own from `ip seed offers`; here it is the
+manual form, and it sets the swarm's seed time to the lease's end so the
+client's reaper cannot drop it early. Everything returns the record ids
+(`pay2seed` §7.2) and, for `offers`, the projected `earnedUsd` per lease.
+
 ## 3. Output examples
 
 ```

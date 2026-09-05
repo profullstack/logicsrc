@@ -16,3 +16,4 @@ Status lives in each file's front-matter and is the source of truth:
 | [0003](./0003-add-logicsrc-opencontext-spec.md) | Add the LogicSRC OpenContext specification | Draft | opencontext, context, agents, permissions, provenance, schemas |
 | [0004](./0004-add-logicsrc-opencreds-spec.md) | Add the LogicSRC OpenCreds specification | Draft | opencreds, credentials, vault, encryption, portability, schemas |
 | [0005](./0005-add-logicsrc-openswarm-spec.md) | Add the LogicSRC OpenSwarm specification family | Draft | openswarm, ipfile, ipdb, ipaudio, ipvideo, iplive, bittorrent, x402, c0mpute |
+| [0006](./0006-add-pay2seed-spec.md) | Add pay2seed to the OpenSwarm family: consent at upload and a paid seed market | Draft | openswarm, pay2seed, ipfile, ippay, ipdb, bittorrent, torlink, bittorrented, c0mpute |
