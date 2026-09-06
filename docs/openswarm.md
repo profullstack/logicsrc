@@ -34,7 +34,10 @@ a different product. The member protocols keep their `ip` names.
 | `ipvideo` | Video on demand on `ipfile` swarms: CMAF renditions, segment index, subtitles, thumbnails | [`ipvideo.md`](./openswarm/ipvideo.md) |
 | `iplive` | Live streams: segment fan-out over peers, paid relays, backpressure | [`iplive.md`](./openswarm/iplive.md) |
 | `ipname` | How a Moshpit name resolves to a publisher key and a catalogue | [`ipname.md`](./openswarm/ipname.md) |
-| `pay2seed` | Consent at upload, seed offers with escrowed budgets, leases, proof of seeding, the seed market | [`pay2seed.md`](./openswarm/pay2seed.md) |
+| `pay2seed` | Client protocol for paid seeding: consent at upload, seed offers with escrowed budgets, the requester's market | [`pay2seed.md`](./openswarm/pay2seed.md) |
+| `paid2seed` | Server protocol for paid seeding: leases, storage challenges and probes over the wire, GiB-month settlement, the seeder client | [`paid2seed.md`](./openswarm/paid2seed.md) |
+| `pay2stream` | Client protocol for paid live streams: consent for channels, relay offers, tickets and listings, watching as a peer or on any HLS player | [`pay2stream.md`](./openswarm/pay2stream.md) |
+| `paid2stream` | Server protocol for paid live streams: relay leases per hour, presence proofs, gateways serving standard HLS, M3U and EPG | [`paid2stream.md`](./openswarm/paid2stream.md) |
 
 Supporting documents:
 
@@ -51,8 +54,10 @@ Supporting documents:
   |  ipaudio      ipvideo      iplive         ipdb (catalogue)    |
   |  releases     titles       channels       feeds, entries      |
   +---------------------------------------------------------------+
-  |  pay2seed: attestation, offers, leases, challenges, market    |
-  +---------------------------------------------------------------+
+  |  pay2seed / paid2seed        |  pay2stream / paid2stream      |
+  |  consent, offers, market     |  consent, relay offers, tickets |
+  |  leases, challenges, payout  |  leases, presence, HLS gateways |
+  +------------------------------+--------------------------------+
   |  ipfile: manifest, per-file key pair, encrypted pieces,       |
   |          key grants, credit window, vouchers per served piece |
   +-------------------------------+-------------------------------+
@@ -135,12 +140,19 @@ serves more than the window unpaid.
 Its head is a BEP 44 mutable item under the feed key, so any DHT node can find
 the latest catalogue of any publisher with one `get`.
 
-**One seed market.** A `pay2seed` offer is money escrowed at a hub for a
-swarm to be kept for a period, public or private, and it cannot be listed
-without a signed attestation of who put the data there and on what basis.
-Seeders take leases, prove they hold and serve the pieces every period, and
-are paid per GiB-month. It is how a torrent client becomes a legitimate file
-sharer: consent on the way in, proof on the way out, and a payout for staying.
+**One seed market, one stream market.** A `pay2seed` offer is money
+escrowed at a hub for a swarm to be kept for a period, public or private,
+and it cannot be listed without a signed attestation of who put the data
+there and on what basis. On the `paid2seed` side, seeders take leases,
+prove they hold and serve the pieces every period, and are paid per
+GiB-month. `pay2stream` and `paid2stream` do the same for a live channel:
+a broadcaster attests it and buys relays by the hour, relays and gateways
+prove they are online and serving, and a gateway turns the swarm into
+standard HLS so any television plays it. The naming is the rule: `pay2*`
+is the client protocol, the side that pays over HTTPS; `paid2*` is the
+server protocol, the BitTorrent side that earns. It is how a torrent
+client becomes a legitimate file sharer: consent on the way in, proof on
+the way out, and a payout for staying.
 
 ## What it does not define
 

@@ -130,7 +130,7 @@ ip node hello <peer address>                       # diagnostic: handshake and p
 A c0mpute worker embeds the same library; `c0mpute worker start --openswarm`
 is the daemon form and `ip` is the operator's tool.
 
-### 2.10 Seed market
+### 2.10 Seed and stream markets
 
 ```
 ip seed attest (<file key> | <infohash> | <magnet>) --basis own|licensed|open-license|public-domain|personal
@@ -145,8 +145,17 @@ ip seed void   <offer id>                            # requester: void and refun
 ip seed notice <attestation id> --kind rights|illegal|personal-data|other --statement <text>
 ```
 
-`ip seed attest` is the consent step and is what `ip file add --public` and
-`ip file pin` call first; `ip seed offer` on a private file key includes a
+```
+ip stream offer  <channel key> --hub <url> --from <time> --to <time> --relays <min>[,<max>]
+                [--price <usd per relay-hour>] [--gateway-bonus <bps>] [--region <r>]...
+ip stream ticket <channel key> --hub <url> --hours <n> [--gateway <url>]     # prints the HLS, M3U and EPG URLs
+ip stream listing <channel key> --title <text> --from <time> --to <time> [--price <usd>]
+ip stream relay  <offer id> --hub <url> [--gateway --base <url> --mode clear|sealed]
+ip stream relays [--hub <url>]
+```
+
+`ip seed attest` is the consent step and is what `ip file add --public`,
+`ip file pin` and `ip live create` call first; `ip seed offer` on a private file key includes a
 pass for the seeders when the manifest charges per GiB. `ip seed take` is
 what a torlink daemon does on its own from `ip seed offers`; here it is the
 manual form, and it sets the swarm's seed time to the lease's end so the

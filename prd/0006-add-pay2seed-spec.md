@@ -1,7 +1,7 @@
 ---
 openprd: "0.2"
 id: "0006"
-title: "Add pay2seed to the OpenSwarm family: consent at upload and a paid seed market"
+title: "Add pay2seed, paid2seed, pay2stream and paid2stream to the OpenSwarm family"
 status: Draft
 authors:
   - anthony@profullstack.com
@@ -13,6 +13,11 @@ implementation:
 tags:
   - openswarm
   - pay2seed
+  - paid2seed
+  - pay2stream
+  - paid2stream
+  - iplive
+  - hls
   - ipfile
   - ippay
   - ipdb
@@ -48,6 +53,15 @@ neither has a place for "I made this, here is the licence, here is where to
 send a notice". A user of ours who wants to share their own work, keep an
 off-site copy of their own data, or seed an openly licensed dataset for
 money has no way to say so that anyone else can check.
+
+## Naming
+
+`pay2*` is the client protocol: the side that pays, over HTTPS, and plays.
+`paid2*` is the server protocol: the BitTorrent side that earns. One hub
+implements both halves of a pair; a requester or viewer client implements
+only `pay2*`; a seeder, relay or gateway implements only `paid2*`. The
+first draft of pay2seed carried both halves in one document and was split
+the same day.
 
 ## Goals
 
@@ -107,19 +121,26 @@ money has no way to say so that anyone else can check.
 
 ## Requirements
 
-1. `docs/openswarm/pay2seed.md` specifies: the attestation record and
+1. `docs/openswarm/pay2seed.md` and `paid2seed.md` together specify: the attestation record and
    basis table; the claim window and requester standing; the offer record,
    its purchase over x402, and its lifecycle; public swarms, public feeds
    on `ipdb`, private swarms; the lease record and slot rules; storage
    challenges and probes; GiB-month accrual, receipts and payout through
    `ippay`; the hub record extension and API; seeder client behaviour;
    notices and takedown; the `ipfile.pin` mapping; events; conformance.
-2. `docs/openswarm.md` lists `pay2seed` in the family table, the stack
+1b. `docs/openswarm/pay2stream.md` and `paid2stream.md` specify the
+   same for a live channel over `iplive`: consent for channels with the
+   two rules for licensed feeds; relay offers per relay-hour with a
+   gateway bonus; tickets and listings; presence proofs and the
+   served-bytes ratio; gateways serving standard HLS in clear and sealed
+   modes with an M3U and XMLTV EPG, so any IPTV player works with no new
+   client; gateway-bound vouchers; stopping on a void.
+2. `docs/openswarm.md` lists the four in the family table, the stack
    diagram, "What it defines" and "What already exists".
-3. `docs/openswarm/spec.md` §11 registers the six `pay2seed.*` record
+3. `docs/openswarm/spec.md` §11 registers the `pay2seed.*`, `paid2seed.*`, `pay2stream.*` and `paid2stream.*` record
    types and their signers.
-4. `docs/openswarm/cli.md` gains the `ip seed` command group.
-5. The `/openswarm` page on logicsrc.com lists `pay2seed` among the
+4. `docs/openswarm/cli.md` gains the `ip seed` and `ip stream` command groups.
+5. The `/openswarm` page on logicsrc.com lists the four among the
    protocols.
 6. Implementations, tracked outside this repo:
    - bittorrented.com (`profullstack/media-streamer`): the reference hub.
