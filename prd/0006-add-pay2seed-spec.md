@@ -155,34 +155,43 @@ arrives.
 
 ## Requirements
 
-1. `docs/openswarm/pay2seed.md` and `paid2seed.md` together specify: the attestation record and
-   basis table; the claim window and requester standing; the offer record,
-   its purchase over x402, and its lifecycle; public swarms, public feeds
-   on `ipdb`, private swarms; the lease record and slot rules; storage
-   challenges and probes; GiB-month accrual, receipts and payout through
-   `ippay`; the hub record extension and API; seeder client behaviour;
-   notices and takedown; the `ipfile.pin` mapping; events; conformance.
-1b. `docs/openswarm/pay2stream.md` and `paid2stream.md` specify the
-   same for a live channel over `iplive`: consent for channels with the
-   two rules for licensed feeds; relay offers per relay-hour with a
-   gateway bonus; tickets and listings; presence proofs and the
-   served-bytes ratio; gateways serving standard HLS in clear and sealed
-   modes with an M3U and XMLTV EPG, so any IPTV player works with no new
-   client; gateway-bound vouchers; stopping on a void.
-2. `docs/openswarm.md` lists the four in the family table, the stack
-   diagram, "What it defines" and "What already exists".
-3. `docs/openswarm/spec.md` §11 registers the `pay2seed.*`, `paid2seed.*`, `pay2stream.*` and `paid2stream.*` record
-   types and their signers.
-4. `docs/openswarm/cli.md` gains the `ip seed` and `ip stream` command groups.
-5. The `/openswarm` page on logicsrc.com lists the four among the
-   protocols.
-6. Implementations, tracked outside this repo:
-   - bittorrented.com (`profullstack/media-streamer`): the reference hub.
-   - torlink (`baairon/torlink`, via the `ralyodio` fork): the seeder
-     client. Per-torrent seed time (#186) is the first piece.
-   - `@profullstack/pay2seed`: the shared client (hub calls, records,
-     signing) and the promo surfaces the Profullstack media sites embed.
-   - c0mpute: `ipfile.pin` interop per §11.
+- R1 [P0] Define `pay2seed`, the client half: the attestation record and
+  basis table, the mandatory README and its hash, the claim window and
+  requester standing, the offer record and its purchase over x402, the
+  offer lifecycle, public swarms, public `ipdb` feeds and private swarms,
+  the hub record extension, the requester API, notices and takedown.
+- R2 [P0] Define `paid2seed`, the server half: the lease record and slot
+  rules, storage challenges and wire probes, GiB-month accrual, receipts
+  and payout through `ippay`, the seeder API and client behaviour, seeder
+  and requester standing, the `ipfile.pin` mapping, events, conformance.
+- R3 [P0] Define `pay2stream`, the client half for live: consent for
+  channels with the two rules that separate a licensed rebroadcast from a
+  stolen feed, relay offers per relay-hour with a gateway bonus, tickets
+  and listings, watching as a peer or on any HLS player.
+- R4 [P0] Define `paid2stream`, the server half for live: relay leases,
+  presence proofs and the served-bytes ratio, gateways serving standard
+  HLS in clear and sealed modes with an M3U and XMLTV EPG so any IPTV
+  player works with no new client, gateway-bound vouchers, stopping on a
+  void.
+- R5 [P0] Specify encryption by default and access as the product: teams
+  with roles and scopes, invitations that expire, member grants issued by
+  the hub as keeper, re-encryption on removal, per-seat pricing, the 1
+  percent fee on payments that cross the hub, and the advertisement that
+  pays for public swarms.
+- R6 [P1] Say that a requester is a key rather than a person, so an
+  autonomous agent can attest, price access, sell tickets and be paid,
+  under the same consent rules and with a responsible operator key named
+  on public attestations.
+- R7 [P1] Wire the family into the repo: `docs/openswarm.md` family table,
+  stack diagram and "what already exists"; `spec.md` §11 record type
+  registry; the `ip seed` and `ip stream` command groups in `cli.md`; and
+  the four protocols listed on the `/openswarm` page.
+
+Implementations are tracked outside this repo: bittorrented.com
+(`profullstack/media-streamer`) as the reference hub; torlink
+(`baairon/torlink`, via the `ralyodio` fork) as the seeder client, whose
+per-torrent seed time (#186) is the first piece; `@profullstack/pay2seed`
+as the shared client; and c0mpute for `ipfile.pin` interop.
 
 ## UX Notes
 
