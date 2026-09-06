@@ -17,7 +17,11 @@ const PROTOCOLS: Array<[name: string, line: string]> = [
   ["ipaudio", "Audio releases and tracks on ipfile swarms: renditions, seek tables, gapless, royalties"],
   ["ipvideo", "Video on demand: CMAF renditions, segment index, subtitles, thumbnails, an HLS bridge"],
   ["iplive", "Live streams: segment fan-out over paid relays with backpressure"],
-  ["ipname", "How a Moshpit name or a domain resolves to a publisher key and a catalogue"]
+  ["ipname", "How a Moshpit name or a domain resolves to a publisher key and a catalogue"],
+  ["pay2seed", "Client protocol for paid seeding: consent at upload, seed offers with escrowed budgets, the requester's market"],
+  ["paid2seed", "Server protocol for paid seeding: leases, storage challenges and probes over the wire, GiB-month settlement, the seeder client"],
+  ["pay2stream", "Client protocol for paid live streams: consent for channels, relay offers by the hour, tickets, watching on any HLS player"],
+  ["paid2stream", "Server protocol for paid live streams: relay leases, presence proofs, gateways serving standard HLS with an M3U and EPG"]
 ];
 
 const ROLES: Array<[role: string, work: string, paid: string]> = [

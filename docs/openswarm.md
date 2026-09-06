@@ -34,6 +34,10 @@ a different product. The member protocols keep their `ip` names.
 | `ipvideo` | Video on demand on `ipfile` swarms: CMAF renditions, segment index, subtitles, thumbnails | [`ipvideo.md`](./openswarm/ipvideo.md) |
 | `iplive` | Live streams: segment fan-out over peers, paid relays, backpressure | [`iplive.md`](./openswarm/iplive.md) |
 | `ipname` | How a Moshpit name resolves to a publisher key and a catalogue | [`ipname.md`](./openswarm/ipname.md) |
+| `pay2seed` | Client protocol for paid seeding: consent at upload, seed offers with escrowed budgets, the requester's market | [`pay2seed.md`](./openswarm/pay2seed.md) |
+| `paid2seed` | Server protocol for paid seeding: leases, storage challenges and probes over the wire, GiB-month settlement, the seeder client | [`paid2seed.md`](./openswarm/paid2seed.md) |
+| `pay2stream` | Client protocol for paid live streams: consent for channels, relay offers, tickets and listings, watching as a peer or on any HLS player | [`pay2stream.md`](./openswarm/pay2stream.md) |
+| `paid2stream` | Server protocol for paid live streams: relay leases per hour, presence proofs, gateways serving standard HLS, M3U and EPG | [`paid2stream.md`](./openswarm/paid2stream.md) |
 
 Supporting documents:
 
@@ -50,6 +54,10 @@ Supporting documents:
   |  ipaudio      ipvideo      iplive         ipdb (catalogue)    |
   |  releases     titles       channels       feeds, entries      |
   +---------------------------------------------------------------+
+  |  pay2seed / paid2seed        |  pay2stream / paid2stream      |
+  |  consent, offers, market     |  consent, relay offers, tickets |
+  |  leases, challenges, payout  |  leases, presence, HLS gateways |
+  +------------------------------+--------------------------------+
   |  ipfile: manifest, per-file key pair, encrypted pieces,       |
   |          key grants, credit window, vouchers per served piece |
   +-------------------------------+-------------------------------+
@@ -132,6 +140,20 @@ serves more than the window unpaid.
 Its head is a BEP 44 mutable item under the feed key, so any DHT node can find
 the latest catalogue of any publisher with one `get`.
 
+**One seed market, one stream market.** A `pay2seed` offer is money
+escrowed at a hub for a swarm to be kept for a period, public or private,
+and it cannot be listed without a signed attestation of who put the data
+there and on what basis. On the `paid2seed` side, seeders take leases,
+prove they hold and serve the pieces every period, and are paid per
+GiB-month. `pay2stream` and `paid2stream` do the same for a live channel:
+a broadcaster attests it and buys relays by the hour, relays and gateways
+prove they are online and serving, and a gateway turns the swarm into
+standard HLS so any television plays it. The naming is the rule: `pay2*`
+is the client protocol, the side that pays over HTTPS; `paid2*` is the
+server protocol, the BitTorrent side that earns. It is how a torrent
+client becomes a legitimate file sharer: consent on the way in, proof on
+the way out, and a payout for staying.
+
 ## What it does not define
 
 A media player. Transcoding settings beyond what a manifest must declare. A
@@ -146,6 +168,7 @@ key and the spec says so.
 | Browser WebTorrent player, hybrid Node seeder, wss trackers | `profullstack/media-streamer` (bittorrented.com) | Speaks the vanilla wire this family extends; needs the `ipfile` extension to pay |
 | DHT crawl (bitmagnet) and `/dht` browse | `profullstack/media-streamer`, `dht-infohash-crawler` | Observes `ipfile` swarms as opaque infohashes; `ipdb` is how it would learn what they are |
 | Pay-per-pass grants, HLS manifest sealing | `media-streamer` IPTV and seedbox rails | The central-proxy version of what `ippay` moves into the swarm |
+| Headless seeder daemon with an add API and per-torrent seed time | `torlink` (`torlnk serve`) | The `pay2seed` seeder client, once it polls a market and answers challenges |
 | x402 v2 offer, `X-PAYMENT` proof, verify and settle | `profullstack/x402-gateway`, CoinPay | `ippay` pass purchase reuses it unchanged |
 | CloudEvents 1.0 + Standard Webhooks signing | `profullstack/autoblog` | Every OpenSwarm event uses the same envelope and headers |
 | MTP/1 post-quantum transport, name pins | `profullstack/moshpit-transport`, `moshpit-proxy` | Optional tunnel for native peer links; `ipname` pin kind |

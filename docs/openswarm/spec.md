@@ -502,6 +502,19 @@ Member conformance is defined per document; the checklist is collected in
 | `ipvideo.title` | publisher key | ipvideo |
 | `iplive.channel`, `iplive.head` | channel key | iplive |
 | `ipname.pin` | publisher key | ipname |
+| `pay2seed.attestation` | requester key (and the file's publisher key, or the channel key, for `ipfile` and `iplive` subjects) | pay2seed |
+| `pay2seed.offer` | hub key | pay2seed |
+| `pay2seed.notice` | claimant key | pay2seed |
+| `pay2seed.team` | owner key (or an admin member) | pay2seed |
+| `pay2seed.invite` | an admin member | pay2seed |
+| `paid2seed.lease`, `paid2seed.receipt` | hub key | paid2seed |
+| `paid2seed.challenge` | verifier key | paid2seed |
+| `paid2seed.proof` | seeder key, or verifier key for a probe | paid2seed |
+| `pay2stream.offer` | hub key | pay2stream |
+| `pay2stream.listing` | channel key | pay2stream |
+| `paid2stream.lease`, `paid2stream.receipt` | hub key | paid2stream |
+| `paid2stream.proof` | verifier key | paid2stream |
+| `paid2stream.gateway` | gateway key | paid2stream |
 
 ## 12. Version history
 
