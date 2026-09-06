@@ -52,6 +52,16 @@ Who this is for; personas or segments.
 
 Flows, states, and constraints that shape the experience.
 
+## Tech Stack
+
+Languages, frameworks, datastores, and third-party services this will be built
+on, and anything it must not depend on.
+
+## Monetization
+
+The revenue model: who pays, for what, how much, and when. None, when the
+change does not earn on its own.
+
 ## Success Metrics
 
 How the goals will be measured.
@@ -183,6 +193,10 @@ function placeholder(section: string): string {
       return "- R1 [P0] _TODO: first required capability._";
     case "UX Notes":
       return "_TODO: flows, states, and constraints._";
+    case "Tech Stack":
+      return "_TODO: languages, frameworks, datastores, and services._";
+    case "Monetization":
+      return "_TODO: the revenue model — who pays, for what, how much._";
     case "Success Metrics":
       return "_TODO: how the goals will be measured._";
     default:

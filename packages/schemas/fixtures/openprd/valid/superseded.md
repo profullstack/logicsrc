@@ -1,5 +1,5 @@
 ---
-openprd: "0.2"
+openprd: "0.3"
 id: "0004"
 title: Retire the old flow
 status: Superseded
@@ -31,6 +31,15 @@ _None._
 ## UX Notes
 
 _None._
+
+## Tech Stack
+
+TypeScript on Node 22, Postgres, and the existing Cloudflare worker. No new
+runtime.
+
+## Monetization
+
+Bundled into the existing Pro plan at $19/mo; no separate SKU.
 
 ## Success Metrics
 

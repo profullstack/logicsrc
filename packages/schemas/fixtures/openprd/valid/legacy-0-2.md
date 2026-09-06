@@ -1,7 +1,7 @@
 ---
-openprd: "0.3"
-id: "0001"
-title: Expand the parked-domain service
+openprd: "0.2"
+id: "0006"
+title: Keep a 0.2 document valid
 status: Draft
 authors:
   - anthony@profullstack.com
@@ -28,14 +28,6 @@ _None._
 - R1 [P0] First required capability.
 
 ## UX Notes
-
-_None._
-
-## Tech Stack
-
-_None._
-
-## Monetization
 
 _None._
 

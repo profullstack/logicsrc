@@ -1,7 +1,7 @@
 ---
 openprd: "0.3"
 id: "0001"
-title: Expand the parked-domain service
+title: Omit the monetization section
 status: Draft
 authors:
   - anthony@profullstack.com
@@ -32,10 +32,6 @@ _None._
 _None._
 
 ## Tech Stack
-
-_None._
-
-## Monetization
 
 _None._
 

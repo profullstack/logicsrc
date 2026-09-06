@@ -1,5 +1,5 @@
 ---
-openprd: "0.2"
+openprd: "0.3"
 id: "0000"
 title: "Short imperative title — start with a verb if possible"
 status: Draft
@@ -40,6 +40,16 @@ Who this is for; personas or segments.
 ## UX Notes
 
 Flows, states, and constraints that shape the experience.
+
+## Tech Stack
+
+Languages, frameworks, datastores, and third-party services this will be built
+on, and anything it must not depend on.
+
+## Monetization
+
+The revenue model: who pays, for what, how much, and when. None, when the
+change does not earn on its own.
 
 ## Success Metrics
 

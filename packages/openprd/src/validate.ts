@@ -1,6 +1,15 @@
 import { validate as validateSchema } from "@logicsrc/validators";
 import { slugify } from "./parse.js";
-import { SECTIONS, type Finding, type PrdCollection, type PrdDocument, type Severity, type ValidationReport } from "./types.js";
+import {
+  OPENPRD_VERSION,
+  sectionsForVersion,
+  type Finding,
+  type PrdCollection,
+  type PrdDocument,
+  type SectionName,
+  type Severity,
+  type ValidationReport
+} from "./types.js";
 
 export interface ValidateOptions {
   /** Promote lint warnings to errors, for CI that wants a clean collection. */
@@ -17,7 +26,7 @@ const TEMPLATE_ID = "0000";
  *   - lives at prd/<id>-<slug>.md with a four-digit <id>
  *   - front-matter validates against openprd-prd.schema.json
  *   - id equals the filename's numeric prefix
- *   - all eight body sections are present in order
+ *   - all body sections for the declared version are present in order
  *
  * Everything beyond those four is lint: useful, but never the difference
  * between conforming and not.
@@ -73,10 +82,13 @@ export function validatePrdDocument(doc: PrdDocument, options: ValidateOptions =
     });
   }
 
-  /* ── 4. The eight sections, present and in order ─────────────────────── */
+  /* ── 4. The standard sections, present and in order ──────────────────── */
 
+  // A document is held to the section list its own `openprd:` version fixes, so
+  // 0.2 documents keep conforming after 0.3 added Tech Stack and Monetization.
+  const expected = [...sectionsForVersion(doc.frontMatter.openprd)];
+  const isStandard = (name: string) => expected.includes(name as SectionName);
   const present = doc.sections.map((section) => section.name);
-  const expected = [...SECTIONS];
 
   for (const name of expected) {
     if (!present.includes(name)) {
@@ -84,12 +96,12 @@ export function validatePrdDocument(doc: PrdDocument, options: ValidateOptions =
         code: "OP-C-SECTION-MISSING",
         severity: "error",
         message: `missing required section "## ${name}"`,
-        hint: `The eight sections are: ${expected.join(", ")}`
+        hint: `OpenPRD ${doc.frontMatter.openprd ?? OPENPRD_VERSION} requires: ${expected.join(", ")}`
       });
     }
   }
 
-  const required = present.filter((name) => expected.includes(name as (typeof SECTIONS)[number]));
+  const required = present.filter(isStandard);
   const ordered = expected.filter((name) => required.includes(name));
   if (required.length === ordered.length && required.join("|") !== ordered.join("|")) {
     add({
@@ -99,13 +111,13 @@ export function validatePrdDocument(doc: PrdDocument, options: ValidateOptions =
     });
   }
 
-  const extra = present.filter((name) => !expected.includes(name as (typeof SECTIONS)[number]));
+  const extra = present.filter((name) => !isStandard(name));
   for (const name of extra) {
     add({
       code: "OP-L-EXTRA-SECTION",
       severity: "info",
       line: doc.sections.find((s) => s.name === name)?.line,
-      message: `"## ${name}" is not one of the eight standard sections`,
+      message: `"## ${name}" is not one of the ${expected.length} standard sections`,
       hint: "Use a ### subsection inside a standard section instead"
     });
   }
@@ -122,7 +134,7 @@ export function validatePrdDocument(doc: PrdDocument, options: ValidateOptions =
   }
 
   for (const section of doc.sections) {
-    if (!expected.includes(section.name as (typeof SECTIONS)[number])) continue;
+    if (!isStandard(section.name)) continue;
     if (!section.empty) continue;
     add({
       code: "OP-L-EMPTY-SECTION",

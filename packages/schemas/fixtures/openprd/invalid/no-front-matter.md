@@ -24,6 +24,15 @@ _None._
 
 _None._
 
+## Tech Stack
+
+TypeScript on Node 22, Postgres, and the existing Cloudflare worker. No new
+runtime.
+
+## Monetization
+
+Bundled into the existing Pro plan at $19/mo; no separate SKU.
+
 ## Success Metrics
 
 _None._

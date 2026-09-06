@@ -34,8 +34,10 @@ numbered, committed collection under prd/, one Markdown file each.
   for the template.
 - Front-matter carries openprd, id, title, status, authors, and optional repo,
   dates, discussion, implementation, tags, supersedes, superseded-by.
-- The body has eight required sections in order: Problem, Goals, Non-Goals,
-  Users, Requirements, UX Notes, Success Metrics, Risks & Open Questions.
+- The body has ten required sections in order: Problem, Goals, Non-Goals,
+  Users, Requirements, UX Notes, Tech Stack, Monetization, Success Metrics,
+  Risks & Open Questions. (0.2 documents have eight: no Tech Stack, no
+  Monetization. They are validated against the version they declare.)
 - Requirements are numbered R1, R2, … each tagged [P0], [P1], or [P2].
 - Lifecycle: Draft → Review → Accepted → Final, or Rejected / Withdrawn /
   Superseded. Status lives in front-matter and is the source of truth.
@@ -69,7 +71,7 @@ export function registerOpenPrd(server: McpServer): void {
     "logicsrc://openprd/spec",
     {
       title: "OpenPRD specification",
-      description: "Numbered PRDs: layout, front-matter, the eight sections, and the lifecycle.",
+      description: "Numbered PRDs: layout, front-matter, the ten sections, and the lifecycle.",
       mimeType: "text/markdown"
     },
     async () => ({
@@ -136,7 +138,7 @@ export function registerOpenPrd(server: McpServer): void {
     {
       title: "Validate the PRD collection",
       description:
-        "Checks conformance — filename, front-matter, id match, the eight sections in order — plus collection rules.",
+        "Checks conformance — filename, front-matter, id match, the sections in order — plus collection rules.",
       inputSchema: { strict: z.boolean().optional() },
       annotations: { readOnlyHint: true, openWorldHint: false }
     },
@@ -235,12 +237,18 @@ export function registerOpenPrd(server: McpServer): void {
             type: "text" as const,
             text: `Draft an OpenPRD document for the change the user describes.
 
-Front-matter: openprd "0.2", a four-digit id matching the filename, an imperative
+Front-matter: openprd "0.3", a four-digit id matching the filename, an imperative
 title starting with a verb, status Draft, and at least one author.
 
-Then all eight sections, in this order, none omitted:
-Problem, Goals, Non-Goals, Users, Requirements, UX Notes, Success Metrics,
-Risks & Open Questions. A section may be a single line such as _None._
+Then all ten sections, in this order, none omitted:
+Problem, Goals, Non-Goals, Users, Requirements, UX Notes, Tech Stack,
+Monetization, Success Metrics, Risks & Open Questions. A section may be a single
+line such as _None._
+
+Tech Stack names the languages, frameworks, datastores, and third-party services
+the work will be built on, and anything it must not depend on. Monetization
+states the revenue model: who pays, for what, how much, and when — or _None._
+when the change does not earn on its own.
 
 Requirements are numbered R1, R2, … contiguously, each tagged [P0], [P1], or [P2],
 one capability per line. Goals are outcomes, not features. Non-Goals bound the work.
@@ -263,13 +271,16 @@ they are settled.`
             type: "text" as const,
             text: `Review this PRD.
 
-Check the shape first: all eight sections present and in order, requirements numbered
-contiguously with priority tags, front-matter complete.
+Check the shape first: every section the declared openprd version requires, present
+and in order, requirements numbered contiguously with priority tags, front-matter
+complete.
 
 Then the substance: are the Goals outcomes rather than features? Do the Non-Goals
 actually bound the work? Is every P0 requirement testable? Do the Success Metrics
-measure the Goals? Do the Risks name real decisions still owed, or is that section
-decoration? Say what you would change and why.`
+measure the Goals? Is the Tech Stack specific enough to cost the Requirements, or
+is it a wish list? Does Monetization say who pays and how much, or does it dodge?
+Do the Risks name real decisions still owed, or is that section decoration? Say
+what you would change and why.`
           }
         }
       ]

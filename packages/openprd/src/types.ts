@@ -7,9 +7,9 @@
  * speak this shape.
  */
 
-export const OPENPRD_VERSION = "0.2";
+export const OPENPRD_VERSION = "0.3";
 
-/** The eight `##` sections, in the order the standard requires. */
+/** The ten `##` sections of OpenPRD 0.3, in the order the standard requires. */
 export const SECTIONS = [
   "Problem",
   "Goals",
@@ -17,11 +17,32 @@ export const SECTIONS = [
   "Users",
   "Requirements",
   "UX Notes",
+  "Tech Stack",
+  "Monetization",
   "Success Metrics",
   "Risks & Open Questions"
 ] as const;
 
 export type SectionName = (typeof SECTIONS)[number];
+
+/**
+ * OpenPRD 0.2 had eight sections. 0.3 adds `Tech Stack` and `Monetization`
+ * after `UX Notes`, which would retroactively break every published 0.2
+ * document, so the section list a document is held to is the one its own
+ * `openprd:` version fixes.
+ */
+export const SECTIONS_0_2 = SECTIONS.filter(
+  (section) => section !== "Tech Stack" && section !== "Monetization"
+) as readonly SectionName[];
+
+/** The sections required by a declared standard version. Unknown → current. */
+export function sectionsForVersion(version: string | undefined | null): readonly SectionName[] {
+  const [major, minor] = String(version ?? "")
+    .split(".")
+    .map((part) => Number.parseInt(part, 10));
+  if (major === 0 && Number.isInteger(minor) && (minor as number) < 3) return SECTIONS_0_2;
+  return SECTIONS;
+}
 
 export const STATUSES = [
   "Draft",

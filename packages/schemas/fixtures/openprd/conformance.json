@@ -1,6 +1,6 @@
 {
-  "openprdConformance": "0.2",
-  "description": "Conformance fixtures for OpenPRD 0.2. Every valid fixture must parse and validate with no errors; every invalid fixture must fail with the stated code. `file` is the filename the fixture must be validated as, since the standard's rules depend on it.",
+  "openprdConformance": "0.3",
+  "description": "Conformance fixtures for OpenPRD 0.3. Every valid fixture must parse and validate with no errors; every invalid fixture must fail with the stated code. `file` is the filename the fixture must be validated as, since the standard's rules depend on it. A document is held to the section list its own `openprd:` version fixes, so valid/legacy-0-2.md still conforms with the eight sections 0.2 defined.",
   "valid": [
     {
       "fixture": "valid/minimal.md",
@@ -25,6 +25,11 @@
     {
       "fixture": "valid/none-sections.md",
       "file": "0005-keep-every-section-even-when-empty.md"
+    },
+    {
+      "fixture": "valid/legacy-0-2.md",
+      "file": "0006-keep-a-0-2-document-valid.md",
+      "reason": "A 0.2 document has eight sections and must keep conforming under 0.3."
     }
   ],
   "invalid": [
@@ -32,7 +37,13 @@
       "fixture": "invalid/missing-section.md",
       "file": "0001-missing-a-section.md",
       "code": "OP-C-SECTION-MISSING",
-      "reason": "The eight body sections are all required; Users is absent."
+      "reason": "The body sections are all required; Users is absent."
+    },
+    {
+      "fixture": "invalid/missing-monetization.md",
+      "file": "0001-omit-the-monetization-section.md",
+      "code": "OP-C-SECTION-MISSING",
+      "reason": "0.3 requires Tech Stack and Monetization; Monetization is absent."
     },
     {
       "fixture": "invalid/out-of-order.md",
