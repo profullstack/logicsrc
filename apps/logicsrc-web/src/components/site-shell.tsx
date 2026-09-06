@@ -13,6 +13,7 @@ const NAV: Array<{ href: string; label: string; external?: boolean }> = [
   { href: "/opencreds", label: "OpenCreds" },
   { href: "/openswarm", label: "OpenSwarm" },
   { href: "/openprd", label: "OpenPRD" },
+  { href: "/asdlc", label: "ASDLC" },
   { href: "/#cli", label: "CLI" },
   { href: "/docs", label: "Docs" },
   { href: "/blog", label: "Blog" },

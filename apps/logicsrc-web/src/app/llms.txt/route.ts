@@ -17,6 +17,7 @@ export function GET(): Response {
 
 ## Standards & products
 
+- [ASDLC](${SITE_URL}/asdlc): The Agentic Software Development Lifecycle: nine phases for building software when agents work in parallel and CI/CD is the only gate, with conformance levels and the ratchet rule.
 - [AgentSwarm](${SITE_URL}/agent-swarm): Provider-neutral agent orchestration, model routing, and cost controls.
 - [AgentByte](${SITE_URL}/agentbyte): Agent screening sessions, policy events, and APIs.
 - [Credential Sharing](${SITE_URL}/credential-sharing): End-to-end-encrypted team vaults, plus source/target credential diffs, approval, sync, rollback, and audit.
