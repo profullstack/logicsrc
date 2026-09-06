@@ -200,7 +200,7 @@ Relative to a `pay2stream.base` the hub adds to its `ippay.hub` record as
 | `POST /listings` | channel signed | Publish a `pay2stream.listing` (also replicated on the channel's `ipdb` feed). |
 | `GET /tickets?payer&channel&hours` | x402 + `X-OpenSwarm-Payer` | Buy a ticket (§5). `payer` MAY be a gateway key with the viewer's own key as `X-OpenSwarm-Bound-By`. |
 | `GET /gateways?region&channel` | none | Gateways, and which channels each currently relays. |
-| `POST /notices` | signed | As `pay2seed` §7; voiding ends every lease and delists every gateway for the channel. |
+| `POST /notices` | signed | As `pay2seed` §8; voiding ends every lease and delists every gateway for the channel. |
 
 ## 8. Client behaviour
 
@@ -239,7 +239,7 @@ MUST NOT send a ticket to a gateway the hub does not list for that channel.
 
 ## 11. Conformance
 
-A **hub** on this side: everything `pay2seed` §10 requires of it, over
+A **hub** on this side: everything `pay2seed` §11 requires of it, over
 channels; sells tickets bound to gateways; lists gateways per channel.
 
 A **broadcaster client** and a **viewer client**: §8.

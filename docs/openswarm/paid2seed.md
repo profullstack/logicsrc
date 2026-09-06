@@ -86,7 +86,7 @@ below the offer's or hub's floor.
 A hub SHOULD hand out slots in order of standing and MUST NOT hand out
 more than `seeders.max`. A seeder SHOULD NOT take a lease it cannot serve
 within `graceHours`; an abandoned lease counts against standing. When an
-offer is voided (`pay2seed` §7) every lease on it is `voided`, the hub
+offer is voided (`pay2seed` §8) every lease on it is `voided`, the hub
 pushes `paid2seed.lease.voided`, and a seeder learns of it on its next
 poll at the latest.
 
@@ -201,7 +201,7 @@ cannot take a lease, because there would be nowhere to pay.
 ### 6.1 API, seeder side
 
 Paths relative to the `pay2seed.base` in the hub record (`pay2seed`
-§5.1). The requester side is `pay2seed` §5.2.
+§6.1). The requester side is `pay2seed` §6.2.
 
 | Method and path | Auth | Purpose |
 | --- | --- | --- |

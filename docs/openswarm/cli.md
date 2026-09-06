@@ -143,6 +143,12 @@ ip seed leases [--hub <url>] [--status proven|fetching|lapsed|ended]
 ip seed status <offer id | lease id>
 ip seed void   <offer id>                            # requester: void and refund the unearned budget
 ip seed notice <attestation id> --kind rights|illegal|personal-data|other --statement <text>
+ip team create <name> --hub <url> [--scope <file key>|--publisher <key>]...
+ip team invite <team> --to <email|ipname|key> [--role admin|member|readonly] [--expires <days>]
+ip team accept <invite id>
+ip team remove <team> <key> [--no-rotate]
+ip team grant  <team> --file <file key>          # a member fetching their sealed grant
+ip team audit  <team> [--since <time>]
 ```
 
 ```

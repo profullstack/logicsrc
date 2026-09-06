@@ -80,10 +80,27 @@ the same day.
   is the reference client; a laptop qualifies.
 - **The market is one HTTP surface.** `GET /offers` is what a client picks
   work from. bittorrented.com is the reference hub.
+- **Encryption on by default, access as the product.** Private swarms are
+  the default; teams, invitations, member grants via the hub as keeper,
+  rotation on removal, and per-seat pricing are in the spec. Public is
+  opt-out and rides the DHT for free.
 - **Reuse.** Offers are bought like passes (x402, `X-OpenSwarm-Payer`),
   payouts are `ippay` §5.6, challenges are c0mpute's storage challenge,
   feeds are `ipdb`, events are the family envelope. One new document, six
   new record types, no new primitive.
+
+## Business model
+
+Encryption is on by default: every private swarm is `ipfile` ciphertext
+under a key the requester holds. Seeding is priced at the cost of disk and
+is not where the money is. **Access is.** A requester invites team,
+group or organisation members, and the hub (as keeper) issues them grants
+to decrypt, at three in the morning, when the requester is offline, with
+an audit trail and rotation on removal. A few seats are free so a family
+or a three-person shop never pays; above that, seats and organisations
+are billed monthly through the same CoinPay rail as everything else.
+Public distribution is encryption switched off: a vanilla torrent that
+the DHT finds for nothing and that the hub never charges for.
 
 ## Non-Goals
 

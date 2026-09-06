@@ -18,6 +18,12 @@ do not control, to a hub. It defines:
   proof cadence. Public offers cover vanilla torrents and `ipdb` feeds;
   private offers cover `ipfile` swarms whose ciphertext a seeder holds
   without ever reading.
+- **Encryption by default, and access.** A private swarm is `ipfile`
+  ciphertext under a key the requester holds. Who else may decrypt it is
+  a team: members the requester invites, and a keeper that issues grants
+  to them when the requester is offline. This is what a hub charges for.
+  Public is encryption switched off by an explicit act, and is listed and
+  kept like anything else.
 - **The requester's view of the market**, of standing, and of notices.
 
 Everything on the BitTorrent side, how a seeder takes a lease, proves it
@@ -35,7 +41,7 @@ carried on c0mpute's job auction; `paid2seed` §8 gives the mapping.
 Judging content. A hub sees an attestation, an infohash and, for a private
 swarm, nothing else. It enforces that the attestation exists, is signed and
 is honoured on notice; whether it is true is the requester's liability, and
-§7 is how a false one is undone. Not a DRM. Not a token. Not a replacement
+§8 is how a false one is undone. Not a DRM. Not a token. Not a replacement
 for `ippay` vouchers: a swarm that charges leechers keeps charging them.
 
 ## 2. Terminology
@@ -85,8 +91,9 @@ offer, and every offer for that swarm references it.
 | `basis` | Why the requester may distribute this. One of §3.2. |
 | `license` | REQUIRED when `basis` is `open-license`: an SPDX identifier. |
 | `description` | OPTIONAL, at most 280 characters, shown on public listings. |
-| `notice` | An HTTPS URL or `mailto:` at which the requester receives notices (§7). REQUIRED for `public`. |
+| `notice` | An HTTPS URL or `mailto:` at which the requester receives notices (§8). REQUIRED for `public`. |
 | `acceptsTakedown` | MUST be `true`. Present so the acceptance is in the signed bytes. |
+| `readme`, `readmeSha256` | REQUIRED. The swarm's `README.md` and the hash of the copy inside the swarm (§5.6). No README, no listing. |
 
 Signer: the requester key. For an `ipfile` subject the attestation MUST
 also carry a signature by the file's publisher key, which is how a
@@ -105,7 +112,7 @@ public infohash no such proof of authorship exists; §3.3 stands in for it.
 
 A hub MUST reject an attestation whose `basis` and `visibility` disagree
 with this table, and any with an unlisted `basis`. Hubs MAY refuse to list
-particular bases; the hub record says which (§5.1).
+particular bases; the hub record says which (§6.1).
 
 ### 3.3 Public infohashes and the claim window
 
@@ -216,9 +223,156 @@ set the data is readable by anyone with the manifest and the offer is
 still `private` in this document's sense: the attestation says the
 requester may store it.
 
-## 5. The requester's hub
+## 5. Encryption by default, and who may decrypt
 
-### 5.1 Hub record
+### 5.1 The default
+
+A client adding data through `pay2seed` encrypts it. The default swarm is
+an `ipfile` swarm: AES-256-CTR over pieces under a content key the
+requester's publisher key derives and holds (`ipfile` §4). Nothing about
+the data, not its name, not its size to the byte, not a single block,
+is readable by a seeder, a tracker, the DHT, or the hub. `visibility`
+is `private`.
+
+The client encrypts. The hub never does, never holds a content key it
+was not delegated as keeper, and never sees plaintext; what it manages
+is access to keys, not the bytes.
+
+Encryption is a choice the requester makes off, not on. A requester who
+wants the world to have the data sets `visibility` to `public`: the
+swarm is a vanilla torrent and there is no content key. A public swarm
+is not a fallback and not a second class: it is attested, listed, kept
+by paid seeders and rendered on the hub exactly as a private one is. The
+only difference is that anyone who finds it, on the hub or on the DHT,
+can read it. A client MUST make the default private, MUST make turning
+it off an explicit act, and MUST say plainly what off means: anyone.
+
+### 5.2 Access is the product
+
+What a private swarm needs, and what BitTorrent never had, is a way for
+the requester to say who else may decrypt it, and for that to keep
+working when the requester's laptop is closed. That is a **team**: a
+named set of member keys held at the hub, with a policy over which of
+the requester's swarms each member may receive a grant for. The hub, or
+a keeper it delegates to (`ipfile` §3.2 `delegate`, c0mpute's keeper
+role), issues the grant when a member asks. The requester never has to
+be online for a colleague to open a file, and never has to hand anyone
+the content key itself.
+
+Seeding is priced at the cost of disk. Teams are where a hub earns:
+seats, groups, an organisation with many groups, audit, and the
+guarantee that a grant is there at three in the morning.
+
+### 5.3 Records
+
+```json
+{
+  "openswarm": "0.1",
+  "type": "pay2seed.team",
+  "hub": "ed25519:c9f1…",
+  "owner": "ed25519:0d87…",
+  "name": "field-recordings",
+  "members": [
+    { "key": "ed25519:a1b2…", "box": "x25519:4c40…", "role": "admin", "since": "2026-09-06T10:00:00.000Z" },
+    { "key": "ed25519:c3d4…", "box": "x25519:9e11…", "role": "member", "since": "2026-09-06T10:05:00.000Z" }
+  ],
+  "scope": { "files": ["*"], "publishers": ["ed25519:0d87…"] },
+  "keeper": "ed25519:c9f1…",
+  "createdAt": "2026-09-06T10:00:00.000Z",
+  "sigs": [{ "alg": "ed25519", "key": "ed25519:0d87…", "sig": "…" }]
+}
+```
+
+| Field | Rule |
+| --- | --- |
+| `owner` | The requester key. Signer. Only the owner and `admin` members may change the record; every change is a new signed record and the hub keeps the history. |
+| `members[].key`, `box` | The member's signing key and the X25519 box key a grant is sealed to (core §4.4). |
+| `members[].role` | `admin` (may invite and remove), `member` (may receive grants), `readonly` (may receive grants for files the team marks so). |
+| `scope` | As a pass's scope (`ippay` §3.1): which file keys or publisher keys members may be granted. `["*"]` files under the owner's publisher key is the common case. |
+| `keeper` | Who issues grants: the hub's key, or a keeper the owner has delegated to. The owner's publisher key remains able to grant directly. |
+
+An **invitation** is `pay2seed.invite`: `{ "team", "to": <email, phone,
+ipname or key>, "role", "expiresAt" }`, signed by an admin. It travels
+out of band (the hub emails or messages it) and is redeemed with a key:
+the invitee's client mints one if they have none, and the hub adds the
+member. An invite to a key that already exists is added at once. An
+invitation MUST expire, 7 days by default.
+
+A **grant** to a member is an `ipfile.grant` (`ipfile` §3.2) with
+`delegate: true` and `pass: null`, sealed to the member's `box`, issued
+by the keeper. It is what an `ippay` pass buys for a stranger, handed
+instead to a member because the team says so.
+
+### 5.4 Removal and rotation
+
+Removing a member ends future grants at once. It does not, and cannot,
+unread what they have already read; a grant they hold for a file still
+decrypts that file's current key epoch. A team with `rotateOnRemove:
+true` (the default) has the hub trigger `ip file reencrypt` on the files
+in scope (`ipfile` §11, a new content key and a new swarm), so the next
+version is closed to them. A client MUST show this distinction to the
+owner rather than imply removal is retroactive.
+
+### 5.5 What the hub charges
+
+A hub prices teams as it likes and says so in its record:
+
+```json
+"teams": { "freeMembers": 3, "seatUsdPerMonth": "2.000000", "orgUsdPerMonth": "50.000000", "keeperBps": 500 }
+```
+
+`freeMembers` seats per owner cost nothing, so a person sharing with
+their family or a three-person shop never pays for access. Above that a
+seat is billed monthly, an organisation (many teams, one bill, shared
+admins) at a flat rate, and `keeperBps` is the hub's share when it acts
+as keeper for a paid file (`ipfile` §7). All of it is settled through
+the same pay plugins the rest of the family uses, CoinPay and x402 over
+the owner's `ippay` payee, never a card form of the hub's own.
+
+Both sides earn. A seeder rents out disk through `paid2seed`. A requester
+sells access: to strangers through `ippay` passes at the swarm's
+`keyUsd` and `perGib`, to colleagues through a team. A hub takes its
+`hubBps` on passes and its seat fees on teams, and nothing on the
+seeder's floor.
+
+### 5.6 The README
+
+Every swarm on the market MUST contain a `README.md` at its root. No
+exceptions: an attestation without one is refused, and a hub that lists
+a swarm without one is not conformant. The README is the swarm's face:
+what this is, who made it, what a buyer or a member gets, how to use it.
+
+The attestation carries it, so the hub can show it without a key:
+
+| Field | Rule |
+| --- | --- |
+| `readme` | The README's Markdown, UTF-8, at most 64 KiB. Signed with the rest of the attestation. |
+| `readmeSha256` | SHA-256 of the exact bytes of `README.md` inside the swarm. For a private swarm, of the plaintext; a member with a grant MAY verify it. |
+
+The hub renders `readme` as HTML on the swarm's page: CommonMark with
+GFM tables and fenced code, sanitised, no raw HTML, no scripts, images
+only from the swarm itself or over HTTPS. A relative link resolves to a
+file in the swarm and is gated the same way the file is: a public swarm's
+link downloads, a private swarm's link asks for a pass or a grant. That
+page, on bittorrented.com, is the listing; the DHT crawl's bare
+infohashes never had one, and this is what a consented swarm looks like
+beside them.
+
+### 5.7 API
+
+| Method and path | Auth | Purpose |
+| --- | --- | --- |
+| `POST /teams` | owner signed | Create or replace a team record. |
+| `GET /teams/<id>` | member signed | The record, its history, the files in scope. |
+| `POST /teams/<id>/invites` | admin signed | Issue an invitation; the hub delivers it. |
+| `POST /invites/<id>/accept` | invitee signed | Redeem with a key; returns the updated team. |
+| `DELETE /teams/<id>/members/<key>` | admin signed | Remove; triggers rotation when the team says so. |
+| `GET /teams/<id>/grant?file=` | member signed | A sealed grant for a file in scope, from the keeper. `403` outside scope or after removal. |
+| `GET /teams/<id>/audit?since` | admin signed | Who was granted what, when. |
+
+## 6. The requester's hub
+
+### 6.1 Hub record
 
 An `ippay.hub` record that offers this family adds:
 
@@ -237,7 +391,7 @@ An `ippay.hub` record that offers this family adds:
 needs to take a lease (`paid2seed`). A hub MAY run a market for private
 backups only, or for open data only, by narrowing `bases`.
 
-### 5.2 API, requester side
+### 6.2 API, requester side
 
 All bodies JSON, records verified on receipt, paths relative to `base`.
 The seeder side of the same API is `paid2seed` §6.1.
@@ -254,7 +408,7 @@ The seeder side of the same API is `paid2seed` §6.1.
 | `POST /notices` | signed | A notice against an attestation (§7). |
 | `POST /webhooks` | signed | Register a CloudEvents endpoint for a requester key. |
 
-## 6. Requester client behaviour
+## 7. Requester client behaviour
 
 A requester client (the `ip seed` commands in [cli.md](./cli.md), a web
 app such as bittorrented.com's upload form) does the following:
@@ -264,6 +418,9 @@ app such as bittorrented.com's upload form) does the following:
 2. Makes the attestation before anything else, and MUST NOT let a user
    post an offer without choosing a `basis` and, for `public`, a `notice`
    endpoint. The basis list is a choice, never a default.
+2b. Encrypts by default (§5.1). Turning encryption off is an explicit
+   act with its consequence stated. Shares a private swarm by inviting
+   members to a team (§5.3), never by handing out a content key.
 3. Buys offers only against attestations the key actually signed.
 4. Includes a pass in a `private` offer when the manifest charges per GiB.
 5. Watches `GET /offers/<id>` or the events for `active`, `lapsed` leases
@@ -271,7 +428,7 @@ app such as bittorrented.com's upload form) does the following:
    proven, and spend against the budget.
 6. Receives notices at the endpoint it named, and shows them.
 
-## 7. Notices and takedown
+## 8. Notices and takedown
 
 Anyone may `POST /notices` against an attestation:
 
@@ -300,7 +457,7 @@ For a `private` swarm the hub cannot inspect the content and does not
 pretend to. What it has is the requester's identity, attestation and
 standing, which is what accountability looks like for ciphertext.
 
-## 8. Security notes
+## 9. Security notes
 
 - **Attestation is a claim.** §3.3's window, standing and notices are the
   defence. A hub that lists a public offer the moment it is paid is not
@@ -313,7 +470,7 @@ standing, which is what accountability looks like for ciphertext.
   swarms SHOULD use a fresh unrelated file pair (core §4.2) so backups are
   not linkable to a publisher's catalogue.
 
-## 9. Implementations
+## 10. Implementations
 
 | Piece | Where | Status |
 | --- | --- | --- |
@@ -321,7 +478,7 @@ standing, which is what accountability looks like for ciphertext.
 | Requester client and shared records | `@profullstack/pay2seed` | planned |
 | Requester CLI | `ip seed …` ([cli.md](./cli.md)) | proposed |
 
-## 10. Conformance
+## 11. Conformance
 
 A **hub** is conformant on this side when it refuses offers without an
 honoured attestation (§3), enforces the basis table and claim window
@@ -331,7 +488,9 @@ within `claimHours` (§7). It MUST also be conformant to `paid2seed`.
 
 A **requester client** is conformant when it does all of §6.
 
-## 11. Version history
+## 12. Version history
 
 - 0.1 (2026-09-06): split out of the first pay2seed draft (2026-09-05) as
-  the client half; attestation, offers, requester API, notices.
+  the client half; attestation, offers, requester API, notices. Same day:
+  encryption by default, teams, invitations, member grants, rotation on
+  removal, and the hub's pricing for access.
