@@ -3,7 +3,7 @@ import { formatId, parsePrd, PrdParseError, rewriteFrontMatter, slugify } from "
 import { SECTIONS } from "./types.js";
 
 const MINIMAL = `---
-openprd: "0.2"
+openprd: "0.3"
 id: "0007"
 title: Do the thing
 status: Draft
@@ -38,6 +38,14 @@ Everyone.
 
 _None._
 
+## Tech Stack
+
+Node and Postgres.
+
+## Monetization
+
+_None._
+
 ## Success Metrics
 
 It stops hurting.
@@ -63,7 +71,7 @@ describe("parsePrd", () => {
     expect(doc.file).toBe("0007-do-the-thing.md");
   });
 
-  it("finds all eight sections in order", () => {
+  it("finds all ten sections in order", () => {
     expect(doc.sections.map((s) => s.name)).toEqual([...SECTIONS]);
   });
 

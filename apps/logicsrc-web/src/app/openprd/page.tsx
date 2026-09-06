@@ -7,7 +7,7 @@ import { card, mono, pre } from "../openontology/ui";
 export const metadata: Metadata = {
   title: "OpenPRD · LogicSRC",
   description:
-    "OpenPRD is a lightweight open standard for product requirements documents: a numbered, committed collection under prd/, one Markdown file each, with front-matter, eight fixed sections, and an enforced lifecycle.",
+    "OpenPRD is a lightweight open standard for product requirements documents: a numbered, committed collection under prd/, one Markdown file each, with front-matter, ten fixed sections, and an enforced lifecycle.",
   alternates: { canonical: "/openprd" }
 };
 
@@ -18,6 +18,8 @@ const SECTIONS: Array<[string, string]> = [
   ["Users", "Who this is for; personas or segments."],
   ["Requirements", "Numbered R1, R2, … each tagged [P0], [P1], or [P2]."],
   ["UX Notes", "Flows, states, and constraints that shape the experience."],
+  ["Tech Stack", "Languages, frameworks, datastores, and services it is built on — and what it must not depend on."],
+  ["Monetization", "The revenue model: who pays, for what, how much, and when."],
   ["Success Metrics", "How the goals will be measured."],
   ["Risks & Open Questions", "Known risks and the decisions still owed."]
 ];
@@ -41,18 +43,19 @@ export default function OpenPrdPage(): ReactNode {
           read to recover the <em>why</em>.
         </p>
         <p style={{ color: "#5b6b7a", fontSize: "0.95rem" }}>
-          Status: <strong>0.2</strong>. A PRD is just a file — it needs no service, and no tooling, to
-          be valid.
+          Status: <strong>0.3</strong>, which adds <code style={mono}>Tech Stack</code> and{" "}
+          <code style={mono}>Monetization</code>. A PRD is just a file — it needs no service, and no
+          tooling, to be valid.
         </p>
       </div>
 
       <div className="band">
         <div className="section-head">
           <h2>The shape</h2>
-          <p>Front-matter, then eight sections in a fixed order. All of them required.</p>
+          <p>Front-matter, then ten sections in a fixed order. All of them required.</p>
         </div>
         <pre style={pre}>{`---
-openprd: "0.2"
+openprd: "0.3"
 id: "0001"                  # four digits, matches the filename
 title: Expand the parked-domain service
 status: Draft               # Draft|Review|Accepted|Final|Rejected|Withdrawn|Superseded
@@ -73,6 +76,8 @@ tags: [growth]
 - R2 [P1] Next capability.
 
 ## UX Notes
+## Tech Stack
+## Monetization
 ## Success Metrics
 ## Risks & Open Questions`}</pre>
         <div style={{ display: "grid", gap: "0.6rem", marginTop: "1rem" }}>
@@ -130,8 +135,13 @@ tags: [growth]
             Its front-matter validates against <code style={mono}>openprd-prd.schema.json</code>.
           </li>
           <li>The id equals the filename&apos;s numeric prefix.</li>
-          <li>All eight body sections are present, in order.</li>
+          <li>All ten body sections are present, in order.</li>
         </ol>
+        <p style={{ color: "#41505d" }}>
+          A document is judged against the version it declares, not the newest one — a{" "}
+          <code style={mono}>0.2</code> PRD is still held to the eight sections{" "}
+          <code style={mono}>0.2</code> fixed, so adding two sections broke nothing already written.
+        </p>
         <p style={{ color: "#41505d" }}>
           Conformance failures are errors. An empty section, a requirement missing its priority tag,
           numbering that skips, a stale index, a one-sided supersession link — those are warnings, and{" "}
@@ -148,7 +158,7 @@ tags: [growth]
           </p>
         </div>
         <pre style={pre}>{`logicsrc prd init                      # template + generated index
-logicsrc prd new "Expand the service"  # next free number, eight stub sections
+logicsrc prd new "Expand the service"  # next free number, ten stub sections
 logicsrc prd list                      # id, title, status, tags, requirements
 logicsrc prd validate --strict         # conformance + lint, exit 1 on error
 logicsrc prd index --write             # regenerate prd/README.md

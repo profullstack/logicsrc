@@ -1,5 +1,5 @@
 ---
-openprd: "0.2"
+openprd: "0.3"
 id: "0005"
 title: Keep every section even when empty
 status: Accepted
@@ -28,6 +28,14 @@ _None._
 - R1 [P0] First required capability.
 
 ## UX Notes
+
+_None._
+
+## Tech Stack
+
+_None._
+
+## Monetization
 
 _None._
 

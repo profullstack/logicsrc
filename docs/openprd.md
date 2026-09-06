@@ -51,7 +51,7 @@ Every PRD opens with a YAML front-matter block validated by
 
 ```yaml
 ---
-openprd: "0.2"            # standard version (required)
+openprd: "0.3"            # standard version (required)
 id: "0001"               # 4-digit number == filename prefix (required)
 title: Expand the parked-domain service   # imperative title (required)
 status: Draft            # Draft|Review|Accepted|Final|Rejected|Withdrawn|Superseded (required)
@@ -70,7 +70,7 @@ superseded-by:           # optional 4-digit id that replaces this PRD
 
 ## Body sections
 
-The body is Markdown with a fixed, ordered set of `##` sections. All are required (a section MAY be a single line such as `_None._`), which keeps every PRD skimmable and diffable:
+The body is Markdown with a fixed, ordered set of `##` sections. All are required (a section MAY be a single line such as `_None._`), which keeps every PRD skimmable and diffable. OpenPRD `0.3` fixes ten:
 
 1. `## Problem` — the user/business problem, and why it matters now.
 2. `## Goals` — what success looks like, as outcomes (not features).
@@ -78,8 +78,10 @@ The body is Markdown with a fixed, ordered set of `##` sections. All are require
 4. `## Users` — who this is for; personas or segments.
 5. `## Requirements` — numbered `R1`, `R2`, … each prefixed with a priority tag `[P0]`/`[P1]`/`[P2]`. One capability per line.
 6. `## UX Notes` — flows, states, and constraints that shape the experience.
-7. `## Success Metrics` — how the goals will be measured.
-8. `## Risks & Open Questions` — known risks and decisions still owed.
+7. `## Tech Stack` — languages, frameworks, datastores, and third-party services the work will be built on, plus anything it must not depend on. Naming the stack in the PRD is what makes the requirements costable, and what stops the choice from being made silently in the first PR.
+8. `## Monetization` — the revenue model: who pays, for what, how much, and when. Free, internal, or loss-leading work says so here (`_None._` is a valid answer, and a deliberate one); the section exists so that "how does this earn?" is answered before the code, not after the launch.
+9. `## Success Metrics` — how the goals will be measured.
+10. `## Risks & Open Questions` — known risks and decisions still owed.
 
 See [`0000-template.md`](./openprd/0000-template.md) for the copy-paste template.
 
@@ -94,10 +96,11 @@ still just a file: nothing below is required for a document to conform.
 
 ```bash
 logicsrc prd init                      # create prd/ with the template and an index
-logicsrc prd new "Expand the service"  # next free number, filled front-matter, eight stub sections
+logicsrc prd new "Expand the service"  # next free number, filled front-matter, ten stub sections
 logicsrc prd list                       # id, title, status, tags, requirement count
 logicsrc prd show 0001                  # front-matter, sections, and parsed requirements
 logicsrc prd validate --strict          # conformance + lint, exit 1 on error
+logicsrc prd validate --expect-version 0.3   # flag PRDs still declaring an older version
 logicsrc prd index --write              # regenerate prd/README.md from what is on disk
 logicsrc prd status 0001 Review         # lifecycle move, refusing illegal transitions
 logicsrc prd tasks 0001                 # the optional LogicSRC task bridge
@@ -137,9 +140,29 @@ name it must be validated as.
 
 ## Conformance
 
-A document conforms to OpenPRD `0.2` when:
+A document conforms to OpenPRD `0.3` when:
 
 - it lives at `prd/<id>-<slug>.md` with a four-digit `<id>`,
 - its front-matter validates against `openprd-prd.schema.json`,
 - `id` equals the filename's numeric prefix, and
-- all eight body sections are present in order.
+- all ten body sections are present in order.
+
+## Versioning
+
+A document is judged against the version it declares in its own `openprd:`
+key, not against the newest one. That is what makes it safe to add a section:
+
+| Version | Sections | Change |
+| --- | --- | --- |
+| `0.2` | eight | Problem … Risks & Open Questions |
+| `0.3` | ten | adds `Tech Stack` and `Monetization` after `UX Notes` |
+
+So a `0.2` document keeps conforming forever, and validators MUST hold it to
+the eight sections `0.2` fixed. Adopting `0.3` in an existing collection is a
+per-document edit: bump `openprd` to `"0.3"` and add the two sections, using
+`_None._` where they do not apply. Nothing forces a whole collection to move at
+once; a collection that wants uniformity asks for it with
+`logicsrc prd validate --expect-version 0.3`, which reports every document
+declaring something else as `OP-L-VERSION` (a warning, or an error under
+`--strict`). Each document is still validated against the sections its own
+version fixes.

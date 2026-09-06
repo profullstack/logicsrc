@@ -148,7 +148,7 @@ export function registerPrdCommands(program: Command): void {
         writeIndex(resolve(options.dir));
         console.log(`Created ${result.path}`);
         console.log(`Assigned id ${result.id}. Index updated.`);
-        console.log(`\nNext: fill in the eight sections, then logicsrc prd validate ${options.dir}`);
+        console.log(`\nNext: fill in the ten sections, then logicsrc prd validate ${options.dir}`);
       } catch (error) {
         fail((error as Error).message, PRD_EXIT.usage);
       }
@@ -188,11 +188,19 @@ export function registerPrdCommands(program: Command): void {
     .option("--strict", "treat lint warnings as errors")
     .option("--format <format>", "text, json, yaml, or markdown", "text")
     .option("--id <ref>", "validate a single PRD instead of the collection")
-    .description("Check conformance: filename, front-matter, id match, and the eight sections.")
+    .option(
+      "--expect-version <version>",
+      "flag PRDs that do not declare this openprd version (lint; --strict makes it an error)"
+    )
+    .description("Check conformance: filename, front-matter, id match, and the standard sections.")
     .action((dir: string, options) => {
+      // Each document is still validated against the section list its own
+      // openprd version fixes; this only asks whether the collection is uniform.
+      const expectedVersion = options.expectVersion as string | undefined;
+
       if (options.id) {
         const { doc } = mustFind(dir, options.id);
-        const report = reportFor(doc, { strict: options.strict === true });
+        const report = reportFor(doc, { strict: options.strict === true, expectedVersion });
         console.log(renderReport(report, options.format as ReportFormat));
         if (!report.ok) process.exit(PRD_EXIT.invalid);
         return;
@@ -201,6 +209,7 @@ export function registerPrdCommands(program: Command): void {
       const collection = open(dir);
       const report = validatePrdCollection(collection, {
         strict: options.strict === true,
+        expectedVersion,
         expectedIndex: renderIndex(collection)
       });
       console.log(renderReport(report, options.format as ReportFormat));

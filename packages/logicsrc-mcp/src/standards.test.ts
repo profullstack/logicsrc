@@ -203,7 +203,7 @@ describe("MCP: OpenPRD", () => {
   it("reports the next free id and the allowed lifecycle moves", async () => {
     const client = await connect();
     // Asserted against the live prd/ directory, so this advances with every PRD added.
-    expect(toolText(await client.callTool({ name: "prd_next_id", arguments: {} }))).toBe("0007");
+    expect(toolText(await client.callTool({ name: "prd_next_id", arguments: {} }))).toBe("0008");
 
     const moves = await client.callTool({ name: "prd_next_statuses", arguments: { ref: "0001" } });
     const payload = JSON.parse(toolText(moves)) as { status: string; allowedNext: string[] };

@@ -2,11 +2,11 @@
  * @logicsrc/openprd — reference implementation of the OpenPRD standard.
  *
  * The standard is docs/openprd.md plus `openprd-prd.schema.json`; this package
- * implements it. A PRD is just a Markdown file with front-matter and eight
+ * implements it. A PRD is just a Markdown file with front-matter and ten
  * sections — it needs no service to exist, and none of this code to be valid.
  */
 
-export { OPENPRD_VERSION, SECTIONS, STATUSES } from "./types.js";
+export { OPENPRD_VERSION, SECTIONS, SECTIONS_0_2, STATUSES, sectionsForVersion } from "./types.js";
 export type * from "./types.js";
 
 export {

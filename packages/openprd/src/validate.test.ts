@@ -24,7 +24,7 @@ function scratch(): string {
 function conforming(overrides: { frontMatter?: string; body?: string } = {}): string {
   const frontMatter =
     overrides.frontMatter ??
-    `openprd: "0.2"
+    `openprd: "0.3"
 id: "0001"
 title: Do the thing
 status: Draft
@@ -59,6 +59,14 @@ Everyone.
 
 _None._
 
+## Tech Stack
+
+Node and Postgres.
+
+## Monetization
+
+_None._
+
 ## Success Metrics
 
 It stops hurting.
@@ -90,21 +98,21 @@ describe("document conformance", () => {
 
   it("rejects front-matter that fails the schema", () => {
     const missingStatus = conforming({
-      frontMatter: `openprd: "0.2"\nid: "0001"\ntitle: Do the thing`
+      frontMatter: `openprd: "0.3"\nid: "0001"\ntitle: Do the thing`
     });
     expect(codes(missingStatus)).toContain("OP-C-FRONTMATTER");
   });
 
   it("rejects an unknown status value", () => {
     const bad = conforming({
-      frontMatter: `openprd: "0.2"\nid: "0001"\ntitle: Do the thing\nstatus: Shipped`
+      frontMatter: `openprd: "0.3"\nid: "0001"\ntitle: Do the thing\nstatus: Shipped`
     });
     expect(codes(bad)).toContain("OP-C-FRONTMATTER");
   });
 
   it("rejects an id that does not match the filename prefix", () => {
     const mismatch = conforming({
-      frontMatter: `openprd: "0.2"\nid: "0009"\ntitle: Do the thing\nstatus: Draft`
+      frontMatter: `openprd: "0.3"\nid: "0009"\ntitle: Do the thing\nstatus: Draft`
     });
     expect(codes(mismatch)).toContain("OP-C-ID-MISMATCH");
   });
@@ -132,6 +140,82 @@ describe("document conformance", () => {
 
   it("accepts a section whose body is just _None._", () => {
     expect(codes(conforming())).not.toContain("OP-L-EMPTY-SECTION");
+  });
+});
+
+/**
+ * 0.3 added Tech Stack and Monetization. A document is held to the section list
+ * its own `openprd:` version fixed, so publishing 0.3 could not retroactively
+ * invalidate anything already written against 0.2.
+ */
+describe("section list by declared version", () => {
+  const eightSections = `## Problem
+
+Something hurts.
+
+## Goals
+
+Make it stop.
+
+## Non-Goals
+
+_None._
+
+## Users
+
+Everyone.
+
+## Requirements
+
+- R1 [P0] First capability.
+
+## UX Notes
+
+_None._
+
+## Success Metrics
+
+It stops hurting.
+
+## Risks & Open Questions
+
+- Might not stop.`;
+
+  const legacy = (version: string) =>
+    conforming({
+      frontMatter: `openprd: "${version}"\nid: "0001"\ntitle: Do the thing\nstatus: Draft\nauthors:\n  - a@example.com`,
+      body: eightSections
+    });
+
+  it("still accepts a 0.2 document with only the original eight sections", () => {
+    const report = reportFor(parsePrd(legacy("0.2"), "0001-do-the-thing.md"));
+    expect(report.findings.filter((f) => f.severity === "error")).toEqual([]);
+    expect(report.ok).toBe(true);
+  });
+
+  it("rejects the same eight sections when the document declares 0.3", () => {
+    const findings = validatePrdDocument(parsePrd(legacy("0.3"), "0001-do-the-thing.md"));
+    const missing = findings.filter((f) => f.code === "OP-C-SECTION-MISSING");
+    expect(missing.map((f) => f.message)).toEqual([
+      'missing required section "## Tech Stack"',
+      'missing required section "## Monetization"'
+    ]);
+  });
+
+  it("treats the 0.3 sections as extra, not required, inside a 0.2 document", () => {
+    const findings = validatePrdDocument(
+      parsePrd(
+        conforming({
+          frontMatter: `openprd: "0.2"\nid: "0001"\ntitle: Do the thing\nstatus: Draft\nauthors:\n  - a@example.com`
+        }),
+        "0001-do-the-thing.md"
+      )
+    );
+    expect(findings.filter((f) => f.severity === "error")).toEqual([]);
+    expect(findings.filter((f) => f.code === "OP-L-EXTRA-SECTION").map((f) => f.message)).toEqual([
+      '"## Tech Stack" is not one of the 8 standard sections',
+      '"## Monetization" is not one of the 8 standard sections'
+    ]);
   });
 });
 
@@ -168,14 +252,14 @@ describe("document lint", () => {
 
   it("warns when a PRD lists no authors", () => {
     const noAuthors = conforming({
-      frontMatter: `openprd: "0.2"\nid: "0001"\ntitle: Do the thing\nstatus: Draft`
+      frontMatter: `openprd: "0.3"\nid: "0001"\ntitle: Do the thing\nstatus: Draft`
     });
     expect(codes(noAuthors)).toContain("OP-L-NO-AUTHOR");
   });
 
   it("errors when updated is before created", () => {
     const backwards = conforming({
-      frontMatter: `openprd: "0.2"\nid: "0001"\ntitle: Do the thing\nstatus: Draft\nauthors:\n  - a@example.com\ncreated: 2026-07-10\nupdated: 2026-07-01`
+      frontMatter: `openprd: "0.3"\nid: "0001"\ntitle: Do the thing\nstatus: Draft\nauthors:\n  - a@example.com\ncreated: 2026-07-10\nupdated: 2026-07-01`
     });
     const findings = validatePrdDocument(parsePrd(backwards, "0001-do-the-thing.md"));
     expect(findings.find((f) => f.code === "OP-L-DATE-ORDER")?.severity).toBe("error");
@@ -183,14 +267,14 @@ describe("document lint", () => {
 
   it("errors when status is Superseded with no replacement named", () => {
     const superseded = conforming({
-      frontMatter: `openprd: "0.2"\nid: "0001"\ntitle: Do the thing\nstatus: Superseded\nauthors:\n  - a@example.com`
+      frontMatter: `openprd: "0.3"\nid: "0001"\ntitle: Do the thing\nstatus: Superseded\nauthors:\n  - a@example.com`
     });
     expect(codes(superseded)).toContain("OP-L-SUPERSEDED-BY");
   });
 
   it("errors when a PRD supersedes itself", () => {
     const selfRef = conforming({
-      frontMatter: `openprd: "0.2"\nid: "0001"\ntitle: Do the thing\nstatus: Draft\nauthors:\n  - a@example.com\nsupersedes: "0001"`
+      frontMatter: `openprd: "0.3"\nid: "0001"\ntitle: Do the thing\nstatus: Draft\nauthors:\n  - a@example.com\nsupersedes: "0001"`
     });
     expect(codes(selfRef)).toContain("OP-L-SELF-REFERENCE");
   });
@@ -225,7 +309,7 @@ describe("collection rules", () => {
     const collection = collectionWith({
       "0001-one.md": conforming(),
       "0003-three.md": conforming({
-        frontMatter: `openprd: "0.2"\nid: "0003"\ntitle: Three\nstatus: Draft\nauthors:\n  - a@example.com`
+        frontMatter: `openprd: "0.3"\nid: "0003"\ntitle: Three\nstatus: Draft\nauthors:\n  - a@example.com`
       })
     });
     const report = validatePrdCollection(collection);
@@ -237,7 +321,7 @@ describe("collection rules", () => {
     const collection = collectionWith({
       "0001-one.md": conforming(),
       "0002-two.md": conforming({
-        frontMatter: `openprd: "0.2"\nid: "0001"\ntitle: Two\nstatus: Draft\nauthors:\n  - a@example.com`
+        frontMatter: `openprd: "0.3"\nid: "0001"\ntitle: Two\nstatus: Draft\nauthors:\n  - a@example.com`
       })
     });
     expect(validatePrdCollection(collection).findings.map((f) => f.code)).toContain("OP-C-DUPLICATE-ID");
@@ -246,7 +330,7 @@ describe("collection rules", () => {
   it("errors when a cross-reference points outside the collection", () => {
     const collection = collectionWith({
       "0001-one.md": conforming({
-        frontMatter: `openprd: "0.2"\nid: "0001"\ntitle: One\nstatus: Draft\nauthors:\n  - a@example.com\nsupersedes: "0099"`
+        frontMatter: `openprd: "0.3"\nid: "0001"\ntitle: One\nstatus: Draft\nauthors:\n  - a@example.com\nsupersedes: "0099"`
       })
     });
     expect(validatePrdCollection(collection).findings.map((f) => f.code)).toContain("OP-C-UNKNOWN-REFERENCE");
@@ -255,10 +339,10 @@ describe("collection rules", () => {
   it("warns when supersession is recorded on only one side", () => {
     const collection = collectionWith({
       "0001-one.md": conforming({
-        frontMatter: `openprd: "0.2"\nid: "0001"\ntitle: One\nstatus: Superseded\nauthors:\n  - a@example.com\nsuperseded-by: "0002"`
+        frontMatter: `openprd: "0.3"\nid: "0001"\ntitle: One\nstatus: Superseded\nauthors:\n  - a@example.com\nsuperseded-by: "0002"`
       }),
       "0002-two.md": conforming({
-        frontMatter: `openprd: "0.2"\nid: "0002"\ntitle: Two\nstatus: Draft\nauthors:\n  - a@example.com`
+        frontMatter: `openprd: "0.3"\nid: "0002"\ntitle: Two\nstatus: Draft\nauthors:\n  - a@example.com`
       })
     });
     expect(validatePrdCollection(collection).findings.map((f) => f.code)).toContain("OP-L-ONE-SIDED-REFERENCE");
