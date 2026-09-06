@@ -261,7 +261,7 @@ Published at `GET <base>/.well-known/openswarm-hub.json`:
     "eip155:137": "0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359",
     "eip155:1": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
   },
-  "minHubBps": 300,
+  "minHubBps": 100,
   "payout": { "minUsd": "1.000000", "schedule": "daily" },
   "passDays": 30,
   "createdAt": "2026-09-05T00:00:00.000Z",
@@ -279,6 +279,14 @@ The record is self-signed; trust in the hub key comes from the manifest that
 lists the hub's `base`, from TLS to that base, and optionally from an MTP/1
 pin. `minHubBps` is the least `split.hubBps` a manifest may set for this hub
 to sell passes for it.
+
+The reference hub takes **1 percent** (`minHubBps: 100`), on every payment
+that crosses it: a pass, a key grant, a seed offer, a relay offer, a
+ticket. It is charged to whoever is paying and never deducted from a
+seeder's or a relay's earnings, so what a publisher quotes is what a
+publisher gets and what a seeder is promised is what a seeder is paid. A
+hub setting a higher floor says so in this record, and a manifest naming
+it can refuse.
 
 ### 5.2 API
 

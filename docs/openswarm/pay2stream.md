@@ -140,6 +140,15 @@ title, start, end, description, and the ticket price at the time, signed
 by the channel key. Listings are what a market page and an EPG are built
 from, and what a viewer buys against.
 
+A channel whose `keyUsd` and `perGib` are both zero is **free to watch**:
+no ticket, no grant, and a gateway serves it to anyone. Its page on the
+hub carries an advertisement the same way a public swarm's does
+(`pay2seed` §5.7), which is what pays for listing it. The stream itself
+is never interrupted: nothing is injected into a segment, into the
+playlist, or into the M3U. A broadcaster selling tickets pays the hub its
+percentage instead, 1 percent at the reference hub, and their page
+carries no advertising.
+
 ## 6. Watching
 
 ### 6.1 As a peer

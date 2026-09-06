@@ -48,7 +48,8 @@ for `ippay` vouchers: a swarm that charges leechers keeps charging them.
 
 - **Requester.** The identity that posts an offer and funds it. Usually the
   publisher of the swarm; for a public torrent it may be anyone who wants
-  it kept alive, subject to §3.
+  it kept alive, subject to §3. A key, not necessarily a person: an
+  autonomous agent is a requester like any other (§5.8).
 - **Seeder.** An identity that holds a lease and serves the swarm
   (`paid2seed`).
 - **Hub.** An `ippay` hub that also implements this document and
@@ -332,8 +333,10 @@ the owner's `ippay` payee, never a card form of the hub's own.
 Both sides earn. A seeder rents out disk through `paid2seed`. A requester
 sells access: to strangers through `ippay` passes at the swarm's
 `keyUsd` and `perGib`, to colleagues through a team. A hub takes its
-`hubBps` on passes and its seat fees on teams, and nothing on the
-seeder's floor.
+`hubBps` on payments that cross it, **1 percent at the reference hub**
+(`ippay` §5.1), plus its seat fees on teams, and nothing at all on the
+seeder's floor. Public swarms are not charged for; they carry an ad
+instead (§5.7).
 
 ### 5.6 The README
 
@@ -358,7 +361,60 @@ page, on bittorrented.com, is the listing; the DHT crawl's bare
 infohashes never had one, and this is what a consented swarm looks like
 beside them.
 
-### 5.7 API
+### 5.7 Public swarms pay for themselves
+
+Public distribution is free to the requester and free to the fetcher, and
+it is not charity. A public swarm has a page on the hub, built from the
+README (§5.6), and that page carries an advertisement. The hub earns from
+the page; the swarm's bytes are never metered, never gated and never
+counted.
+
+This is the trade, stated so nobody has to guess at it:
+
+| | Public | Private |
+| --- | --- | --- |
+| Bytes | free, over the ordinary wire and the DHT | `ipfile` ciphertext, `perGib` and `keyUsd` as the manifest says |
+| Who may read it | anyone | pass holders and team members |
+| What the hub earns | the ad on the swarm's page | its percentage of each payment, plus seats (§5.5) |
+| What the requester pays | nothing, unless they buy an offer to keep it alive | nothing, unless they buy an offer or seats |
+
+A requester who wants no advertisement on their page pays for a seat
+(§5.5); a hub MUST make that switch available rather than making the ad
+the price of being listed at all. An ad never appears inside a swarm, is
+never injected into a file, and never rides the wire: it is on the hub's
+page about the swarm and nowhere else. `ipdb` entries and the market API
+carry no advertising, so a client that reads the catalogue directly sees
+none of it.
+
+### 5.8 An agent may be a requester
+
+Nothing in this family assumes a person. A requester is a key, and an
+autonomous agent holds keys as readily as anyone: it can attest what it
+made, publish a swarm, price access to it, sell tickets to a live
+channel, take payment through its own `ippay` payee, and spend what it
+earns buying offers so its own work stays online. The same is true on the
+other side: an agent with disk can hold leases and be paid for them
+(`paid2seed` §7).
+
+Two rules, and they are the same rules a person gets:
+
+- **The attestation is the agent's own claim**, signed by the agent's key,
+  and its standing (§3.3) is the agent's. An agent that attests what it
+  had no right to distribute loses standing exactly as a person does, and
+  a hub applies §3.3's refusals without asking which kind of requester it
+  is looking at.
+- **Consent does not become weaker because a machine gave it.** An agent
+  publishing work made from somebody else's material has the same bases
+  available and no others; `own` means the agent or its operator holds
+  the rights, and there is no basis meaning "a model produced this, so
+  nobody owns it".
+
+A hub MAY require an agent's attestations to name a responsible operator
+key alongside the agent's own, and the reference hub does for `public`
+swarms: an agent can sell freely, and somebody remains reachable when a
+notice arrives.
+
+### 5.9 API
 
 | Method and path | Auth | Purpose |
 | --- | --- | --- |
@@ -493,4 +549,6 @@ A **requester client** is conformant when it does all of §6.
 - 0.1 (2026-09-06): split out of the first pay2seed draft (2026-09-05) as
   the client half; attestation, offers, requester API, notices. Same day:
   encryption by default, teams, invitations, member grants, rotation on
-  removal, and the hub's pricing for access.
+  removal, and the hub's pricing for access. Then: the 1 percent reference
+  fee, the advertisement that pays for public swarms, and agents as
+  requesters.

@@ -100,7 +100,24 @@ an audit trail and rotation on removal. A few seats are free so a family
 or a three-person shop never pays; above that, seats and organisations
 are billed monthly through the same CoinPay rail as everything else.
 Public distribution is encryption switched off: a vanilla torrent that
-the DHT finds for nothing and that the hub never charges for.
+the DHT finds for nothing and that the hub never charges for. It is not
+charity either. A public swarm has a page on the hub built from its
+README, and that page carries an advertisement; the bytes are never
+metered and nothing is ever injected into a file, a segment or a
+playlist. A requester who wants no ad on their page buys a seat.
+
+The hub's cut is **1 percent** of any payment that crosses it, charged to
+whoever is paying and never taken out of a seeder's or a relay's
+earnings. So there are three lines: 1 percent of transactions, seats for
+managed access, and ads on the free tier.
+
+Sellers need not be people. A requester is a key, and an autonomous agent
+can attest what it made, price access, sell tickets to a live channel,
+take payment through its own payee and spend what it earns keeping its
+own work online. The consent rules do not soften because a machine signed
+them, and the reference hub asks an agent's public attestations to name a
+responsible operator key so somebody is reachable when a notice
+arrives.
 
 ## Non-Goals
 
