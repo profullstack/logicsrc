@@ -21,6 +21,7 @@ import {
   teamsMembersAction,
   teamsVaultsAction,
   teamsGrantAction,
+  teamsTuiAction,
   teamsPushAction,
   teamsPullAction,
   secretsTeamsLinkAction,
@@ -657,6 +658,13 @@ teams
   .option("--format <format>", "table, json, or markdown", "table")
   .description("List a team's credential vaults.")
   .action((slug, options) => teamsVaultsAction(slug, options.format as OutputFormat));
+
+teams
+  .command("tui")
+  .alias("ui")
+  .option("--theme <name>", "hqtui theme name")
+  .description("Browse team vaults, their secret names, who can decrypt them, and the audit trail. Read-only; values stay encrypted.")
+  .action((options) => teamsTuiAction({ theme: options.theme }));
 
 teams
   .command("grant")

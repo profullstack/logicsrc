@@ -503,3 +503,16 @@ export async function secretsDownAction(envName: string | undefined, options: { 
   const link = requireSecretsLink(options.cwd);
   await teamsPullAction(link.team, link.project, envName ?? link.env, { env: options.env, format: options.format });
 }
+
+/**
+ * The vault browser.
+ *
+ * Read-only and never handles plaintext: it shows which vaults exist, what
+ * their secrets are called, who can decrypt them and what has changed, but
+ * never a value. See vault-tui.ts for why.
+ */
+export async function teamsTuiAction(options: { theme?: string } = {}): Promise<void> {
+  const { client, identity } = authedClient();
+  const { runVaultTui } = await import("./vault-tui-run.js");
+  await runVaultTui({ client, identity: identity.email, theme: options.theme });
+}

@@ -28,6 +28,7 @@
     "@logicsrc/plugin-ugig": "file:../../plugins/ugig",
     "@logicsrc/tui": "file:../tui",
     "@logicsrc/validators": "file:../validators",
+    "@profullstack/hqtui": "^0.3.0",
     "commander": "^14.0.2"
   },
   "devDependencies": {
