@@ -18,6 +18,7 @@ export const DOC_SLUGS = [
   "openjob",
   "openresume",
   "openprofile",
+  "openmcp",
   "openstream",
   "openspec-comparison",
   "data-model",
