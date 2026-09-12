@@ -163,6 +163,8 @@ curl -fsSL https://openmcp.logicsrc.com/install.sh | sh
 
 `openmcp update` re-runs the installer; `openmcp uninstall` removes exactly the paths it wrote, from a manifest, with no network. The live catalog is the default target; `OPENMCP_CATALOG` or `--catalog` points the client at another.
 
+The same command is a word in the LogicSRC CLI: `logicsrc openmcp relays`, `logicsrc openmcp add https://your.site`, and so on, handed to the same `main` the standalone binary runs.
+
 ## Related standards
 
 - [OpenProfile.md](/openprofile): the `operator` behind a relay.

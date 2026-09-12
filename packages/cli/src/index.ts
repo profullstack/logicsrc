@@ -38,6 +38,9 @@ import { registerOpenContextCommands } from "./context.js";
 import { registerOpenCredsCommands } from "./creds.js";
 import { registerOntologyCommands } from "./ontology.js";
 import { registerPrdCommands } from "./prd.js";
+import { registerOpenMcpCommands } from "./openmcp.js";
+import { registerOpenSpecDevPassthrough } from "./openspec-dev.js";
+import { registerMcpCommands } from "./mcp.js";
 import { defaultPluginRegistry } from "./registry.js";
 import {
   GH_REPO,
@@ -300,7 +303,12 @@ program
     }, "json");
   });
 
-const openspec = program.command("openspec").description("Import, export, and generate OpenSpec.dev-compatible repo-local planning artifacts.");
+const openspec = program
+  .command("openspec")
+  .description(
+    "Import, export, and generate OpenSpec.dev-compatible repo-local planning artifacts; any other word " +
+      "(init, list, validate, archive, show, ...) runs OpenSpec.dev's own CLI.",
+  );
 
 openspec
   .command("import")
@@ -1049,6 +1057,10 @@ registerOpenContextCommands(program);
 registerOpenCredsCommands(program);
 registerOntologyCommands(program);
 registerPrdCommands(program);
+registerOpenMcpCommands(program);
+registerMcpCommands(program);
+// Every other word under `logicsrc openspec` is OpenSpec.dev's own CLI.
+registerOpenSpecDevPassthrough(openspec);
 
 program.parseAsync(process.argv).catch((error: unknown) => {
   console.error(error instanceof Error ? error.message : String(error));

@@ -148,9 +148,25 @@ binary. See the [specification](docs/opencontext/spec.md), [CLI](docs/opencontex
 [SDK](docs/opencontext/sdk.md), [security model](docs/opencontext/security.md), and
 [conformance guide](docs/opencontext/conformance.md).
 
+## One command for every LogicSRC tool
+
+`logicsrc` is the umbrella: every LogicSRC standard that has a CLI is a word after it, and the word runs the same code as the standalone command, so the two cannot drift.
+
+```bash
+logicsrc vault …        # OpenCreds (also `opencreds`)
+logicsrc prd …          # OpenPRD
+logicsrc ontology …     # OpenOntology
+logicsrc context …      # OpenContext (also `opencontext`)
+logicsrc openmcp …      # OpenMCP: relays, find, call, add, probe, serve (also `openmcp`)
+logicsrc openspec …     # import, export, change; any other word is OpenSpec.dev's own CLI (init, list, validate, archive, show)
+logicsrc mcp            # the LogicSRC MCP server over stdio (also `logicsrc-mcp`)
+```
+
+`openmcp` is the one that lives in its own repository ([logicsrc/openmcp](https://github.com/logicsrc/openmcp)); it is a dependency here and its `main` is called with your arguments untouched. It needs Node 24 (`node:sqlite`); on an older Node that one word says so and the rest of the CLI keeps working. The standalone install, which brings its own Node 24, is `curl -fsSL https://openmcp.logicsrc.com/install.sh | sh`.
+
 ## MCP
 
-LogicSRC exposes a standards-focused MCP server as `@profullstack/logicsrc-mcp`.
+LogicSRC exposes a standards-focused MCP server as `@profullstack/logicsrc-mcp`, and `logicsrc mcp` runs it.
 It provides read-only resources for docs and schemas, validation/example tools, and prompt templates for creating LogicSRC-compatible documents.
 
 ## v1.0.0 Priorities
