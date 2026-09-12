@@ -17,6 +17,11 @@ type PostRow = {
   featured_image: { url?: string } | null;
   published_at: string;
   updated_at: string;
+  // A guest post syndicated from another blog carries the original URL here.
+  // When set, it is the canonical for search engines and is shown to readers,
+  // so a cross-post never competes with its source for the same words.
+  canonical_url: string | null;
+  author: string | null;
 };
 
 const SITE_URL = (process.env.PUBLIC_URL ?? "https://logicsrc.com").replace(/\/$/, "");
@@ -26,7 +31,7 @@ async function loadPost(slug: string): Promise<PostRow | null> {
     const supabase = publicClient();
     const { data } = await supabase
       .from("blog_posts")
-      .select("slug, title, excerpt, html, featured_image, published_at, updated_at")
+      .select("slug, title, excerpt, html, featured_image, published_at, updated_at, canonical_url, author")
       .eq("slug", slug)
       .eq("status", "published")
       .maybeSingle();
@@ -47,7 +52,9 @@ export async function generateMetadata({
   return {
     title: `${post.title} · LogicSRC`,
     description: post.excerpt ?? undefined,
-    alternates: { canonical: `/blog/${post.slug}` },
+    // A guest post points its canonical at the original; an original post is
+    // canonical to itself.
+    alternates: { canonical: post.canonical_url ?? `/blog/${post.slug}` },
     openGraph: {
       title: post.title,
       description: post.excerpt ?? undefined,
@@ -74,6 +81,7 @@ export default async function BlogPostPage({
   const post = await loadPost(slug);
   if (!post) notFound();
 
+  const canonical = post.canonical_url ?? `${SITE_URL}/blog/${post.slug}`;
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -83,9 +91,19 @@ export default async function BlogPostPage({
     datePublished: post.published_at,
     dateModified: post.updated_at,
     url: `${SITE_URL}/blog/${post.slug}`,
-    mainEntityOfPage: `${SITE_URL}/blog/${post.slug}`,
+    // For a guest post this is the original; search engines follow it.
+    mainEntityOfPage: canonical,
+    ...(post.author ? { author: { "@type": "Person", name: post.author } } : {}),
     publisher: { "@id": `${SITE_URL}/#organization` },
   };
+  let originHost = "";
+  if (post.canonical_url) {
+    try {
+      originHost = new URL(post.canonical_url).host;
+    } catch {
+      originHost = "";
+    }
+  }
   const html = sanitizeRenderedHtml(post.html);
 
   return (
@@ -105,6 +123,15 @@ export default async function BlogPostPage({
         </h1>
         <div style={{ color: "#5b6b7a", fontSize: "0.85rem", marginBottom: "2rem" }}>
           {formatDate(post.published_at)}
+          {post.author ? ` · ${post.author}` : ""}
+          {post.canonical_url ? (
+            <>
+              {" · "}
+              <a href={post.canonical_url} rel="noreferrer" style={{ color: "#5b6b7a" }}>
+                Originally published{originHost ? ` on ${originHost}` : ""}
+              </a>
+            </>
+          ) : null}
         </div>
         {post.featured_image?.url ? (
           // eslint-disable-next-line @next/next/no-img-element
