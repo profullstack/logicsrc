@@ -21,8 +21,17 @@ type PostRow = {
   // When set, it is the canonical for search engines and is shown to readers,
   // so a cross-post never competes with its source for the same words.
   canonical_url: string | null;
-  author: string | null;
+  // Stored as jsonb: an object like { name, url }, or occasionally a bare
+  // string. Never rendered directly, or an object prints as [object Object].
+  author: { name?: string; url?: string } | string | null;
 };
+
+/** A display name from the jsonb author, whatever shape it took. */
+function authorName(author: PostRow["author"]): string {
+  if (!author) return "";
+  if (typeof author === "string") return author;
+  return typeof author.name === "string" ? author.name : "";
+}
 
 const SITE_URL = (process.env.PUBLIC_URL ?? "https://logicsrc.com").replace(/\/$/, "");
 
@@ -93,9 +102,10 @@ export default async function BlogPostPage({
     url: `${SITE_URL}/blog/${post.slug}`,
     // For a guest post this is the original; search engines follow it.
     mainEntityOfPage: canonical,
-    ...(post.author ? { author: { "@type": "Person", name: post.author } } : {}),
+    ...(authorName(post.author) ? { author: { "@type": "Person", name: authorName(post.author) } } : {}),
     publisher: { "@id": `${SITE_URL}/#organization` },
   };
+  const byline = authorName(post.author);
   let originHost = "";
   if (post.canonical_url) {
     try {
@@ -123,7 +133,7 @@ export default async function BlogPostPage({
         </h1>
         <div style={{ color: "#5b6b7a", fontSize: "0.85rem", marginBottom: "2rem" }}>
           {formatDate(post.published_at)}
-          {post.author ? ` · ${post.author}` : ""}
+          {byline ? ` · ${byline}` : ""}
           {post.canonical_url ? (
             <>
               {" · "}
