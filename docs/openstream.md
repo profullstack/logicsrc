@@ -129,6 +129,12 @@ An implementation conforms when it:
 
 [NixAmp](https://nixamp.com) is the reference implementation. It relays a live channel or a static file between servers under this envelope, choosing Zstandard per block where it pays and storing the rest, and it publishes the same byte layout and test vectors alongside its code. The format carries any byte stream; media is only its first use.
 
+## Benchmark reports
+
+A claim about compression is only as good as a run anyone can reproduce, so every release of a reference implementation publishes a benchmark report: the envelope run over a defined corpus on real hardware, with recorded runtime and codec versions, proving byte-exact round trips, the overhead floor on incompressible input, the saving on compressible input, and the timings. Published reports are at [/docs/openstream/reports](/docs/openstream/reports).
+
+Read the caveats in any report before quoting a number. OpenStream frames Zstandard and gzip; it is not a new algorithm, a synthetic padded stream flatters a codec by its padding, and an efficient real feed saves little. The one pass/fail is round-trip exactness, which must hold for every applicable codec on every sample.
+
 ## Status
 
 OpenStream is at version 1 (`NXS1`). The wire format above is stable; future versions bump the magic and the stream-header version together, and a receiver refuses a version it does not understand rather than guessing.

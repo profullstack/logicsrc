@@ -1,0 +1,793 @@
+{
+  "schema": 1,
+  "spec": "openstream",
+  "specVersion": "NXS1",
+  "generatedAt": "2026-09-12T13:13:15.713Z",
+  "implementation": {
+    "name": "nixamp",
+    "version": "0.17.1"
+  },
+  "environment": {
+    "runtime": "bun 1.4.0",
+    "zstd": "f8745da6ff1ad1e7bab384bd1f9d742439278e99",
+    "zlib": "12731092979c6d07f42da27da673a9f6c7b13586",
+    "os": "linux 7.0.0-30-generic",
+    "arch": "x64",
+    "cpu": "DO-Premium-Intel",
+    "cores": 8,
+    "memoryGiB": 15.6
+  },
+  "envelope": {
+    "magic": "NXS1",
+    "streamHeaderBytes": 16,
+    "frameHeaderBytes": 48
+  },
+  "policy": {
+    "minSavingsPercent": 3,
+    "minSavingsBytes": 512,
+    "maxBlockBytes": 262144,
+    "zstdLevels": [
+      1,
+      3,
+      9
+    ]
+  },
+  "samples": [
+    {
+      "sample": "random-1mib",
+      "kind": "synthetic",
+      "inputBytes": 1048576,
+      "sha256": "562a223dca6ae12049e4e88ded6b6c0c7d18f29d5b941309fcd1f5cc19bc15b0",
+      "container": "bytes",
+      "rows": [
+        {
+          "mode": "stored",
+          "level": 0,
+          "blocks": 4,
+          "inputBytes": 1048576,
+          "payloadBytes": 1048576,
+          "wireBytes": 1048832,
+          "storedBlocks": 4,
+          "compressedBlocks": 0,
+          "savingsPercent": -0.02,
+          "encodeMs": 0,
+          "decodeMs": 0,
+          "roundTrip": true
+        },
+        {
+          "mode": "gzip",
+          "level": 6,
+          "blocks": 4,
+          "inputBytes": 1048576,
+          "payloadBytes": 1048576,
+          "wireBytes": 1048832,
+          "storedBlocks": 4,
+          "compressedBlocks": 0,
+          "savingsPercent": -0.02,
+          "encodeMs": 51.89,
+          "decodeMs": 0,
+          "roundTrip": true
+        },
+        {
+          "mode": "zstd",
+          "level": 1,
+          "blocks": 4,
+          "inputBytes": 1048576,
+          "payloadBytes": 1048576,
+          "wireBytes": 1048832,
+          "storedBlocks": 4,
+          "compressedBlocks": 0,
+          "savingsPercent": -0.02,
+          "encodeMs": 7.69,
+          "decodeMs": 0,
+          "roundTrip": true
+        },
+        {
+          "mode": "zstd",
+          "level": 3,
+          "blocks": 4,
+          "inputBytes": 1048576,
+          "payloadBytes": 1048576,
+          "wireBytes": 1048832,
+          "storedBlocks": 4,
+          "compressedBlocks": 0,
+          "savingsPercent": -0.02,
+          "encodeMs": 6.04,
+          "decodeMs": 0,
+          "roundTrip": true
+        },
+        {
+          "mode": "zstd",
+          "level": 9,
+          "blocks": 4,
+          "inputBytes": 1048576,
+          "payloadBytes": 1048576,
+          "wireBytes": 1048832,
+          "storedBlocks": 4,
+          "compressedBlocks": 0,
+          "savingsPercent": -0.02,
+          "encodeMs": 8.08,
+          "decodeMs": 0,
+          "roundTrip": true
+        },
+        {
+          "mode": "ts-zstd",
+          "level": 1,
+          "blocks": 1,
+          "inputBytes": 1048576,
+          "payloadBytes": 0,
+          "wireBytes": 64,
+          "storedBlocks": 0,
+          "compressedBlocks": 0,
+          "savingsPercent": 99.99,
+          "encodeMs": 0,
+          "decodeMs": 0,
+          "roundTrip": false,
+          "note": "not a transport stream: ts-zstd does not apply"
+        }
+      ],
+      "recommendation": {
+        "mode": "stored",
+        "level": 0,
+        "reason": "no codec beat stored by the configured margin"
+      }
+    },
+    {
+      "sample": "zeros-1mib",
+      "kind": "synthetic",
+      "inputBytes": 1048576,
+      "sha256": "30e14955ebf1352266dc2ff8067e68104607e750abb9d3b36582b8af909fcb58",
+      "container": "bytes",
+      "rows": [
+        {
+          "mode": "stored",
+          "level": 0,
+          "blocks": 4,
+          "inputBytes": 1048576,
+          "payloadBytes": 1048576,
+          "wireBytes": 1048832,
+          "storedBlocks": 4,
+          "compressedBlocks": 0,
+          "savingsPercent": -0.02,
+          "encodeMs": 0,
+          "decodeMs": 0,
+          "roundTrip": true
+        },
+        {
+          "mode": "gzip",
+          "level": 6,
+          "blocks": 4,
+          "inputBytes": 1048576,
+          "payloadBytes": 1156,
+          "wireBytes": 1412,
+          "storedBlocks": 0,
+          "compressedBlocks": 4,
+          "savingsPercent": 99.87,
+          "encodeMs": 2.14,
+          "decodeMs": 5.25,
+          "roundTrip": true
+        },
+        {
+          "mode": "zstd",
+          "level": 1,
+          "blocks": 4,
+          "inputBytes": 1048576,
+          "payloadBytes": 116,
+          "wireBytes": 372,
+          "storedBlocks": 0,
+          "compressedBlocks": 4,
+          "savingsPercent": 99.96,
+          "encodeMs": 2.1,
+          "decodeMs": 6.9,
+          "roundTrip": true
+        },
+        {
+          "mode": "zstd",
+          "level": 3,
+          "blocks": 4,
+          "inputBytes": 1048576,
+          "payloadBytes": 116,
+          "wireBytes": 372,
+          "storedBlocks": 0,
+          "compressedBlocks": 4,
+          "savingsPercent": 99.96,
+          "encodeMs": 2.38,
+          "decodeMs": 4.25,
+          "roundTrip": true
+        },
+        {
+          "mode": "zstd",
+          "level": 9,
+          "blocks": 4,
+          "inputBytes": 1048576,
+          "payloadBytes": 112,
+          "wireBytes": 368,
+          "storedBlocks": 0,
+          "compressedBlocks": 4,
+          "savingsPercent": 99.96,
+          "encodeMs": 7.79,
+          "decodeMs": 5.76,
+          "roundTrip": true
+        },
+        {
+          "mode": "ts-zstd",
+          "level": 1,
+          "blocks": 1,
+          "inputBytes": 1048576,
+          "payloadBytes": 0,
+          "wireBytes": 64,
+          "storedBlocks": 0,
+          "compressedBlocks": 0,
+          "savingsPercent": 99.99,
+          "encodeMs": 0,
+          "decodeMs": 0,
+          "roundTrip": false,
+          "note": "not a transport stream: ts-zstd does not apply"
+        }
+      ],
+      "recommendation": {
+        "mode": "zstd",
+        "level": 9,
+        "reason": "saves 99.96% of the complete wire size"
+      }
+    },
+    {
+      "sample": "text-repeat-1mib",
+      "kind": "synthetic",
+      "inputBytes": 1048576,
+      "sha256": "d05bf128d112bfd591628a68880676f643191beeb91d1250ce8c98212bf6e464",
+      "container": "bytes",
+      "rows": [
+        {
+          "mode": "stored",
+          "level": 0,
+          "blocks": 4,
+          "inputBytes": 1048576,
+          "payloadBytes": 1048576,
+          "wireBytes": 1048832,
+          "storedBlocks": 4,
+          "compressedBlocks": 0,
+          "savingsPercent": -0.02,
+          "encodeMs": 0,
+          "decodeMs": 0,
+          "roundTrip": true
+        },
+        {
+          "mode": "gzip",
+          "level": 6,
+          "blocks": 4,
+          "inputBytes": 1048576,
+          "payloadBytes": 6946,
+          "wireBytes": 7202,
+          "storedBlocks": 0,
+          "compressedBlocks": 4,
+          "savingsPercent": 99.31,
+          "encodeMs": 2.02,
+          "decodeMs": 4.48,
+          "roundTrip": true
+        },
+        {
+          "mode": "zstd",
+          "level": 1,
+          "blocks": 4,
+          "inputBytes": 1048576,
+          "payloadBytes": 324,
+          "wireBytes": 580,
+          "storedBlocks": 0,
+          "compressedBlocks": 4,
+          "savingsPercent": 99.94,
+          "encodeMs": 1.62,
+          "decodeMs": 12.04,
+          "roundTrip": true
+        },
+        {
+          "mode": "zstd",
+          "level": 3,
+          "blocks": 4,
+          "inputBytes": 1048576,
+          "payloadBytes": 318,
+          "wireBytes": 574,
+          "storedBlocks": 0,
+          "compressedBlocks": 4,
+          "savingsPercent": 99.95,
+          "encodeMs": 1.82,
+          "decodeMs": 3.89,
+          "roundTrip": true
+        },
+        {
+          "mode": "zstd",
+          "level": 9,
+          "blocks": 4,
+          "inputBytes": 1048576,
+          "payloadBytes": 316,
+          "wireBytes": 572,
+          "storedBlocks": 0,
+          "compressedBlocks": 4,
+          "savingsPercent": 99.95,
+          "encodeMs": 2.78,
+          "decodeMs": 3.18,
+          "roundTrip": true
+        },
+        {
+          "mode": "ts-zstd",
+          "level": 1,
+          "blocks": 1,
+          "inputBytes": 1048576,
+          "payloadBytes": 0,
+          "wireBytes": 64,
+          "storedBlocks": 0,
+          "compressedBlocks": 0,
+          "savingsPercent": 99.99,
+          "encodeMs": 0,
+          "decodeMs": 0,
+          "roundTrip": false,
+          "note": "not a transport stream: ts-zstd does not apply"
+        }
+      ],
+      "recommendation": {
+        "mode": "zstd",
+        "level": 9,
+        "reason": "saves 99.95% of the complete wire size"
+      }
+    },
+    {
+      "sample": "ts-padded-50pct",
+      "kind": "synthetic",
+      "inputBytes": 752000,
+      "sha256": "fbbe8a14abcd5d36e40ccf8d5d80eca805580cccd632842a4f1cea9461863a6d",
+      "container": "mpegts",
+      "rows": [
+        {
+          "mode": "stored",
+          "level": 0,
+          "blocks": 3,
+          "inputBytes": 752000,
+          "payloadBytes": 752000,
+          "wireBytes": 752208,
+          "storedBlocks": 3,
+          "compressedBlocks": 0,
+          "savingsPercent": -0.03,
+          "encodeMs": 0,
+          "decodeMs": 0,
+          "roundTrip": true
+        },
+        {
+          "mode": "gzip",
+          "level": 6,
+          "blocks": 3,
+          "inputBytes": 752000,
+          "payloadBytes": 379358,
+          "wireBytes": 379566,
+          "storedBlocks": 0,
+          "compressedBlocks": 3,
+          "savingsPercent": 49.53,
+          "encodeMs": 13.4,
+          "decodeMs": 4.05,
+          "roundTrip": true
+        },
+        {
+          "mode": "zstd",
+          "level": 1,
+          "blocks": 3,
+          "inputBytes": 752000,
+          "payloadBytes": 377821,
+          "wireBytes": 378029,
+          "storedBlocks": 0,
+          "compressedBlocks": 3,
+          "savingsPercent": 49.73,
+          "encodeMs": 3.59,
+          "decodeMs": 4.18,
+          "roundTrip": true
+        },
+        {
+          "mode": "zstd",
+          "level": 3,
+          "blocks": 3,
+          "inputBytes": 752000,
+          "payloadBytes": 375595,
+          "wireBytes": 375803,
+          "storedBlocks": 0,
+          "compressedBlocks": 3,
+          "savingsPercent": 50.03,
+          "encodeMs": 5.7,
+          "decodeMs": 3.53,
+          "roundTrip": true
+        },
+        {
+          "mode": "zstd",
+          "level": 9,
+          "blocks": 3,
+          "inputBytes": 752000,
+          "payloadBytes": 375109,
+          "wireBytes": 375317,
+          "storedBlocks": 0,
+          "compressedBlocks": 3,
+          "savingsPercent": 50.09,
+          "encodeMs": 17.19,
+          "decodeMs": 4.56,
+          "roundTrip": true
+        },
+        {
+          "mode": "ts-zstd",
+          "level": 1,
+          "blocks": 3,
+          "inputBytes": 752000,
+          "payloadBytes": 375481,
+          "wireBytes": 375689,
+          "storedBlocks": 0,
+          "compressedBlocks": 3,
+          "savingsPercent": 50.04,
+          "encodeMs": 9.3,
+          "decodeMs": 9.8,
+          "roundTrip": true
+        }
+      ],
+      "recommendation": {
+        "mode": "zstd",
+        "level": 9,
+        "reason": "saves 50.09% of the complete wire size"
+      }
+    },
+    {
+      "sample": "ts-unpadded",
+      "kind": "synthetic",
+      "inputBytes": 752000,
+      "sha256": "675352f64a65d9ec2c3d7b69f11bb253cd882c3fcea85dd4a994675b5767c2c5",
+      "container": "mpegts",
+      "rows": [
+        {
+          "mode": "stored",
+          "level": 0,
+          "blocks": 3,
+          "inputBytes": 752000,
+          "payloadBytes": 752000,
+          "wireBytes": 752208,
+          "storedBlocks": 3,
+          "compressedBlocks": 0,
+          "savingsPercent": -0.03,
+          "encodeMs": 0,
+          "decodeMs": 0,
+          "roundTrip": true
+        },
+        {
+          "mode": "gzip",
+          "level": 6,
+          "blocks": 3,
+          "inputBytes": 752000,
+          "payloadBytes": 752000,
+          "wireBytes": 752208,
+          "storedBlocks": 3,
+          "compressedBlocks": 0,
+          "savingsPercent": -0.03,
+          "encodeMs": 26.52,
+          "decodeMs": 0,
+          "roundTrip": true
+        },
+        {
+          "mode": "zstd",
+          "level": 1,
+          "blocks": 3,
+          "inputBytes": 752000,
+          "payloadBytes": 752000,
+          "wireBytes": 752208,
+          "storedBlocks": 3,
+          "compressedBlocks": 0,
+          "savingsPercent": -0.03,
+          "encodeMs": 3.62,
+          "decodeMs": 0,
+          "roundTrip": true
+        },
+        {
+          "mode": "zstd",
+          "level": 3,
+          "blocks": 3,
+          "inputBytes": 752000,
+          "payloadBytes": 752000,
+          "wireBytes": 752208,
+          "storedBlocks": 3,
+          "compressedBlocks": 0,
+          "savingsPercent": -0.03,
+          "encodeMs": 8.11,
+          "decodeMs": 0,
+          "roundTrip": true
+        },
+        {
+          "mode": "zstd",
+          "level": 9,
+          "blocks": 3,
+          "inputBytes": 752000,
+          "payloadBytes": 752000,
+          "wireBytes": 752208,
+          "storedBlocks": 3,
+          "compressedBlocks": 0,
+          "savingsPercent": -0.03,
+          "encodeMs": 17.49,
+          "decodeMs": 0,
+          "roundTrip": true
+        },
+        {
+          "mode": "ts-zstd",
+          "level": 1,
+          "blocks": 3,
+          "inputBytes": 752000,
+          "payloadBytes": 752000,
+          "wireBytes": 752208,
+          "storedBlocks": 3,
+          "compressedBlocks": 0,
+          "savingsPercent": -0.03,
+          "encodeMs": 6.1,
+          "decodeMs": 0,
+          "roundTrip": true
+        }
+      ],
+      "recommendation": {
+        "mode": "stored",
+        "level": 0,
+        "reason": "no codec beat stored by the configured margin"
+      }
+    },
+    {
+      "sample": "tiny-3b",
+      "kind": "synthetic",
+      "inputBytes": 3,
+      "sha256": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+      "container": "bytes",
+      "rows": [
+        {
+          "mode": "stored",
+          "level": 0,
+          "blocks": 1,
+          "inputBytes": 3,
+          "payloadBytes": 3,
+          "wireBytes": 115,
+          "storedBlocks": 1,
+          "compressedBlocks": 0,
+          "savingsPercent": -3733.33,
+          "encodeMs": 0,
+          "decodeMs": 0,
+          "roundTrip": true
+        },
+        {
+          "mode": "gzip",
+          "level": 6,
+          "blocks": 1,
+          "inputBytes": 3,
+          "payloadBytes": 3,
+          "wireBytes": 115,
+          "storedBlocks": 1,
+          "compressedBlocks": 0,
+          "savingsPercent": -3733.33,
+          "encodeMs": 0.37,
+          "decodeMs": 0,
+          "roundTrip": true
+        },
+        {
+          "mode": "zstd",
+          "level": 1,
+          "blocks": 1,
+          "inputBytes": 3,
+          "payloadBytes": 3,
+          "wireBytes": 115,
+          "storedBlocks": 1,
+          "compressedBlocks": 0,
+          "savingsPercent": -3733.33,
+          "encodeMs": 0.22,
+          "decodeMs": 0,
+          "roundTrip": true
+        },
+        {
+          "mode": "zstd",
+          "level": 3,
+          "blocks": 1,
+          "inputBytes": 3,
+          "payloadBytes": 3,
+          "wireBytes": 115,
+          "storedBlocks": 1,
+          "compressedBlocks": 0,
+          "savingsPercent": -3733.33,
+          "encodeMs": 0.18,
+          "decodeMs": 0,
+          "roundTrip": true
+        },
+        {
+          "mode": "zstd",
+          "level": 9,
+          "blocks": 1,
+          "inputBytes": 3,
+          "payloadBytes": 3,
+          "wireBytes": 115,
+          "storedBlocks": 1,
+          "compressedBlocks": 0,
+          "savingsPercent": -3733.33,
+          "encodeMs": 0.18,
+          "decodeMs": 0,
+          "roundTrip": true
+        },
+        {
+          "mode": "ts-zstd",
+          "level": 1,
+          "blocks": 1,
+          "inputBytes": 3,
+          "payloadBytes": 0,
+          "wireBytes": 64,
+          "storedBlocks": 0,
+          "compressedBlocks": 0,
+          "savingsPercent": -2033.33,
+          "encodeMs": 0,
+          "decodeMs": 0,
+          "roundTrip": false,
+          "note": "not a transport stream: ts-zstd does not apply"
+        }
+      ],
+      "recommendation": {
+        "mode": "stored",
+        "level": 0,
+        "reason": "no codec beat stored by the configured margin"
+      }
+    },
+    {
+      "sample": "empty",
+      "kind": "synthetic",
+      "inputBytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "container": "bytes",
+      "rows": [
+        {
+          "mode": "stored",
+          "level": 0,
+          "blocks": 0,
+          "inputBytes": 0,
+          "payloadBytes": 0,
+          "wireBytes": 64,
+          "storedBlocks": 0,
+          "compressedBlocks": 0,
+          "savingsPercent": 0,
+          "encodeMs": 0,
+          "decodeMs": 0,
+          "roundTrip": true
+        },
+        {
+          "mode": "gzip",
+          "level": 6,
+          "blocks": 0,
+          "inputBytes": 0,
+          "payloadBytes": 0,
+          "wireBytes": 64,
+          "storedBlocks": 0,
+          "compressedBlocks": 0,
+          "savingsPercent": 0,
+          "encodeMs": 0,
+          "decodeMs": 0,
+          "roundTrip": true
+        },
+        {
+          "mode": "zstd",
+          "level": 1,
+          "blocks": 0,
+          "inputBytes": 0,
+          "payloadBytes": 0,
+          "wireBytes": 64,
+          "storedBlocks": 0,
+          "compressedBlocks": 0,
+          "savingsPercent": 0,
+          "encodeMs": 0,
+          "decodeMs": 0,
+          "roundTrip": true
+        },
+        {
+          "mode": "zstd",
+          "level": 3,
+          "blocks": 0,
+          "inputBytes": 0,
+          "payloadBytes": 0,
+          "wireBytes": 64,
+          "storedBlocks": 0,
+          "compressedBlocks": 0,
+          "savingsPercent": 0,
+          "encodeMs": 0,
+          "decodeMs": 0,
+          "roundTrip": true
+        },
+        {
+          "mode": "zstd",
+          "level": 9,
+          "blocks": 0,
+          "inputBytes": 0,
+          "payloadBytes": 0,
+          "wireBytes": 64,
+          "storedBlocks": 0,
+          "compressedBlocks": 0,
+          "savingsPercent": 0,
+          "encodeMs": 0,
+          "decodeMs": 0,
+          "roundTrip": true
+        },
+        {
+          "mode": "ts-zstd",
+          "level": 1,
+          "blocks": 0,
+          "inputBytes": 0,
+          "payloadBytes": 0,
+          "wireBytes": 64,
+          "storedBlocks": 0,
+          "compressedBlocks": 0,
+          "savingsPercent": 0,
+          "encodeMs": 0,
+          "decodeMs": 0,
+          "roundTrip": true
+        }
+      ],
+      "recommendation": {
+        "mode": "stored",
+        "level": 0,
+        "reason": "no codec beat stored by the configured margin"
+      }
+    }
+  ],
+  "summary": {
+    "corpusBytes": 4649731,
+    "byMode": [
+      {
+        "mode": "stored",
+        "level": 0,
+        "wireBytes": 4651091,
+        "savingsPercent": -0.03,
+        "roundTrip": true,
+        "encodeMs": 0,
+        "decodeMs": 0
+      },
+      {
+        "mode": "gzip",
+        "level": 6,
+        "wireBytes": 2189399,
+        "savingsPercent": 52.91,
+        "roundTrip": true,
+        "encodeMs": 96.34,
+        "decodeMs": 13.78
+      },
+      {
+        "mode": "zstd",
+        "level": 1,
+        "wireBytes": 2180200,
+        "savingsPercent": 53.11,
+        "roundTrip": true,
+        "encodeMs": 18.84,
+        "decodeMs": 23.12
+      },
+      {
+        "mode": "zstd",
+        "level": 3,
+        "wireBytes": 2177968,
+        "savingsPercent": 53.16,
+        "roundTrip": true,
+        "encodeMs": 24.23,
+        "decodeMs": 11.67
+      },
+      {
+        "mode": "zstd",
+        "level": 9,
+        "wireBytes": 2177476,
+        "savingsPercent": 53.17,
+        "roundTrip": true,
+        "encodeMs": 53.51,
+        "decodeMs": 13.5
+      },
+      {
+        "mode": "ts-zstd",
+        "level": 1,
+        "wireBytes": 1127961,
+        "savingsPercent": 25,
+        "roundTrip": true,
+        "encodeMs": 15.4,
+        "decodeMs": 9.8
+      }
+    ]
+  },
+  "caveats": [
+    "Envelope v1: a 16-byte stream header, a 48-byte header per frame, plus one end frame.",
+    "OpenStream is a framing envelope over Zstandard and gzip, not a new compression algorithm; these numbers are those codecs at the block boundary, honestly framed.",
+    "Synthetic samples do not predict production savings. A padded transport stream flatters a codec by its padding; an efficient real feed saves far less. Use --corpus with authorized real samples for numbers that mean something.",
+    "Timings are wall-clock on the machine and runtime named in `environment` and do not transfer to other hardware.",
+    "roundTrip:false in any row is a failure of exactness and must block a release."
+  ]
+}
