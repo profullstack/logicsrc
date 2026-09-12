@@ -74,7 +74,11 @@ export default function OpenMcpPage(): ReactNode {
           together so a relay can be discovered instead of configured.
         </p>
         <p style={{ color: "#5b6b7a" }}>
-          Status: 0.1. Reference implementation at{" "}
+          Status: 0.1. A catalog is running at{" "}
+          <a href="https://openmcp.logicsrc.com/">openmcp.logicsrc.com</a>: browse the relays it has
+          reached, or point an MCP client at its endpoint. It also hosts{" "}
+          <a href="https://obscura.openmcp.logicsrc.com/">Obscura</a>, a stealth headless browser, as
+          a relay. Reference implementation at{" "}
           <a href="https://github.com/logicsrc/openmcp">github.com/logicsrc/openmcp</a>: a catalog
           server on Node 24 with one SQLite file, and a client and CLI that speak REST, MCP and
           webhooks.
@@ -200,6 +204,11 @@ export default function OpenMcpPage(): ReactNode {
           <h2>Where everything lives</h2>
         </div>
         <ul style={{ color: "#41505d", lineHeight: 1.9, paddingLeft: "1.1rem" }}>
+          <li>
+            <a href="https://openmcp.logicsrc.com/">openmcp.logicsrc.com</a>: a live catalog to
+            browse or point a client at, hosting{" "}
+            <a href="https://obscura.openmcp.logicsrc.com/">Obscura</a> as a relay
+          </li>
           <li>
             <Link href="/docs/openmcp">Specification</Link>: the descriptor, the probe, the record,
             the three doors, webhooks, peering
