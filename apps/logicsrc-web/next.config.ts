@@ -24,6 +24,12 @@ const securityHeaders = [
   { key: "X-Frame-Options", value: "SAMEORIGIN" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+  // OpenProfile.md discovery for responses that are not HTML (feeds, JSON,
+  // the specs as Markdown): the same relation the root layout puts in <head>.
+  {
+    key: "Link",
+    value: `<${(process.env.PUBLIC_URL ?? "https://logicsrc.com").replace(/\/$/, "")}/.well-known/openprofile.md>; rel="openprofile"`,
+  },
 ];
 
 /**

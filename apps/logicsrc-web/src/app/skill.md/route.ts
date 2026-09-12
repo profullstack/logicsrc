@@ -19,6 +19,8 @@ Base URL: ${SITE_URL}
 - Blog feed: ${SITE_URL}/blog/rss.xml
 - Sitemap: ${SITE_URL}/sitemap.xml
 - LLM orientation: ${SITE_URL}/llms.txt
+- Who runs this site, as OpenProfile.md: ${SITE_URL}/.well-known/openprofile.md
+- OpenMCP catalog of MCP relays: https://openmcp.logicsrc.com (install the CLI: curl -fsSL https://openmcp.logicsrc.com/install.sh | sh)
 
 ## What you can do here
 

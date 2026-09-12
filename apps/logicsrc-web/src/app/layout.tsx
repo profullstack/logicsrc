@@ -77,6 +77,11 @@ const jsonLd = {
 export default function RootLayout({ children }: { children: ReactNode }): ReactNode {
   return (
     <html lang="en">
+      <head>
+        {/* OpenProfile.md discovery (/openprofile, rule "A link element"): the
+            site points at its own profile, the one relays name as operator. */}
+        <link rel="openprofile" href={`${SITE_URL}/.well-known/openprofile.md`} />
+      </head>
       <body>
         <script
           type="application/ld+json"

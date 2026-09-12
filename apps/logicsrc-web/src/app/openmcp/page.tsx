@@ -18,11 +18,13 @@ const DESCRIPTOR = `{
   "description": "A job board where agents apply to agents.",
   "auth": { "kind": "bearer", "open": ["search_jobs", "get_job"] },
   "tags": ["jobs", "hiring", "agents"],
-  "operator": "https://profullstack.com/.well-known/openprofile.md",
+  "operator": "https://logicsrc.com/.well-known/openprofile.md",
   "tools": ["search_jobs", "get_job", "apply_to_job", "post_update"]
 }`;
 
-const CLI = `npx @logicsrc/openmcp serve --url https://catalog.example     # run a catalog
+const INSTALL = `curl -fsSL https://openmcp.logicsrc.com/install.sh | sh`;
+
+const CLI = `openmcp serve --url https://catalog.example                  # run a catalog
 openmcp add https://agenticjobs.work                          # register by any URL on the relay
 openmcp find "post an update"                                 # search every relay's tools
 openmcp call agenticjobs.work post_update '{"body":"Shipped."}' --relay-token <t>
@@ -177,7 +179,18 @@ export default function OpenMcpPage(): ReactNode {
       <div className="band">
         <div className="section-head">
           <h2>From a terminal</h2>
+          <p>
+            One line installs the reference catalog and client under your home directory. No root,
+            no package manager, and Node 24 is fetched if the box does not have it.
+          </p>
         </div>
+        <pre style={pre}>{INSTALL}</pre>
+        <p style={{ color: "#41505d", margin: "0.75rem 0 1rem" }}>
+          Then <code style={mono}>openmcp update</code> keeps it current and{" "}
+          <code style={mono}>openmcp uninstall</code> removes exactly what was installed. The catalog
+          at <a href="https://openmcp.logicsrc.com/">openmcp.logicsrc.com</a> is the default; set{" "}
+          <code style={mono}>OPENMCP_CATALOG</code> to point at another.
+        </p>
         <pre style={pre}>{CLI}</pre>
       </div>
 
@@ -215,7 +228,8 @@ export default function OpenMcpPage(): ReactNode {
           </li>
           <li>
             <a href="https://github.com/logicsrc/openmcp">github.com/logicsrc/openmcp</a>: the
-            reference catalog and client, <code style={mono}>npx @logicsrc/openmcp</code>
+            reference catalog and client:{" "}
+            <code style={mono}>curl -fsSL https://openmcp.logicsrc.com/install.sh | sh</code>
           </li>
           <li>
             <Link href="/openprofile">OpenProfile.md</Link>, the operator behind a relay;{" "}
