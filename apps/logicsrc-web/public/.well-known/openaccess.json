@@ -1,0 +1,29 @@
+{
+  "openaccess": "0.1",
+  "name": "LogicSRC",
+  "url": "https://logicsrc.com",
+  "operator": "https://logicsrc.com/.well-known/openprofile.md",
+  "redirect_uris": [
+    "https://logicsrc.com/api/v1/openaccess/callback"
+  ],
+  "jwks": {
+    "keys": [
+      {
+        "kty": "OKP",
+        "crv": "Ed25519",
+        "kid": "zQIbsqDH0Y45",
+        "x": "7I2TEE8GQKJFROunFb28eGjdfUOS1tVqXS6xdDl3yNk",
+        "alg": "EdDSA",
+        "use": "sig"
+      }
+    ]
+  },
+  "scopes": {},
+  "honours": [
+    "profullstack.com/all-access"
+  ],
+  "webhooks": "https://logicsrc.com/api/v1/openaccess/events",
+  "hubs": [
+    "https://openaccess.logicsrc.com"
+  ]
+}
