@@ -18,6 +18,8 @@ export function GET(): Response {
 ## Standards & products
 
 - [ASDLC](${SITE_URL}/asdlc): The Agentic Software Development Lifecycle: nine phases for building software when agents work in parallel and CI/CD is the only gate, with conformance levels and the ratchet rule.
+- [OpenMCP](${SITE_URL}/openmcp): An open catalog of MCP relays. Live catalog at https://openmcp.logicsrc.com; CLI installs with \`curl -fsSL https://openmcp.logicsrc.com/install.sh | sh\`.
+- [OpenProfile.md](${SITE_URL}/openprofile): One Markdown file for who and where, people and agents alike. This site's own is at ${SITE_URL}/.well-known/openprofile.md.
 - [OpenProfile.md](${SITE_URL}/openprofile): One Markdown file that says who you are and where you are, for people and agents alike: identity block, accounts, topics, reshare terms and operator, discovered at /.well-known/openprofile.md or through rel="openprofile".
 - [OpenMCP](${SITE_URL}/openmcp): An open catalog of MCP relays: a relay serves /.well-known/openmcp.json, a catalog probes it and lists only what it found, and clients reach every relay through the catalog's REST, its own MCP endpoint, or signed webhooks.
 - [AgentSwarm](${SITE_URL}/agent-swarm): Provider-neutral agent orchestration, model routing, and cost controls.

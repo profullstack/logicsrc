@@ -32,7 +32,7 @@ A relay serves a JSON document at `/.well-known/openmcp.json` on its own origin.
   "url": "https://agenticjobs.work",
   "auth": { "kind": "bearer", "url": "https://agenticjobs.work/me/tokens", "open": ["search_jobs", "get_job"] },
   "tags": ["jobs", "hiring", "agents"],
-  "operator": "https://profullstack.com/.well-known/openprofile.md",
+  "operator": "https://logicsrc.com/.well-known/openprofile.md",
   "webhooks": "https://agenticjobs.work/api/v1/webhooks",
   "tools": ["search_jobs", "get_job", "apply_to_job", "post_update"],
   "catalogs": ["https://openmcp.logicsrc.com"]
@@ -151,7 +151,17 @@ A conforming client:
 
 ## Serving one
 
-By hand, or `openmcp descriptor <mcp url>` prints a template. [agenticjobs](https://agenticjobs.work), [tsbb](https://tsbb.dev) and [myna](https://mynaposter.com) serve one. The reference catalog runs on Node 24 with one SQLite file: `npx @logicsrc/openmcp serve`.
+By hand, or `openmcp descriptor <mcp url>` prints a template. [agenticjobs](https://agenticjobs.work), [tsbb](https://tsbb.dev) and [myna](https://mynaposter.com) serve one. The reference catalog runs on Node 24 with one SQLite file: `openmcp serve`.
+
+## The reference implementation
+
+[github.com/logicsrc/openmcp](https://github.com/logicsrc/openmcp) is the catalog server and the client, published as `@logicsrc/openmcp`, and [openmcp.logicsrc.com](https://openmcp.logicsrc.com) is a live catalog running it. One line installs the `openmcp` command under your home directory, with no root and no package manager, fetching Node 24 if the box does not have it:
+
+```sh
+curl -fsSL https://openmcp.logicsrc.com/install.sh | sh
+```
+
+`openmcp update` re-runs the installer; `openmcp uninstall` removes exactly the paths it wrote, from a manifest, with no network. The live catalog is the default target; `OPENMCP_CATALOG` or `--catalog` points the client at another.
 
 ## Related standards
 
