@@ -1,7 +1,7 @@
 {
   "name": "@logicsrc/cli",
-  "version": "0.1.2",
-  "description": "LogicSRC OpenSpec CLI.",
+  "version": "0.2.0",
+  "description": "LogicSRC CLI: every LogicSRC standard and tool as one command.",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -14,9 +14,11 @@
     "test": "vitest run src"
   },
   "dependencies": {
+    "@fission-ai/openspec": "^1.13.0",
     "@logicsrc/account-core": "file:../account-core",
     "@logicsrc/opencontext": "file:../opencontext",
     "@logicsrc/opencreds": "file:../opencreds",
+    "@logicsrc/openmcp": "^0.3.1",
     "@logicsrc/openontology": "file:../openontology",
     "@logicsrc/openprd": "file:../openprd",
     "@logicsrc/plugin-agentbbs": "file:../../plugins/agentbbs",
@@ -30,6 +32,7 @@
     "@logicsrc/tui": "file:../tui",
     "@logicsrc/validators": "file:../validators",
     "@profullstack/hqtui": "^0.3.0",
+    "@profullstack/logicsrc-mcp": "file:../logicsrc-mcp",
     "commander": "^14.0.2"
   },
   "devDependencies": {

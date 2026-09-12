@@ -229,7 +229,8 @@ export default function OpenMcpPage(): ReactNode {
           <li>
             <a href="https://github.com/logicsrc/openmcp">github.com/logicsrc/openmcp</a>: the
             reference catalog and client:{" "}
-            <code style={mono}>curl -fsSL https://openmcp.logicsrc.com/install.sh | sh</code>
+            <code style={mono}>curl -fsSL https://openmcp.logicsrc.com/install.sh | sh</code>, or{" "}
+            <code style={mono}>logicsrc openmcp</code> from the LogicSRC CLI
           </li>
           <li>
             <Link href="/openprofile">OpenProfile.md</Link>, the operator behind a relay;{" "}
