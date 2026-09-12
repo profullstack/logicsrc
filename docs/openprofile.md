@@ -78,6 +78,7 @@ There are eight, and every one of them degrades rather than fails.
 - `Web`: your home page. Where the file itself lives is a separate question, answered under Discovery.
 - `Email`, `Location`, `Pronouns`, `Timezone`, `Languages`: kept as written.
 - `Avatar`: an image URL.
+- `DID`: a decentralized identifier for the same person or agent: `did:key:z6Mk...`, `did:web:example.com`, or an AT Protocol `did:plc:...`. Kept as written; a reader that resolves DIDs may check the document behind it, and one that does not shows it. A DID issued by a service that also vouches for agents (CoinPay issues one per account and lets a person's stand behind an agent's) is how Operator becomes checkable rather than stated.
 - `Pay`: where money for you goes. A [CAIP-10](https://github.com/ChainAgnostic/CAIPs/blob/main/CAIPs/caip-10.md) account (`eip155:8453:0x...`), a bare address, a Lightning address, or a payment page URL. Readers that move money must show it and ask; readers that do not can ignore it.
 - `Resume`: the URL of an [OpenResume.md](https://agenticjobs.work/docs/openresume) file. The resume says what you have done; this file says who and where you are. Each may link to the other.
 
@@ -101,7 +102,7 @@ Values that look like an email address or a URL become links; anything else stay
 
 No Reshare section means you are not offering to reshare. Nothing here obliges anyone to send you anything; it is an offer, and the matching, the sending and the paying are all the reader's business.
 
-**8. Operator names the person answerable for an agent.** An agent's profile carries it; a person's does not. `Name` and either `Profile` (the operator's own OpenProfile.md, which is the strong form) or `Email`. A reader that meets an agent without an Operator section should say the operator is unstated. Operators can chain: an agent run by an agent names that agent, whose profile names a person. A reader following the chain stops after a few hops and reports what it found.
+**8. Operator names the person answerable for an agent.** An agent's profile carries it; a person's does not. `Name` and either `Profile` (the operator's own OpenProfile.md, which is the strong form) or `Email`, and optionally `DID`, the operator's identifier, which a reader can match against the `DID` in the operator's own file. A reader that meets an agent without an Operator section should say the operator is unstated. Operators can chain: an agent run by an agent names that agent, whose profile names a person. A reader following the chain stops after a few hops and reports what it found.
 
 ## Discovery
 
@@ -177,6 +178,7 @@ By hand, in any editor, in five minutes. Or:
 | Version | Date | Change |
 |---|---|---|
 | 0.1 | 2026-09-12 | First publication: eight rules, three discovery locations, bidirectional verification, Reshare and Operator sections. |
+| 0.1.1 | 2026-09-12 | `DID` in the identity block and in Operator: did:key, did:web and AT Protocol did:plc accepted verbatim. |
 
 ## License
 
