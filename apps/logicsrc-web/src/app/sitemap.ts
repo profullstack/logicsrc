@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { publicClient } from "@/lib/supabase";
 import { DOC_SLUGS } from "@/lib/docs";
+import { REPORTED_SPECS, reportIds } from "@/lib/reports";
 
 export const dynamic = "force-dynamic";
 
@@ -49,6 +50,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
+  // Benchmark reports: the index per reported spec, and each published report.
+  const reportEntries: MetadataRoute.Sitemap = [];
+  for (const slug of REPORTED_SPECS) {
+    reportEntries.push({ url: `${base}/docs/${slug}/reports`, changeFrequency: "monthly", priority: 0.5 });
+    for (const id of reportIds(slug)) {
+      reportEntries.push({ url: `${base}/docs/${slug}/reports/${id}`, changeFrequency: "yearly", priority: 0.4 });
+    }
+  }
+
   let postEntries: MetadataRoute.Sitemap = [];
   try {
     const supabase = publicClient();
@@ -68,5 +78,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     postEntries = [];
   }
 
-  return [...staticEntries, ...docEntries, ...postEntries];
+  return [...staticEntries, ...docEntries, ...reportEntries, ...postEntries];
 }
