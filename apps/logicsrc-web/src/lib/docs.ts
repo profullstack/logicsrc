@@ -17,6 +17,7 @@ export const DOC_SLUGS = [
   "openontology-interoperability",
   "openjob",
   "openresume",
+  "openprofile",
   "openstream",
   "openspec-comparison",
   "data-model",
