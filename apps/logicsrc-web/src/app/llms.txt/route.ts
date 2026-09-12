@@ -22,6 +22,7 @@ export function GET(): Response {
 - [OpenProfile.md](${SITE_URL}/openprofile): One Markdown file for who and where, people and agents alike. This site's own is at ${SITE_URL}/.well-known/openprofile.md.
 - [OpenProfile.md](${SITE_URL}/openprofile): One Markdown file that says who you are and where you are, for people and agents alike: identity block, accounts, topics, reshare terms and operator, discovered at /.well-known/openprofile.md or through rel="openprofile".
 - [OpenMCP](${SITE_URL}/openmcp): An open catalog of MCP relays: a relay serves /.well-known/openmcp.json, a catalog probes it and lists only what it found, and clients reach every relay through the catalog's REST, its own MCP endpoint, or signed webhooks.
+- [OpenAccess](${SITE_URL}/openaccess): OAuth 2.1 with a grant you can carry: one hub account per person or agent, apps keep their own users and link them once, grants delegate narrower to agents, and a subscription bought in one app is honoured by every app that honours the product. Reference hub at openaccess.logicsrc.com.
 - [AgentSwarm](${SITE_URL}/agent-swarm): Provider-neutral agent orchestration, model routing, and cost controls.
 - [AgentByte](${SITE_URL}/agentbyte): Agent screening sessions, policy events, and APIs.
 - [Credential Sharing](${SITE_URL}/credential-sharing): End-to-end-encrypted team vaults, plus source/target credential diffs, approval, sync, rollback, and audit.

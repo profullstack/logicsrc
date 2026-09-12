@@ -24,6 +24,7 @@ const STATIC_ROUTES: Array<{
   { path: "/asdlc", changeFrequency: "weekly", priority: 0.9 },
   { path: "/openprofile", changeFrequency: "weekly", priority: 0.9 },
   { path: "/openmcp", changeFrequency: "weekly", priority: 0.9 },
+  { path: "/openaccess", changeFrequency: "weekly", priority: 0.9 },
   { path: "/openontology/explore", changeFrequency: "daily", priority: 0.7 },
   { path: "/openspec", changeFrequency: "weekly", priority: 0.8 },
   { path: "/agent-swarm", changeFrequency: "weekly", priority: 0.8 },
