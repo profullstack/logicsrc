@@ -99,14 +99,14 @@ export const FAMILIES: Family[] = [
     name: "Agents and process",
     line: "How agents coordinate, settle, stream, and how the software that serves them gets built",
     blurb:
-      "The lifecycle for building software when agents work in parallel and CI is the only gate, the requirement document an agent can execute, the settlement and proof layer under a swarm, a lossless byte-stream envelope, and the five nouns a shared ontology needs.",
+      "The lifecycle for building software when agents work in parallel and CI is the only gate, the requirement document an agent can execute, the settlement and proof layer under a peer-to-peer swarm, a lossless byte-stream envelope, the five nouns a shared ontology needs, and the record an agent session carries about who spawned it and under what ceiling.",
     specs: [
       s("asdlc", "ASDLC", "The Agentic Software Development Lifecycle: nine phases, four conformance levels and the ratchet rule"),
       s("openprd", "OpenPRD", "A product requirement document an agent can execute and a person can read"),
       s("openswarm", "OpenSwarm", "Settlement and proof of work done under a peer-to-peer swarm"),
       s("openstream", "OpenStream", "A lossless byte-stream relay envelope, with benchmark reports per release", { landing: undefined }),
       s("openontology", "OpenOntology", "Five nouns for a shared ontology, with governance and interoperability notes"),
-      s("agent-swarm", "AgentSwarm", "Provider-neutral agent orchestration, model routing and cost controls", { doc: undefined, status: "soon" }),
+      s("openfleet", "OpenFleet", "Agents under a human: the record a session carries about who spawned it, for what and under what ceiling, and the ledger its sysop reads"),
       s("openspec", "OpenSpec.dev comparison", "How LogicSRC compares with OpenSpec.dev, and the compatibility mode", { doc: "/docs/openspec-comparison" })
     ]
   }

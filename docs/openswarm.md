@@ -4,6 +4,10 @@ Status: 0.1 draft. No reference implementation yet; see "What already exists" be
 
 Slug: `openswarm`
 
+The swarm here is a BitTorrent swarm: peers sharing pieces of a file. A swarm of
+agents, the sessions one agent starts to split a task, and the human fleet those
+sessions belong to, are a different specification: [OpenFleet](/openfleet).
+
 OpenSwarm is a LogicSRC OpenSpec family for **paid, encrypted, peer-to-peer
 distribution of files and media**. It is an add-on to BitTorrent, not a new
 transport. A swarm carries ciphertext, the tracker and the DHT learn nothing

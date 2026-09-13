@@ -25,11 +25,11 @@ const implementations = [
   { name: "Plugins", detail: "Open plugin contracts let external products consume LogicSRC without LogicSRC calling proprietary tools." }
 ];
 
-const upcoming = [
-  { name: "Model routing", detail: "Switch across major AI model providers from one open spec interface." },
-  { name: "Cost controls", detail: "Prefer the cheapest capable model, or rotate providers by price, latency, and task fit." },
-  { name: "Master/slave agent workflows", detail: "Fan out a bug report from a master agent into scoped slave agents for reproduction, patching, review, and evidence." },
-  { name: "GitHub integration", detail: "Target Profullstack repos, create issues and branches, and keep task history auditable." }
+const fleetParts = [
+  { name: "Fleet and swarm", detail: "A fleet is every agent session one human answers for. A swarm is the sessions one spawner starts inside it to do one task. Only a human opens a fleet or sets its ceiling." },
+  { name: "The record", detail: "One JSON file per session: who spawned it, for what, which paths it owns, at what depth, under what ceiling. Written before it starts, never changed after." },
+  { name: "The ledger", detail: "One append-only file per fleet. Every line says whether the human or an agent did it, and a refused start names the ceiling key it broke." },
+  { name: "Five verbs", detail: "open and cap for the sysop alone; tree, stop and log for anyone within reach. The same five proposed for claude agents, moshcode fleet and logicsrc fleet." }
 ];
 
 const agentByteSurfaces = [
@@ -161,22 +161,23 @@ export function renderPageMarkup(path = "/"): string {
         <p class="section-foot"><a href="/specs">Every spec, by family →</a></p>
       </section>
 
-      <section id="agent-swarm" class="band coming-soon">
+      <section id="openfleet" class="band">
         <div class="section-head">
-          <h2>AgentSwarm</h2>
-          <p>An open spec AI agent platform for routing work across models, tools, providers, and repositories.</p>
+          <h2>OpenFleet</h2>
+          <p>Agents under a human. The record a session carries about who spawned it, and the ledger its sysop reads.</p>
         </div>
         <div class="soon-layout">
           <article class="soon-lead">
-            <span>slug: agent-swarm</span>
-            <h3>Provider-neutral agent orchestration</h3>
-            <p>LogicSRC is adding model-provider integration primitives so a CLI or agent runtime can switch between major AI models, choose the cheapest capable option, or rotate models automatically for resilience and cost control.</p>
-            <pre><code>logicsrc agentswarm --yolo \\
-  --repo profullstack/logicsrc \\
-  --agents reproduce,patch,review</code></pre>
+            <span>slug: openfleet</span>
+            <h3>Fleets are human controlled, swarms are automated</h3>
+            <p>An agent that fans a task out to other agents leaves no durable trace of who started whom, under what ceiling, or who answers for it. OpenFleet is that trace: one record per session, one ledger per fleet, and five verbs a sysop tool runs over them. None of it ships yet; the commands below are the proposed shape.</p>
+            <pre><code>logicsrc fleet open --approvals native --depth 1 --fan-out 4
+logicsrc fleet tree
+logicsrc fleet stop create-two-0541</code></pre>
+            <p><a class="button-primary" href="/openfleet">Read about OpenFleet</a> <a href="/docs/openfleet">The specification</a></p>
           </article>
           <div class="soon-grid">
-            ${upcoming.map((item) => `
+            ${fleetParts.map((item) => `
               <article>
                 <h3>${item.name}</h3>
                 <p>${item.detail}</p>

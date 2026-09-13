@@ -60,9 +60,7 @@ export function HomeInteractivity(): null {
 
     // Scroll to the section that matches the current path (mirrors the SPA).
     const { pathname } = window.location;
-    if (pathname === "/agent-swarm") {
-      document.querySelector("#agent-swarm")?.scrollIntoView();
-    } else if (pathname === "/agentbyte") {
+    if (pathname === "/agentbyte") {
       document.querySelector("#agentbyte")?.scrollIntoView();
     } else {
       // Only the paths [[...slug]] still serves from the homepage belong here.

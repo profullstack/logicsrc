@@ -6,7 +6,7 @@
 // to be matched first or CLI auth silently goes to the wrong service.
 import { describe, expect, it } from "vitest";
 
-import { buildRewrites, commandboardRewrites, credentialsRewrites } from "../next.config";
+import { buildRedirects, buildRewrites, commandboardRewrites, credentialsRewrites } from "../next.config";
 
 const CRED = "https://creds.example";
 const CB = "https://commandboard.example";
@@ -53,6 +53,13 @@ describe("apex rewrites", () => {
   it("trims a trailing slash so destinations never double up", () => {
     const [first] = credentialsRewrites("https://creds.example/".replace(/\/$/, ""));
     expect(first.destination).toBe("https://creds.example/cli/:path*");
+  });
+
+  it("sends the retired AgentSwarm placeholder path to the OpenFleet spec, permanently", () => {
+    // /agent-swarm was in the sitemap and in links for months; the spec it
+    // promised is OpenFleet. A 308 keeps every old link and the crawl equity.
+    const rule = buildRedirects().find((r) => r.source === "/agent-swarm");
+    expect(rule).toEqual({ source: "/agent-swarm", destination: "/openfleet", permanent: true });
   });
 
   it("degrades to whichever services are configured", () => {

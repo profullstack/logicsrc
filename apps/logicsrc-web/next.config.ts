@@ -73,12 +73,24 @@ export function buildRewrites(
   return afterFiles.length ? { afterFiles } : [];
 }
 
+/**
+ * Paths that moved. `/agent-swarm` was the AgentSwarm "coming soon" band on
+ * the home page; the spec it promised is OpenFleet, which has its own landing
+ * page. Permanent, so the old URL in the sitemap and in links keeps working.
+ */
+export function buildRedirects() {
+  return [{ source: "/agent-swarm", destination: "/openfleet", permanent: true }];
+}
+
 const nextConfig: NextConfig = {
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },
   async rewrites() {
     return buildRewrites();
+  },
+  async redirects() {
+    return buildRedirects();
   },
 };
 
