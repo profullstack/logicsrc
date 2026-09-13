@@ -178,7 +178,14 @@ export interface SwarmNode {
   task?: string;
   by: string;
   parent_swarm?: string;
+  /** The keys the spawner narrowed, as written in `swarm.spawn`. */
   ceiling: Ceiling;
+  /**
+   * The swarm's effective ceiling: the fleet's merged down the swarm path
+   * with the latest caps last. In the implicit fleet `approvals` enters at
+   * each root and is not resolved here; fan_out, budget and until are.
+   */
+  effective?: Ceiling;
   members: MemberNode[];
   swarms: SwarmNode[];
   state?: EndState;

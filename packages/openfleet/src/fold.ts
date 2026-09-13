@@ -6,9 +6,9 @@
  * place a member with no record exists.
  */
 
-import { fleetCeiling, formatSpend, isImplicitFleet, sumSpend } from "./ceiling.js";
+import { effectiveCeiling, fleetCeiling, formatSpend, isImplicitFleet, sumSpend, swarmChain } from "./ceiling.js";
 import { fleetSysop } from "./context.js";
-import { rosterFor } from "./rosters.js";
+import { rosterFor, rosterHolds } from "./rosters.js";
 import {
   claimedBy,
   endOf,
@@ -89,6 +89,7 @@ function foldFleet(homeDir: string, fleet: string, implicit: ImplicitFleet, rost
     }
   }
 
+  const ceiling = fleetCeiling(lines, fleet, implicit.ceiling);
   const pieceOf = new Map<string, { swarm: string; title?: string; owns?: string[]; task?: string }>();
   const swarms = new Map<string, SwarmNode>();
   for (const spawn of findEvents(lines, "swarm.spawn")) {
@@ -100,6 +101,7 @@ function foldFleet(homeDir: string, fleet: string, implicit: ImplicitFleet, rost
       by: spawn.by,
       ...(typeof spawn.parent_swarm === "string" ? { parent_swarm: spawn.parent_swarm } : {}),
       ceiling: spawn.ceiling && typeof spawn.ceiling === "object" ? spawn.ceiling : {},
+      effective: effectiveCeiling(ceiling, lines, swarmChain(lines, spawn.swarm)),
       members: [],
       swarms: [],
       ...(end ? { state: end.state as EndState, ...(typeof end.summary === "string" ? { summary: end.summary } : {}) } : {}),
@@ -119,8 +121,11 @@ function foldFleet(homeDir: string, fleet: string, implicit: ImplicitFleet, rost
     const end = endOf(lines, id);
     const piece = pieceOf.get(id);
     const engine = record?.engine ?? start?.engine;
+    const session = record?.session ?? start?.session;
     const row = matchRow(roster, [id, record?.session, start?.session]);
     const covering = rosterFor(engine);
+    // Not listed means gone only for a member the roster can hold: a claude-code background job, a moshcode pane.
+    const gone = covering !== null && roster.readable.has(covering) && rosterHolds(engine, id, session);
     const approvals: Approvals = (start?.approvals ?? record?.approvals) === "bypass" ? "bypass" : "native";
     const owns = record?.piece?.owns ?? piece?.owns;
     const title = record?.piece?.title ?? piece?.title ?? row?.name;
@@ -136,7 +141,7 @@ function foldFleet(homeDir: string, fleet: string, implicit: ImplicitFleet, rost
       approvals,
       ...(owns ? { owns } : {}),
       ...(record?.orphan ? { orphan: true } : {}),
-      ...(row ? { alive: true } : covering && roster.readable.has(covering) ? { alive: false } : {}),
+      ...(row ? { alive: true } : gone ? { alive: false } : {}),
       ...(latestSpend(lines, id) ? { spend: latestSpend(lines, id) } : {}),
       ...(start ? { started: start.at } : record?.started ? { started: record.started } : {}),
       ...(end ? { ended: end.at } : {}),
@@ -151,7 +156,9 @@ function foldFleet(homeDir: string, fleet: string, implicit: ImplicitFleet, rost
   const byStart = (a: { started?: string; member?: string; swarm?: string }, b: typeof a) =>
     String(a.started ?? "").localeCompare(String(b.started ?? "")) || String(a.member ?? a.swarm).localeCompare(String(b.member ?? b.swarm));
 
-  // Members into swarms, swarms under their parent swarm or spawner, the rest at the top.
+  // Members into swarms. A swarm goes under the member that spawned it when
+  // that member is in this tree (the row that says who), else under its
+  // parent swarm, else at the fleet level: the sysop's, started by hand.
   const roots: MemberNode[] = [];
   for (const node of [...members.values()].sort(byStart)) {
     const swarm = node.swarm ? swarms.get(node.swarm) : undefined;
@@ -160,13 +167,13 @@ function foldFleet(homeDir: string, fleet: string, implicit: ImplicitFleet, rost
   }
   const fleetSwarms: SwarmNode[] = [];
   for (const swarm of swarms.values()) {
-    const parentSwarm = swarm.parent_swarm ? swarms.get(swarm.parent_swarm) : undefined;
-    if (parentSwarm && parentSwarm !== swarm) {
-      parentSwarm.swarms.push(swarm);
+    const spawner = members.get(swarm.by);
+    if (spawner) {
+      spawner.swarms.push(swarm);
       continue;
     }
-    const spawner = members.get(swarm.by);
-    if (spawner) spawner.swarms.push(swarm);
+    const parentSwarm = swarm.parent_swarm ? swarms.get(swarm.parent_swarm) : undefined;
+    if (parentSwarm && parentSwarm !== swarm) parentSwarm.swarms.push(swarm);
     else fleetSwarms.push(swarm);
   }
   // Spend rolls up from the leaves: a swarm's total is its members' plus every swarm under them.
@@ -178,7 +185,6 @@ function foldFleet(homeDir: string, fleet: string, implicit: ImplicitFleet, rost
   for (const swarm of fleetSwarms) sumSwarm(swarm);
   for (const root of roots) for (const swarm of root.swarms) sumSwarm(swarm);
 
-  const ceiling = fleetCeiling(lines, fleet, implicit.ceiling);
   const implicitHere = isImplicitFleet(lines, fleet);
   return {
     fleet,
@@ -292,9 +298,11 @@ function memberRow(node: MemberNode, prefix: string, host: string): Row {
 
 function swarmRow(node: SwarmNode, prefix: string): Row {
   const count = node.members.length;
-  const size = node.ceiling.fan_out !== undefined ? `${count}/${String(node.ceiling.fan_out)} members` : `${count} member${count === 1 ? "" : "s"}`;
-  const rest = [...(node.state ? [node.state] : node.ceiling.until ? [`until ${hhmm(String(node.ceiling.until))}`] : [])];
-  const spend = formatSpend(node.spend, typeof node.ceiling.budget === "string" ? node.ceiling.budget : undefined);
+  // The row shows what the swarm runs under, inherited keys included, not only what its spawner narrowed.
+  const ceiling = node.effective ?? node.ceiling;
+  const size = ceiling.fan_out !== undefined ? `${count}/${String(ceiling.fan_out)} members` : `${count} member${count === 1 ? "" : "s"}`;
+  const rest = [...(node.state ? [node.state] : ceiling.until ? [`until ${hhmm(String(ceiling.until))}`] : [])];
+  const spend = formatSpend(node.spend, typeof ceiling.budget === "string" ? ceiling.budget : undefined);
   if (spend) rest.push(spend);
   return { prefix, label: `swarm ${node.swarm}`, title: quote(node.task), engine: size, rest: rest.join("  ") };
 }

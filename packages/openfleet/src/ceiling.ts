@@ -108,14 +108,18 @@ export function mergeCeiling(base: Ceiling, narrowing: Ceiling | undefined): Cei
 
 /**
  * A fleet's whole ceiling: the latest `fleet.cap` whose target is the fleet,
- * else `fleet.open`, else the implicit fleet's.
+ * else `fleet.open`, else the implicit fleet's. A line that names no `hosts`
+ * means the host it was written on (the ceiling table), so the two reference
+ * readers admit the same members whichever tool opened the fleet.
  */
 export function fleetCeiling(lines: LedgerLine[], fleet: string, implicit: Ceiling): Ceiling {
   const caps = findEvents(lines, "fleet.cap", { target: fleet });
-  if (caps.length) return { ...(caps[caps.length - 1].ceiling ?? {}) };
   const opens = findEvents(lines, "fleet.open", { fleet });
-  if (opens.length) return { ...(opens[opens.length - 1].ceiling ?? {}) };
-  return { ...implicit };
+  const line = caps.length ? caps[caps.length - 1] : opens.length ? opens[opens.length - 1] : null;
+  if (!line) return { ...implicit };
+  const ceiling: Ceiling = { ...(line.ceiling ?? {}) };
+  if (ceiling.hosts === undefined && typeof line.host === "string" && line.host !== "") ceiling.hosts = [line.host];
+  return ceiling;
 }
 
 /** True when the ledger holds no `fleet.open` for this fleet: it is the implicit one. */

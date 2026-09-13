@@ -4,13 +4,17 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   RecordExistsError,
   append,
+  appendOnce,
+  claimMark,
   claimedBy,
   endOf,
   hasEvent,
+  hasMark,
   home,
   implicitFleet,
   ledgerPaths,
   listFleets,
+  markName,
   readCurrent,
   readLedger,
   readRecord,
@@ -158,6 +162,24 @@ describe("the ledger", () => {
     expect(swarmEndState([end("done"), end("timeout")])).toBe("timeout");
     expect(swarmEndState([end("done"), null])).toBeNull();
     expect(swarmEndState([end("lost")])).toBe("failed");
+  });
+
+  it("takes a once-marker with an exclusive create, so a racing second writer writes nothing", () => {
+    expect(markName("member.start", "a")).toBe("member.start.a");
+    expect(markName("member.end", "a", true)).toBe("member.end.a.lost");
+    expect(markName("swarm.end", "s-1")).toBe("swarm.end.s-1");
+    expect(hasMark(dir, FLEET, "member.start.a")).toBe(false);
+    expect(claimMark(dir, FLEET, "member.start.a")).toBe(true);
+    expect(claimMark(dir, FLEET, "member.start.a")).toBe(false);
+    expect(hasMark(dir, FLEET, "member.start.a")).toBe(true);
+    const path = join(dir, "fleets", FLEET, "marks", "member.start.a");
+    expect(statSync(path).mode & 0o777).toBe(0o600);
+    expect(statSync(join(dir, "fleets", FLEET, "marks")).mode & 0o777).toBe(0o700);
+    const first = appendOnce(dir, FLEET, { at: "2026-09-13T05:41:36Z", event: "member.end", by: "a", member: "a", state: "done" }, { host: "dev", once: markName("member.end", "a") });
+    expect(first?.state).toBe("done");
+    const second = appendOnce(dir, FLEET, { at: "2026-09-13T05:41:37Z", event: "member.end", by: "sysop", member: "a", state: "stopped" }, { host: "dev", once: markName("member.end", "a") });
+    expect(second).toBeNull();
+    expect(readLedger(dir, FLEET).filter((line) => line.event === "member.end").length).toBe(1);
   });
 
   it("keeps current and the per-session file under the home", () => {

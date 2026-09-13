@@ -9,16 +9,19 @@
  * make the same decision from the same ledger.
  */
 
-import { checkCeiling, effectiveCeiling, fleetCeiling, isImplicitFleet, mergeCeiling, rootApprovals, swarmChain } from "./ceiling.js";
+import { checkCeiling, effectiveCeiling, fleetCeiling, isImplicitFleet, rootApprovals, swarmChain } from "./ceiling.js";
 import { nextSwarmOfOne } from "./swarm.js";
 import {
   append,
+  appendOnce,
   claimedBy,
   endOf,
   findEvents,
+  hasMark,
   home as homeOf,
   implicitFleet,
   isoNow,
+  markName,
   readCurrent,
   readLedger,
   readRecord,
@@ -105,29 +108,21 @@ export function rootOf(homeDir: string, lines: LedgerLine[], record: FleetRecord
 }
 
 /**
- * The effective ceiling a member is under now. The record's own `ceiling` is
- * what it was started under; the latest `fleet.cap` for its fleet and for any
- * swarm on its path wins over that copy (rule 7). A record with no ceiling
- * gets the fleet's, with the root's approvals entering at the root in the
- * implicit fleet, merged down its swarm path.
+ * The effective ceiling a member is under now, rebuilt from the ledger every
+ * time. The record's own `ceiling` is a snapshot of what it was started
+ * under and never an input here: the latest `fleet.cap` for its fleet wins
+ * over that copy (rule 7), widening included, so the sysop can raise a fleet
+ * and have its running members read the new ceiling. The order is the spec's:
+ * the fleet's whole ceiling (latest fleet-target cap, else `fleet.open`, else
+ * the implicit fleet's), with the root's own approvals entering at the root
+ * in the implicit fleet when no cap names one, then each `swarm.spawn`
+ * narrowing down the member's path, then the latest cap on any swarm on that
+ * path, applied last. A merge never widens.
  */
 export function memberCeiling(homeDir: string, lines: LedgerLine[], record: FleetRecord, implicit: ImplicitFleet): Ceiling {
-  const chain = swarmChain(lines, record.swarm);
-  let base: Ceiling;
-  if (record.ceiling && typeof record.ceiling === "object") {
-    base = { ...record.ceiling };
-  } else {
-    base = fleetCeiling(lines, record.fleet, implicit.ceiling);
-    if (isImplicitFleet(lines, record.fleet)) base.approvals = rootApprovals(rootOf(homeDir, lines, record));
-    base = effectiveCeiling(base, lines, chain);
-  }
-  const fleetCaps = findEvents(lines, "fleet.cap", { target: record.fleet });
-  if (fleetCaps.length) base = mergeCeiling(base, fleetCaps[fleetCaps.length - 1].ceiling);
-  for (const swarm of chain) {
-    const caps = findEvents(lines, "fleet.cap", { target: swarm });
-    if (caps.length) base = mergeCeiling(base, caps[caps.length - 1].ceiling);
-  }
-  return base;
+  const base = fleetCeiling(lines, record.fleet, implicit.ceiling);
+  if (base.approvals === undefined && isImplicitFleet(lines, record.fleet)) base.approvals = rootApprovals(rootOf(homeDir, lines, record));
+  return effectiveCeiling(base, lines, swarmChain(lines, record.swarm));
 }
 
 // ---------------------------------------------------------------------------
@@ -201,20 +196,19 @@ function derive(
   opts: { home: string; env: Env; now: Date; host: string; implicit: ImplicitFleet; session: SessionFacts },
 ): Resolution {
   const { home, env, now, host, implicit, session } = opts;
-  const member = session.id;
+  // A background job's member is its job id, as for a root; otherwise the engine's session id.
+  const member = session.member ?? session.id;
   const depth = (parent.depth ?? 0) + 1;
 
   // The swarm the child joins, when the parent spawned the one the environment names.
   let swarm: string;
   let task: string | undefined;
-  let narrowing: Ceiling | undefined;
   let spawnToWrite: LedgerInput | null = null;
   const named = env.OPENFLEET_SWARM;
   const namedSpawn = named && named !== parent.swarm ? spawnOf(lines, named) : null;
   if (named && namedSpawn && namedSpawn.by === parent.member) {
     swarm = named;
     task = namedSpawn.task;
-    narrowing = namedSpawn.ceiling;
   } else {
     const existing = findEvents(lines, "swarm.spawn").map((line) => String(line.swarm ?? ""));
     swarm = nextSwarmOfOne(parent.member, existing);
@@ -230,8 +224,9 @@ function derive(
     };
   }
 
-  const parentCeiling = memberCeiling(home, lines, parent, implicit);
-  const ceiling = mergeCeiling(parentCeiling, narrowing);
+  // The parent's effective ceiling, then the joined swarm's own narrowing and
+  // any cap on it. A swarm of one has no `swarm.spawn` yet and narrows nothing.
+  const ceiling = effectiveCeiling(memberCeiling(home, lines, parent, implicit), lines, [swarm]);
   const refusal = checkCeiling({ approvals: session.approvals, depth, hosts: [host], until: isoNow(now) }, ceiling);
   if (refusal) {
     const line = append(
@@ -256,7 +251,8 @@ function derive(
     ...(task !== undefined ? { task } : {}),
     depth,
     engine: session.engine,
-    ...(session.pid !== undefined ? { session: String(session.pid) } : {}),
+    // Only a `claude -p` is stopped by pid; a Claude Code job is stopped by its job id, which is its member.
+    ...(session.pid !== undefined && session.engine === "claude-p" ? { session: String(session.pid) } : {}),
     host,
     cwd: session.cwd,
     started: isoNow(now),
@@ -309,23 +305,37 @@ function root(opts: { home: string; env: Env; now: Date; host: string; implicit:
 export interface StartResult {
   started: LedgerLine | null;
   refused: { refusal: Refusal; line: LedgerLine } | null;
-  /** The record was already claimed; nothing was written. */
+  /**
+   * The record was already claimed, or another writer took the `member.start`
+   * marker first; nothing was written. Null beside a null `started` and
+   * `refused` means the marker was taken and the line is not visible yet.
+   */
   already: LedgerLine | null;
-  /** The record as it stands: rewritten when a hand-started root's real approvals differed from the guess. */
+  /** The record as it stands: rewritten when the engine's word on approvals replaced the starter's guess. */
   record: FleetRecord;
 }
 
 /**
  * Claim a record: check the effective ceiling, then write `member.start` with
- * `by` the member itself. A refusal writes `ceiling.refuse` instead, with `by`
- * the record's parent, else the caller's `OPENFLEET_MEMBER`, else the record's
- * own member when it carries `orphan`, else `sysop` for a root the human
- * started by hand.
+ * `by` the member itself, under the once-marker so a spawner writing the same
+ * line on the member's behalf cannot double it. A refusal writes
+ * `ceiling.refuse` instead, with `by` the record's parent, else the caller's
+ * `OPENFLEET_MEMBER`, else the record's own member when it carries `orphan`,
+ * else `sysop` for a root the human started by hand.
  */
 export function startMember(
   homeDir: string,
   given: FleetRecord,
-  facts: { sessionId: string; approvals: Approvals; env?: Env; now?: Date; host?: string; implicit?: ImplicitFleet },
+  facts: {
+    sessionId: string;
+    approvals: Approvals;
+    env?: Env;
+    now?: Date;
+    host?: string;
+    implicit?: ImplicitFleet;
+    /** The record was derived by this engine at SessionStart from a guess at approvals. */
+    derived?: boolean;
+  },
 ): StartResult {
   const now = facts.now ?? new Date();
   const implicit = facts.implicit ?? implicitFleet();
@@ -336,11 +346,19 @@ export function startMember(
   if (already) return { started: null, refused: null, already, record };
 
   // A root the sysop started by hand runs under the approvals it was started
-  // with (rule 12). The starter may have guessed those before the engine said;
-  // the engine's word replaces the guess while the record is still unclaimed.
+  // with (rule 12), and its record's ceiling must carry them: in the implicit
+  // fleet there is no fleet-level approvals, each root supplies its own. The
+  // starter may have guessed, or left the key out; the engine's word fills
+  // the record while it is still unclaimed. A record this engine derived at
+  // SessionStart from a guess is corrected the same way, so the record, the
+  // check and the `member.start` agree.
   const handStartedRoot = !record.parent && !record.orphan && isImplicitFleet(lines, record.fleet);
-  if (handStartedRoot && record.approvals !== facts.approvals) {
-    record = { ...record, approvals: facts.approvals, ceiling: { ...(record.ceiling ?? {}), approvals: facts.approvals } };
+  if (handStartedRoot && (record.approvals !== facts.approvals || record.ceiling?.approvals === undefined)) {
+    const ceiling: Ceiling = record.ceiling ? { ...record.ceiling, approvals: facts.approvals } : { approvals: facts.approvals, depth: 1, hosts: [host] };
+    record = { ...record, approvals: facts.approvals, ceiling };
+    replaceUnclaimedRecord(homeDir, record);
+  } else if (facts.derived && record.approvals !== facts.approvals) {
+    record = { ...record, approvals: facts.approvals };
     replaceUnclaimedRecord(homeDir, record);
   }
 
@@ -357,7 +375,7 @@ export function startMember(
     return { started: null, refused: { refusal, line }, already: null, record };
   }
 
-  const started = append(
+  const started = appendOnce(
     homeDir,
     record.fleet,
     {
@@ -373,8 +391,9 @@ export function startMember(
       approvals: facts.approvals,
       ...(record.piece ? { piece: record.piece } : {}),
     },
-    { now, host },
+    { now, host, once: markName("member.start", record.member) },
   );
+  if (!started) return { started: null, refused: null, already: claimedBy(readLedger(homeDir, record.fleet), record.member), record };
   return { started, refused: null, already: null, record };
 }
 
@@ -391,22 +410,27 @@ export interface EndFacts {
 export interface EndResult {
   ended: LedgerLine | null;
   swarmEnded: LedgerLine | null;
-  /** An end line already counted; nothing was written. */
+  /** An end line already counted, or another writer holds the marker; nothing was written. */
   already: LedgerLine | null;
 }
 
 /**
  * End a member: one `member.end` that counts (a `lost` line may be superseded
  * by a real one, anything else stands), then, for a swarm of one the engine
- * derived, that swarm's `swarm.end` with the same state.
+ * derived, that swarm's `swarm.end` with the same state. Every line goes
+ * through its once-marker; a `lost` end takes `member.end.<id>.lost` so the
+ * real end can still follow it and take the plain marker.
  */
 export function endMember(homeDir: string, fleet: string, member: string, facts: EndFacts, swarm?: string): EndResult {
   const now = facts.now ?? new Date();
   const lines = readLedger(homeDir, fleet);
   const existing = endOf(lines, member);
   if (existing && !(existing.state === "lost" && facts.state !== "lost")) return { ended: null, swarmEnded: null, already: existing };
+  const lost = facts.state === "lost";
+  // A real end in flight (marker taken, line not yet visible) beats a lost one.
+  if (lost && hasMark(homeDir, fleet, markName("member.end", member))) return { ended: null, swarmEnded: null, already: existing };
 
-  const ended = append(
+  const ended = appendOnce(
     homeDir,
     fleet,
     {
@@ -418,19 +442,27 @@ export function endMember(homeDir: string, fleet: string, member: string, facts:
       ...(facts.total !== undefined ? { total: facts.total } : {}),
       ...(facts.links !== undefined ? { links: facts.links } : {}),
     },
-    { now, host: facts.host },
+    { now, host: facts.host, once: markName("member.end", member, lost) },
   );
+  if (!ended) return { ended: null, swarmEnded: null, already: endOf(readLedger(homeDir, fleet), member) };
 
   let swarmEnded: LedgerLine | null = null;
   if (swarm) {
     const spawn = spawnOf(lines, swarm);
-    const ofOne = spawn?.pieces?.length === 1 && spawn.pieces[0]?.member === member;
+    // Only a swarm of one the engine itself minted ends with its member: the
+    // spawner is a member (never the sysop) and the id is <parent>-<n>. A
+    // one-piece swarm a spawner such as moshcode wrote is that spawner's to end.
+    const minted =
+      typeof spawn?.by === "string" &&
+      spawn.by !== "sysop" &&
+      new RegExp(`^${spawn.by.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}-\\d+$`).test(swarm);
+    const ofOne = minted && spawn?.pieces?.length === 1 && spawn.pieces[0]?.member === member;
     if (ofOne && !swarmEndOf(lines, swarm)) {
-      swarmEnded = append(
+      swarmEnded = appendOnce(
         homeDir,
         fleet,
         { event: "swarm.end", by: facts.by, swarm, state: facts.state, ...(facts.summary !== undefined ? { summary: facts.summary } : {}) },
-        { now, host: facts.host },
+        { now, host: facts.host, once: markName("swarm.end", swarm) },
       );
     }
   }

@@ -184,6 +184,41 @@ export function defaultRosters(exec: Exec = realExec, env: Env = process.env): R
 /** Which roster answers for an engine string, so "not listed" can mean "gone" rather than "unknown". */
 export function rosterFor(engine: string | undefined): keyof Rosters | null {
   if (engine === "claude-code") return "claude";
-  if (engine?.startsWith("moshcode/")) return "moshcode";
+  // moshcode names every pane it starts, tmux ones included, in its herd manifest.
+  if (engine?.startsWith("moshcode/") || engine === "tmux") return "moshcode";
+  return null;
+}
+
+/** A Claude Code job id: the first eight hex characters of its session id. */
+export const JOB_ID_RE = /^[0-9a-f]{8}$/i;
+
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+/**
+ * Can this engine's roster hold the member at all? `claude agents` lists
+ * background jobs only, so an interactive or `-p` session (a UUID member with
+ * no job id) is never in it and its absence says nothing. moshcode's manifest
+ * holds every pane it started. Only a member the roster can hold is "gone"
+ * when the roster no longer lists it.
+ */
+export function rosterHolds(engine: string | undefined, member: string, session: string | undefined): boolean {
+  const roster = rosterFor(engine);
+  if (roster === null) return false;
+  if (roster === "moshcode") return true;
+  return JOB_ID_RE.test(member) || (typeof session === "string" && JOB_ID_RE.test(session));
+}
+
+/**
+ * The job id `claude stop` takes for a claude-code member: the member id of a
+ * background job, else the first eight characters of the record's session
+ * when that is a session UUID. Null for an interactive session with no job
+ * id, which the tool cannot stop. A session equal to the member is the
+ * engine's own id echoed back in `member.start`, not a job handle.
+ */
+export function claudeJobId(member: string, session: string | undefined): string | null {
+  if (JOB_ID_RE.test(member)) return member;
+  if (typeof session !== "string" || session === member) return null;
+  if (JOB_ID_RE.test(session)) return session;
+  if (UUID_RE.test(session)) return session.slice(0, 8);
   return null;
 }

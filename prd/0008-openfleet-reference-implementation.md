@@ -74,7 +74,21 @@ the files exist and something writes them.
 - R2 [P0] `logicsrc fleet open|cap|tree|stop|log` with the spec's flags;
   `open` and `cap` exit 4 when `OPENFLEET_MEMBER` is set; `stop` exits 4
   outside the caller's subtree; `stop` ends nested swarms first and writes one
-  `swarm.end` per swarm; every verb takes `--json`.
+  `swarm.end` per swarm, only once every member and every nested swarm has an
+  end line that counts, and exits non-zero when an engine would not end a
+  member; `cap` on a swarm refuses a key that would widen; every verb takes
+  `--json`.
+- R2a [P0] Rule 6 lives in `tree`, run by the sysop: a working member past
+  its effective `until` is stopped through its engine and ends `timeout`; a
+  swarm or fleet whose summed `member.spend` in the budget's unit has reached
+  its budget has its members stopped, each ending `budget`; each swarm touched
+  gets its `swarm.end` when complete. An agent's `tree` stops nothing.
+- R2b [P0] The effective ceiling is rebuilt from the ledger on every read:
+  the latest fleet-target `fleet.cap` (else `fleet.open`, else the implicit
+  fleet's) replaces the copy in a record, widening included; then each
+  `swarm.spawn` narrowing down the path, then swarm caps last. In the
+  implicit fleet a parentless record's own `approvals` enters at the root, and
+  the engine fills a ceiling a writer left without the key.
 - R3 [P0] `stop` goes through the member's own engine: `claude stop` for
   `claude-code`, `moshcode herd kill` for `moshcode/*`, `tmux kill-pane` for
   `tmux`, a signal for `claude-p`. Never a shell string.
@@ -86,7 +100,9 @@ the files exist and something writes them.
 - R5 [P1] `tree` reads `claude agents --json --all` and
   `~/.moshcode/herd/sessions.json` when it can, draws recordless sessions as
   roots of the implicit fleet, and writes `member.end` state `lost` for a
-  recorded member its engine no longer lists.
+  recorded background job or pane its engine's roster can hold and no longer
+  lists. `claude agents` lists background jobs only, so an interactive or `-p`
+  session (a UUID member with no job id) is never marked lost by it.
 - R6 [P1] The spec and the landing page say what ships, keep `Status: 0.1`,
   and record the two verified Claude Code limits (no launcher environment
   reaches a dispatched background job; exported variables reach tools but not
@@ -129,5 +145,10 @@ None. It is the reference implementation of an open standard.
 - User-level hooks fire for every `claude -p` a tool makes, so each becomes a
   swarm of one and, at depth 1 in the implicit fleet, is refused on depth. The
   spec lists this as an open question; the hooks enforce the letter of it.
-- `hasEvent` before a write is a check, not a lock. Two writers racing on one
-  swarm can still produce two `swarm.end` lines.
+- A ledger check before a write is not exclusion, so `member.start`,
+  `member.end` and `swarm.end` each take a once-marker first: an exclusive
+  create of `fleets/<fleet>/marks/<event>.<id>` (`.lost` suffixed for a lost
+  end, so a real end can still supersede it). moshcode uses the same paths.
+  A marker taken by a writer that then crashed before appending leaves the
+  line unwritten until someone clears the marker by hand; 0.1 accepts that
+  over a doubled audit line.

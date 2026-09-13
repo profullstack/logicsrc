@@ -37,12 +37,14 @@ const GUARD = "command -v logicsrc >/dev/null 2>&1";
  *
  * Every event but one ends in `; exit 0`: whatever happened, the engine
  * carries on. UserPromptSubmit is the one hook that must be heard: a start the
- * ceiling refuses exits 2 (rule 5), so its guard is `|| exit 0` and the exit
- * code is the handler's own. SessionStart's stdout is the member's context
- * line, so nothing there is redirected.
+ * ceiling refuses exits 2 (rule 5), and only that code is passed on. Any other
+ * failure (a crash, a missing build, an older `logicsrc` on PATH with no
+ * `fleet`) would otherwise show as an error on every prompt, so it becomes 0.
+ * SessionStart's stdout is the member's context line, so nothing there is
+ * redirected.
  */
 export function hookCommand(event: HookEvent): string {
-  if (event === "UserPromptSubmit") return `${GUARD} || exit 0; logicsrc fleet hook ${event}`;
+  if (event === "UserPromptSubmit") return `${GUARD} || exit 0; logicsrc fleet hook ${event}; rc=$?; [ "$rc" -eq 2 ] && exit 2; exit 0`;
   return `${GUARD} && logicsrc fleet hook ${event}; exit 0`;
 }
 

@@ -11,14 +11,15 @@
 
 import { existsSync } from "node:fs";
 import type { Command } from "commander";
-import { isNarrower, parseBudget, parseUntil } from "./ceiling.js";
-import { endMember, memberCeiling } from "./context.js";
+import { effectiveCeiling, fleetCeiling, isImplicitFleet, isNarrower, parseBudget, parseUntil, rootApprovals, swarmChain } from "./ceiling.js";
+import { endMember, memberCeiling, rootOf } from "./context.js";
 import { flattenMembers, flattenSwarms, fold, renderTree } from "./fold.js";
 import { hooksStatus, installHooks, removeHooks, settingsFile } from "./hooks-install.js";
 import { realHookIo, runHook, type HookIo } from "./hooks.js";
-import { defaultRosters, realExec, type Exec } from "./rosters.js";
+import { claudeJobId, defaultRosters, realExec, type Exec } from "./rosters.js";
 import {
   append,
+  appendOnce,
   claimedBy,
   endOf,
   findEvents,
@@ -27,6 +28,7 @@ import {
   implicitFleet,
   isoNow,
   listFleets,
+  markName,
   readLedger,
   readRecords,
   spawnOf,
@@ -37,10 +39,11 @@ import {
   type ImplicitFleet,
 } from "./store.js";
 import { slug } from "./swarm.js";
-import type { Approvals, Ceiling, EndState, FleetRecord, LedgerLine, Rosters, Tree } from "./types.js";
+import type { Approvals, Ceiling, EndState, FleetRecord, LedgerLine, MemberNode, Rosters, SwarmNode, Tree } from "./types.js";
+import { CEILING_KEYS, OPENFLEET_VERSION } from "./types.js";
 
 
-/** Exit codes: 0 ok, 1 usage, 2 invalid input, 3 not found, 4 refused (the human-only verbs and stop outside reach). */
+/** Exit codes: 0 ok, 1 usage, 2 invalid input, 3 not found or an engine that would not end a member, 4 refused (the human-only verbs and stop outside reach). */
 export const EXIT = { OK: 0, USAGE: 1, INVALID: 2, NOT_FOUND: 3, REFUSED: 4 } as const;
 
 export interface Deps {
@@ -210,6 +213,8 @@ interface StopRow {
   stopped: boolean;
   state?: string;
   note?: string;
+  /** The engine would not end the member: no end line was written and the verb exits non-zero. */
+  error?: string;
 }
 
 interface SwarmRow {
@@ -240,17 +245,15 @@ function report(rows: Row[]): { members: Omit<StopRow, "kind">[]; swarms: Omit<S
   return { members, swarms };
 }
 
-/** Claude Code's roster keys jobs by the first eight characters of the session id. */
-function claudeHandle(handle: string): string {
-  return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(handle) ? handle.slice(0, 8) : handle;
-}
-
 async function stopThroughEngine(deps: Deps, record: Partial<FleetRecord> & { member: string }): Promise<string | null> {
   const engine = record.engine;
   const handle = record.session ?? record.member;
   if (engine === "claude-code") {
-    const result = await deps.exec("claude", ["stop", claudeHandle(handle)]);
-    return result.code === 0 ? null : `claude stop ${claudeHandle(handle)} exited ${result.code}: ${result.stderr.trim() || result.stdout.trim()}`;
+    // `claude stop` takes a job id: the member of a background job, else the first eight characters of a session UUID.
+    const jobId = claudeJobId(record.member, record.session);
+    if (!jobId) return `member ${record.member} is an interactive claude session with no job id: claude stop cannot end it, close the session instead`;
+    const result = await deps.exec("claude", ["stop", jobId]);
+    return result.code === 0 ? null : `claude stop ${jobId} exited ${result.code}: ${result.stderr.trim() || result.stdout.trim()}`;
   }
   if (typeof engine === "string" && engine.startsWith("moshcode/")) {
     const result = await deps.exec("moshcode", ["herd", "kill", handle]);
@@ -273,16 +276,38 @@ async function stopThroughEngine(deps: Deps, record: Partial<FleetRecord> & { me
   return engine ? `no way to stop engine ${engine}` : `member ${record.member} names no engine`;
 }
 
-/** A member as the stop path sees it: its record when there is one, else what its member.start said. */
-function memberFacts(home: string, fleet: string, lines: LedgerLine[], member: string): (Partial<FleetRecord> & { member: string }) | null {
-  const record = readRecords(home, fleet).get(member);
+/**
+ * A member as the stop and ceiling paths see it: its record when there is
+ * one, else a record shaped from what its `member.start` said (it may live on
+ * another host, whose ledger was copied in without its record files).
+ */
+function memberFacts(home: string, fleet: string, lines: LedgerLine[], member: string, records?: Map<string, FleetRecord>): FleetRecord | null {
+  const record = (records ?? readRecords(home, fleet)).get(member);
   if (record) return record;
   const start = claimedBy(lines, member);
   if (!start) return null;
-  return { member, engine: start.engine, session: start.session, swarm: start.swarm, parent: start.parent, host: start.host };
+  return {
+    openfleet: OPENFLEET_VERSION,
+    fleet,
+    sysop: "",
+    member,
+    ...(start.parent ? { parent: start.parent } : {}),
+    ...(start.swarm ? { swarm: start.swarm } : {}),
+    ...(start.depth !== undefined ? { depth: start.depth } : {}),
+    ...(start.engine ? { engine: start.engine } : {}),
+    ...(start.session ? { session: start.session } : {}),
+    ...(start.host ? { host: start.host } : {}),
+    ...(start.approvals ? { approvals: start.approvals } : {}),
+  };
 }
 
-async function stopMember(ctx: Ctx, fleet: string, member: string, by: string, rows: Row[]): Promise<void> {
+/**
+ * End one member through its engine, then write its `member.end` with the
+ * state given (`stopped` for the verbs, `timeout` or `budget` for rule 6). An
+ * engine that says no leaves the member without an end line and the row
+ * carries the error, so the verb can exit non-zero.
+ */
+async function stopMember(ctx: Ctx, fleet: string, member: string, by: string, rows: Row[], state: EndState = "stopped"): Promise<void> {
   const lines = readLedger(ctx.home, fleet);
   const facts = memberFacts(ctx.home, fleet, lines, member);
   if (!facts) {
@@ -300,11 +325,21 @@ async function stopMember(ctx: Ctx, fleet: string, member: string, by: string, r
   }
   const problem = await stopThroughEngine(ctx.deps, facts);
   if (problem) {
-    rows.push({ kind: "member", member, engine: facts.engine, stopped: false, note: problem });
+    rows.push({ kind: "member", member, engine: facts.engine, stopped: false, error: problem });
     return;
   }
-  endMember(ctx.home, fleet, member, { state: "stopped", by, now: ctx.deps.now(), host: ctx.host }, facts.swarm);
-  rows.push({ kind: "member", member, engine: facts.engine, stopped: true, state: "stopped" });
+  const result = endMember(ctx.home, fleet, member, { state, by, now: ctx.deps.now(), host: ctx.host }, facts.swarm);
+  if (!result.ended) {
+    // The engine ended it and wrote its own line between our check and our write; that line counts.
+    rows.push({ kind: "member", member, engine: facts.engine, stopped: true, state: String(result.already?.state ?? state), note: "ended meanwhile" });
+    return;
+  }
+  rows.push({ kind: "member", member, engine: facts.engine, stopped: true, state });
+}
+
+/** An engine that would not end a member fails the verb: the row says why and the exit code says so. */
+function exitOnEngineFailure(rows: Row[]): void {
+  if (rows.some((row) => row.kind === "member" && row.error !== undefined)) process.exitCode = EXIT.NOT_FOUND;
 }
 
 /** Members of a swarm: records and starts that name it, plus pieces its spawn minted. */
@@ -316,18 +351,37 @@ function membersOfSwarm(home: string, fleet: string, lines: LedgerLine[], swarm:
   return [...out];
 }
 
-/** Rule 11: nested swarms first, then the members through their engines, then one swarm.end. */
-async function stopSwarm(ctx: Ctx, fleet: string, swarm: string, by: string, rows: Row[]): Promise<void> {
-  let lines = readLedger(ctx.home, fleet);
-  const nested = findEvents(lines, "swarm.spawn", { parent_swarm: swarm }).map((line) => String(line.swarm));
-  for (const child of nested) await stopSwarm(ctx, fleet, child, by, rows);
-  const members = membersOfSwarm(ctx.home, fleet, lines, swarm);
-  for (const member of members) await stopMember(ctx, fleet, member, by, rows);
-  lines = readLedger(ctx.home, fleet);
-  if (swarmEndOf(lines, swarm)) {
-    rows.push({ kind: "swarm", swarm, state: String(swarmEndOf(lines, swarm)?.state), ended: false, note: "already ended" });
+/** Members of a swarm and of every swarm nested under it. */
+function membersUnderSwarm(home: string, fleet: string, lines: LedgerLine[], swarm: string): string[] {
+  const out = new Set<string>(membersOfSwarm(home, fleet, lines, swarm));
+  for (const spawn of findEvents(lines, "swarm.spawn")) {
+    const id = String(spawn.swarm ?? "");
+    if (id === "" || id === swarm) continue;
+    if (swarmAncestry(lines, id).some((line) => line.swarm === swarm)) for (const member of membersOfSwarm(home, fleet, lines, id)) out.add(member);
+  }
+  return [...out];
+}
+
+/**
+ * One `swarm.end` per swarm, written only once every nested swarm has its
+ * own and every started member has an end line that counts (rule 11). A
+ * member whose engine would not stop has none, so its swarm stays open and
+ * the row says why. The line goes through its once-marker.
+ */
+function endSwarmIfComplete(ctx: Ctx, fleet: string, swarm: string, by: string, rows: Row[]): void {
+  const lines = readLedger(ctx.home, fleet);
+  const existing = swarmEndOf(lines, swarm);
+  if (existing) {
+    rows.push({ kind: "swarm", swarm, state: String(existing.state), ended: false, note: "already ended" });
     return;
   }
+  const nested = findEvents(lines, "swarm.spawn", { parent_swarm: swarm }).map((line) => String(line.swarm));
+  const openNested = nested.filter((child) => !swarmEndOf(lines, child));
+  if (openNested.length) {
+    rows.push({ kind: "swarm", swarm, state: "open", ended: false, note: `no swarm.end yet for nested ${openNested.join(", ")}` });
+    return;
+  }
+  const members = membersOfSwarm(ctx.home, fleet, lines, swarm);
   const started = members.filter((member) => claimedBy(lines, member));
   const ends = started.map((member) => endOf(lines, member));
   const missing = started.filter((_, index) => ends[index] === null);
@@ -336,8 +390,21 @@ async function stopSwarm(ctx: Ctx, fleet: string, swarm: string, by: string, row
     return;
   }
   const state: EndState = started.length ? (swarmEndState(ends) ?? "stopped") : "stopped";
-  append(ctx.home, fleet, { event: "swarm.end", by, swarm, state }, { now: ctx.deps.now(), host: ctx.host });
+  const line = appendOnce(ctx.home, fleet, { event: "swarm.end", by, swarm, state }, { now: ctx.deps.now(), host: ctx.host, once: markName("swarm.end", swarm) });
+  if (!line) {
+    rows.push({ kind: "swarm", swarm, state, ended: false, note: "already ended" });
+    return;
+  }
   rows.push({ kind: "swarm", swarm, state, ended: true });
+}
+
+/** Rule 11: nested swarms first, then the members through their engines, then one swarm.end. */
+async function stopSwarm(ctx: Ctx, fleet: string, swarm: string, by: string, rows: Row[]): Promise<void> {
+  const lines = readLedger(ctx.home, fleet);
+  const nested = findEvents(lines, "swarm.spawn", { parent_swarm: swarm }).map((line) => String(line.swarm));
+  for (const child of nested) await stopSwarm(ctx, fleet, child, by, rows);
+  for (const member of membersOfSwarm(ctx.home, fleet, lines, swarm)) await stopMember(ctx, fleet, member, by, rows);
+  endSwarmIfComplete(ctx, fleet, swarm, by, rows);
 }
 
 /** The swarms from `swarm` up to the top, by `parent_swarm`. */
@@ -375,11 +442,97 @@ function findMember(home: string, fleets: string[], member: string): string | nu
 }
 
 function stopText(rows: Row[]): string[] {
-  return rows.map((row) =>
-    row.kind === "member"
-      ? `${row.stopped ? "stopped" : "skipped"}  ${row.member}${row.engine ? `  ${row.engine}` : ""}${row.state ? `  ${row.state}` : ""}${row.note ? `  (${row.note})` : ""}`
-      : `${row.ended ? "ended" : "left"}    swarm ${row.swarm}  ${row.state}${row.note ? `  (${row.note})` : ""}`,
-  );
+  return rows.map((row) => {
+    if (row.kind === "member") {
+      const why = row.error ?? row.note;
+      return `${row.stopped ? "stopped" : "skipped"}  ${row.member}${row.engine ? `  ${row.engine}` : ""}${row.state ? `  ${row.state}` : ""}${why ? `  (${why})` : ""}`;
+    }
+    return `${row.ended ? "ended" : "left"}    swarm ${row.swarm}  ${row.state}${row.note ? `  (${row.note})` : ""}`;
+  });
+}
+
+/**
+ * A swarm's effective ceiling now: the fleet's whole ceiling, the spawner's
+ * root approvals entering at the root in the implicit fleet, merged down the
+ * swarm path with the latest caps last. A swarm the sysop started by hand in
+ * the implicit fleet has no one approvals: each member supplies its own.
+ */
+function swarmCeiling(ctx: Ctx, lines: LedgerLine[], fleet: string, swarm: string): Ceiling {
+  const base = fleetCeiling(lines, fleet, ctx.implicit.ceiling);
+  if (base.approvals === undefined && isImplicitFleet(lines, fleet)) {
+    const spawn = spawnOf(lines, swarm);
+    const spawner = spawn && spawn.by !== "sysop" ? memberFacts(ctx.home, fleet, lines, spawn.by) : null;
+    if (spawner) base.approvals = rootApprovals(rootOf(ctx.home, lines, spawner));
+  }
+  return effectiveCeiling(base, lines, swarmChain(lines, swarm));
+}
+
+function showValue(value: unknown): string {
+  return Array.isArray(value) ? value.join(",") : value === undefined || value === null ? "none" : String(value);
+}
+
+/** Has spend in the budget's unit reached the budget? Other units are shown, not summed (open question, 0.1). */
+function overBudget(budget: unknown, spend: Record<string, number>): boolean {
+  const cap = parseBudget(budget);
+  return cap !== null && (spend[cap.unit] ?? 0) >= cap.amount;
+}
+
+/**
+ * Rule 6, run by the sysop's own `tree`: a working member whose effective
+ * ceiling `until` has passed is stopped through its engine and ends
+ * `timeout`; a fleet or swarm whose summed `member.spend` in the budget's
+ * unit has reached its budget has every working member under it stopped,
+ * each ending `budget`. Then each swarm touched gets its `swarm.end` when it
+ * is complete, nested first. A member the roster already says is gone is left
+ * to the lost pass; a member whose engine says no keeps its row and is tried
+ * again next time. The tree nodes are updated in place so the render shows
+ * what was done.
+ */
+async function enforce(ctx: Ctx, tree: Tree, by: string, rows: Row[]): Promise<void> {
+  const now = ctx.deps.now();
+  const working = flattenMembers(tree).filter(({ member }) => member.state === "working" && !member.roster && member.alive !== false);
+  for (const fleet of tree.fleets) {
+    const lines = readLedger(ctx.home, fleet.fleet);
+    const records = readRecords(ctx.home, fleet.fleet);
+    const mine = working.filter((entry) => entry.fleet === fleet.fleet).map((entry) => entry.member);
+    const swarms = new Map<string, SwarmNode>(flattenSwarms(tree).filter((entry) => entry.fleet === fleet.fleet).map((entry) => [entry.swarm.swarm, entry.swarm]));
+    const touched = new Set<string>();
+
+    const stopAs = async (node: MemberNode, state: EndState): Promise<void> => {
+      if (node.state !== "working") return;
+      await stopMember(ctx, fleet.fleet, node.member, by, rows, state);
+      const row = rows[rows.length - 1];
+      if (row.kind === "member" && row.stopped) {
+        node.state = state;
+        node.ended = isoNow(now);
+      }
+      if (node.swarm) touched.add(node.swarm);
+    };
+
+    if (overBudget(fleet.ceiling.budget, fleet.spend)) for (const node of mine) await stopAs(node, "budget");
+    for (const swarm of swarms.values()) {
+      if (!overBudget((swarm.effective ?? swarm.ceiling).budget, swarm.spend)) continue;
+      const under = new Set(membersUnderSwarm(ctx.home, fleet.fleet, lines, swarm.swarm));
+      for (const node of mine) if (under.has(node.member)) await stopAs(node, "budget");
+      touched.add(swarm.swarm);
+    }
+    for (const node of mine) {
+      if (node.state !== "working") continue;
+      const facts = memberFacts(ctx.home, fleet.fleet, lines, node.member, records);
+      if (!facts) continue;
+      const allowed = memberCeiling(ctx.home, lines, facts, ctx.implicit);
+      if (allowed.until !== undefined && !isNarrower("until", isoNow(now), allowed.until)) await stopAs(node, "timeout");
+    }
+
+    // Nested swarms end before the swarms that hold them.
+    const ordered = [...touched].sort((a, b) => swarmAncestry(lines, b).length - swarmAncestry(lines, a).length);
+    for (const swarm of ordered) {
+      endSwarmIfComplete(ctx, fleet.fleet, swarm, by, rows);
+      const row = rows[rows.length - 1];
+      const node = swarms.get(swarm);
+      if (node && row.kind === "swarm" && row.ended) node.state = row.state as EndState;
+    }
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -494,6 +647,14 @@ export function registerOpenFleetCommands(cmd: Command, partial: Partial<Deps> =
         fleet = found;
         kind = "swarm";
         if (Object.keys(ceiling).length === 0) fail("cap on a swarm needs at least one key to narrow", EXIT.INVALID);
+        // Rule 3: a cap on a swarm only narrows. A key that would widen is refused before anything is written,
+        // so the two reference readers, one of which honours what the ledger says, never disagree on the swarm.
+        const current = swarmCeiling(ctx, readLedger(ctx.home, fleet), fleet, target);
+        for (const key of CEILING_KEYS) {
+          if (ceiling[key] === undefined || isNarrower(key, ceiling[key], current[key])) continue;
+          const allowed = current[key] ?? (key === "approvals" ? "native" : key === "depth" ? 1 : undefined);
+          fail(`cap on swarm ${target} never widens: ${key} ${showValue(ceiling[key])} is not within ${showValue(allowed)}`, EXIT.INVALID);
+        }
       }
       const line = append(ctx.home, fleet, { event: "fleet.cap", by: "sysop", target, ceiling }, { now, host: ctx.host });
 
@@ -501,14 +662,12 @@ export function registerOpenFleetCommands(cmd: Command, partial: Partial<Deps> =
       const rows: Row[] = [];
       const lines = readLedger(ctx.home, fleet);
       const records = readRecords(ctx.home, fleet);
-      const inScope = kind === "fleet" ? [...records.keys()] : membersOfSwarm(ctx.home, fleet, lines, target).concat(
-        findEvents(lines, "swarm.spawn").filter((spawn) => swarmAncestry(lines, String(spawn.swarm)).some((s) => s.swarm === target)).flatMap((spawn) => membersOfSwarm(ctx.home, fleet, lines, String(spawn.swarm))),
-      );
+      const inScope = kind === "fleet" ? [...records.keys()] : membersUnderSwarm(ctx.home, fleet, lines, target);
       for (const member of new Set(inScope)) {
-        if (!claimedBy(lines, member) || endOf(lines, member)) continue;
-        const record = records.get(member);
-        const start = claimedBy(lines, member)!;
-        const facts: FleetRecord = record ?? { openfleet: "0.1", fleet, sysop: "", member, swarm: start.swarm, parent: start.parent, depth: start.depth, engine: start.engine, host: start.host, approvals: start.approvals };
+        const start = claimedBy(lines, member);
+        if (!start || endOf(lines, member)) continue;
+        const facts = memberFacts(ctx.home, fleet, lines, member, records);
+        if (!facts) continue;
         const allowed = memberCeiling(ctx.home, lines, facts, ctx.implicit);
         const approvals: Approvals = (start.approvals ?? facts.approvals) === "bypass" ? "bypass" : "native";
         const above =
@@ -518,6 +677,7 @@ export function registerOpenFleetCommands(cmd: Command, partial: Partial<Deps> =
           !isNarrower("until", isoNow(now), allowed.until);
         if (above) await stopMember(ctx, fleet, member, "sysop", rows);
       }
+      exitOnEngineFailure(rows);
       emit(ctx, { target, kind, fleet, ceiling, at: line.at, stopped: report(rows).members }, () => [
         `capped ${kind} ${target}: ${JSON.stringify(ceiling)}`,
         ...stopText(rows),
@@ -530,15 +690,19 @@ export function registerOpenFleetCommands(cmd: Command, partial: Partial<Deps> =
     .argument("[fleet]", "one fleet; default every fleet under the home")
     .option("--no-roster", "do not read the engine rosters (claude agents, moshcode herd)")
     .option("--json", "print the tree as JSON")
-    .description("Render a fleet, or every fleet on this host, as a tree: swarms, members, state, engine, spend and a mark on every bypass member.")
+    .description("Render a fleet, or every fleet on this host, as a tree: swarms, members, state, engine, spend and a mark on every bypass member. Run by the sysop, it also stops what is past its deadline or over its budget.")
     .action(async (fleet: string | undefined, opts: { roster?: boolean; json?: boolean }, command: Command) =>
       run(deps, async () => {
         const ctx = ctxOf(command, deps, opts);
         if (fleet && !listFleets(ctx.home).includes(fleet) && fleet !== ctx.implicit.id) fail(`no fleet named ${fleet} under ${ctx.home}`, EXIT.NOT_FOUND);
         const rosters = opts.roster === false ? {} : deps.rosters;
         const tree: Tree = await fold(ctx.home, rosters, { implicit: ctx.implicit, host: ctx.host, ...(fleet ? { fleet } : {}) });
-        // A recorded member its engine no longer lists, with no end line, is lost (verb table, tree).
-        const by = deps.env.OPENFLEET_MEMBER ?? "sysop";
+        const caller = deps.env.OPENFLEET_MEMBER;
+        const by = caller ?? "sysop";
+        // Rule 6 is the sysop's to enforce: an agent's tree renders and marks, it stops nothing outside its subtree (rule 2).
+        const rows: Row[] = [];
+        if (!caller) await enforce(ctx, tree, by, rows);
+        // A recorded member its engine's roster can hold and no longer lists, with no end line, is lost (verb table, tree).
         for (const entry of flattenMembers(tree)) {
           const node = entry.member;
           if (node.roster || node.state !== "working" || node.alive !== false) continue;
@@ -548,7 +712,7 @@ export function registerOpenFleetCommands(cmd: Command, partial: Partial<Deps> =
             node.ended = result.ended.at;
           }
         }
-        emit(ctx, tree, () => renderTree(tree, { host: ctx.host }));
+        emit(ctx, { ...tree, enforced: report(rows) }, () => [renderTree(tree, { host: ctx.host }), ...stopText(rows)]);
       }),
     );
 
@@ -575,6 +739,7 @@ export function registerOpenFleetCommands(cmd: Command, partial: Partial<Deps> =
             if (swarmAncestry(readLedger(ctx.home, target), entry.swarm.swarm).length === 1) await stopSwarm(ctx, target, entry.swarm.swarm, by, rows);
           }
           for (const entry of flattenMembers(tree)) if (!entry.swarm) await stopMember(ctx, target, entry.member.member, by, rows);
+          exitOnEngineFailure(rows);
           emit(ctx, { target, kind: "fleet", ...report(rows) }, () => stopText(rows));
           return;
         }
@@ -585,6 +750,7 @@ export function registerOpenFleetCommands(cmd: Command, partial: Partial<Deps> =
             fail(`stop refuses: swarm ${target} is outside the subtree ${caller} spawned`, EXIT.REFUSED);
           }
           await stopSwarm(ctx, swarmFleet, target, by, rows);
+          exitOnEngineFailure(rows);
           emit(ctx, { target, kind: "swarm", fleet: swarmFleet, ...report(rows) }, () => stopText(rows));
           return;
         }
@@ -598,6 +764,7 @@ export function registerOpenFleetCommands(cmd: Command, partial: Partial<Deps> =
         }
         await stopMember(ctx, memberFleet, target, by, rows);
         if (rows.some((row) => row.kind === "member" && !row.stopped && row.note && row.note !== "already ended")) process.exitCode = EXIT.NOT_FOUND;
+        exitOnEngineFailure(rows);
         emit(ctx, { target, kind: "member", fleet: memberFleet, ...report(rows) }, () => stopText(rows));
       }),
     );

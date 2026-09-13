@@ -3,7 +3,7 @@ import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { startMember } from "./context.js";
 import { contextLine, exportLines, ownJobDir, ownsPath, runHook, summaryOf, type HookIo } from "./hooks.js";
-import { findEvents, readLedger, readRecord, readSession, recordPath, writeCurrent, append } from "./store.js";
+import { append, endOf, findEvents, readLedger, readRecord, readSession, recordPath, writeCurrent } from "./store.js";
 import { DEV, FLEET, PIECE_1, cleanup, envFor, seedWorkedExample, tempHome } from "./test-helpers.js";
 import type { Env } from "./store.js";
 
@@ -283,6 +283,42 @@ describe("Stop and SessionEnd", () => {
     const lines = readLedger(home, FLEET);
     expect(findEvents(lines, "member.end", { member: SESSION })[0]).toMatchObject({ state: "done", summary: "the plan" });
     expect(findEvents(lines, "swarm.end", { swarm: "460a4502-2" })[0]).toMatchObject({ by: SESSION, state: "done", summary: "the plan" });
+  });
+
+  it("supersedes a lost line a sysop tool wrote with the engine's own end, at SessionEnd and at a job's idle Stop", () => {
+    runHook("SessionStart", payload({ source: "startup" }), fake(home).io);
+    runHook("UserPromptSubmit", payload({ permission_mode: "auto" }), fake(home).io);
+    runHook("Stop", payload({ last_assistant_message: "finished", background_tasks: [] }), fake(home).io);
+    append(home, FLEET, { event: "member.end", by: "sysop", member: SESSION, state: "lost" }, { now: NOW, host: "dev" });
+    runHook("SessionEnd", payload({ reason: "other" }), fake(home).io);
+    const ends = findEvents(readLedger(home, FLEET), "member.end", { member: SESSION });
+    expect(ends.map((line) => line.state)).toEqual(["lost", "done"]);
+    expect(ends[1]).toMatchObject({ by: SESSION, summary: "finished" });
+    expect(endOf(readLedger(home, FLEET), SESSION)?.state).toBe("done");
+
+    const { jobDir, jobId } = bgJob();
+    const env = { CLAUDE_JOB_DIR: jobDir };
+    const job = "68aca9c1-2222-4222-8333-444455556666";
+    runHook("SessionStart", payload({ source: "startup", session_id: job }), fake(home, env).io);
+    runHook("UserPromptSubmit", payload({ session_id: job, permission_mode: "auto" }), fake(home, env).io);
+    append(home, FLEET, { event: "member.end", by: "sysop", member: jobId, state: "lost" }, { now: NOW, host: "dev" });
+    runHook("Stop", payload({ session_id: job, last_assistant_message: "SUMMARY: shipped.", background_tasks: [] }), fake(home, env).io);
+    expect(endOf(readLedger(home, FLEET), jobId)).toMatchObject({ state: "done", summary: "SUMMARY: shipped.", total: "801101 tokens" });
+    // A real end that already stands is never followed by another.
+    runHook("Stop", payload({ session_id: job, last_assistant_message: "again", background_tasks: [] }), fake(home, env).io);
+    expect(findEvents(readLedger(home, FLEET), "member.end", { member: jobId }).length).toBe(2);
+  });
+
+  it("corrects a derived record's guessed approvals with the permission mode the engine reports", () => {
+    seedWorkedExample(home);
+    // The command line said nothing about permissions, so SessionStart guessed native; the engine then says bypass.
+    const env = { OPENFLEET_RECORD: recordPath(home, FLEET, "460a4502"), CLAUDE_CODE_ENTRYPOINT: "sdk-cli" };
+    runHook("SessionStart", payload({ source: "startup" }), fake(home, env, { cmdline: ["claude", "-p", "plan it"] }).io);
+    expect(readRecord(recordPath(home, FLEET, SESSION))?.approvals).toBe("native");
+    expect(runHook("UserPromptSubmit", payload({ permission_mode: "bypassPermissions" }), fake(home, env).io).exit).toBe(0);
+    expect(readRecord(recordPath(home, FLEET, SESSION))?.approvals).toBe("bypass");
+    expect(findEvents(readLedger(home, FLEET), "member.start", { member: SESSION })[0]?.approvals).toBe("bypass");
+    expect(readSession(home, SESSION)?.approvals).toBe("bypass");
   });
 });
 

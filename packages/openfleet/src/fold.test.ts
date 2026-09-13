@@ -113,14 +113,55 @@ describe("fold: opened fleets, nesting, spend and orphans", () => {
     const hand = node.swarms[0];
     expect(hand).toMatchObject({ swarm: "hand-0501", by: "sysop", spend: { USD: 5, tokens: 1000 } });
     expect(hand.members.length).toBe(1);
-    expect(hand.swarms.map((swarm) => swarm.swarm)).toEqual(["inner-0503"]);
-    expect(hand.swarms[0].members[0]).toMatchObject({ member: "inner-0503-1", spend: "5 USD", depth: 1, parent: "hand-0501-1" });
+    // The nested swarm sits under the member that spawned it, the row that says who, not under the parent swarm.
+    expect(hand.swarms).toEqual([]);
+    const spawner = hand.members[0];
+    expect(spawner.swarms.map((swarm) => swarm.swarm)).toEqual(["inner-0503"]);
+    expect(spawner.swarms[0].members[0]).toMatchObject({ member: "inner-0503-1", spend: "5 USD", depth: 1, parent: "hand-0501-1" });
+    // A swarm carries what it narrowed and what it runs under: the fleet's budget reaches the row.
+    expect(hand.ceiling).toEqual({ fan_out: 2 });
+    expect(hand.effective).toEqual({ approvals: "bypass", depth: 3, hosts: ["dev"], budget: "20 USD", fan_out: 2 });
+    expect(spawner.swarms[0].effective).toEqual({ approvals: "bypass", depth: 3, hosts: ["dev"], budget: "20 USD", fan_out: 2 });
     expect(node.spend).toEqual({ USD: 5, tokens: 1000 });
+    expect(flattenSwarms(tree).map((entry) => [entry.swarm.swarm, entry.parentMember])).toEqual([["hand-0501", null], ["inner-0503", "hand-0501-1"]]);
 
     const text = renderTree(tree, { host: "dev" });
     expect(text.split("\n")[0]).toBe("team-20260913  (fleet, sysop https://anthony.example/profile.md, approvals bypass, depth 3, hosts dev, budget 20 USD, spent 5/20 USD)");
-    expect(text).toMatch(/└─ swarm hand-0501 +"by hand" +1\/2 members +1000 tokens, 5 USD/);
+    expect(text).toMatch(/└─ swarm hand-0501 +"by hand" +1\/2 members +5\/20 USD/);
     expect(text).toMatch(/├─ stray +claude-code +unclaimed {2}\[orphan\]/);
+    // The nested swarm inherits fan_out 2 and the fleet's budget.
+    expect(text).toMatch(/└─ swarm inner-0503 +"nested" +1\/2 members +5\/20 USD/);
     expect(text).toMatch(/└─ inner-0503-1 \(i1\) +moshcode\/kimi +working {2}5 USD/);
+  });
+});
+
+describe("fold: which members a roster can hold", () => {
+  let home: string;
+  beforeEach(() => {
+    home = tempHome();
+  });
+  afterEach(() => cleanup(home));
+
+  it("never reads an interactive claude session as gone, and reads a background job or a pane as gone when its roster is readable and silent", async () => {
+    const interactive = "68aca9c1-1111-4222-8333-444455556666";
+    // An interactive root: the member is the session UUID, there is no job id, and `claude agents` never lists it.
+    append(home, FLEET, { at: "2026-09-13T05:00:00Z", event: "member.start", by: interactive, member: interactive, session: interactive, depth: 0, engine: "claude-code", approvals: "native" }, { host: "dev" });
+    // A background job: an 8-hex member the roster can hold.
+    append(home, FLEET, { at: "2026-09-13T05:01:00Z", event: "member.start", by: "b9fc0f52", member: "b9fc0f52", session: "b9fc0f52", depth: 0, engine: "claude-code", approvals: "native" }, { host: "dev" });
+    // A claimed piece whose session is a job id.
+    append(home, FLEET, { at: "2026-09-13T05:02:00Z", event: "member.start", by: "piece-0502-1", member: "piece-0502-1", session: "172ffd83", depth: 1, engine: "claude-code", approvals: "native" }, { host: "dev" });
+    // A tmux pane moshcode started: in the herd manifest under its member id.
+    append(home, FLEET, { at: "2026-09-13T05:03:00Z", event: "member.start", by: "piece-0502-2", member: "piece-0502-2", session: "%7", depth: 1, engine: "tmux", approvals: "native" }, { host: "dev" });
+    // A claude -p: no roster holds it.
+    append(home, FLEET, { at: "2026-09-13T05:04:00Z", event: "member.start", by: "p1", member: "p1", session: "31337", depth: 1, engine: "claude-p", approvals: "native" }, { host: "dev" });
+    const tree = await fold(home, { claude: async () => [], moshcode: async () => [] }, { implicit: DEV, host: "dev" });
+    const alive = Object.fromEntries(tree.fleets[0].roots.map((node) => [node.member, node.alive]));
+    expect(alive).toEqual({ [interactive]: undefined, b9fc0f52: false, "piece-0502-1": false, "piece-0502-2": false, p1: undefined });
+    const text = renderTree(tree, { host: "dev" });
+    expect(text).not.toMatch(new RegExp(`${interactive}.*\\[gone\\]`));
+    expect(text).toMatch(/b9fc0f52 +claude-code +working {2}\[gone\]/);
+    // With the rosters unreadable nothing is gone.
+    const blind = await fold(home, { claude: async () => null, moshcode: async () => null }, { implicit: DEV, host: "dev" });
+    expect(blind.fleets[0].roots.every((node) => node.alive === undefined)).toBe(true);
   });
 });

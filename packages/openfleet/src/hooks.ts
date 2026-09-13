@@ -279,7 +279,9 @@ export function handleUserPromptSubmit(payload: Payload, io: HookIo): HookResult
 
   const approvals: Approvals = payload.permission_mode === "bypassPermissions" ? "bypass" : "native";
   const implicit = io.implicit ?? implicitFleet();
-  const result = startMember(homeDir, record, { sessionId, approvals, env, now: io.now(), host: io.host ?? implicit.host, implicit });
+  // A record this engine derived at SessionStart guessed approvals from the command line; the permission mode is the engine's word.
+  const derived = session.kind === "derive";
+  const result = startMember(homeDir, record, { sessionId, approvals, env, now: io.now(), host: io.host ?? implicit.host, implicit, derived });
   if (result.refused) {
     const reason = describeRefusal(result.refused.refusal);
     writeSession(homeDir, sessionId, { ...session, refused: { key: result.refused.refusal.key, reason } });
@@ -368,7 +370,9 @@ export function handleStop(payload: Payload, io: HookIo): HookResult {
   if (!jobDir || !session.record) return OK;
   if (!Array.isArray(payload.background_tasks) || payload.background_tasks.length > 0) return OK;
   const record = session.record;
-  if (endOf(readLedger(homeDir, record.fleet), record.member)) return OK;
+  // A `lost` line a sysop tool wrote is superseded by the engine's own end; anything else stands.
+  const existing = endOf(readLedger(homeDir, record.fleet), record.member);
+  if (existing && existing.state !== "lost") return OK;
   const state = stateJson(jobDir);
   endMember(
     homeDir,
@@ -398,8 +402,8 @@ export function handleSessionEnd(payload: Payload, io: HookIo): HookResult {
   // clear, resume and logout hand the same work to another session; only a real exit ends the member.
   if (payload.reason !== undefined && payload.reason !== "other" && payload.reason !== "prompt_input_exit") return OK;
   const record = session.record;
-  const lines = readLedger(homeDir, record.fleet);
-  if (endOf(lines, record.member)) return OK;
+  const existing = endOf(readLedger(homeDir, record.fleet), record.member);
+  if (existing && existing.state !== "lost") return OK;
   const jobDir = ownJobDir(env, sessionId);
   const state = jobDir ? stateJson(jobDir) : null;
   endMember(

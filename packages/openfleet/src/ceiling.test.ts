@@ -84,15 +84,24 @@ describe("the fleet's ceiling and the path down", () => {
     expect(fleetCeiling([], "f", implicit)).toEqual(implicit);
     expect(isImplicitFleet([], "f")).toBe(true);
     const opened = [line({ event: "fleet.open", fleet: "f", ceiling: { approvals: "bypass", depth: 2 } })];
-    expect(fleetCeiling(opened, "f", implicit)).toEqual({ approvals: "bypass", depth: 2 });
+    // hosts absent means the host the line was written on.
+    expect(fleetCeiling(opened, "f", implicit)).toEqual({ approvals: "bypass", depth: 2, hosts: ["dev"] });
     expect(isImplicitFleet(opened, "f")).toBe(false);
     const capped = [
       ...opened,
       line({ event: "fleet.cap", target: "f", ceiling: { approvals: "native", depth: 1 } }),
       line({ event: "fleet.cap", target: "some-swarm", ceiling: { depth: 0 } }),
-      line({ event: "fleet.cap", target: "f", ceiling: { approvals: "bypass", depth: 3 } }),
+      line({ event: "fleet.cap", target: "f", ceiling: { approvals: "bypass", depth: 3, hosts: ["dev", "netcup"] } }),
     ];
-    expect(fleetCeiling(capped, "f", implicit)).toEqual({ approvals: "bypass", depth: 3 });
+    expect(fleetCeiling(capped, "f", implicit)).toEqual({ approvals: "bypass", depth: 3, hosts: ["dev", "netcup"] });
+  });
+
+  it("a fleet opened with an empty ceiling admits members on its own host only", () => {
+    const opened = [line({ event: "fleet.open", fleet: "f", host: "dev", ceiling: {} })];
+    const ceiling = fleetCeiling(opened, "f", implicit);
+    expect(ceiling).toEqual({ hosts: ["dev"] });
+    expect(checkCeiling({ hosts: ["dev"] }, ceiling)).toBeNull();
+    expect(checkCeiling({ hosts: ["netcup"] }, ceiling)).toEqual({ key: "hosts", wanted: ["netcup"], allowed: ["dev"] });
   });
 
   it("follows parent_swarm to the top and merges spawn narrowings first, then swarm caps last", () => {

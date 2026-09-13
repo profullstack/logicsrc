@@ -8,7 +8,8 @@ describe("hook commands", () => {
   it("guard every event so a box without logicsrc stays silent, and let only UserPromptSubmit be heard", () => {
     expect(hookCommand("SessionStart")).toBe("command -v logicsrc >/dev/null 2>&1 && logicsrc fleet hook SessionStart; exit 0");
     expect(hookCommand("Stop")).toBe("command -v logicsrc >/dev/null 2>&1 && logicsrc fleet hook Stop; exit 0");
-    expect(hookCommand("UserPromptSubmit")).toBe("command -v logicsrc >/dev/null 2>&1 || exit 0; logicsrc fleet hook UserPromptSubmit");
+    // Only the deliberate 2 (a refused start) reaches the engine; a crash or an older logicsrc on PATH is swallowed.
+    expect(hookCommand("UserPromptSubmit")).toBe('command -v logicsrc >/dev/null 2>&1 || exit 0; logicsrc fleet hook UserPromptSubmit; rc=$?; [ "$rc" -eq 2 ] && exit 2; exit 0');
     expect(hookCommand("SessionStart")).not.toContain(">/dev/null 2>&1 && logicsrc fleet hook SessionStart >/dev/null");
     const specs = hookSpecs();
     expect(specs.map((spec) => spec.event)).toEqual([...HOOK_EVENTS]);

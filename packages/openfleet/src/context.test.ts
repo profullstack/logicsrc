@@ -1,8 +1,9 @@
 import { existsSync } from "node:fs";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { claimOrDerive, context, endMember, memberCeiling, startMember } from "./context.js";
-import { append, findEvents, readLedger, readRecord, recordPath, writeCurrent, writeRecord } from "./store.js";
+import { append, claimMark, findEvents, hasMark, markName, readLedger, readRecord, recordPath, writeCurrent, writeRecord } from "./store.js";
 import { DEV, FLEET, PIECE_1, ROOT, cleanup, envFor, seedWorkedExample, tempHome } from "./test-helpers.js";
+import type { FleetRecord } from "./types.js";
 
 const NOW = new Date("2026-09-13T05:41:12Z");
 
@@ -182,6 +183,41 @@ describe("deriving under the root: the planner's swarm of one", () => {
     if (resolution.kind !== "refused") throw new Error("unreachable");
     expect(resolution.refusal).toEqual({ key: "hosts", wanted: ["netcup"], allowed: ["dev"] });
   });
+
+  it("names a derived claude-code background job by its job id and gives it no pid: claude stop takes the job id", () => {
+    const resolution = claimOrDerive({
+      home,
+      env: rootEnv(home),
+      now: NOW,
+      host: "dev",
+      implicit: DEV,
+      session: { id: "abcd1234-0000-4000-8000-000000000009", member: "abcd1234", engine: "claude-code", cwd: "/x", pid: 5150, command: "claude --bg", approvals: "bypass" },
+    });
+    expect(resolution.kind).toBe("derive");
+    if (resolution.kind !== "derive") throw new Error("unreachable");
+    expect(resolution.record.member).toBe("abcd1234");
+    expect(resolution.record).not.toHaveProperty("session");
+    expect(resolution.spawned?.pieces).toEqual([{ member: "abcd1234" }]);
+  });
+
+  it("corrects a derived record's approvals to the engine's word at start, so the record, the check and member.start agree", () => {
+    // SessionStart guessed native from the command line; the permission mode says bypass, which the bypass root allows.
+    const derived = claimOrDerive({ home, env: rootEnv(home), now: NOW, host: "dev", implicit: DEV, session: { id: "guessed", engine: "claude-p", cwd: "/x", pid: 1, approvals: "native" } });
+    if (derived.kind !== "derive") throw new Error("unreachable");
+    expect(derived.record.approvals).toBe("native");
+    const result = startMember(home, derived.record, { sessionId: "guessed", approvals: "bypass", now: NOW, host: "dev", implicit: DEV, derived: true });
+    expect(result.started?.approvals).toBe("bypass");
+    expect(result.record.approvals).toBe("bypass");
+    expect(readRecord(recordPath(home, FLEET, "guessed"))?.approvals).toBe("bypass");
+    // The ceiling still rules: under a native root the same correction is refused, and the record stays unclaimed.
+    writeRecord(home, { ...ROOT, member: "bbbb2222", approvals: "native", ceiling: { approvals: "native", depth: 1, hosts: ["dev"] } });
+    append(home, FLEET, { event: "member.start", by: "bbbb2222", member: "bbbb2222", session: "bbbb2222", depth: 0, engine: "claude-code", approvals: "native" }, { host: "dev" });
+    const under = claimOrDerive({ home, env: envFor(home, { OPENFLEET_RECORD: recordPath(home, FLEET, "bbbb2222") }), now: NOW, host: "dev", implicit: DEV, session: { id: "guessed-2", engine: "claude-p", cwd: "/x", approvals: "native" } });
+    if (under.kind !== "derive") throw new Error("unreachable");
+    const refused = startMember(home, under.record, { sessionId: "guessed-2", approvals: "bypass", now: NOW, host: "dev", implicit: DEV, derived: true });
+    expect(refused.refused?.refusal.key).toBe("approvals");
+    expect(refused.started).toBeNull();
+  });
 });
 
 describe("root and orphan records", () => {
@@ -229,6 +265,41 @@ describe("root and orphan records", () => {
     expect(result.started?.approvals).toBe("bypass");
   });
 
+  it("starts a parentless bypass member whose writer left approvals out of the ceiling: the record's own approvals rule, and the engine fills the key", () => {
+    // The record moshcode writes for a swarm the sysop runs by hand: no parent, depth 0, bypass, a ceiling with no approvals key.
+    append(home, FLEET, { at: "2026-09-13T05:41:00Z", event: "swarm.spawn", by: "sysop", swarm: "hello-0541", task: "say hello", ceiling: { fan_out: 2, until: "2026-09-13T06:11:00Z" }, pieces: [{ member: "hello-0541-1", title: "hello" }] }, { host: "dev" });
+    const record: FleetRecord = {
+      openfleet: "0.1",
+      fleet: FLEET,
+      sysop: FLEET,
+      member: "hello-0541-1",
+      swarm: "hello-0541",
+      task: "say hello",
+      piece: { title: "hello" },
+      depth: 0,
+      engine: "moshcode/claude",
+      session: "hello-0541-1",
+      host: "dev",
+      cwd: "/x",
+      started: "2026-09-13T05:41:00Z",
+      approvals: "bypass",
+      ceiling: { depth: 1, hosts: ["dev"], fan_out: 2, until: "2026-09-13T06:11:00Z" },
+    };
+    writeRecord(home, record);
+    // The reader never takes an absent key for native on a parentless record in the implicit fleet.
+    expect(memberCeiling(home, readLedger(home, FLEET), record, DEV).approvals).toBe("bypass");
+    const result = startMember(home, record, { sessionId: "pane", approvals: "bypass", now: NOW, host: "dev", implicit: DEV });
+    expect(result.refused).toBeNull();
+    expect(result.started).toMatchObject({ member: "hello-0541-1", session: "hello-0541-1", approvals: "bypass", depth: 0, swarm: "hello-0541" });
+    expect(result.record.ceiling).toEqual({ approvals: "bypass", depth: 1, hosts: ["dev"], fan_out: 2, until: "2026-09-13T06:11:00Z" });
+    expect(readRecord(recordPath(home, FLEET, "hello-0541-1"))?.ceiling?.approvals).toBe("bypass");
+    // A root with no ceiling at all gets the implicit root ceiling written whole.
+    writeRecord(home, { openfleet: "0.1", fleet: FLEET, sysop: FLEET, member: "thin-root", approvals: "bypass" });
+    const thin = startMember(home, { openfleet: "0.1", fleet: FLEET, sysop: FLEET, member: "thin-root", approvals: "bypass" }, { sessionId: "thin-root", approvals: "bypass", now: NOW, host: "dev", implicit: DEV });
+    expect(thin.started?.approvals).toBe("bypass");
+    expect(readRecord(recordPath(home, FLEET, "thin-root"))?.ceiling).toEqual({ approvals: "bypass", depth: 1, hosts: ["dev"] });
+  });
+
   it("an orphan root gets ceiling approvals native and is refused when it runs with bypass, by its own member", () => {
     const resolution = claimOrDerive({ home, env: envFor(home), now: NOW, host: "dev", implicit: DEV, session: { id: "orphan-1", engine: "claude-p", cwd: "/x", approvals: "bypass", orphan: true } });
     if (resolution.kind !== "root") throw new Error("unreachable");
@@ -274,6 +345,50 @@ describe("ending", () => {
     expect(second.already?.state).toBe("done");
   });
 
+  it("leaves a spawner's one-piece swarm for the spawner to end", () => {
+    // A swarm moshcode wrote with a single piece is not a swarm of one the
+    // engine minted: its id is not <parent>-<n>. The member ends itself only.
+    append(home, FLEET, { event: "swarm.spawn", by: "460a4502", swarm: "gate-two-1030", task: "gate", ceiling: {}, pieces: [{ member: "gate-two-1030-1", title: "one" }] }, { now: NOW, host: "dev" });
+    writeRecord(home, { ...PIECE_1, member: "gate-two-1030-1", swarm: "gate-two-1030", piece: { title: "one" } });
+    startMember(home, { ...PIECE_1, member: "gate-two-1030-1", swarm: "gate-two-1030", piece: { title: "one" } }, { sessionId: "s1", approvals: "bypass", now: NOW, host: "dev", implicit: DEV });
+    const ended = endMember(home, FLEET, "gate-two-1030-1", { state: "done", by: "gate-two-1030-1", now: NOW, host: "dev" }, "gate-two-1030");
+    expect(ended.ended?.state).toBe("done");
+    expect(ended.swarmEnded).toBeNull();
+    expect(findEvents(readLedger(home, FLEET), "swarm.end", { swarm: "gate-two-1030" }).length).toBe(0);
+  });
+
+  it("writes nothing when another writer holds the once-marker: member.start, member.end, swarm.end", () => {
+    // The spawner took the member.start marker a moment ago; its line is not in the ledger yet.
+    claimMark(home, FLEET, markName("member.start", "create-two-0541-1"));
+    const before = readLedger(home, FLEET).length;
+    const start = startMember(home, PIECE_1, { sessionId: "172ffd83", approvals: "bypass", now: NOW, host: "dev", implicit: DEV });
+    expect(start).toMatchObject({ started: null, refused: null, already: null });
+    expect(readLedger(home, FLEET).length).toBe(before);
+    // Once its line lands, the ledger check answers first.
+    append(home, FLEET, { event: "member.start", by: "460a4502", member: "create-two-0541-1", session: "172ffd83", depth: 1, engine: "claude-code", approvals: "bypass" }, { now: NOW, host: "dev" });
+    expect(startMember(home, PIECE_1, { sessionId: "172ffd83", approvals: "bypass", now: NOW, host: "dev", implicit: DEV }).already?.by).toBe("460a4502");
+    // The same for the end: a held plain marker means a real end is in flight, so neither a second real end nor a lost one is written.
+    claimMark(home, FLEET, markName("member.end", "create-two-0541-1"));
+    expect(endMember(home, FLEET, "create-two-0541-1", { state: "done", by: "create-two-0541-1", now: NOW, host: "dev" }, "create-two-0541").ended).toBeNull();
+    expect(endMember(home, FLEET, "create-two-0541-1", { state: "lost", by: "sysop", now: NOW, host: "dev" }, "create-two-0541").ended).toBeNull();
+    expect(findEvents(readLedger(home, FLEET), "member.end", { member: "create-two-0541-1" })).toEqual([]);
+    // A lost end takes its own marker, so a real end after it still lands and takes the plain one.
+    startMember(home, { ...PIECE_1, member: "create-two-0541-2", session: "create-two-0541-2" }, { sessionId: "s2", approvals: "bypass", now: NOW, host: "dev", implicit: DEV });
+    expect(endMember(home, FLEET, "create-two-0541-2", { state: "lost", by: "sysop", now: NOW, host: "dev" }, "create-two-0541").ended?.state).toBe("lost");
+    expect(hasMark(home, FLEET, markName("member.end", "create-two-0541-2", true))).toBe(true);
+    expect(hasMark(home, FLEET, markName("member.end", "create-two-0541-2"))).toBe(false);
+    expect(endMember(home, FLEET, "create-two-0541-2", { state: "done", by: "create-two-0541-2", now: NOW, host: "dev" }, "create-two-0541").ended?.state).toBe("done");
+    expect(hasMark(home, FLEET, markName("member.end", "create-two-0541-2"))).toBe(true);
+    // A swarm.end marker held elsewhere keeps a derived swarm of one from ending twice.
+    const derived = claimOrDerive({ home, env: envFor(home, { OPENFLEET_RECORD: recordPath(home, FLEET, "460a4502") }), now: NOW, host: "dev", implicit: DEV, session: { id: "p9", engine: "claude-p", cwd: "/x", approvals: "native" } });
+    if (derived.kind !== "derive") throw new Error("unreachable");
+    startMember(home, derived.record, { sessionId: "p9", approvals: "native", now: NOW, host: "dev", implicit: DEV });
+    claimMark(home, FLEET, markName("swarm.end", derived.record.swarm!));
+    const ended = endMember(home, FLEET, "p9", { state: "done", by: "p9", now: NOW, host: "dev" }, derived.record.swarm);
+    expect(ended.ended?.state).toBe("done");
+    expect(ended.swarmEnded).toBeNull();
+  });
+
   it("lets a real end supersede lost, and ends a derived swarm of one with the member", () => {
     const derived = claimOrDerive({ home, env: envFor(home, { OPENFLEET_RECORD: recordPath(home, FLEET, "460a4502") }), now: NOW, host: "dev", implicit: DEV, session: { id: "p2", engine: "claude-p", cwd: "/x", approvals: "native" } });
     if (derived.kind !== "derive") throw new Error("unreachable");
@@ -316,6 +431,28 @@ describe("context and the effective ceiling", () => {
     expect(memberCeiling(home, lines, PIECE_1, DEV)).toEqual(PIECE_1.ceiling);
     append(home, FLEET, { event: "fleet.cap", by: "sysop", target: "create-two-0541", ceiling: { approvals: "native", until: "2026-09-13T06:00:00Z" } }, { host: "dev" });
     expect(memberCeiling(home, readLedger(home, FLEET), PIECE_1, DEV)).toEqual({ ...PIECE_1.ceiling, approvals: "native", until: "2026-09-13T06:00:00Z" });
+  });
+
+  it("lets a fleet-target cap widen past the ceiling copied into a record: the copy is a snapshot, not an input", () => {
+    // The sysop raises the implicit fleet to depth 2 so its members may spawn.
+    append(home, FLEET, { event: "fleet.cap", by: "sysop", target: FLEET, ceiling: { depth: 2, hosts: ["dev", "netcup"] } }, { host: "dev" });
+    const allowed = memberCeiling(home, readLedger(home, FLEET), PIECE_1, DEV);
+    // Root approvals still enter at the root when the cap names none (the implicit fleet has no fleet-level approvals).
+    expect(allowed).toEqual({ approvals: "bypass", depth: 2, hosts: ["dev", "netcup"], fan_out: 4, until: "2026-09-13T06:11:01Z" });
+    // A claude -p under the claimed piece is now depth 2, within the raised ceiling: derived, not refused.
+    startMember(home, PIECE_1, { sessionId: "172ffd83", approvals: "bypass", now: NOW, host: "dev", implicit: DEV });
+    const child = claimOrDerive({ home, env: envFor(home, { OPENFLEET_RECORD: recordPath(home, FLEET, "create-two-0541-1") }), now: NOW, host: "netcup", implicit: DEV, session: { id: "grandchild", engine: "claude-p", cwd: "/x", pid: 7, approvals: "bypass" } });
+    expect(child.kind).toBe("derive");
+    if (child.kind !== "derive") throw new Error("unreachable");
+    expect(child.record).toMatchObject({ depth: 2, host: "netcup", ceiling: { depth: 2, approvals: "bypass" } });
+    // A cap on the implicit fleet that names approvals applies to every root's subtree.
+    append(home, FLEET, { event: "fleet.cap", by: "sysop", target: FLEET, ceiling: { approvals: "native", depth: 2, hosts: ["dev"] } }, { host: "dev" });
+    expect(memberCeiling(home, readLedger(home, FLEET), PIECE_1, DEV).approvals).toBe("native");
+    // And the ceiling of the swarm the derive joined includes that swarm's own cap, applied last.
+    append(home, FLEET, { event: "fleet.cap", by: "sysop", target: "create-two-0541", ceiling: { fan_out: 1 } }, { host: "dev" });
+    const joined = claimOrDerive({ home, env: envFor(home, { OPENFLEET_RECORD: recordPath(home, FLEET, "460a4502"), OPENFLEET_SWARM: "create-two-0541" }), now: NOW, host: "dev", implicit: DEV, session: { id: "joiner-2", engine: "claude-p", cwd: "/x", pid: 8, approvals: "native" } });
+    if (joined.kind !== "derive") throw new Error("unreachable");
+    expect(joined.record.ceiling).toEqual({ approvals: "native", depth: 2, hosts: ["dev"], fan_out: 1, until: "2026-09-13T06:11:01Z" });
   });
 
   it("computes a ceiling for a record that carries none: the fleet's, the root's approvals, the swarm path", () => {

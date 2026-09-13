@@ -236,6 +236,63 @@ export function append(
   return line;
 }
 
+// ---------------------------------------------------------------------------
+// Once-markers: the lines that must never be written twice
+// ---------------------------------------------------------------------------
+//
+// `member.start`, `member.end` and `swarm.end` are checked in the ledger before
+// they are written, but a check followed by an append is not exclusion: the
+// engine's hook and the spawner fire at the same moment. So each such line
+// takes a marker first, an exclusive create under `fleets/<fleet>/marks/`, and
+// the writer that loses the race writes nothing. Both reference writers use
+// the same paths, so the rule holds across moshcode and these hooks.
+
+export type OnceEvent = "member.start" | "member.end" | "swarm.end";
+
+export function marksDir(homeDir: string, fleet: string): string {
+  return join(fleetDir(homeDir, fleet), "marks");
+}
+
+/**
+ * The marker a line takes: `<event>.<id>`, where id is the member or the
+ * swarm. A `lost` end takes `member.end.<id>.lost` instead, so the engine's
+ * or the spawner's real end can still supersede it and take the plain one.
+ */
+export function markName(event: OnceEvent, id: string, lost = false): string {
+  return `${event}.${id}${lost ? ".lost" : ""}`;
+}
+
+export function hasMark(homeDir: string, fleet: string, name: string): boolean {
+  return existsSync(join(marksDir(homeDir, fleet), name));
+}
+
+/** Take a marker with an exclusive create (0600 in a 0700 dir). False when another writer holds it. */
+export function claimMark(homeDir: string, fleet: string, name: string): boolean {
+  const dir = marksDir(homeDir, fleet);
+  mkdirPrivate(dir);
+  try {
+    writeFileSync(join(dir, name), "", { encoding: "utf8", flag: "wx", mode: FILE_MODE });
+    return true;
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "EEXIST") return false;
+    throw error;
+  }
+}
+
+/**
+ * Append a line only when its once-marker is free. Null means another writer
+ * already holds the marker: report "already" and write nothing.
+ */
+export function appendOnce(
+  homeDir: string,
+  fleet: string,
+  input: LedgerInput,
+  opts: { now?: Date; host?: string; once: string },
+): LedgerLine | null {
+  if (!claimMark(homeDir, fleet, opts.once)) return null;
+  return append(homeDir, fleet, input, { now: opts.now, host: opts.host });
+}
+
 function parseLines(text: string): LedgerLine[] {
   const out: LedgerLine[] = [];
   for (const raw of text.split("\n")) {

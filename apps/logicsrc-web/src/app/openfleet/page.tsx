@@ -61,7 +61,7 @@ const STEPS: Array<[string, string]> = [
 const VERBS: Array<[string, string, string]> = [
   ["open", "sysop only", "mint a fleet, name the human, set the ceiling, write fleet.open"],
   ["cap", "sysop only", "set a fleet's ceiling or narrow a running swarm's; stop whatever is now above it"],
-  ["tree", "anyone", "the fleet as a tree, from the ledger and the records, with liveness and recordless members from the engine rosters it can read"],
+  ["tree", "anyone", "the fleet as a tree, from the ledger and the records, with liveness and recordless members from the engine rosters it can read; run by the sysop it also stops what is past its deadline or over its budget"],
   ["stop", "within reach", "end a member, a swarm, or a whole fleet as one unit; an agent reaches only what it spawned"],
   ["log", "anyone", "the ledger for a fleet, a swarm or a member: what happened, who did it, what it cost"]
 ];
