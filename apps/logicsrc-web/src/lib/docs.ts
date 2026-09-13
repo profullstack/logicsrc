@@ -18,6 +18,8 @@ export const DOC_SLUGS = [
   "openjob",
   "openresume",
   "openprofile",
+  "openbroadcast",
+  "openguest",
   "openmcp",
   "openaccess",
   "openserver",

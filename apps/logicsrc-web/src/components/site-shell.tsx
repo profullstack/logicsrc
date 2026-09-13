@@ -15,6 +15,8 @@ const NAV: Array<{ href: string; label: string; external?: boolean }> = [
   { href: "/openprd", label: "OpenPRD" },
   { href: "/asdlc", label: "ASDLC" },
   { href: "/openprofile", label: "OpenProfile" },
+  { href: "/openbroadcast", label: "OpenBroadcast" },
+  { href: "/openguest", label: "OpenGuest" },
   { href: "/openmcp", label: "OpenMCP" },
   { href: "/openaccess", label: "OpenAccess" },
   { href: "/openserver", label: "OpenServer" },

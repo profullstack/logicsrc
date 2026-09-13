@@ -23,6 +23,8 @@ const STATIC_ROUTES: Array<{
   { path: "/openprd", changeFrequency: "weekly", priority: 0.9 },
   { path: "/asdlc", changeFrequency: "weekly", priority: 0.9 },
   { path: "/openprofile", changeFrequency: "weekly", priority: 0.9 },
+  { path: "/openbroadcast", changeFrequency: "weekly", priority: 0.9 },
+  { path: "/openguest", changeFrequency: "weekly", priority: 0.9 },
   { path: "/openmcp", changeFrequency: "weekly", priority: 0.9 },
   { path: "/openaccess", changeFrequency: "weekly", priority: 0.9 },
   { path: "/openserver", changeFrequency: "weekly", priority: 0.9 },

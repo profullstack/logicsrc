@@ -115,7 +115,7 @@ Values that look like an email address or a URL become links; anything else stay
 
 **3. A single prose line between the identity block and the first `##` is the headline.** One line. It is the bio a directory shows next to your name. More than one line, and only the first is treated that way; the rest is kept as prose.
 
-**4. `##` opens a section.** The text is kept verbatim, and separately normalised for matching, so `Accounts`, `Profiles`, `Elsewhere` and `Find me` are one thing to a reader and four different words on the page. The normalised names in common use are `accounts`, `topics`, `reshare`, `operator`, `match`, `photos`, `links`, `about`, `projects`, `services` and `contact`. `Dating`, `Matching`, `Partner` and `Looking for` normalise to `match`. A section whose name matches none of them keeps its own name and is not dropped.
+**4. `##` opens a section.** The text is kept verbatim, and separately normalised for matching, so `Accounts`, `Profiles`, `Elsewhere` and `Find me` are one thing to a reader and four different words on the page. The normalised names in common use are `accounts`, `topics`, `reshare`, `operator`, `match`, `photos`, `broadcast`, `guest`, `links`, `about`, `projects`, `services` and `contact`. `Broadcast` and `Guest` are specified on their own as [OpenBroadcast](/docs/openbroadcast) and [OpenGuest](/docs/openguest): the show a person hosts and the appearances a person offers, matched against each other. `Dating`, `Matching`, `Partner` and `Looking for` normalise to `match`. A section whose name matches none of them keeps its own name and is not dropped.
 
 **5. Every bullet under Accounts is one account, and the URL is the identity.** `[Bluesky](https://bsky.app/profile/ada.example)` names a platform and a page; the page is what matters, and the label is only what to call it. `bluesky: ada.example` and `https://bsky.app/profile/ada.example` on a line of their own are accepted too. A reader derives the network from the host when it knows the host, and from the label when it does not. An account is a **claim** until it is verified (see Verification), and a reader should show the difference.
 
@@ -226,6 +226,7 @@ By hand, in any editor, in five minutes. Or:
 ## Related standards
 
 - [OpenResume.md](/docs/openresume): what you have done, in the same spirit. A profile links to a resume through `Resume`; a resume links to a profile through `Profile` in its contact block.
+- [OpenBroadcast](/docs/openbroadcast) and [OpenGuest](/docs/openguest): the `Broadcast` and `Guest` sections, for matching hosts with guests.
 - [OpenJob](/docs/openjob): what the work is.
 - [OpenCreds](/opencreds): where the tokens behind the accounts are kept. A profile never contains a credential.
 - [ASDLC](/asdlc): how the tools that serve and read these files get built.
