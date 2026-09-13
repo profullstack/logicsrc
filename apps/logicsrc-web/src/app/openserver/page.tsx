@@ -260,6 +260,13 @@ export default function OpenServerPage(): ReactNode {
             <Link href="/openprofile">OpenProfile.md</Link>, the operator behind a provider;{" "}
             <Link href="/openmcp">OpenMCP</Link>, how a directory describes its own MCP door
           </li>
+          <li>
+            <Link href="/docs/opencpu">OpenCPU</Link>, <Link href="/docs/openmemory">OpenMemory</Link>,{" "}
+            <Link href="/docs/opengpu">OpenGPU</Link> and{" "}
+            <Link href="/docs/openbandwidth">OpenBandwidth</Link>: the resource blocks an offer&apos;s{" "}
+            <code style={mono}>compute</code>, <code style={mono}>compute.gpu</code> and{" "}
+            <code style={mono}>network</code> may carry, each also an offer on its own
+          </li>
         </ul>
       </div>
     </SiteShell>
