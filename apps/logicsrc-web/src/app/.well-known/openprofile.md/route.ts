@@ -31,6 +31,7 @@ Open coordination standards for humans, AI agents, plugins, payment systems and 
 
 - [OpenMCP](${SITE_URL}/openmcp): an open catalog of MCP relays, live at https://openmcp.logicsrc.com
 - [OpenProfile.md](${SITE_URL}/openprofile): one Markdown file for who and where, people and agents alike
+- [OpenSkill](${SITE_URL}/openskill): portable descriptions of human skills, knowledge and occupations
 - [ASDLC](${SITE_URL}/asdlc): the agentic software development lifecycle
 - [OpenCreds](${SITE_URL}/opencreds): end-to-end encrypted credential sharing
 - [Docs](${SITE_URL}/docs): every specification LogicSRC publishes

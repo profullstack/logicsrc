@@ -260,6 +260,10 @@ export default function OpenProfilePage(): ReactNode {
         </div>
         <ul style={{ color: "#41505d", lineHeight: 1.9, paddingLeft: "1.1rem" }}>
           <li>
+            <Link href="/openprofile/skills">Skills and knowledge</Link>: portable human capabilities,
+            occupations and taxonomy links through OpenSkill
+          </li>
+          <li>
             <Link href="/docs/openprofile">Specification</Link>, with the eight rules, discovery,
             verification and the version history
           </li>

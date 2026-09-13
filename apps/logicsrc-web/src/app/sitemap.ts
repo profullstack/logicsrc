@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { publicClient } from "@/lib/supabase";
 import { DOC_SLUGS } from "@/lib/docs";
 import { FAMILIES, allSpecs } from "@/lib/specs";
+import { SKILL_SLUGS } from "@/lib/skills";
 
 export const dynamic = "force-dynamic";
 
@@ -76,5 +77,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     postEntries = [];
   }
 
-  return [...staticEntries, ...docEntries, ...postEntries];
+  const skills: MetadataRoute.Sitemap = SKILL_SLUGS.map((slug) => ({
+    url: `${base}/openskill/${slug}`, changeFrequency: "monthly", priority: 0.6
+  }));
+  return [...staticEntries, ...docEntries, ...skills, ...postEntries];
 }

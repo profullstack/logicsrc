@@ -10,6 +10,7 @@ vi.mock("../src/lib/supabase", () => ({ publicClient: () => { throw new Error("o
 
 describe.each([
   { slug: "openagent", name: "OpenAgent", family: "people" },
+  { slug: "openskill", name: "OpenSkill", family: "people" },
   { slug: "openabtest", name: "OpenABTest", family: "process" },
   { slug: "openfleet", name: "OpenFleet", family: "process" },
   { slug: "openrental", name: "OpenRental", family: "catalogs" },

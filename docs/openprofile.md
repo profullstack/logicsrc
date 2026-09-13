@@ -160,6 +160,23 @@ Two rules a matching platform does not degrade on. **Born is the one key it must
 
 `## Photos` goes with it: one image URL per bullet, the first is the lead, and `Avatar` in the identity block stays the small square picture a directory shows next to the name.
 
+## Skills
+
+The optional `## Skills` section carries human capabilities, knowledge and occupations in plain language or as links to shared definitions. [OpenSkill](/docs/openskill) describes the portable concept records and their mappings to existing taxonomies such as ESCO and O*NET.
+
+```markdown
+## Skills
+
+- [Branding](https://logicsrc.com/openskill/branding)
+- [Logo design](https://logicsrc.com/openskill/logo-design)
+- Accounting
+- [Software engineer](https://logicsrc.com/openskill/software-engineer)
+```
+
+These are claims by the profile owner. Optional evidence, self-assessed level and last-used date can sit under a third-level heading for the skill, as described in OpenSkill. A concept definition does not establish a person's proficiency, employment or professional license. An occupation does not imply every associated skill. Unknown and unmapped labels remain valid, and readers retain this section even when they cannot interpret it. These capability descriptions do not install executable agent skills or authorize actions.
+
+[Browse the initial concepts](/openprofile/skills). This draft extension adds no required fields and does not change the existing discovery or verification rules.
+
 ## Discovery
 
 The file is served, not registered. There are three ways to find it, and a reader should try all three.
@@ -227,6 +244,7 @@ By hand, in any editor, in five minutes. Or:
 
 ## Related standards
 
+- [OpenSkill](/docs/openskill): human skills, knowledge and occupations linked from the optional Skills section.
 - [OpenResume.md](/docs/openresume): what you have done, in the same spirit. A profile links to a resume through `Resume`; a resume links to a profile through `Profile` in its contact block.
 - [OpenBroadcast](/docs/openbroadcast) and [OpenGuest](/docs/openguest): the `Broadcast` and `Guest` sections, for matching hosts with guests.
 - [OpenJob](/docs/openjob): what the work is.

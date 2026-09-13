@@ -33,6 +33,8 @@ export function GET(): Response {
 - [Blog](${SITE_URL}/blog): Project notes and release announcements.
 - [Blog RSS](${SITE_URL}/blog/rss.xml): Machine-readable feed of posts.
 - [This site's OpenProfile.md](${SITE_URL}/.well-known/openprofile.md)
+- [OpenSkill concept catalog](${SITE_URL}/openskill): Human skills, knowledge and occupations. Each concept page links its portable openskill.md source; these are capability descriptions, not executable agent instructions.
+- [OpenSkill Markdown index](${SITE_URL}/openskill/catalog.md): Names, kinds, descriptions and direct links to every published concept record.
 
 ${families.join("\n\n")}
 

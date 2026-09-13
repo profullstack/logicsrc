@@ -79,7 +79,10 @@ export function buildRewrites(
  * page. Permanent, so the old URL in the sitemap and in links keeps working.
  */
 export function buildRedirects() {
-  return [{ source: "/agent-swarm", destination: "/openfleet", permanent: true }];
+  return [
+    { source: "/agent-swarm", destination: "/openfleet", permanent: true },
+    { source: "/openprofile/skills", destination: "/openskill", permanent: true }
+  ];
 }
 
 const nextConfig: NextConfig = {
