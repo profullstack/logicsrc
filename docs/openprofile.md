@@ -2,7 +2,7 @@
 
 OpenProfile.md is one Markdown file that says who you are and where you are, for people and agents alike. It is the profile equivalent of meta tags: a small, plain document any site can serve, any platform can link to, and any reader (a person, a crawler, an agent, a job board, a resharing network) can read without being taught a schema first. It is maintained by Profullstack, Inc. as part of the LogicSRC open-standards surface.
 
-Status: **0.1**. This is a description of a convention already in use by [myna](https://mynaposter.com) and [agenticjobs](https://agenticjobs.work), published so others can serve and read the same file.
+Status: **0.2**. This is a description of a convention already in use by [myna](https://mynaposter.com) and [agenticjobs](https://agenticjobs.work), published so others can serve and read the same file.
 
 Slug: `openprofile`
 
@@ -65,9 +65,38 @@ Ships small fixes to open source projects, nightly.
 - **Email**: ada@example.com
 ```
 
+A person who wants to be matched, on a dating site or anywhere else that pairs people, adds two more:
+
+```markdown
+## Match
+
+- **Born**: 1990-05-12
+- **Gender**: woman
+- **Orientation**: bisexual
+- **Status**: single
+- **Monogamy**: monogamous
+- **Height**: 168 cm
+- **Children**: none
+- **Wants children**: open
+- **Smoking**: never
+- **Drinking**: socially
+- **Religion**: none
+- **Politics**: left
+- **Seeking**: everyone
+- **For**: long-term
+- **Ages**: 30-45
+- **Distance**: 50 km
+- **Not**: smokers, long-distance
+
+## Photos
+
+- https://ada.example/photos/garden.jpg
+- https://ada.example/photos/engine.jpg
+```
+
 ## The rules
 
-There are eight, and every one of them degrades rather than fails.
+There are nine, and every one of them degrades rather than fails.
 
 **1. One `#` heading, and it is the name.** A document with more than one is read using the first; a document with none still parses, and a reader that wants a name can say it does not have one.
 
@@ -86,7 +115,7 @@ Values that look like an email address or a URL become links; anything else stay
 
 **3. A single prose line between the identity block and the first `##` is the headline.** One line. It is the bio a directory shows next to your name. More than one line, and only the first is treated that way; the rest is kept as prose.
 
-**4. `##` opens a section.** The text is kept verbatim, and separately normalised for matching, so `Accounts`, `Profiles`, `Elsewhere` and `Find me` are one thing to a reader and four different words on the page. The normalised names in common use are `accounts`, `topics`, `reshare`, `operator`, `links`, `about`, `projects`, `services` and `contact`. A section whose name matches none of them keeps its own name and is not dropped.
+**4. `##` opens a section.** The text is kept verbatim, and separately normalised for matching, so `Accounts`, `Profiles`, `Elsewhere` and `Find me` are one thing to a reader and four different words on the page. The normalised names in common use are `accounts`, `topics`, `reshare`, `operator`, `match`, `photos`, `links`, `about`, `projects`, `services` and `contact`. `Dating`, `Matching`, `Partner` and `Looking for` normalise to `match`. A section whose name matches none of them keeps its own name and is not dropped.
 
 **5. Every bullet under Accounts is one account, and the URL is the identity.** `[Bluesky](https://bsky.app/profile/ada.example)` names a platform and a page; the page is what matters, and the label is only what to call it. `bluesky: ada.example` and `https://bsky.app/profile/ada.example` on a line of their own are accepted too. A reader derives the network from the host when it knows the host, and from the label when it does not. An account is a **claim** until it is verified (see Verification), and a reader should show the difference.
 
@@ -103,6 +132,31 @@ Values that look like an email address or a URL become links; anything else stay
 No Reshare section means you are not offering to reshare. Nothing here obliges anyone to send you anything; it is an offer, and the matching, the sending and the paying are all the reader's business.
 
 **8. Operator names the person answerable for an agent.** An agent's profile carries it; a person's does not. `Name` and either `Profile` (the operator's own OpenProfile.md, which is the strong form) or `Email`, and optionally `DID`, the operator's identifier, which a reader can match against the `DID` in the operator's own file. A reader that meets an agent without an Operator section should say the operator is unstated. Operators can chain: an agent run by an agent names that agent, whose profile names a person. A reader following the chain stops after a few hops and reports what it found.
+
+**9. Match says what a matching platform needs, and only what you chose to publish.** A dating site, a co-founder board and a roommate finder match on the same few facts, and today each holds them in its own form behind its own login. The section has two kinds of key, about you and about who you are looking for, and every one is optional.
+
+About you:
+
+- `Born`: an ISO date (`1990-05-12`), a year, or an age. A date wins over a year, a year over an age. A reader computes age at read time and shows the age, not the date; a platform stores the date only if the person entered it on that platform.
+- `Gender`, `Orientation`, `Pronouns` (which may also sit in the identity block): kept as written. `woman`, `man`, `non-binary`, `straight`, `gay`, `bisexual`, `pansexual`, `asexual`, `queer` are the words in common use, and any other word is kept too.
+- `Status`: `single`, `divorced`, `widowed`, `separated`, `partnered`, `married`. `Monogamy`: `monogamous`, `non-monogamous`, `open`.
+- `Height`: `168 cm` or `5'6"`. `Body`: kept as written.
+- `Children`: `none`, a count, or a count with a word (`2, grown`). `Wants children`: `yes`, `no`, `open`, `undecided`.
+- `Smoking`, `Drinking`, `Cannabis`, `Drugs`: `never`, `socially`, `often`, `quit`.
+- `Religion`, `Politics`, `Ethnicity`, `Education`, `Work`, `Diet`, `Pets`, `Exercise`, `Zodiac`: kept as written. `Work` here is one line; the `Resume` link in the identity block is where the detail lives. A reader may compute `Zodiac` from `Born` when it is absent.
+
+About who you seek:
+
+- `Seeking`: the genders you want to be matched with: `women`, `men`, `everyone`, or a list.
+- `For`: `long-term`, `short-term`, `marriage`, `casual`, `friends`, `open to either`, or a list.
+- `Ages`: a range, `30-45`. `Distance`: a radius from `Location`, `50 km`, `30 mi`, or `anywhere`.
+- `Not`: dealbreakers, matched loosely against the other profile's Match values and Topics the way Reshare's `Not` is matched. A hit here wins over everything else.
+
+Values are matched loosely, as Topics are. Unknown keys are kept, so a platform that matches on something this list lacks adds its own key and loses nothing. Absence is unstated: a platform shows unstated, never a default, and never a guess made from the avatar, the name or anything else in the file.
+
+Two rules a matching platform does not degrade on. **Born is the one key it must have**: a reader that finds no `Born`, or computes an age under 18 from it, does not list the profile in a matching context at all. And **the section is public by nature**: orientation, religion, politics, ethnicity and health-adjacent keys are the categories of personal data most laws protect, so a person puts here what they would put on a public profile page and nothing a platform would have to hold under a lock. A platform that imports a Match section stores no more of it than the person confirmed on that platform, shows where it came from, and drops it when the file drops it.
+
+`## Photos` goes with it: one image URL per bullet, the first is the lead, and `Avatar` in the identity block stays the small square picture a directory shows next to the name.
 
 ## Discovery
 
@@ -145,7 +199,9 @@ Two profiles that link to each other through Operator and through an account are
 
 **No signatures.** A signed profile is a good idea and a different specification. Verification here is bidirectional linking, which every platform already supports in some form, and which is what `rel="me"` has used for twenty years.
 
-**No structured topic taxonomy.** Topics are the words people wrote.
+**No structured topic taxonomy.** Topics are the words people wrote, and so are Match values.
+
+**No inference.** A reader never fills a Match key from a photo, a name, a handle or another site. What is not written is unstated, and a platform that wants it asks the person.
 
 **No JSON.** A reader may compute a structured view (name, kind, identity pairs, accounts with derived networks, topics, reshare terms, operator) and use it for matching and search. That view is derived, and it is regenerated from the Markdown on every read. **The Markdown is the canonical copy.** A product that stores the parse and treats the Markdown as an export has implemented a form with a Markdown skin, and the person no longer owns their profile.
 
@@ -158,6 +214,7 @@ A conforming reader:
 3. Reports absence as absence: an unstated `Kind`, an unstated operator, an unverified account.
 4. Matches topics loosely and lets `Not` win.
 5. Never moves money on the strength of `Rate` alone. `Pay` says where; the reader's own agreement with the person says whether.
+6. Lists a profile for matching only when `Born` is present and gives an age of 18 or more, and stores no more of Match than the person confirmed with it.
 
 ## Writing one
 
@@ -179,6 +236,7 @@ By hand, in any editor, in five minutes. Or:
 |---|---|---|
 | 0.1 | 2026-09-12 | First publication: eight rules, three discovery locations, bidirectional verification, Reshare and Operator sections. |
 | 0.1.1 | 2026-09-12 | `DID` in the identity block and in Operator: did:key, did:web and AT Protocol did:plc accepted verbatim. |
+| 0.2 | 2026-09-13 | Rule 9, Match: the keys a dating site or any matching platform needs, about you and about who you seek; `Born` required for matching and 18 or over; no inference; `Photos` section. |
 
 ## License
 
