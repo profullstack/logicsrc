@@ -30,6 +30,8 @@ const STATIC_ROUTES: Array<{
   { path: "/openmemory", changeFrequency: "weekly", priority: 0.9 },
   { path: "/opengpu", changeFrequency: "weekly", priority: 0.9 },
   { path: "/openbandwidth", changeFrequency: "weekly", priority: 0.9 },
+  { path: "/openfile", changeFrequency: "weekly", priority: 0.9 },
+  { path: "/opendisk", changeFrequency: "weekly", priority: 0.9 },
   { path: "/openontology/explore", changeFrequency: "daily", priority: 0.7 },
   { path: "/openspec", changeFrequency: "weekly", priority: 0.8 },
   { path: "/agent-swarm", changeFrequency: "weekly", priority: 0.8 },

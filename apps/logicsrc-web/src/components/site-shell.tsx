@@ -22,6 +22,8 @@ const NAV: Array<{ href: string; label: string; external?: boolean }> = [
   { href: "/openmemory", label: "OpenMemory" },
   { href: "/opengpu", label: "OpenGPU" },
   { href: "/openbandwidth", label: "OpenBandwidth" },
+  { href: "/openfile", label: "OpenFile" },
+  { href: "/opendisk", label: "OpenDisk" },
   { href: "/#cli", label: "CLI" },
   { href: "/docs", label: "Docs" },
   { href: "/blog", label: "Blog" },

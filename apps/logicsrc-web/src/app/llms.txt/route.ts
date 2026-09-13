@@ -28,6 +28,8 @@ export function GET(): Response {
 - [OpenMemory](${SITE_URL}/openmemory): The memory block of an OpenServer offer: RAM in mebibytes, DDR generation, ECC as three states, reserved or balloonable allocation, and a range priced per step.
 - [OpenGPU](${SITE_URL}/opengpu): The gpu block of an OpenServer offer: the card by its vendor name, count and VRAM per device, interconnect, passthrough, MIG, vGPU or shared access, and a range over count.
 - [OpenBandwidth](${SITE_URL}/openbandwidth): The network block of an OpenServer offer: port speed, transfer, unmetered, 95th percentile or flat metering, overage, IPv4 and IPv6 addresses as a priced resource, DDoS scrubbing, and a range.
+- [OpenFile](${SITE_URL}/openfile): One file a publisher serves about the files it has published: content hash, swarm and HTTP fetch routes, verification, consent basis, price, and who holds it now, discovered at /.well-known/openfile.json. The web door onto an OpenSwarm ipfile swarm.
+- [OpenDisk](${SITE_URL}/opendisk): One file a machine serves about the disk it will rent: free GiB, price per GiB-month, location, policy, proof cadence and hub standing, discovered at /.well-known/opendisk.json. What a peer-to-peer storage market is made of; reference marketplace d1sks.com.
 - [AgentSwarm](${SITE_URL}/agent-swarm): Provider-neutral agent orchestration, model routing, and cost controls.
 - [AgentByte](${SITE_URL}/agentbyte): Agent screening sessions, policy events, and APIs.
 - [Credential Sharing](${SITE_URL}/credential-sharing): End-to-end-encrypted team vaults, plus source/target credential diffs, approval, sync, rollback, and audit.
