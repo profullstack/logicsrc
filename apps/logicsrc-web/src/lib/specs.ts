@@ -91,7 +91,8 @@ export const FAMILIES: Family[] = [
       s("openaffiliate", "OpenAffiliate", "One file a merchant serves about the commission it pays"),
       s("openrecipe", "OpenRecipe.md", "One Markdown file that is a recipe, with schema.org derived from it and never the reverse"),
       s("openthreat", "OpenThreat", "One file a security tool serves about what it found in the open: public subjects only, secrets never located"),
-      s("opensite", "OpenSite", "One record about a page or a site: the card a reader would draw, declared by the site or read from it, kept by an index")
+      s("opensite", "OpenSite", "One record about a page or a site: the card a reader would draw, declared by the site or read from it, kept by an index"),
+      s("openwebring", "OpenWebring", "A webring that says who made it: one file a ring serves about its members, one a member serves about itself, and made_by on every member")
     ]
   },
   {
