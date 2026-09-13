@@ -303,7 +303,7 @@ describe("POST /api/hire-us/coinpay-checkout", () => {
       expect(response.status).toBe(422);
       expect(body).toEqual({
         success: false,
-        error: "Approved hours must be a quarter-hour increment of at least 10"
+        error: "Approved agent-hours must be a quarter-hour increment of at least 10"
       });
     }
 
