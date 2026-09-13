@@ -32,6 +32,32 @@ OpenSwarm adds nothing to how a node joins or bids. It adds workload types
 the node can bid on, a second identity the node registers as a payee, and
 per-byte income that arrives without any auction.
 
+## 1.1 The CLI, and how a directory learns it
+
+c0mpute is CLI-first. The install line, as c0mpute.com prints it:
+
+```sh
+curl -fsSL https://c0mpute.com/install.sh | sh
+```
+
+That installs the `c0mpute` binary and its module CLIs into `~/.c0mpute/bin`, each pulled from its own release feed. Source is [github.com/profullstack/c0mpute](https://github.com/profullstack/c0mpute).
+
+A directory should not have to read this page to learn that. c0mpute.com is a peer-to-peer compute market, so it serves an [OpenServer](/docs/openserver) descriptor at `/.well-known/openserver.json` whose offers are the network's current asks, and since OpenServer 0.2 the `provider.developer` block carries the same facts in a shape every reader agrees on:
+
+```json
+"developer": {
+  "cli": {
+    "name": "c0mpute",
+    "install": { "curl": "curl -fsSL https://c0mpute.com/install.sh | sh" },
+    "docs": "https://c0mpute.com/docs/cli",
+    "repo": "https://github.com/profullstack/c0mpute"
+  },
+  "github": "https://github.com/profullstack"
+}
+```
+
+The commands in that block are copied from the install page, never composed by the reader. The hosting collection at [nichedb.dev](https://nichedb.dev/c/hosting) is the first directory that shows them.
+
 ## 2. Node identity and payout
 
 A node derives an OpenSwarm identity from its libp2p key:

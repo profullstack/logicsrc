@@ -105,10 +105,14 @@ export default function OpenServerPage(): ReactNode {
           reader agrees on, so an offer can be found instead of scraped.
         </p>
         <p style={{ color: "#5b6b7a" }}>
-          Status: 0.1. It covers cloud, VPS, dedicated and bare-metal servers, colocation,
+          Status: 0.2. It covers cloud, VPS, dedicated and bare-metal servers, colocation,
           hardware for your own premises, shared and managed hosting, platforms, functions,
-          storage, GPU, edge and peer-to-peer markets. The first directory reading it is the hosting
-          collection at <a href="https://nichedb.dev/c/hosting">nichedb.dev</a>.
+          storage, GPU, edge and peer-to-peer markets. Since 0.2 the provider also says how a
+          developer drives it: the official CLI with its install commands as the vendor's own guide
+          prints them, the API docs, the Terraform provider and the GitHub organisation. The first
+          directory reading it is the hosting collection at{" "}
+          <a href="https://nichedb.dev/c/hosting">nichedb.dev</a>, which lists every host with a CLI
+          at <a href="https://nichedb.dev/f/hosting-cli">/f/hosting-cli</a>.
         </p>
       </div>
 

@@ -2,7 +2,7 @@
 
 OpenServer is one file a hosting provider serves about what it sells: every server, instance, box, rack, function and peer-market listing it offers, with the specs, the price, where it runs and whether it is in stock. A directory reads the provider's own file instead of scraping an aggregator, a buyer's agent reads it instead of a pricing page, and the provider stays the author of its own words. It covers cloud, VPS, dedicated and bare-metal servers, colocation, hardware sold to run on your own premises, shared and managed hosting, platforms, functions, storage, GPU, edge, peer-to-peer markets and the hybrids in between. It is maintained by Profullstack, Inc. as part of the LogicSRC open-standards surface.
 
-Status: **0.1**. A description of a file a directory already reads, published so a provider can serve one and any directory can read it.
+Status: **0.2**. A description of a file a directory already reads, published so a provider can serve one and any directory can read it.
 
 Slug: `openserver`
 
@@ -32,7 +32,18 @@ A provider serves a JSON document at `/.well-known/openserver.json` on its own o
     "country": "NL",
     "support": "https://northwind.example/support",
     "status": "https://status.northwind.example",
-    "legal": "https://northwind.example/terms"
+    "legal": "https://northwind.example/terms",
+    "developer": {
+      "cli": {
+        "name": "nwctl",
+        "install": { "brew": "brew install northwind/tap/nwctl", "curl": "curl -fsSL https://northwind.example/cli/install.sh | sh" },
+        "docs": "https://northwind.example/docs/cli",
+        "repo": "https://github.com/northwind/nwctl"
+      },
+      "api_docs": "https://northwind.example/docs/api",
+      "terraform": { "source": "northwind/northwind", "docs": "https://registry.terraform.io/providers/northwind/northwind" },
+      "github": "https://github.com/northwind"
+    }
   },
   "updated": "2026-09-13T06:00:00Z",
   "offers": [
@@ -120,7 +131,8 @@ The rules, and every one degrades:
 7. **`compute`, `storage`, `network`** describe the thing. Units are fixed: `ram_mb` and `vram_mb` in mebibytes, `size_gb` in gigabytes, `bandwidth_mbps` in megabits per second, `transfer_gb` per interval. `vcpu` is threads sold, `cores` is physical cores; a dedicated box states `cores`, a virtual one states `vcpu`, and one may state both. `arch` is `x86_64`, `arm64`, `riscv64` or the provider's own word. `storage` is a list, one entry per volume, so two drives are two entries. `ipv4` is a count, `ipv6` a boolean.
 8. **`price`** is one price. `amount` is a number, `currency` an ISO 4217 code, `interval` is `hour`, `month`, `year` or `once`. `setup` is a one-time amount on top. `commitment` is the shortest term a buyer signs for, in words the provider uses. An offer sold at several intervals is several offers with a shared prefix in `id`, or one offer at the interval the provider quotes first, and a reader shows what it was given.
 9. **`stock`** is `in_stock`, `out_of_stock`, `preorder` or `unknown`. Absent means `unknown`. A directory that shows stock shows when it was read.
-10. **Unknown keys are kept.** A provider says more than this document names, and a reader passes it through under the provider's own key.
+10. **`provider.developer`** is how a developer, or an agent acting for one, drives the provider without the website. `cli` names the official command-line tool: `name` is the binary, `install` is a map of package manager to the exact command line the provider's own guide prints (`brew`, `npm`, `pip`, `go`, `curl`, `apt`, `winget`, `scoop`, or the provider's own key), `docs` is the install guide and `repo` the source. `api_docs` is the API reference, `terraform` names the Terraform provider by registry `source` with its `docs`, `github` is the organisation. A provider with no CLI states `"cli": null`, which tells a reader to stop looking; a reader that finds no `developer` block at all reports the CLI as unknown, not absent. Commands are copied, never composed: a directory that invents `brew install <name>` sends a buyer to a formula that may not exist.
+11. **Unknown keys are kept.** A provider says more than this document names, and a reader passes it through under the provider's own key.
 
 Serve it as `application/json`. The descriptor is a claim; that it came from the provider's own origin is the verification.
 
@@ -206,6 +218,7 @@ By hand, from the same table the order form reads. A provider with a database ha
 - [OpenSwarm](/openswarm): the settlement and proof layer under a peer-to-peer offer; [c0mpute](https://github.com/profullstack/logicsrc/blob/master/docs/openswarm/c0mpute.md) is its compute marketplace and [OpenDisk](/docs/opendisk) its disk-for-rent peer, each listable here as an offer.
 - [OpenCPU](/docs/opencpu), [OpenMemory](/docs/openmemory), [OpenGPU](/docs/opengpu), [OpenBandwidth](/docs/openbandwidth): the resource blocks. An offer's `compute` (cpu and memory), `compute.gpu` and `network` may carry those specs' fields when the provider has them, and each can stand alone as an offer of its own.
 - [OpenProfile.md](/openprofile): the `operator` behind a provider.
+- [nichedb.dev/f/hosting-cli](https://nichedb.dev/f/hosting-cli): the first reader of `provider.developer`, which lists every host with a CLI and shows the install commands on the provider's page.
 - [OpenMCP](/openmcp): a directory that also serves its rows over MCP describes that door with an OpenMCP descriptor.
 - [OpenAccess](/openaccess): how a buyer's agent carries the credential it needs at the provider's order form, if the provider honours one.
 
@@ -214,6 +227,7 @@ By hand, from the same table the order form reads. A provider with a database ha
 | Version | Date | Change |
 |---|---|---|
 | 0.1 | 2026-09-13 | First publication: the descriptor, fifteen kinds, four axes, peer-to-peer markets, discovery, what a directory owes a provider. |
+| 0.2 | 2026-09-13 | `provider.developer`: the official CLI with its install commands as the guide prints them, API docs, Terraform provider and GitHub organisation; `"cli": null` for a provider that has none. |
 
 ## License
 
