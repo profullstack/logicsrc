@@ -24,6 +24,8 @@ const NAV: Array<{ href: string; label: string; external?: boolean }> = [
   { href: "/openbandwidth", label: "OpenBandwidth" },
   { href: "/openfile", label: "OpenFile" },
   { href: "/opendisk", label: "OpenDisk" },
+  { href: "/opencoupon", label: "OpenCoupon" },
+  { href: "/openrecipe", label: "OpenRecipe.md" },
   { href: "/#cli", label: "CLI" },
   { href: "/docs", label: "Docs" },
   { href: "/blog", label: "Blog" },
