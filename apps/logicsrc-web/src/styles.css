@@ -73,21 +73,23 @@ button:disabled {
   font-weight: 800;
 }
 
-nav {
+.rail nav {
   display: grid;
   gap: 0.5rem;
 }
 
-nav a {
+.rail nav a {
   color: inherit;
+  min-width: 0;
+  overflow-wrap: anywhere;
   min-height: 2.35rem;
   padding: 0.55rem 0.75rem;
   border: 1px solid #263039;
   border-radius: 6px;
 }
 
-nav a.active,
-nav a:hover {
+.rail nav a.active,
+.rail nav a:hover {
   border-color: #3f5049;
   background: #1b2329;
   text-decoration: none;
@@ -669,11 +671,11 @@ pre {
     border-right: 0;
   }
 
-  nav {
+  .rail nav {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
-  nav a {
+  .rail nav a {
     text-align: center;
   }
 
