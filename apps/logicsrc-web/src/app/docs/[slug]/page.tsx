@@ -42,7 +42,7 @@ export default async function DocPage({
   const html = sanitizeRenderedHtml(rawHtml);
 
   return (
-    <SiteShell active="Docs">
+    <SiteShell active="Docs" crumbTitle={docTitle(md, slug)}>
       <article className="band" style={{ maxWidth: "48rem" }}>
         <p style={{ marginBottom: "1.5rem" }}>
           <Link href="/docs" style={{ color: "#5b6b7a", textDecoration: "none" }}>

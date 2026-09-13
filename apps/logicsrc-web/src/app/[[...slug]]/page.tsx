@@ -70,7 +70,7 @@ export default async function Page({
 
   return (
     <>
-      <div id="app" dangerouslySetInnerHTML={{ __html: renderPageMarkup() }} />
+      <div id="app" dangerouslySetInnerHTML={{ __html: renderPageMarkup(slug?.[0] ? `/${slug[0]}` : "/") }} />
       <HomeInteractivity />
     </>
   );

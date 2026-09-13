@@ -5,6 +5,7 @@
 // the `home-interactivity` client component.
 import { renderInstallCommand } from "./install-command";
 import { renderNavHtml } from "./nav";
+import { renderCrumbsHtml } from "./crumbs";
 import { FAMILIES, familyTree } from "./specs";
 
 const schemas = [
@@ -110,7 +111,7 @@ const comparisonRows = [
   }
 ];
 
-export function renderPageMarkup(): string {
+export function renderPageMarkup(path = "/"): string {
   return `
   <main class="shell">
     <aside class="rail">
@@ -122,9 +123,10 @@ export function renderPageMarkup(): string {
         </div>
       </div>
       ${renderInstallCommand("rail")}
-      <nav aria-label="LogicSRC sections">${renderNavHtml("/")}</nav>
+      <nav aria-label="LogicSRC sections">${renderNavHtml(path)}</nav>
     </aside>
     <section class="workspace">
+      ${renderCrumbsHtml(path)}
       <header id="overview" class="hero">
         <div>
           <p class="eyebrow">Profullstack open spec project</p>

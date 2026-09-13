@@ -117,7 +117,7 @@ export default async function BlogPostPage({
   const html = sanitizeRenderedHtml(post.html);
 
   return (
-    <SiteShell active="Blog">
+    <SiteShell active="Blog" crumbTitle={post.title}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
