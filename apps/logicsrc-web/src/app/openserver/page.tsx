@@ -94,6 +94,12 @@ export default function OpenServerPage(): ReactNode {
             provider instead of scraping a page, and the provider stays the author of its own
             catalog.
           </p>
+          <div className="cta-row">
+            <Link className="button-primary" href="/docs/openserver">Read the OpenServer spec</Link>
+            <a className="button-secondary" href="https://nichedb.dev/c/hosting">
+              Explore the NicheDB reference implementation
+            </a>
+          </div>
         </div>
         <p style={{ color: "#41505d" }}>
           Every provider publishes its catalog as a web page, every comparison site scrapes those
@@ -109,10 +115,11 @@ export default function OpenServerPage(): ReactNode {
           hardware for your own premises, shared and managed hosting, platforms, functions,
           storage, GPU, edge and peer-to-peer markets. Since 0.2 the provider also says how a
           developer drives it: the official CLI with its install commands as the vendor's own guide
-          prints them, the API docs, the Terraform provider and the GitHub organisation. The first
-          directory reading it is the hosting collection at{" "}
-          <a href="https://nichedb.dev/c/hosting">nichedb.dev</a>, which lists every host with a CLI
-          at <a href="https://nichedb.dev/f/hosting-cli">/f/hosting-cli</a>.
+          prints them, the API docs, the Terraform provider and the GitHub organisation.{" "}
+          <a href="https://nichedb.dev/c/hosting">NicheDB&apos;s hosting directory</a> is a reference
+          implementation that reads OpenServer catalogs. Explore its{" "}
+          <a href="https://nichedb.dev/f/hosting-cli">hosting providers with a CLI</a> to see that
+          metadata in use. Any provider can publish the spec, and any directory can read it.
         </p>
       </div>
 
@@ -253,8 +260,9 @@ export default function OpenServerPage(): ReactNode {
             axes, peer-to-peer markets, discovery, what a directory owes a provider
           </li>
           <li>
-            <a href="https://nichedb.dev/c/hosting">nichedb.dev/c/hosting</a>: the first directory
-            reading it, with providers and offers as feeds over RSS, JSON, an API and MCP
+            <a href="https://nichedb.dev/c/hosting">NicheDB hosting directory</a>: a reference
+            implementation of OpenServer, with providers and offers available through RSS,
+            JSON, an API and MCP
           </li>
           <li>
             <a href="https://www.findhost.app">findhost.app</a>: a curated register of web hosts under
