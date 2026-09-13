@@ -21,6 +21,8 @@ export const DOC_SLUGS = [
   "openmcp",
   "openaccess",
   "openserver",
+  "opencoupon",
+  "openrecipe",
   "openstream",
   "openspec-comparison",
   "data-model",

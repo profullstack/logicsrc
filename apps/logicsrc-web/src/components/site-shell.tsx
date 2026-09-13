@@ -18,6 +18,8 @@ const NAV: Array<{ href: string; label: string; external?: boolean }> = [
   { href: "/openmcp", label: "OpenMCP" },
   { href: "/openaccess", label: "OpenAccess" },
   { href: "/openserver", label: "OpenServer" },
+  { href: "/opencoupon", label: "OpenCoupon" },
+  { href: "/openrecipe", label: "OpenRecipe.md" },
   { href: "/#cli", label: "CLI" },
   { href: "/docs", label: "Docs" },
   { href: "/blog", label: "Blog" },
