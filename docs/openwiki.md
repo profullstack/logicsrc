@@ -2,7 +2,7 @@
 
 OpenWiki is a wiki that is a folder of Markdown files. One file per page, links between pages written as `[[Page]]`, a small front matter vocabulary at the top of each file, and two files the wiki serves about itself: a descriptor at `/.well-known/openwiki.json` and an index of its pages. Every page is readable as the Markdown it is stored as, every revision of every page is readable the same way, and every revision says who made it: a person, an AI, or both. A folder that follows this opens unchanged in Obsidian, Logseq, and every note tool that already speaks `[[Page]]`, and any of those folders becomes an OpenWiki by adding the two files. It is maintained by Profullstack, Inc. as part of the LogicSRC open-standards surface.
 
-Status: **0.1**. A description of what the `[[Page]]` convention already is in practice, written down so a wiki can be moved, mirrored, read by a directory and edited by an agent without reading any engine's source.
+Status: **0.1.1**. A description of what the `[[Page]]` convention already is in practice, written down so a wiki can be moved, mirrored, read by a directory and edited by an agent without reading any engine's source.
 
 Slug: `openwiki`
 
@@ -34,6 +34,9 @@ summary: What makes a thing spread, and what only looks like it.
 author: https://chovy.com/.well-known/openprofile.md
 made_by: both
 disclosure: ai-assisted
+ai_model: gpt-5.1
+ai_provider: OpenAI
+ai_prompt_url: https://goviral.wiki/ai-methodology#pages
 created: 2026-09-13
 updated: 2026-09-13T12:40:00Z
 license: CC-BY-4.0
@@ -51,7 +54,8 @@ Nothing else counts; see [[Vanity metrics#Reach]].
 - **`summary`** is one line about the page, for a listing.
 - **`author`** is who wrote the page as it stands: an [OpenProfile.md](/openprofile) URL, or a name. Per-revision authorship is in the history, below.
 - **`made_by`** is `human`, `ai` or `both`, for the page as it stands. `human` means a person wrote it, with tools at most. `ai` means a model or agent wrote it, with a person at most pointing it. `both` means a mix the page does not care to split. It is a self-declaration and nothing verifies it.
-- **`disclosure`** is optional and uses the W3C AI Content Disclosure vocabulary verbatim: `none`, `ai-assisted`, `ai-generated`, `autonomous`.
+- **`disclosure`** is optional and uses the W3C AI Content Disclosure vocabulary verbatim: `none`, `ai-assisted`, `ai-generated`, `autonomous`, and at the page level `mixed`, for a page whose sections differ.
+- **`ai_model`**, **`ai_provider`** and **`ai_prompt_url`** are the rest of that vocabulary, the `ai-model`, `ai-provider` and `ai-prompt-url` attributes under our naming: which model, whose, and a page describing how it is used. Optional, and meaningful only beside a `disclosure` other than `none`. A host rendering the page puts the same four on it, `<meta name="ai-disclosure">` and the attributes on the element that holds the body, so a browser and a crawler read what the file says.
 - **`created`** and **`updated`** are dates or timestamps, ISO 8601.
 - **`license`** is an SPDX identifier, for the page when it differs from the wiki's.
 - **`lang`** is a BCP 47 tag.
@@ -89,14 +93,15 @@ A page named `Going viral` lives at `<wiki url>/going-viral`. The slug is the na
   "url": "https://goviral.wiki/going-viral",
   "revisions": [
     { "id": "8f3a1c", "at": "2026-09-13T12:40:00Z", "author": "https://chovy.com/.well-known/openprofile.md",
-      "made_by": "both", "summary": "K-factor, not reach", "parent": "2b77e0", "bytes": 1840 },
+      "made_by": "both", "disclosure": "ai-assisted", "ai_model": "gpt-5.1", "ai_provider": "OpenAI",
+      "summary": "K-factor, not reach", "parent": "2b77e0", "bytes": 1840 },
     { "id": "2b77e0", "at": "2026-09-12T09:10:00Z", "author": "https://chovy.com/.well-known/openprofile.md",
       "made_by": "human", "summary": "First draft", "parent": null, "bytes": 1120 }
   ]
 }
 ```
 
-A revision id is opaque. A host backed by git uses the commit; a host backed by a table uses its own. `parent` is the revision this one edited, so a fork of the history is visible as two revisions with one parent. `made_by` is the revision's, and may differ from the page's front matter, which describes the page as it stands.
+A revision id is opaque. A host backed by git uses the commit; a host backed by a table uses its own. `parent` is the revision this one edited, so a fork of the history is visible as two revisions with one parent. `made_by` is the revision's, and may differ from the page's front matter, which describes the page as it stands. So are `disclosure`, `ai_model`, `ai_provider` and `ai_prompt_url`, when the revision says them.
 
 ## The wiki
 
@@ -163,7 +168,7 @@ X-OpenWiki-Summary: Fixed the K-factor formula
 X-OpenWiki-Made-By: ai
 ```
 
-The body is the whole file, front matter included. `If-Match` is the revision the editor started from; a mismatch is `412` and the editor reads the current file and tries again, which is the only merge rule a wiki has ever had. The answer is `200` with the new revision id in `ETag`, or `201` when the page is new. `X-OpenWiki-Made-By` is the revision's `made_by`; absent is unstated, and a wiki whose `accepts` excludes the value answers `403`. A host that issues tokens with [OpenAccess](/openaccess) names the scope `openwiki:edit`. `DELETE` on a page is a revision that empties it; the history stays.
+The body is the whole file, front matter included. `If-Match` is the revision the editor started from; a mismatch is `412` and the editor reads the current file and tries again, which is the only merge rule a wiki has ever had. The answer is `200` with the new revision id in `ETag`, or `201` when the page is new. `X-OpenWiki-Made-By` is the revision's `made_by`; absent is unstated, and a wiki whose `accepts` excludes the value answers `403`. The page's `disclosure`, `ai_model`, `ai_provider` and `ai_prompt_url` travel in the front matter as saved; a revision that differs from the page says so in `X-OpenWiki-Disclosure`, `X-OpenWiki-AI-Model`, `X-OpenWiki-AI-Provider` and `X-OpenWiki-AI-Prompt-URL`. A host that issues tokens with [OpenAccess](/openaccess) names the scope `openwiki:edit`. `DELETE` on a page is a revision that empties it; the history stays.
 
 An agent editing a wiki is a program reading a Markdown file and putting it back. That is the whole API, and it is the same one a person's editor uses.
 
@@ -217,6 +222,7 @@ A host is a folder, a way to render a Markdown file, two JSON files it can gener
 | Version | Date | Change |
 |---|---|---|
 | 0.1 | 2026-09-13 | First publication: the page and its front matter, wikilinks and how they resolve, three representations at one URL, the history, the two files, editing as `PUT`, discovery, what a directory owes a wiki. |
+| 0.1.1 | 2026-09-13 | `ai_model`, `ai_provider` and `ai_prompt_url` beside `disclosure` on pages and revisions, the rest of the W3C AI Content Disclosure vocabulary; `mixed` at the page level; a host renders the four as the group's meta tag and attributes. |
 
 ## License
 

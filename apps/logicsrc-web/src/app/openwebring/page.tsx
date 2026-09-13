@@ -18,6 +18,8 @@ const MEMBER = `{
             "author": "https://chovy.com/.well-known/openprofile.md" },
   "made_by": "human",
   "disclosure": "ai-assisted",
+  "ai_model": "gpt-5.1", "ai_provider": "OpenAI",
+  "ai_prompt_url": "https://chovy.com/ai-methodology#posts",
   "rings": [ { "ring": "https://rssamplifier.com/ring/small-web", "slug": "chovy" } ]
 }`;
 
@@ -82,7 +84,7 @@ export default function OpenWebringPage(): ReactNode {
           A ring for the human web and a ring for the machine web are the same ring with one field.
         </p>
         <p style={{ color: "#5b6b7a" }}>
-          Status: 0.1. The first host is{" "}
+          Status: 0.1.1. The first host is{" "}
           <a href="https://rssamplifier.com/ring">rssamplifier.com</a>, one ring per topic out of
           the feeds it already reads; the first directory reading rings is{" "}
           <a href="https://nichedb.dev/c/webrings">nichedb.dev/c/webrings</a>. A member owes a ring
@@ -100,8 +102,10 @@ export default function OpenWebringPage(): ReactNode {
         <p style={{ color: "#41505d" }}>
           <code style={mono}>rings</code> is the one thing no existing format carries: the
           site&apos;s own statement of which rings it belongs to. <code style={mono}>disclosure</code>{" "}
-          is optional and uses the W3C AI Content Disclosure vocabulary verbatim, so it maps onto the
-          HTML attribute and the IETF header without translation.
+          is optional and uses the W3C AI Content Disclosure vocabulary verbatim, with{" "}
+          <code style={mono}>ai_model</code>, <code style={mono}>ai_provider</code> and{" "}
+          <code style={mono}>ai_prompt_url</code> beside it, so all four map onto the group&apos;s HTML
+          attributes and the IETF header without translation.
         </p>
       </div>
 

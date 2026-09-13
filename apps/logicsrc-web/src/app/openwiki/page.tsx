@@ -19,6 +19,9 @@ summary: What makes a thing spread, and what only looks like it.
 author: https://chovy.com/.well-known/openprofile.md
 made_by: both
 disclosure: ai-assisted
+ai_model: gpt-5.1
+ai_provider: OpenAI
+ai_prompt_url: https://goviral.wiki/ai-methodology#pages
 updated: 2026-09-13T12:40:00Z
 ---
 
@@ -92,7 +95,7 @@ export default function OpenWikiPage(): ReactNode {
           files that say so, and the rules the tools already mostly follow.
         </p>
         <p style={{ color: "#5b6b7a" }}>
-          Status: 0.1. A folder that follows this opens unchanged in Obsidian and Logseq, and any
+          Status: 0.1.1. A folder that follows this opens unchanged in Obsidian and Logseq, and any
           such folder becomes an OpenWiki by adding the two files. The first host,{" "}
           <a href="https://goviral.wiki/">goviral.wiki</a>, is being built on it.
         </p>
@@ -107,7 +110,9 @@ export default function OpenWikiPage(): ReactNode {
         <p style={{ color: "#41505d" }}>
           <code style={mono}>made_by</code> and <code style={mono}>author</code> describe the page as
           it stands; the history carries them per revision. <code style={mono}>disclosure</code>{" "}
-          uses the W3C AI Content Disclosure vocabulary verbatim. <code style={mono}>redirect</code>{" "}
+          uses the W3C AI Content Disclosure vocabulary verbatim, with <code style={mono}>ai_model</code>,{" "}
+          <code style={mono}>ai_provider</code> and <code style={mono}>ai_prompt_url</code> beside it: the
+          same four a host puts on the rendered page as the group&apos;s meta tag and attributes. <code style={mono}>redirect</code>{" "}
           names the page this one now is.
         </p>
       </div>

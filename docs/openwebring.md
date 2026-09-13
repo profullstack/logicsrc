@@ -2,7 +2,7 @@
 
 OpenWebring is a webring that says who made it. A ring is an ordered set of sites with a link from each to the next, the way rings have worked since 1995; what this adds is one file a ring serves about its members, one file a member may serve about itself, and a declaration on every member of whether the site is made by a person, by AI, or by both. A reader who wants only the human web can follow the ring and get it. A reader who wants to see what agents are writing can follow that ring instead. Nobody has to guess, and nobody has to install a script. It is maintained by Profullstack, Inc. as part of the LogicSRC open-standards surface.
 
-Status: **0.1**. A description of a ring already running, published so any site can host one and any site can join one.
+Status: **0.1.1**. A description of a ring already running, published so any site can host one and any site can join one.
 
 Slug: `openwebring`
 
@@ -48,6 +48,9 @@ A member may also serve a descriptor at `/.well-known/openwebring.json`:
   },
   "made_by": "human",
   "disclosure": "ai-assisted",
+  "ai_model": "gpt-5.1",
+  "ai_provider": "OpenAI",
+  "ai_prompt_url": "https://chovy.com/ai-methodology#posts",
   "rings": [
     { "ring": "https://rssamplifier.com/ring/small-web", "slug": "chovy" }
   ],
@@ -58,7 +61,8 @@ A member may also serve a descriptor at `/.well-known/openwebring.json`:
 - **`site.url`** is the canonical home page, with the trailing slash the site itself uses. It is the identity a ring matches hops against.
 - **`site.feed`**, **`lang`**, **`banner`**, **`author`** are what existing rings ask for: a feed so a ring can be read as one river, a language, an 88 by 31 banner for rings that show one, and the person behind the site as an [OpenProfile.md](/openprofile) URL. Absent is unstated.
 - **`made_by`** is `human`, `ai` or `both`. `human` means a person makes the content, with tools at most. `ai` means a model or agent makes it, with a person at most pointing it. `both` means a mix the site does not care to split. It is a self-declaration and nothing verifies it; a ring that wants more asks for it in its own terms.
-- **`disclosure`** is finer, optional, and uses the vocabulary of the W3C AI Content Disclosure community group verbatim: `none`, `ai-assisted`, `ai-generated`, `autonomous`, so it maps onto the `ai-disclosure` HTML attribute and the IETF `AI-Disclosure` header without translation. A site that says `made_by: human` and `disclosure: ai-assisted` writes its own words and lets a model tidy them, and says so.
+- **`disclosure`** is finer, optional, and uses the vocabulary of the W3C AI Content Disclosure community group verbatim: `none`, `ai-assisted`, `ai-generated`, `autonomous`, so it maps onto the `ai-disclosure` HTML attribute and the IETF `AI-Disclosure` header without translation. A site that says `made_by: human` and `disclosure: ai-assisted` writes its own words and lets a model tidy them, and says so. A site whose involvement differs page by page may say `mixed`, the value the group's meta tag form allows, and let each page carry its own attributes.
+- **`ai_model`**, **`ai_provider`** and **`ai_prompt_url`** are the rest of that vocabulary, the `ai-model`, `ai-provider` and `ai-prompt-url` attributes under our naming: which model, whose, and a page on the site describing how it is used. Optional, and meaningful only beside a `disclosure` other than `none`. A site that says them on its pages says them here once, and a directory shows them beside the disclosure.
 - **`rings`** is the one thing no existing format carries: the site's own statement of which rings it belongs to, each as the ring's URL and the member's slug there. A directory learns a site's rings from the site, and a ring learns a member is still willing from the member.
 
 ## The host
@@ -117,7 +121,7 @@ And each ring's own file, at `members_url` (a host with one small ring may put `
 
 - **`accepts`** is the ring's policy on `made_by`: which declarations it admits. Absent means all three. A reader filtering rings for the human web looks for `["human"]`.
 - **`join`** is where a site asks in. How is the host's business: a form, a sign-in with the site's own URL, a pull request, or the oldest way, putting the links on the page and clicking one.
-- **`members`** is the list in ring order. Each member is a subset of the member descriptor plus **`status`** (`active`, `inactive`, `pending`), **`since`**, and **`checked`**, when the host last saw the member's link. Order is the hop order and is stable: a member keeps its place until it leaves.
+- **`members`** is the list in ring order. Each member is a subset of the member descriptor, with `made_by`, `disclosure`, `ai_model`, `ai_provider` and `ai_prompt_url` copied as the member said them, plus **`status`** (`active`, `inactive`, `pending`), **`since`**, and **`checked`**, when the host last saw the member's link. Order is the hop order and is stable: a member keeps its place until it leaves.
 - **`opml`** is the same members as an OPML 2.0 outline of their feeds, so the ring is a subscription list in one click, and so the tools that already read a ring's OPML read this one.
 
 ## Hops
@@ -195,6 +199,7 @@ A host is a table of rings, a table of members with a position, three redirect r
 | Version | Date | Change |
 |---|---|---|
 | 0.1 | 2026-09-13 | First publication: the member, the host, the two files, six hop rules, verification, discovery, what a directory owes a ring. |
+| 0.1.1 | 2026-09-13 | `ai_model`, `ai_provider` and `ai_prompt_url` beside `disclosure`, the rest of the W3C AI Content Disclosure vocabulary; `mixed` allowed at the site level; a host copies all of them into the member entry. |
 
 ## License
 
