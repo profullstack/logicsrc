@@ -1,3 +1,9 @@
+export { createOpenFleet } from "./openfleet.js";
+export type {
+  OpenFleet, OpenFleetJsonValue, OpenFleetMember, OpenFleetMemberReference,
+  OpenFleetRental, OpenFleetRentalScope
+} from "./openfleet.js";
+
 export type LogicSrcId = string;
 
 export interface LogicSrcTask {

@@ -3,6 +3,7 @@ import * as addFormatsModule from "ajv-formats";
 import type { ErrorObject } from "ajv";
 import { parse } from "yaml";
 import { isSchemaKind, schemas, type SchemaKind } from "./schemas.js";
+import { validateOpenFleetReferences } from "./openfleet.js";
 
 type CompiledSchema = { (data: unknown): boolean; errors?: ErrorObject[] | null };
 
@@ -61,6 +62,10 @@ export function validate(kind: SchemaKind, data: unknown): ValidationResult {
   const ok = validateDocument(data);
 
   if (ok) {
+    if (kind === "openfleet") {
+      const errors = validateOpenFleetReferences(data);
+      if (errors.length) return { ok: false, kind, errors };
+    }
     return { ok: true, kind, data };
   }
 

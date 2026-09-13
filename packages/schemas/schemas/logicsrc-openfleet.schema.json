@@ -1,0 +1,323 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.logicsrc.com/logicsrc-openfleet.schema.json",
+  "title": "OpenFleet",
+  "description": "A fleet of OpenAgent profiles and/or OpenSwarm swarms with explicit CoinPay rental offers.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "type",
+    "version",
+    "id",
+    "name",
+    "owner_did",
+    "members"
+  ],
+  "properties": {
+    "type": {
+      "const": "logicsrc.openfleet"
+    },
+    "version": {
+      "const": "0.1"
+    },
+    "id": {
+      "$ref": "#/$defs/httpsUrl"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "description": {
+      "type": "string"
+    },
+    "owner_did": {
+      "$ref": "https://schemas.logicsrc.com/logicsrc-agent.schema.json#/$defs/did"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "availability": {
+      "enum": [
+        "available",
+        "busy",
+        "offline",
+        "unknown"
+      ]
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "metadata": {
+      "type": "object"
+    },
+    "members": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/member"
+      }
+    },
+    "rentals": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/rental"
+      }
+    }
+  },
+  "$defs": {
+    "httpsUrl": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://"
+    },
+    "memberReference": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "id"
+          ],
+          "properties": {
+            "kind": {
+              "const": "openagent"
+            },
+            "id": {
+              "$ref": "https://schemas.logicsrc.com/logicsrc-agent.schema.json#/$defs/did"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "id"
+          ],
+          "properties": {
+            "kind": {
+              "const": "openswarm"
+            },
+            "id": {
+              "type": "string",
+              "pattern": "^ed25519:[0-9a-f]{64}$"
+            }
+          }
+        }
+      ]
+    },
+    "member": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "id",
+            "url"
+          ],
+          "properties": {
+            "kind": {
+              "const": "openagent"
+            },
+            "id": {
+              "$ref": "https://schemas.logicsrc.com/logicsrc-agent.schema.json#/$defs/did"
+            },
+            "url": {
+              "$ref": "#/$defs/httpsUrl"
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1
+            },
+            "role": {
+              "type": "string",
+              "minLength": 1
+            },
+            "metadata": {
+              "type": "object"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "id",
+            "url"
+          ],
+          "properties": {
+            "kind": {
+              "const": "openswarm"
+            },
+            "id": {
+              "type": "string",
+              "pattern": "^ed25519:[0-9a-f]{64}$"
+            },
+            "url": {
+              "$ref": "#/$defs/httpsUrl"
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1
+            },
+            "role": {
+              "type": "string",
+              "minLength": 1
+            },
+            "metadata": {
+              "type": "object"
+            }
+          }
+        }
+      ]
+    },
+    "scope": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind"
+          ],
+          "properties": {
+            "kind": {
+              "const": "fleet"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "members"
+          ],
+          "properties": {
+            "kind": {
+              "const": "members"
+            },
+            "members": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "$ref": "#/$defs/memberReference"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "rental": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "scope",
+        "rate",
+        "payment"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scope": {
+          "$ref": "#/$defs/scope"
+        },
+        "rate": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "amount",
+            "currency",
+            "unit"
+          ],
+          "properties": {
+            "amount": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)\\.[0-9]{6}$",
+              "description": "Non-negative USD decimal string with exactly six fractional digits; never a JSON number."
+            },
+            "currency": {
+              "const": "USD"
+            },
+            "unit": {
+              "enum": [
+                "hour",
+                "day",
+                "month",
+                "task"
+              ]
+            }
+          }
+        },
+        "minimum_units": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "maximum_units": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "valid_from": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "valid_until": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "terms_url": {
+          "$ref": "#/$defs/httpsUrl"
+        },
+        "payment": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "provider",
+            "payee_did",
+            "checkout_url"
+          ],
+          "properties": {
+            "provider": {
+              "const": "coinpay"
+            },
+            "payee_did": {
+              "$ref": "https://schemas.logicsrc.com/logicsrc-agent.schema.json#/$defs/did"
+            },
+            "checkout_url": {
+              "$ref": "#/$defs/httpsUrl"
+            }
+          }
+        },
+        "metadata": {
+          "type": "object"
+        }
+      }
+    }
+  }
+}
