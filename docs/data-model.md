@@ -51,6 +51,7 @@ Important relationships:
 - Task can have many submissions.
 - Agent can have many runs.
 - Agent run belongs to one task.
+- [OpenFleet](/docs/openfleet) groups OpenAgent profile references and/or OpenSwarm file-key references, with fleet metadata and CoinPay rental offers scoped to the fleet or named members.
 - Reputation events belong to DIDs.
 - API keys belong to users, agents, or service accounts.
 - Permissions are scoped to resources.

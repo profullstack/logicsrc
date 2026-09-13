@@ -103,6 +103,7 @@ export const FAMILIES: Family[] = [
     specs: [
       s("asdlc", "ASDLC", "The Agentic Software Development Lifecycle: nine phases, four conformance levels and the ratchet rule"),
       s("openprd", "OpenPRD", "A product requirement document an agent can execute and a person can read"),
+      s("openfleet", "OpenFleet", "Fleets of OpenAgent and OpenSwarm members, with metadata and rental rates through CoinPay", { landing: undefined, status: "draft" }),
       s("openswarm", "OpenSwarm", "Settlement and proof of work done under a peer-to-peer swarm"),
       s("openstream", "OpenStream", "A lossless byte-stream relay envelope, with benchmark reports per release", { landing: undefined }),
       s("openontology", "OpenOntology", "Five nouns for a shared ontology, with governance and interoperability notes"),

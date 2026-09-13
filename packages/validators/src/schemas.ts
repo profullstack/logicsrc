@@ -8,6 +8,7 @@
  * could not load a single schema.
  */
 import agentSchema from "@logicsrc/schemas/agent" with { type: "json" };
+import openfleetSchema from "@logicsrc/schemas/openfleet" with { type: "json" };
 import accountAuditEventSchema from "@logicsrc/schemas/account-audit-event" with { type: "json" };
 import accountGrantSchema from "@logicsrc/schemas/account-grant" with { type: "json" };
 import accountProviderSchema from "@logicsrc/schemas/account-provider" with { type: "json" };
@@ -70,6 +71,7 @@ import credsAuditEventSchema from "@logicsrc/schemas/opencreds-audit-event" with
 
 export const schemas = {
   agent: agentSchema,
+  openfleet: openfleetSchema,
   "account-audit-event": accountAuditEventSchema,
   "account-grant": accountGrantSchema,
   "account-provider": accountProviderSchema,
