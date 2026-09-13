@@ -1,0 +1,229 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.logicsrc.com/logicsrc-openwall-receipt.schema.json",
+  "title": "OpenWall Receipt (0.1 draft)",
+  "description": "Private coordinator event. Authenticity, event ordering and valid state transitions require runtime checks.",
+  "type": "object",
+  "required": [
+    "openwall",
+    "id",
+    "messageId",
+    "deliveryId",
+    "recipient",
+    "sequence",
+    "state",
+    "at",
+    "attempt"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "openwall": {
+      "const": "0.1-draft"
+    },
+    "id": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+    },
+    "messageId": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+    },
+    "recipient": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^(did:|https://)",
+      "maxLength": 2048
+    },
+    "sequence": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "state": {
+      "enum": [
+        "queued",
+        "sending",
+        "retrying",
+        "accepted",
+        "delivered",
+        "read",
+        "unknown",
+        "failed",
+        "expired",
+        "cancelled"
+      ]
+    },
+    "at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "attempt": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 8
+    },
+    "route": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://",
+      "maxLength": 2048
+    },
+    "providerMessageId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2048
+    },
+    "reason": {
+      "enum": [
+        "not-permitted",
+        "identity-unverified",
+        "unsupported",
+        "rate-limited",
+        "provider-failure",
+        "acceptance-unknown",
+        "retry-exhausted",
+        "deadline-passed",
+        "sender-cancelled"
+      ]
+    },
+    "nextAttemptAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "deliveryId": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "const": "retrying"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "nextAttemptAt",
+          "reason"
+        ],
+        "properties": {
+          "nextAttemptAt": {},
+          "reason": {}
+        }
+      },
+      "else": {
+        "not": {
+          "required": [
+            "nextAttemptAt"
+          ],
+          "properties": {
+            "nextAttemptAt": {}
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "enum": [
+              "failed",
+              "unknown",
+              "expired",
+              "cancelled"
+            ]
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "reason"
+        ],
+        "properties": {
+          "reason": {}
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "enum": [
+              "sending",
+              "retrying",
+              "accepted",
+              "delivered",
+              "read",
+              "unknown"
+            ]
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "route"
+        ],
+        "properties": {
+          "attempt": {
+            "minimum": 1,
+            "type": "integer"
+          },
+          "route": {}
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "const": "unknown"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "reason": {
+            "const": "acceptance-unknown"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "const": "expired"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "reason": {
+            "const": "deadline-passed"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "const": "cancelled"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "reason": {
+            "const": "sender-cancelled"
+          }
+        }
+      }
+    }
+  ]
+}

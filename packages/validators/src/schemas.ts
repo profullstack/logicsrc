@@ -69,7 +69,12 @@ import credsManifestSchema from "@logicsrc/schemas/opencreds-manifest" with { ty
 import credsDatabaseSchema from "@logicsrc/schemas/opencreds-database" with { type: "json" };
 import credsAuditEventSchema from "@logicsrc/schemas/opencreds-audit-event" with { type: "json" };
 
+import openwallMessageSchema from "@logicsrc/schemas/openwall-message" with { type: "json" };
+import openwallReceiptSchema from "@logicsrc/schemas/openwall-receipt" with { type: "json" };
+
 export const schemas = {
+  "openwall-message": openwallMessageSchema,
+  "openwall-receipt": openwallReceiptSchema,
   agent: agentSchema,
   openfleet: openfleetSchema,
   "account-audit-event": accountAuditEventSchema,

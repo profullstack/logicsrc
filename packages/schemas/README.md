@@ -3,7 +3,7 @@
 Canonical JSON Schemas (draft 2020-12) for the LogicSRC open coordination
 standards, maintained by Profullstack, Inc.
 
-Two schema families ship from this package:
+Schema families include:
 
 - **LogicSRC core** — `logicsrc-*.schema.json`: tasks, agents, runs, events,
   plugins, connected accounts, email messages, social posts.
@@ -11,6 +11,10 @@ Two schema families ship from this package:
   contract for CLI tools and AI agents (ads, placements, requests, responses,
   impressions, clicks, campaigns). See `docs/agentad.md` in the repo;
   [cl1s.tech](https://github.com/profullstack/cl1s.tech) is the reference network.
+- **OpenWall draft** — `openwall-message` and `openwall-receipt` exports define
+  sender-side audience jobs and private delivery events. Fixtures are in
+  `fixtures/openwall`. See `docs/openwall.md` for consent, routing, and runtime
+  requirements beyond structural validation; no OpenWall delivery runtime ships.
 
 ## Install
 

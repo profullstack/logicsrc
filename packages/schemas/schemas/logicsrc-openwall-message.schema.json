@@ -1,0 +1,246 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.logicsrc.com/logicsrc-openwall-message.schema.json",
+  "title": "OpenWall Message (0.1 draft)",
+  "description": "Private sender-side job document. Structural validation does not authorize delivery or enforce the semantic rules in docs/openwall.md.",
+  "type": "object",
+  "required": [
+    "openwall",
+    "id",
+    "sender",
+    "createdAt",
+    "expiresAt",
+    "visibility",
+    "topic",
+    "audience",
+    "content"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "openwall": {
+      "const": "0.1-draft"
+    },
+    "id": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+    },
+    "sender": {
+      "$ref": "#/$defs/identity"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "notBefore": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expiresAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "visibility": {
+      "enum": [
+        "private",
+        "public"
+      ]
+    },
+    "topic": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[a-z0-9][a-z0-9._-]*$"
+    },
+    "audience": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/relationships"
+        },
+        {
+          "$ref": "#/$defs/direct"
+        },
+        {
+          "$ref": "#/$defs/public"
+        }
+      ]
+    },
+    "content": {
+      "type": "object",
+      "required": [
+        "mediaType",
+        "text"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "mediaType": {
+          "const": "text/plain"
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "visibility": {
+            "const": "public"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "audience": {
+            "$ref": "#/$defs/public"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "audience": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/relationships"
+              },
+              {
+                "$ref": "#/$defs/direct"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "identity": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^(did:|https://)",
+      "maxLength": 2048
+    },
+    "selector": {
+      "type": "object",
+      "required": [
+        "source",
+        "actor",
+        "groups"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://",
+          "maxLength": 2048
+        },
+        "actor": {
+          "$ref": "#/$defs/identity"
+        },
+        "groups": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 4,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "connections",
+              "followers",
+              "following",
+              "users"
+            ]
+          }
+        },
+        "scope": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://",
+          "maxLength": 2048
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "groups": {
+                "contains": {
+                  "const": "users"
+                },
+                "type": "array"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "scope"
+            ],
+            "properties": {
+              "scope": {}
+            }
+          }
+        }
+      ]
+    },
+    "relationships": {
+      "type": "object",
+      "required": [
+        "kind",
+        "selectors"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "relationships"
+        },
+        "selectors": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 32,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/selector"
+          }
+        },
+        "exclude": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/identity"
+          }
+        }
+      }
+    },
+    "direct": {
+      "type": "object",
+      "required": [
+        "kind",
+        "recipient"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "direct"
+        },
+        "recipient": {
+          "$ref": "#/$defs/identity"
+        }
+      }
+    },
+    "public": {
+      "type": "object",
+      "required": [
+        "kind"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "public"
+        }
+      }
+    }
+  }
+}

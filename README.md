@@ -55,6 +55,14 @@ npm --workspace @profullstack/logicsrc-mcp run build
 node packages/logicsrc-mcp/dist/index.js
 ```
 
+## OpenWall proposal
+
+[OpenWall](docs/openwall.md) proposes broadcasts to explicitly selected connections, followers,
+following, or service users, plus direct messages through verified contact routes. The draft
+defines recipient consent, private delivery outcomes, and a public/private AT Protocol mapping.
+Message and receipt JSON Schemas and fixtures are included; delivery services and the proposed
+`logicsrc wall` commands are not implemented.
+
 ## OpenPRD
 
 [OpenPRD](docs/openprd.md) is a lightweight standard for product requirements documents: a repo

@@ -85,6 +85,8 @@
     "./openontology-review": "./schemas/logicsrc-openontology-review.schema.json",
     "./openontology-source": "./schemas/logicsrc-openontology-source.schema.json",
     "./openprd-prd": "./schemas/openprd-prd.schema.json",
+    "./openwall-message": "./schemas/logicsrc-openwall-message.schema.json",
+    "./openwall-receipt": "./schemas/logicsrc-openwall-receipt.schema.json",
     "./plugin": "./schemas/logicsrc-plugin.schema.json",
     "./pull-request": "./schemas/logicsrc-pull-request.schema.json",
     "./repo": "./schemas/logicsrc-repo.schema.json",
