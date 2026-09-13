@@ -165,7 +165,7 @@ A directory reading rings:
 4. **Keeps the member's own `url`**, unchanged, and links to the ring's own `join`.
 5. **Offers the same three hops over its own listing** only if it says it is a ring, with its own descriptor. A directory is not a ring by reading rings.
 
-The first host is [rssamplifier.com](https://rssamplifier.com/ring), the open directory of independent feeds, which runs one ring per topic out of the feeds it already reads, and the first directory reading rings will be [nichedb.dev](https://nichedb.dev).
+The first host is [rssamplifier.com](https://rssamplifier.com/ring), the open directory of independent feeds, which runs one ring per topic out of the feeds it already reads and a curated ring of the sites Profullstack publishes. The first directory reading rings is [nichedb.dev/c/webrings](https://nichedb.dev/c/webrings): one row per ring and one per member, with `made_by` as the member said it and the status the host last verified, re-read hourly.
 
 ## What is deliberately absent
 

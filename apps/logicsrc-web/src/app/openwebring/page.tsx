@@ -84,8 +84,9 @@ export default function OpenWebringPage(): ReactNode {
         <p style={{ color: "#5b6b7a" }}>
           Status: 0.1. The first host is{" "}
           <a href="https://rssamplifier.com/ring">rssamplifier.com</a>, one ring per topic out of
-          the feeds it already reads. A member owes a ring one plain link, which is what every ring
-          already asks for.
+          the feeds it already reads; the first directory reading rings is{" "}
+          <a href="https://nichedb.dev/c/webrings">nichedb.dev/c/webrings</a>. A member owes a ring
+          one plain link, which is what every ring already asks for.
         </p>
       </div>
 
@@ -193,7 +194,11 @@ export default function OpenWebringPage(): ReactNode {
           </li>
           <li>
             <a href="https://rssamplifier.com/ring">rssamplifier.com/ring</a>: the first host, one
-            ring per topic
+            ring per topic and a ring of the sites Profullstack publishes
+          </li>
+          <li>
+            <a href="https://nichedb.dev/c/webrings">nichedb.dev/c/webrings</a>: the first directory
+            reading rings, every ring and every member across hosts, with who makes each site
           </li>
           <li>
             <Link href="/openprofile">OpenProfile.md</Link>, the author behind a member;{" "}
