@@ -4,10 +4,11 @@ test("human capabilities are discoverable and their Markdown can travel independ
   await page.goto("/openprofile/skills");
   await expect(page).toHaveURL(/\/openskill$/);
   await expect(page.getByRole("heading", { name: "OpenSkill", exact: true })).toBeVisible();
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(page.viewportSize()!.width);
 
   await page.getByRole("link", { name: "Logo design", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Logo design", exact: true })).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(page.viewportSize()!.width);
   const sourceLink = page.getByRole("link", { name: "Markdown source", exact: true });
   const source = await request.get((await sourceLink.getAttribute("href"))!);
   expect(source.status()).toBe(200);
