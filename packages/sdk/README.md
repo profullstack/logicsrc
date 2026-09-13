@@ -32,3 +32,13 @@ Use `@logicsrc/validators` 0.2.0 or newer for OpenRental validation. See the
 bindings, exact decimal rental rates and CoinPay settlement metadata.
 
 MIT © Profullstack, Inc.
+
+## OpenABTest draft
+
+Version 0.3.0 adds `OpenABTestManifest`, `OpenABTestEvent`,
+`createOpenABTestManifest` and `createOpenABTestEvent`. The constructors set
+`openabtest: "0.1-draft"`; validate their result with `@logicsrc/validators`
+using `openabtest-manifest` or `openabtest-event` before storing it. They do not
+assign participants, authenticate events or initiate payments. See the
+[OpenABTest specification](https://logicsrc.com/docs/openabtest) and its complete
+Chovy fixture for every referred purchase.

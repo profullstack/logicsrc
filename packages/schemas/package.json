@@ -1,7 +1,7 @@
 {
   "name": "@logicsrc/schemas",
-  "version": "0.2.0",
-  "description": "LogicSRC JSON schemas for tasks, agents, runs, events, plugins, the AgentAd ad standard, the OpenOntology knowledge contracts, the OpenContext context plane, the OpenCreds credential vault, OpenRental membership and rental offers, and the OpenWall messaging proposal.",
+  "version": "0.3.0",
+  "description": "LogicSRC JSON schemas for tasks, agents, runs, events, plugins, the AgentAd ad standard, the OpenOntology knowledge contracts, the OpenContext context plane, the OpenCreds credential vault, OpenRental membership and rental offers, and the OpenWall messaging proposal. Includes the OpenABTest draft experiment and event contracts.",
   "license": "MIT",
   "type": "module",
   "repository": {
@@ -26,7 +26,8 @@
     "openontology",
     "password-manager",
     "standards",
-    "vault"
+    "vault",
+    "openabtest"
   ],
   "publishConfig": {
     "access": "public"
@@ -92,7 +93,9 @@
     "./repo": "./schemas/logicsrc-repo.schema.json",
     "./run": "./schemas/logicsrc-run.schema.json",
     "./social-post": "./schemas/logicsrc-social-post.schema.json",
-    "./task": "./schemas/logicsrc-task.schema.json"
+    "./task": "./schemas/logicsrc-task.schema.json",
+    "./openabtest-manifest": "./schemas/logicsrc-openabtest-manifest.schema.json",
+    "./openabtest-event": "./schemas/logicsrc-openabtest-event.schema.json"
   },
   "files": [
     "schemas",

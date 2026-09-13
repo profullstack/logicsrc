@@ -1,0 +1,22 @@
+{
+  "openabtest": "0.1-draft",
+  "producerId": "chovy-server",
+  "manifestId": "chovy-signup-discount-v1",
+  "manifestRevision": 1,
+  "participantId": "participant-opaque-7d12",
+  "at": "2026-09-15T12:00:00Z",
+  "id": "event-adjustment-42",
+  "kind": "adjustment",
+  "payload": {
+    "assignmentId": "assignment-42",
+    "variantId": "signup-10",
+    "conversionId": "purchase-42",
+    "adjustmentId": "refund-42",
+    "currency": "USD",
+    "amountMinor": -3600,
+    "reason": "refund",
+    "proofRefs": [
+      "refund-proof-42"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "openabtest": "0.1-draft",
+  "producerId": "chovy-server",
+  "manifestId": "chovy-signup-discount-v1",
+  "manifestRevision": 1,
+  "participantId": "participant-opaque-7d12",
+  "at": "2026-09-15T12:00:00Z",
+  "id": "event-exposure-42",
+  "kind": "exposure",
+  "payload": {
+    "assignmentId": "assignment-42",
+    "variantId": "signup-10",
+    "offerId": "offer-42",
+    "surface": "checkout"
+  }
+}
