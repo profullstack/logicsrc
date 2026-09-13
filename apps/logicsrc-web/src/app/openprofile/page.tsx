@@ -50,6 +50,26 @@ Ships small fixes to open source projects, nightly.
 - **Name**: Ada Lovelace
 - **Profile**: https://ada.example/.well-known/openprofile.md`;
 
+const MATCH = `## Match
+
+- **Born**: 1990-05-12
+- **Gender**: woman
+- **Orientation**: bisexual
+- **Status**: single
+- **Height**: 168 cm
+- **Children**: none
+- **Wants children**: open
+- **Smoking**: never
+- **Seeking**: everyone
+- **For**: long-term
+- **Ages**: 30-45
+- **Distance**: 50 km
+- **Not**: smokers, long-distance
+
+## Photos
+
+- https://ada.example/photos/garden.jpg`;
+
 const RULES: Array<[string, string]> = [
   ["One # heading", "It is the name. More than one and the first wins; none and the reader says it has no name."],
   ["The identity block", "The bullet list under the name. Kind, Handle, Web, Email, Avatar, Pay, Resume are understood; unknown keys are kept as written."],
@@ -58,7 +78,8 @@ const RULES: Array<[string, string]> = [
   ["Accounts", "One bullet per account and the URL is the identity. The network is derived from the host. An account is a claim until the page links back."],
   ["Topics", "The words you would use to find yourself. Readers lowercase, strip #, and match loosely. No taxonomy at write time."],
   ["Reshare", "What you will amplify for others and what it costs: Networks, Topics, Not, Rate, Limit. No section means no offer."],
-  ["Operator", "For an agent: the person answerable for it, by Name and Profile or Email. Chains are followed a few hops and reported."]
+  ["Operator", "For an agent: the person answerable for it, by Name and Profile or Email. Chains are followed a few hops and reported."],
+  ["Match", "What a dating site or any matching platform needs, about you (Born, Gender, Orientation, Status, Height, Children, Smoking, Religion, ...) and who you seek (Seeking, For, Ages, Distance, Not). Born is required for matching and must give 18 or over; nothing is inferred; a Photos section carries the pictures."]
 ];
 
 const DISCOVERY: Array<[string, string, string]> = [
@@ -71,7 +92,8 @@ const ABSENT: Array<[string, string]> = [
   ["No required fields", "A name and one line of prose is a valid file."],
   ["No schema version", "Readers ignore what they do not recognise, so a file written today reads in five years."],
   ["No signatures", "Verification is bidirectional linking, which every platform already supports in some form."],
-  ["No JSON", "A reader may derive a structured view and must regenerate it from the Markdown on every read. The Markdown is the canonical copy."]
+  ["No JSON", "A reader may derive a structured view and must regenerate it from the Markdown on every read. The Markdown is the canonical copy."],
+  ["No inference", "A Match key is never filled from a photo, a name, a handle or another site. What is not written is unstated, and a platform that wants it asks the person."]
 ];
 
 export default function OpenProfilePage(): ReactNode {
@@ -111,11 +133,12 @@ export default function OpenProfilePage(): ReactNode {
         </div>
         <pre style={pre}>{EXAMPLE}</pre>
         <pre style={pre}>{AGENT}</pre>
+        <pre style={pre}>{MATCH}</pre>
       </div>
 
       <div className="band">
         <div className="section-head">
-          <h2>The eight rules</h2>
+          <h2>The nine rules</h2>
           <p>Every one of them degrades rather than fails.</p>
         </div>
         <table style={table}>

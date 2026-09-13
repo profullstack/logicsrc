@@ -25,6 +25,7 @@ const STATIC_ROUTES: Array<{
   { path: "/openprofile", changeFrequency: "weekly", priority: 0.9 },
   { path: "/openmcp", changeFrequency: "weekly", priority: 0.9 },
   { path: "/openaccess", changeFrequency: "weekly", priority: 0.9 },
+  { path: "/openserver", changeFrequency: "weekly", priority: 0.9 },
   { path: "/opencpu", changeFrequency: "weekly", priority: 0.9 },
   { path: "/openmemory", changeFrequency: "weekly", priority: 0.9 },
   { path: "/opengpu", changeFrequency: "weekly", priority: 0.9 },
