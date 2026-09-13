@@ -1,0 +1,44 @@
+{
+  "name": "@logicsrc/openfleet",
+  "version": "0.1.0",
+  "description": "Reference implementation of the OpenFleet standard: the record an agent session carries about who spawned it, for what and under what ceiling, the ledger its sysop reads, and the `logicsrc fleet` sysop verbs.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./commands": "./dist/commands.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/profullstack/logicsrc.git",
+    "directory": "packages/openfleet"
+  },
+  "homepage": "https://logicsrc.com/docs/openfleet",
+  "keywords": [
+    "logicsrc",
+    "openfleet",
+    "agents",
+    "fleet",
+    "swarm",
+    "standards",
+    "cli"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run src"
+  },
+  "dependencies": {
+    "commander": "^14.0.2"
+  },
+  "devDependencies": {
+    "vitest": "^4.0.8"
+  }
+}

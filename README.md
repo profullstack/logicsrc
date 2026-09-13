@@ -17,6 +17,7 @@ packages/
   opencontext        OpenContext reference implementation (resolver, scopes, bundles, adapters)
   openontology       OpenOntology reference engine (entities, claims, queries, change sets)
   openprd            OpenPRD reference implementation (numbered PRDs, lifecycle, task bridge)
+  openfleet          OpenFleet reference implementation (record, ledger, sysop verbs, Claude Code hooks)
   logicsrc-mcp       @profullstack/logicsrc-mcp standards MCP server
   sdk                SDK contract types and helpers
   tui                terminal UI
@@ -165,6 +166,7 @@ logicsrc vault …        # OpenCreds (also `opencreds`)
 logicsrc prd …          # OpenPRD
 logicsrc ontology …     # OpenOntology
 logicsrc context …      # OpenContext (also `opencontext`)
+logicsrc fleet …        # OpenFleet: open, cap, tree, stop, log, hooks install
 logicsrc openmcp …      # OpenMCP: relays, find, call, add, probe, serve (also `openmcp`)
 logicsrc openspec …     # import, export, change; any other word is OpenSpec.dev's own CLI (init, list, validate, archive, show)
 logicsrc mcp            # the LogicSRC MCP server over stdio (also `logicsrc-mcp`)

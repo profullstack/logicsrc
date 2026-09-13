@@ -54,7 +54,7 @@ const STEPS: Array<[string, string]> = [
   ["1. A human opens a fleet", "Or does nothing, and gets the implicit fleet user@host with a ceiling of depth 1 and no fleet-level approvals: each session the human starts by hand runs its subtree under the approvals it was started with. Only a human opens a fleet or sets its ceiling. A process that carries OPENFLEET_MEMBER is an agent, and the tool refuses it."],
   ["2. An agent spawns a swarm", "It mints a swarm id, writes swarm.spawn to the fleet's ledger with the task, the ceiling it narrowed to, and one piece per member with the paths that member owns, as data. It never widens the ceiling it inherited."],
   ["3. The starter writes the record, the session claims it", "Before each member starts: one JSON file under ~/.openfleet, its path in OPENFLEET_RECORD, copies of fleet, member and swarm in three more variables. The session that starts under an unclaimed record claims it by writing member.start. One that inherits an already claimed record derives its own child record, so the leak becomes a parent pointer."],
-  ["4. Everyone reads the same tree", "claude agents, moshcode herd ps and logicsrc fleet would fold the ledger and the records into one tree: fleet, swarms, members, state, spend against budget, and a mark on every member running with approvals bypassed."],
+  ["4. Everyone reads the same tree", "logicsrc fleet tree and moshcode fleet tree fold the ledger and the records into one tree: fleet, swarms, members, state, spend against budget, and a mark on every member running with approvals bypassed. The engine rosters, claude agents and moshcode herd ps, add liveness and the members that have no record."],
   ["5. The sysop stops or caps as one unit", "stop on a swarm ends every member through its own engine and writes one swarm.end. cap narrows a fleet or a running swarm, and anything already above the new ceiling is stopped. log says afterwards what happened and who did it."]
 ];
 
@@ -197,9 +197,13 @@ export default function OpenFleetPage(): ReactNode {
         <div className="section-head">
           <h2>Five verbs</h2>
           <p>
-            Proposed for <code style={mono}>logicsrc fleet</code>, for Claude Code&apos;s{" "}
-            <code style={mono}>claude agents</code> and for <code style={mono}>moshcode fleet</code>,
-            each able to stop the members its own engine runs. None ships yet.
+            <code style={mono}>logicsrc fleet</code> ships them in{" "}
+            <code style={mono}>@logicsrc/openfleet</code> 0.1.0 (logicsrc CLI 0.3.0) and{" "}
+            <code style={mono}>moshcode fleet</code> in moshcode 0.99.0, each able to stop the
+            members its own engine runs. Claude Code joins through{" "}
+            <code style={mono}>logicsrc fleet hooks install</code>, which makes every session a
+            recorded member; its own <code style={mono}>claude agents</code> view does not offer the
+            verbs yet.
           </p>
         </div>
         <table style={table}>
@@ -250,7 +254,7 @@ export default function OpenFleetPage(): ReactNode {
           <li>
             <Link href="/docs/openfleet">Specification</Link>: the terms, the record, the
             environment, claiming and deriving, the ledger&apos;s eight events, five verbs, fifteen
-            rules, the worked example, and what Claude Code and moshcode would each add
+            rules, the worked example, and what Claude Code and moshcode each add
           </li>
           <li>
             <Link href="/asdlc">ASDLC</Link>: a swarm is one fan-out made durable;{" "}

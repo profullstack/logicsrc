@@ -35,6 +35,7 @@ accounts
 social
 email
 credentials
+fleet
 openspec
 plugins
 tui
