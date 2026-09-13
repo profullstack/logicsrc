@@ -20,6 +20,7 @@ export const DOC_SLUGS = [
   "openprofile",
   "openmcp",
   "openaccess",
+  "openserver",
   "openstream",
   "openspec-comparison",
   "data-model",
