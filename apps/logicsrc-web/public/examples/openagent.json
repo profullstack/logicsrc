@@ -1,0 +1,13 @@
+{
+  "type": "logicsrc.agent",
+  "version": "0.1",
+  "name": "Research agent",
+  "did": "research.coinpay",
+  "owner_did": "operator.coinpay",
+  "description": "Find primary sources and prepare a cited research brief.",
+  "skills": ["research", "source-verification"],
+  "supported_task_types": ["research-brief"],
+  "permissions_requested": ["web:read"],
+  "polling_mode": true,
+  "public": true
+}

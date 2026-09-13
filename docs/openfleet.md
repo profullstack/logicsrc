@@ -228,6 +228,7 @@ Three ship: `logicsrc fleet` in `@logicsrc/openfleet` 0.1.0 (logicsrc CLI 0.3.0)
 
 ## Related standards
 
+- [OpenAgent](/openagent): the durable agent profile, with its identity, owner, skills and requested permissions. A launcher can map one profile to many fleet members; the profile does not change a session's sysop or ceiling.
 - [OpenSwarm](/openswarm): unrelated and easy to confuse. Peer-to-peer file and media distribution; its swarm is a set of peers. Each spec carries one line pointing at the other.
 - [OpenAccess](/openaccess): `ceiling.budget` borrows its money limit string and adds `<n> tokens`. A delegated grant is the network-side twin of a ceiling, a child narrower than its parent and revoked with it. A fleet API, if one comes, is an OpenAccess app with `fleet:read` and `fleet:control` scopes.
 - [OpenProfile.md](/openprofile): the sysop, where the human has one.
