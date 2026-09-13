@@ -1,0 +1,27 @@
+{
+  "openwall": "0.1-draft",
+  "id": "urn:uuid:94d908df-2876-48f1-bec8-c931f5c847d4",
+  "sender": "did:web:ops.example",
+  "createdAt": "2026-09-13T12:00:00Z",
+  "expiresAt": "2026-09-13T12:10:00Z",
+  "visibility": "private",
+  "topic": "maintenance",
+  "audience": {
+    "kind": "relationships",
+    "selectors": [
+      {
+        "source": "https://dev.example/contacts",
+        "actor": "did:web:ops.example",
+        "groups": [
+          "users"
+        ],
+        "scope": "https://dev.example/workspaces/main"
+      }
+    ],
+    "exclude": []
+  },
+  "content": {
+    "mediaType": "text/plain",
+    "text": "SERVER NOTICE\nMaintenance starts in 10 minutes.\nPlease save your work and pause running jobs."
+  }
+}

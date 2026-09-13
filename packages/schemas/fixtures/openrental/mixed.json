@@ -1,0 +1,86 @@
+{
+  "type": "logicsrc.openrental",
+  "version": "0.1",
+  "id": "https://example.com/listings/research",
+  "name": "Research and distribution listing",
+  "owner_did": "operator.coinpay",
+  "description": "An analyst agent and an encrypted reference-data swarm, offered together or separately.",
+  "updated_at": "2026-09-13T12:00:00Z",
+  "availability": "available",
+  "tags": [
+    "research",
+    "distribution"
+  ],
+  "capabilities": [
+    "analysis",
+    "paid-seeding"
+  ],
+  "metadata": {
+    "region": "eu-west",
+    "support_url": "https://example.com/support"
+  },
+  "members": [
+    {
+      "kind": "openagent",
+      "id": "analyst.coinpay",
+      "url": "https://example.com/agents/analyst.json",
+      "name": "Analyst",
+      "role": "analysis",
+      "metadata": {
+        "languages": [
+          "en"
+        ]
+      }
+    },
+    {
+      "kind": "openswarm",
+      "id": "ed25519:0d87e09c7fea3ad6ba6c2f3e027ea47f5b245452899910948470906704c5295d",
+      "url": "https://example.com/swarms/references/manifest.json",
+      "name": "Reference corpus",
+      "role": "reference-data"
+    }
+  ],
+  "rentals": [
+    {
+      "id": "listing-hourly",
+      "scope": {
+        "kind": "listing"
+      },
+      "rate": {
+        "amount": "25.000000",
+        "currency": "USD",
+        "unit": "hour"
+      },
+      "minimum_units": 1,
+      "maximum_units": 24,
+      "terms_url": "https://example.com/rental-terms",
+      "payment": {
+        "provider": "coinpay",
+        "payee_did": "operator.coinpay",
+        "checkout_url": "https://example.com/rentals/research"
+      }
+    },
+    {
+      "id": "analyst-task",
+      "scope": {
+        "kind": "members",
+        "members": [
+          {
+            "kind": "openagent",
+            "id": "analyst.coinpay"
+          }
+        ]
+      },
+      "rate": {
+        "amount": "5.500000",
+        "currency": "USD",
+        "unit": "task"
+      },
+      "payment": {
+        "provider": "coinpay",
+        "payee_did": "operator.coinpay",
+        "checkout_url": "https://example.com/rentals/analyst"
+      }
+    }
+  ]
+}

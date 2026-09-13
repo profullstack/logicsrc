@@ -134,7 +134,21 @@ do_install() {
   ok "downloaded${short_sha:+ ($short_sha)}"
 
   info "installing dependencies (this can take a minute)…"
-  ( cd "$STAGE" && npm install --no-audit --no-fund --ignore-scripts ) >"$BUILD_LOG" 2>&1 \
+  # Git dependency preparation can break under a newer system npm even with
+  # --ignore-scripts. Use the repo's tested npm where its Node engine permits
+  # it, while retaining the documented older-Node CLI installation path.
+  ( cd "$STAGE" &&
+    npm_spec="" &&
+    # Older tags predate the selector; preserve their install behavior too.
+    if [ -f scripts/install-npm.cjs ]; then
+      npm_spec="$(node scripts/install-npm.cjs)" || exit 1
+    fi
+    if [ -n "$npm_spec" ]; then
+      npm exec --yes --package="$npm_spec" -- npm install --no-audit --no-fund --ignore-scripts
+    else
+      npm install --no-audit --no-fund --ignore-scripts
+    fi
+  ) >"$BUILD_LOG" 2>&1 \
     || step_fail "npm install failed"
   info "building the CLI…"
   ( cd "$STAGE" && npm run build:cli ) >>"$BUILD_LOG" 2>&1 \

@@ -8,6 +8,7 @@
  * could not load a single schema.
  */
 import agentSchema from "@logicsrc/schemas/agent" with { type: "json" };
+import openrentalSchema from "@logicsrc/schemas/openrental" with { type: "json" };
 import accountAuditEventSchema from "@logicsrc/schemas/account-audit-event" with { type: "json" };
 import accountGrantSchema from "@logicsrc/schemas/account-grant" with { type: "json" };
 import accountProviderSchema from "@logicsrc/schemas/account-provider" with { type: "json" };
@@ -68,8 +69,14 @@ import credsManifestSchema from "@logicsrc/schemas/opencreds-manifest" with { ty
 import credsDatabaseSchema from "@logicsrc/schemas/opencreds-database" with { type: "json" };
 import credsAuditEventSchema from "@logicsrc/schemas/opencreds-audit-event" with { type: "json" };
 
+import openwallMessageSchema from "@logicsrc/schemas/openwall-message" with { type: "json" };
+import openwallReceiptSchema from "@logicsrc/schemas/openwall-receipt" with { type: "json" };
+
 export const schemas = {
+  "openwall-message": openwallMessageSchema,
+  "openwall-receipt": openwallReceiptSchema,
   agent: agentSchema,
+  openrental: openrentalSchema,
   "account-audit-event": accountAuditEventSchema,
   "account-grant": accountGrantSchema,
   "account-provider": accountProviderSchema,

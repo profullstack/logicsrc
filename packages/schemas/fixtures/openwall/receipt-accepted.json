@@ -1,0 +1,13 @@
+{
+  "openwall": "0.1-draft",
+  "id": "urn:uuid:963f9109-803f-4f0c-8506-10c70ec47ee6",
+  "messageId": "urn:uuid:94d908df-2876-48f1-bec8-c931f5c847d4",
+  "recipient": "did:web:ada.example",
+  "sequence": 3,
+  "state": "accepted",
+  "at": "2026-09-13T12:00:03Z",
+  "attempt": 1,
+  "route": "https://chat.example",
+  "providerMessageId": "provider-msg-123",
+  "deliveryId": "urn:uuid:db925d64-4e1a-4e5a-83c1-e37b68aa5eef"
+}

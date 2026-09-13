@@ -1,0 +1,14 @@
+{
+  "openwall": "0.1-draft",
+  "id": "urn:uuid:211bb615-90e1-4773-b7c0-49d59d7cd6bc",
+  "messageId": "urn:uuid:94d908df-2876-48f1-bec8-c931f5c847d4",
+  "recipient": "did:web:ada.example",
+  "sequence": 3,
+  "state": "retrying",
+  "at": "2026-09-13T12:00:03Z",
+  "attempt": 1,
+  "route": "https://chat.example",
+  "reason": "rate-limited",
+  "nextAttemptAt": "2026-09-13T12:01:00Z",
+  "deliveryId": "urn:uuid:db925d64-4e1a-4e5a-83c1-e37b68aa5eef"
+}

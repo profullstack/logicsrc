@@ -111,6 +111,11 @@ logicsrc email send <draft-id> --dry-run
 
 The initial scaffold exposes provider listings and dry-run placeholders. Live connect, sync, send, and publish flows require durable credential broker, approval queue, and audit persistence.
 
+The [OpenWall proposal](/docs/openwall) builds on these account and grant boundaries
+for broadcasts and direct messages across verified contact routes. Its receiving
+policy, audience snapshots and AT Protocol mapping are draft contracts, not added
+live provider capabilities.
+
 ## Storage
 
 Deployable database migrations live under `supabase/migrations/`.

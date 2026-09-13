@@ -47,6 +47,7 @@ a different product. The member protocols keep their `ip` names.
 
 Supporting documents:
 
+- [OpenRental](./openrental.md): group `ipfile` swarms and OpenAgent profiles under one descriptor, with listing metadata and CoinPay rental offers; each swarm keeps its existing identity and settlement rules.
 - c0mpute.com integration and use cases: [`c0mpute.md`](./openswarm/c0mpute.md)
 - Proposed `ip` CLI: [`cli.md`](./openswarm/cli.md)
 - Conformance: [`conformance.md`](./openswarm/conformance.md)

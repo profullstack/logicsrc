@@ -1,3 +1,9 @@
+export { createOpenRental } from "./openrental.js";
+export type {
+  OpenRental, OpenRentalJsonValue, OpenRentalMember, OpenRentalMemberReference,
+  OpenRentalRental, OpenRentalRentalScope
+} from "./openrental.js";
+
 export type LogicSrcId = string;
 
 export interface LogicSrcTask {

@@ -1,0 +1,17 @@
+{
+  "openwall": "0.1-draft",
+  "id": "urn:uuid:07b2b83e-27f6-4d59-bdfa-cdcd42548678",
+  "sender": "did:web:ops.example",
+  "createdAt": "2026-09-13T12:00:00Z",
+  "expiresAt": "2026-09-13T12:10:00Z",
+  "visibility": "private",
+  "topic": "maintenance",
+  "audience": {
+    "kind": "direct",
+    "recipient": "did:web:ada.example"
+  },
+  "content": {
+    "mediaType": "text/plain",
+    "text": "Ready when you are."
+  }
+}
