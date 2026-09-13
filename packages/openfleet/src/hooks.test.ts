@@ -186,6 +186,17 @@ describe("UserPromptSubmit", () => {
     expect(runHook("UserPromptSubmit", payload({ permission_mode: "bypassPermissions", prompt: "still" }), fake(home).io).exit).toBe(2);
   });
 
+  it("writes no end line for a member whose start was refused", () => {
+    append(home, "team-20260913", { event: "fleet.open", by: "sysop", fleet: "team-20260913", sysop: FLEET, ceiling: { depth: 2, hosts: ["dev"] } }, { host: "dev" });
+    writeCurrent(home, "team-20260913");
+    runHook("SessionStart", payload({ source: "startup" }), fake(home).io);
+    expect(runHook("UserPromptSubmit", payload({ permission_mode: "bypassPermissions", prompt: "go" }), fake(home).io).exit).toBe(2);
+    // The session still winds down through Stop and SessionEnd; a member that never started has no end.
+    runHook("Stop", payload({ permission_mode: "bypassPermissions", last_assistant_message: "blocked", background_tasks: [] }), fake(home).io);
+    runHook("SessionEnd", payload({ reason: "other" }), fake(home).io);
+    expect(findEvents(readLedger(home, "team-20260913"), "member.end")).toEqual([]);
+  });
+
   it("does nothing for a session it never saw, or a subagent", () => {
     expect(runHook("UserPromptSubmit", payload({ permission_mode: "auto" }), fake(home).io)).toEqual({ exit: 0, stdout: "", stderr: "" });
     runHook("SessionStart", payload({ source: "startup" }), fake(home).io);

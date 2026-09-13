@@ -370,8 +370,11 @@ export function handleStop(payload: Payload, io: HookIo): HookResult {
   if (!jobDir || !session.record) return OK;
   if (!Array.isArray(payload.background_tasks) || payload.background_tasks.length > 0) return OK;
   const record = session.record;
+  const lines = readLedger(homeDir, record.fleet);
+  // A member that never started (its first prompt was refused, or none came) has no end line.
+  if (!claimedBy(lines, record.member)) return OK;
   // A `lost` line a sysop tool wrote is superseded by the engine's own end; anything else stands.
-  const existing = endOf(readLedger(homeDir, record.fleet), record.member);
+  const existing = endOf(lines, record.member);
   if (existing && existing.state !== "lost") return OK;
   const state = stateJson(jobDir);
   endMember(
@@ -402,7 +405,10 @@ export function handleSessionEnd(payload: Payload, io: HookIo): HookResult {
   // clear, resume and logout hand the same work to another session; only a real exit ends the member.
   if (payload.reason !== undefined && payload.reason !== "other" && payload.reason !== "prompt_input_exit") return OK;
   const record = session.record;
-  const existing = endOf(readLedger(homeDir, record.fleet), record.member);
+  const lines = readLedger(homeDir, record.fleet);
+  // A member that never started (its first prompt was refused, or none came) has no end line.
+  if (!claimedBy(lines, record.member)) return OK;
+  const existing = endOf(lines, record.member);
   if (existing && existing.state !== "lost") return OK;
   const jobDir = ownJobDir(env, sessionId);
   const state = jobDir ? stateJson(jobDir) : null;
