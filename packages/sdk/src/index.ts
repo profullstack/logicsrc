@@ -94,3 +94,6 @@ export function createAgentSwarmSession(input: {
     openspec_only: input.openspecOnly ?? false
   };
 }
+
+export { createOpenABTestManifest, createOpenABTestEvent } from "./openabtest.js";
+export type { OpenABTestManifest, OpenABTestEvent, OpenABTestPrice, OpenABTestReconciliation } from "./openabtest.js";

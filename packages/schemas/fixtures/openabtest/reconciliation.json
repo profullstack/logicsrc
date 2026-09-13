@@ -1,0 +1,30 @@
+{
+  "openabtest": "0.1-draft",
+  "producerId": "chovy-server",
+  "manifestId": "chovy-signup-discount-v1",
+  "manifestRevision": 1,
+  "participantId": "participant-opaque-7d12",
+  "at": "2026-09-15T12:00:00Z",
+  "id": "event-reconciliation-42",
+  "kind": "reconciliation",
+  "payload": {
+    "assignmentId": "assignment-42",
+    "variantId": "signup-10",
+    "conversionId": "purchase-42",
+    "accountingRevision": 2,
+    "currency": "USD",
+    "state": "reconciled",
+    "revenueMinor": 36000,
+    "refundsMinor": 0,
+    "actualCostMinor": 10000,
+    "feesMinor": 1000,
+    "affiliateMinor": 20000,
+    "retainedProfitMinor": 5000,
+    "minimumRetainedProfitMinor": 5000,
+    "payoutStatus": "eligible",
+    "proofRefs": [
+      "cost-proof-42",
+      "fees-proof-42"
+    ]
+  }
+}

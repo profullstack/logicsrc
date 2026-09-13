@@ -1,0 +1,26 @@
+{
+  "openabtest": "0.1-draft",
+  "producerId": "chovy-server",
+  "manifestId": "chovy-signup-discount-v1",
+  "manifestRevision": 1,
+  "participantId": "participant-opaque-7d12",
+  "at": "2026-09-15T12:00:00Z",
+  "id": "event-conversion-42",
+  "kind": "conversion",
+  "payload": {
+    "assignmentId": "assignment-42",
+    "variantId": "signup-10",
+    "conversionId": "purchase-42",
+    "price": {
+      "offerId": "offer-42",
+      "acceptedAt": "2026-09-15T11:59:00Z",
+      "currency": "USD",
+      "listUnitPriceMinor": 40000,
+      "chargedUnitPriceMinor": 36000,
+      "discountBps": 1000,
+      "quantityMilliUnits": 1000,
+      "rounding": "half-up",
+      "totalMinor": 36000
+    }
+  }
+}

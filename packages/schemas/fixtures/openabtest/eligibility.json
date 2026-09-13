@@ -1,0 +1,14 @@
+{
+  "openabtest": "0.1-draft",
+  "producerId": "chovy-server",
+  "manifestId": "chovy-signup-discount-v1",
+  "manifestRevision": 1,
+  "participantId": "participant-opaque-7d12",
+  "at": "2026-09-15T12:00:00Z",
+  "id": "event-eligibility-42",
+  "kind": "eligibility",
+  "payload": {
+    "cohortId": "eligible-referred-customers",
+    "eligible": true
+  }
+}

@@ -3,6 +3,7 @@ import * as addFormatsModule from "ajv-formats";
 import type { ErrorObject } from "ajv";
 import { parse } from "yaml";
 import { isSchemaKind, schemas, type SchemaKind } from "./schemas.js";
+import { validateOpenABTest } from "./openabtest.js";
 import { validateOpenRentalReferences } from "./openrental.js";
 
 type CompiledSchema = { (data: unknown): boolean; errors?: ErrorObject[] | null };
@@ -64,6 +65,10 @@ export function validate(kind: SchemaKind, data: unknown): ValidationResult {
   if (ok) {
     if (kind === "openrental") {
       const errors = validateOpenRentalReferences(data);
+      if (errors.length) return { ok: false, kind, errors };
+    }
+    if (kind === "openabtest-manifest" || kind === "openabtest-event") {
+      const errors = validateOpenABTest(kind, data);
       if (errors.length) return { ok: false, kind, errors };
     }
     return { ok: true, kind, data };

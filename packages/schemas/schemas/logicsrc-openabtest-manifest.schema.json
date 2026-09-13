@@ -1,0 +1,291 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://logicsrc.com/schemas/logicsrc-openabtest-manifest.schema.json",
+  "title": "OpenABTest experiment manifest (0.1 draft)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "openabtest",
+    "id",
+    "revision",
+    "name",
+    "state",
+    "cohort",
+    "assignment",
+    "variants",
+    "window",
+    "metrics",
+    "guardrails"
+  ],
+  "properties": {
+    "openabtest": {
+      "const": "0.1-draft"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1000
+    },
+    "state": {
+      "enum": [
+        "draft",
+        "running",
+        "paused",
+        "closed"
+      ]
+    },
+    "cohort": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "eligibilityRule",
+        "purchaseScope"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+        },
+        "eligibilityRule": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        "purchaseScope": {
+          "enum": [
+            "all-referred-purchases",
+            "all-eligible-purchases",
+            "first-eligible-purchase",
+            "custom"
+          ]
+        }
+      }
+    },
+    "assignment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "unit",
+        "authority",
+        "keyVersion",
+        "algorithm",
+        "persistence"
+      ],
+      "properties": {
+        "unit": {
+          "enum": [
+            "user",
+            "account",
+            "session",
+            "device",
+            "custom"
+          ]
+        },
+        "authority": {
+          "const": "server"
+        },
+        "keyVersion": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+        },
+        "algorithm": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+        },
+        "persistence": {
+          "const": "sticky"
+        }
+      }
+    },
+    "variants": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 100,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "weight",
+          "parameters"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+          },
+          "weight": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "parameters": {
+            "type": "object",
+            "minProperties": 1,
+            "maxProperties": 50,
+            "propertyNames": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+            },
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "window": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "startsAt",
+        "endsAt"
+      ],
+      "properties": {
+        "startsAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "endsAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "primary",
+        "denominator",
+        "conversion",
+        "profit",
+        "minimumEligiblePerVariant",
+        "minimumObservationSeconds",
+        "winnerPolicy"
+      ],
+      "properties": {
+        "primary": {
+          "enum": [
+            "conversion-rate",
+            "retained-profit-per-eligible-visitor"
+          ]
+        },
+        "denominator": {
+          "const": "unique-eligible-participants"
+        },
+        "conversion": {
+          "const": "unique-participants-with-confirmed-purchase"
+        },
+        "profit": {
+          "const": "reconciled-net-retained-profit"
+        },
+        "minimumEligiblePerVariant": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "minimumObservationSeconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "winnerPolicy": {
+          "const": "manual-review"
+        }
+      }
+    },
+    "guardrails": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "preserveAcceptedOffers",
+        "preserveAccruedCommissions",
+        "requireReconciledCostsForPayout",
+        "onBreach"
+      ],
+      "properties": {
+        "preserveAcceptedOffers": {
+          "const": true
+        },
+        "preserveAccruedCommissions": {
+          "const": true
+        },
+        "requireReconciledCostsForPayout": {
+          "const": true
+        },
+        "onBreach": {
+          "const": "pause-new-assignments"
+        }
+      }
+    },
+    "economics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "currency",
+        "minorUnitExponent",
+        "unit",
+        "listUnitPriceMinor",
+        "modeledUnitCostMinor",
+        "minimumRetainedUnitProfitMinor"
+      ],
+      "properties": {
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$"
+        },
+        "minorUnitExponent": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 6
+        },
+        "unit": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+        },
+        "listUnitPriceMinor": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "modeledUnitCostMinor": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "minimumRetainedUnitProfitMinor": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      }
+    }
+  }
+}

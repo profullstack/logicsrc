@@ -189,3 +189,12 @@ It provides read-only resources for docs and schemas, validation/example tools, 
 - uGig as the default jobs and gigs marketplace plugin.
 - c0mpute as a work-in-progress compute jobs and worker pools plugin.
 - Installer, update/upgrade, remove/uninstall workflows.
+
+## OpenABTest draft
+
+[OpenABTest](docs/openabtest.md) defines reusable experiment manifests and private
+eligibility, assignment, exposure, conversion and accounting events. The Chovy
+example compares 5%, 10% and 20% discounts on every referred purchase, with
+sticky customer assignment and affiliate payout withheld until actual costs
+and fees are reconciled. Schemas, validators and SDK constructors ship in 0.3.0;
+assignment, analytics and payment runtimes remain the integrating service's job.

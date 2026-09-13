@@ -1,3 +1,5 @@
+import openabtestManifestSchema from "@logicsrc/schemas/openabtest-manifest" with { type: "json" };
+import openabtestEventSchema from "@logicsrc/schemas/openabtest-event" with { type: "json" };
 /**
  * Every LogicSRC JSON Schema, keyed by kind.
  *
@@ -73,6 +75,8 @@ import openwallMessageSchema from "@logicsrc/schemas/openwall-message" with { ty
 import openwallReceiptSchema from "@logicsrc/schemas/openwall-receipt" with { type: "json" };
 
 export const schemas = {
+  "openabtest-manifest": openabtestManifestSchema,
+  "openabtest-event": openabtestEventSchema,
   "openwall-message": openwallMessageSchema,
   "openwall-receipt": openwallReceiptSchema,
   agent: agentSchema,
