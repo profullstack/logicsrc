@@ -31,6 +31,13 @@ A disk serves a JSON document at `/.well-known/opendisk.json` on its own origin.
   "operator": "https://seeder-a41e.example/.well-known/openprofile.md",
   "key": "ed25519:a41e7f0c2d9b8e5a6f3c1d4e7b0a9f8c5d2e1b4a7c0f3e6d9b2a5c8e1f4d7b0a",
   "hubs": ["https://bittorrented.com/api/openswarm", "https://d1sks.com/api/openswarm"],
+  "developer": {
+    "cli": {
+      "name": "ip",
+      "install": { "curl": "curl -fsSL https://d1sks.com/install.sh | sh" },
+      "docs": "https://d1sks.com/docs/cli"
+    }
+  },
   "updated": "2026-09-13T06:00:00Z",
   "capacity": { "total_gib": 3726, "free_gib": 2210, "reserved_gib": 200 },
   "price": {
@@ -76,6 +83,7 @@ The rules, and every one degrades:
 
 1. **`name`, `capacity.free_gib` and `price.per_gib_month` are the only required keys.** A descriptor with those alone is valid: it is a disk, it has room, it has a price. A reader lists what it was given and reports the rest as unstated rather than assumed.
 2. **`operator`** is the person or organisation answerable, as an [OpenProfile.md](/openprofile) URL. `web` is the disk's site, if it has one beyond the descriptor. A disk with no operator is listed as such, and a marketplace may decline to list it.
+2a. **`developer`** is the block [OpenServer](/docs/openserver) 0.2 defines, unchanged: the CLI a requester uses to rent this disk and a seeder uses to run it (`cli.name`, `cli.install` keyed by package manager with the command as the guide prints it, `cli.docs`, `cli.repo`), plus `api_docs` and `github` where they exist. A disk usually names the client its hub ships, so a marketplace can show one install line beside every disk it lists; `"cli": null` says there is none.
 3. **`key`** is the seeder's OpenSwarm identity, the key that signs `paid2seed` proofs and is registered as an `ippay` payee. **`hubs`** are the hubs it takes leases at. A requester posts its offer at one of them; a disk with no `hubs` is rented some other way, and `web` says how.
 4. **`updated`** is when anything in the file last changed. `capacity.free_gib` changes with every lease, so a disk that is busy updates often and a reader with `updated` unchanged since its last fetch may skip the rest.
 5. **`capacity`** is in GiB: `total_gib` the disk, `free_gib` what a new lease can have now, `reserved_gib` what the operator keeps back. `free_gib` is the number that matters and the only one required.
