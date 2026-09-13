@@ -96,6 +96,7 @@ export const FAMILIES: Family[] = [
       s("openrental", "OpenRental", "One file an operator serves about the agents and file swarms it rents out: members, metadata and rates through CoinPay", { landing: undefined, status: "draft" }),
       s("opensite", "OpenSite", "One record about a page or a site: the card a reader would draw, declared by the site or read from it, kept by an index"),
       s("openwebring", "OpenWebring", "A webring that says who made it: one file a ring serves about its members, one a member serves about itself, and made_by on every member"),
+      s("openwiki", "OpenWiki", "A wiki that is a folder of Markdown files: [[Page]] links, a small front matter, a descriptor and a page index, every page and revision readable as Markdown, and made_by on every revision"),
       s("openl10n", "OpenL10n", "The record of what a file says, in any language: one transcript per media per language, kept once, translations beside the original", { parent: "openfile" }),
       s("openi18n", "OpenI18n", "One file a service serves about the languages it speaks, which it can turn into which, how to ask for one, and where texts are translated")
     ]
