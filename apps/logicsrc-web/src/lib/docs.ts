@@ -1,54 +1,20 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { docSlugs } from "./specs";
 
 // Repo-root docs/ (read at build time during static generation, so there is
 // no runtime filesystem dependency in the deployed image).
 const DOCS_DIR = resolve(process.cwd(), "../../docs");
 
-// Curated, public-facing reference docs. Internal notes (roadmap, positioning,
-// arcade) are intentionally excluded.
-export const DOC_SLUGS = [
-  "asdlc",
-  "openswarm",
-  "opencreds",
-  "openprd",
-  "openontology",
-  "openontology-governance",
-  "openontology-interoperability",
-  "openjob",
-  "openresume",
-  "openprofile",
-  "openbroadcast",
-  "openguest",
-  "openmcp",
-  "openaccess",
-  "openserver",
-  "openthreat",
-  "openfile",
-  "opendisk",
-  "opencoupon",
-  "openrecipe",
-  "openaffiliate",
-  "openstream",
-  "opencpu",
-  "openmemory",
-  "opengpu",
-  "openbandwidth",
-  "openspec-comparison",
-  "data-model",
-  "cli",
-  "tui",
-  "config",
-  "permissions",
-  "plugins",
-  "credential-sharing",
-  "agent-screening",
-] as const;
+// The public docs: every spec in lib/specs.ts that has a specification text,
+// then the guides listed there. Internal notes (roadmap, positioning, arcade)
+// are not in the registry and so are not served.
+export const DOC_SLUGS: readonly string[] = docSlugs();
 
-export type DocSlug = (typeof DOC_SLUGS)[number];
+export type DocSlug = string;
 
 export function isDocSlug(slug: string): slug is DocSlug {
-  return (DOC_SLUGS as readonly string[]).includes(slug);
+  return DOC_SLUGS.includes(slug);
 }
 
 export function readDoc(slug: string): string | null {

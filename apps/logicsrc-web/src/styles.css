@@ -892,3 +892,37 @@ pre {
     font-size: 0.85rem;
   }
 }
+
+/* Sidebar groups: broad first, each entry a page that drills down. */
+.rail nav .nav-group-block {
+  display: contents;
+}
+.rail nav .nav-group {
+  display: block;
+  margin: 0.9rem 0 0.25rem;
+  padding: 0 0.6rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #7a8794;
+}
+.rail nav .nav-group:first-child {
+  margin-top: 0.25rem;
+}
+.tile h3 a {
+  color: inherit;
+  text-decoration: none;
+}
+.tile .tile-specs {
+  margin-top: 0.55rem;
+  font-size: 0.85rem;
+  line-height: 1.7;
+}
+.tile .tile-specs a {
+  color: inherit;
+}
+.section-foot {
+  margin: 1rem 0 0;
+  font-size: 0.95rem;
+}

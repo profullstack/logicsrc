@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { publicClient } from "@/lib/supabase";
 import { DOC_SLUGS } from "@/lib/docs";
-import { REPORTED_SPECS, reportIds } from "@/lib/reports";
+import { FAMILIES, allSpecs } from "@/lib/specs";
 
 export const dynamic = "force-dynamic";
 
@@ -9,40 +9,19 @@ function baseUrl(): string {
   return (process.env.PUBLIC_URL ?? "https://logicsrc.com").replace(/\/$/, "");
 }
 
-// Static routes preserved from the legacy public/sitemap.xml.
-const STATIC_ROUTES: Array<{
+type Route = {
   path: string;
   changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"];
   priority: number;
-}> = [
+};
+
+// The site's own pages. Spec landing pages come from the registry in
+// lib/specs.ts, so a new spec is never missing here.
+const STATIC_ROUTES: Route[] = [
   { path: "/", changeFrequency: "weekly", priority: 1.0 },
+  { path: "/specs", changeFrequency: "weekly", priority: 0.9 },
   { path: "/docs", changeFrequency: "weekly", priority: 0.9 },
-  { path: "/openontology", changeFrequency: "weekly", priority: 0.9 },
-  { path: "/opencreds", changeFrequency: "weekly", priority: 0.9 },
-  { path: "/openswarm", changeFrequency: "weekly", priority: 0.9 },
-  { path: "/openprd", changeFrequency: "weekly", priority: 0.9 },
-  { path: "/asdlc", changeFrequency: "weekly", priority: 0.9 },
-  { path: "/openprofile", changeFrequency: "weekly", priority: 0.9 },
-  { path: "/openbroadcast", changeFrequency: "weekly", priority: 0.9 },
-  { path: "/openguest", changeFrequency: "weekly", priority: 0.9 },
-  { path: "/openmcp", changeFrequency: "weekly", priority: 0.9 },
-  { path: "/openaccess", changeFrequency: "weekly", priority: 0.9 },
-  { path: "/openserver", changeFrequency: "weekly", priority: 0.9 },
-  { path: "/openthreat", changeFrequency: "weekly", priority: 0.9 },
-  { path: "/opencpu", changeFrequency: "weekly", priority: 0.9 },
-  { path: "/openmemory", changeFrequency: "weekly", priority: 0.9 },
-  { path: "/opengpu", changeFrequency: "weekly", priority: 0.9 },
-  { path: "/openbandwidth", changeFrequency: "weekly", priority: 0.9 },
-  { path: "/openfile", changeFrequency: "weekly", priority: 0.9 },
-  { path: "/opendisk", changeFrequency: "weekly", priority: 0.9 },
-  { path: "/opencoupon", changeFrequency: "weekly", priority: 0.9 },
-  { path: "/openrecipe", changeFrequency: "weekly", priority: 0.9 },
-  { path: "/openaffiliate", changeFrequency: "weekly", priority: 0.9 },
   { path: "/openontology/explore", changeFrequency: "daily", priority: 0.7 },
-  { path: "/openspec", changeFrequency: "weekly", priority: 0.8 },
-  { path: "/agent-swarm", changeFrequency: "weekly", priority: 0.8 },
-  { path: "/agentbyte", changeFrequency: "weekly", priority: 0.8 },
-  { path: "/credential-sharing", changeFrequency: "weekly", priority: 0.8 },
   { path: "/hire-us", changeFrequency: "weekly", priority: 0.8 },
   { path: "/pricing", changeFrequency: "monthly", priority: 0.7 },
   { path: "/blog", changeFrequency: "daily", priority: 0.7 },
@@ -51,10 +30,22 @@ const STATIC_ROUTES: Array<{
   { path: "/privacy", changeFrequency: "monthly", priority: 0.4 },
 ];
 
+function specRoutes(): Route[] {
+  const families: Route[] = FAMILIES.map((f) => ({
+    path: `/specs/${f.slug}`,
+    changeFrequency: "weekly",
+    priority: 0.9,
+  }));
+  const landings: Route[] = allSpecs()
+    .filter((s) => s.landing)
+    .map((s) => ({ path: s.landing as string, changeFrequency: "weekly", priority: 0.9 }));
+  return [...families, ...landings];
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = baseUrl();
 
-  const staticEntries: MetadataRoute.Sitemap = STATIC_ROUTES.map((route) => ({
+  const staticEntries: MetadataRoute.Sitemap = [...STATIC_ROUTES, ...specRoutes()].map((route) => ({
     url: `${base}${route.path}`,
     changeFrequency: route.changeFrequency,
     priority: route.priority,
@@ -65,15 +56,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     changeFrequency: "monthly",
     priority: 0.6,
   }));
-
-  // Benchmark reports: the index per reported spec, and each published report.
-  const reportEntries: MetadataRoute.Sitemap = [];
-  for (const slug of REPORTED_SPECS) {
-    reportEntries.push({ url: `${base}/docs/${slug}/reports`, changeFrequency: "monthly", priority: 0.5 });
-    for (const id of reportIds(slug)) {
-      reportEntries.push({ url: `${base}/docs/${slug}/reports/${id}`, changeFrequency: "yearly", priority: 0.4 });
-    }
-  }
 
   let postEntries: MetadataRoute.Sitemap = [];
   try {
@@ -94,5 +76,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     postEntries = [];
   }
 
-  return [...staticEntries, ...docEntries, ...reportEntries, ...postEntries];
+  return [...staticEntries, ...docEntries, ...postEntries];
 }
