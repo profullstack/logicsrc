@@ -1,7 +1,7 @@
 {
   "name": "@logicsrc/schemas",
-  "version": "0.1.0",
-  "description": "LogicSRC JSON schemas for tasks, agents, runs, events, plugins, the AgentAd ad standard, the OpenOntology knowledge contracts, the OpenContext context plane, the OpenCreds credential vault, and OpenFleet membership and rental offers.",
+  "version": "0.1.1",
+  "description": "LogicSRC JSON schemas for tasks, agents, runs, events, plugins, the AgentAd ad standard, the OpenOntology knowledge contracts, the OpenContext context plane, the OpenCreds credential vault, OpenFleet membership and rental offers, and the OpenWall messaging proposal.",
   "license": "MIT",
   "type": "module",
   "repository": {

@@ -8,20 +8,23 @@ import sitemap from "../src/app/sitemap";
 // Spec discovery must work even when the optional blog database is offline.
 vi.mock("../src/lib/supabase", () => ({ publicClient: () => { throw new Error("offline"); } }));
 
-describe("OpenFleet public discovery", () => {
-  it("serves the specification through the process family and docs index", () => {
-    expect(familyOfSpec("openfleet")?.slug).toBe("process");
-    expect(listDocs()).toContainEqual(expect.objectContaining({ slug: "openfleet", title: "OpenFleet" }));
-    expect(readDoc("openfleet")).toContain('"provider": "coinpay"');
+describe.each([
+  { slug: "openfleet", name: "OpenFleet", family: "process" },
+  { slug: "openwall", name: "OpenWall", family: "people" }
+])("$name public discovery", ({ slug, name, family }) => {
+  it("serves the specification through its family and docs index", () => {
+    expect(familyOfSpec(slug)?.slug).toBe(family);
+    expect(listDocs()).toContainEqual(expect.objectContaining({ slug, title: name }));
+    expect(readDoc(slug)).toContain("0.1 draft");
   });
 
   it("includes a reachable docs URL and the full contract in the LLM feeds", async () => {
-    expect(await llms().text()).toMatch(/\[OpenFleet\]\(https:\/\/[^)]+\/docs\/openfleet\)/);
-    expect(await llmsFull().text()).toContain(readDoc("openfleet")!.trim());
+    expect(await llms().text()).toMatch(new RegExp(`\\[${name}\\]\\(https://[^)]+/docs/${slug}\\)`));
+    expect(await llmsFull().text()).toContain(readDoc(slug)!.trim());
   });
 
   it("includes the docs route in the sitemap without a blog connection", async () => {
     const entries = await sitemap();
-    expect(entries.some((entry) => new URL(entry.url).pathname === "/docs/openfleet")).toBe(true);
+    expect(entries.some((entry) => new URL(entry.url).pathname === `/docs/${slug}`)).toBe(true);
   });
 });

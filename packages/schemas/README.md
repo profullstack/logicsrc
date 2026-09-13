@@ -15,6 +15,9 @@ Schema families include:
   sender-side audience jobs and private delivery events. Fixtures are in
   `fixtures/openwall`. See `docs/openwall.md` for consent, routing, and runtime
   requirements beyond structural validation; no OpenWall delivery runtime ships.
+- **OpenFleet draft** — the `openfleet` export describes fleets of OpenAgent
+  profiles and OpenSwarm file-key references, with metadata and CoinPay rental
+  offers. `@logicsrc/validators` also checks membership and rental references.
 
 ## Install
 
