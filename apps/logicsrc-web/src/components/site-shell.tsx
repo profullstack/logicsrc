@@ -1,18 +1,23 @@
 import type { ReactNode } from "react";
 import { renderInstallCommand } from "@/lib/install-command";
-import { NAV_GROUPS } from "@/lib/nav";
+import { Breadcrumbs } from "@/components/breadcrumbs";
+import { SideNav } from "@/components/side-nav";
 
 /**
- * The site chrome for every standalone route. The sidebar comes from
- * lib/nav.ts, the same array the home page renders, so the two cannot drift.
- * `active` is a label or an href; either marks the current entry.
+ * The site chrome for every standalone route: the sidebar that unfolds to
+ * where you are (components/side-nav.tsx), and the breadcrumb trail at the
+ * top of the page (components/breadcrumbs.tsx), both derived from the spec
+ * registry and the path. `crumbTitle` names the last crumb when the
+ * registry cannot, such as a blog post's title. `active` is kept for
+ * callers that still pass it and is no longer needed.
  */
 export function SiteShell({
   children,
-  active,
+  crumbTitle,
 }: {
   children: ReactNode;
   active?: string;
+  crumbTitle?: string;
 }): ReactNode {
   return (
     <main className="shell">
@@ -27,30 +32,10 @@ export function SiteShell({
         {/* Same markup the homepage uses, so the two can never drift apart.
             Static content from a module constant -- nothing user-supplied. */}
         <div dangerouslySetInnerHTML={{ __html: renderInstallCommand("rail") }} />
-        <nav aria-label="LogicSRC sections">
-          {NAV_GROUPS.map((group) => (
-            <div key={group.label} className="nav-group-block">
-              <span className="nav-group">{group.label}</span>
-              {group.items.map((item) => {
-                const isActive = item.label === active || item.href === active;
-                return (
-                  <a
-                    key={item.href}
-                    href={item.href}
-                    className={isActive ? "active" : undefined}
-                    aria-current={isActive ? "page" : undefined}
-                    target={item.external ? "_blank" : undefined}
-                    rel={item.external ? "noreferrer" : undefined}
-                  >
-                    {item.label}
-                  </a>
-                );
-              })}
-            </div>
-          ))}
-        </nav>
+        <SideNav />
       </aside>
       <section className="workspace">
+        <Breadcrumbs leaf={crumbTitle} />
         {children}
         <footer
           style={{

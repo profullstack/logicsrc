@@ -926,3 +926,60 @@ pre {
   margin: 1rem 0 0;
   font-size: 0.95rem;
 }
+
+/* Sidebar drill-down: the current family unfolds to its specs, a spec to its blocks. */
+.rail nav .nav-branch {
+  display: contents;
+}
+.rail nav .nav-children {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin: 0.2rem 0 0.35rem 0.6rem;
+  padding-left: 0.6rem;
+  border-left: 1px solid #263039;
+}
+.rail nav .nav-children a {
+  min-height: 1.9rem;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.85rem;
+  border-color: transparent;
+}
+.rail nav .nav-children a.active,
+.rail nav .nav-children a:hover {
+  border-color: #3f5049;
+}
+
+/* Breadcrumb trail at the top of every page but the home page. */
+.crumbs {
+  width: 100%;
+  max-width: 72rem;
+  margin: 0 auto 0.75rem;
+  font-size: 0.88rem;
+  color: #5b6b7a;
+}
+.crumbs ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  list-style: none;
+  margin: 0;
+  padding: 0.35rem 0 0.75rem;
+  border-bottom: 1px solid #e3e6e0;
+}
+.crumbs li + li::before {
+  content: "›";
+  margin-right: 0.35rem;
+  color: #9aa6b1;
+}
+.crumbs a {
+  color: inherit;
+  text-decoration: none;
+}
+.crumbs a:hover {
+  text-decoration: underline;
+}
+.crumbs [aria-current="page"] {
+  color: #101418;
+  font-weight: 600;
+}
