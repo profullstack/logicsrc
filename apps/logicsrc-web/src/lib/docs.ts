@@ -26,6 +26,7 @@ export const DOC_SLUGS = [
   "opendisk",
   "opencoupon",
   "openrecipe",
+  "openaffiliate",
   "openstream",
   "opencpu",
   "openmemory",

@@ -35,6 +35,7 @@ const STATIC_ROUTES: Array<{
   { path: "/opendisk", changeFrequency: "weekly", priority: 0.9 },
   { path: "/opencoupon", changeFrequency: "weekly", priority: 0.9 },
   { path: "/openrecipe", changeFrequency: "weekly", priority: 0.9 },
+  { path: "/openaffiliate", changeFrequency: "weekly", priority: 0.9 },
   { path: "/openontology/explore", changeFrequency: "daily", priority: 0.7 },
   { path: "/openspec", changeFrequency: "weekly", priority: 0.8 },
   { path: "/agent-swarm", changeFrequency: "weekly", priority: 0.8 },
