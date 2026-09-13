@@ -18,6 +18,7 @@ const NAV: Array<{ href: string; label: string; external?: boolean }> = [
   { href: "/openmcp", label: "OpenMCP" },
   { href: "/openaccess", label: "OpenAccess" },
   { href: "/openserver", label: "OpenServer" },
+  { href: "/openthreat", label: "OpenThreat" },
   { href: "/opencpu", label: "OpenCPU" },
   { href: "/openmemory", label: "OpenMemory" },
   { href: "/opengpu", label: "OpenGPU" },

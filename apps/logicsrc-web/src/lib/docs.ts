@@ -21,6 +21,7 @@ export const DOC_SLUGS = [
   "openmcp",
   "openaccess",
   "openserver",
+  "openthreat",
   "openfile",
   "opendisk",
   "opencoupon",
