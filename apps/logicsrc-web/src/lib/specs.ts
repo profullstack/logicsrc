@@ -66,6 +66,7 @@ export const FAMILIES: Family[] = [
       "OAuth 2.1 with a grant you can carry between apps, a portable vault format for the credentials behind an agent's accounts, and the sync architecture that moves team secrets between the places they are kept.",
     specs: [
       s("openaccess", "OpenAccess", "OAuth 2.1 with a grant you can carry: one hub account, apps keep their own users, entitlements travel"),
+      s("openconnection", "OpenConnection", "A setup token you paste: a bridge issues it, any app claims it once for an access URL, no app registration"),
       s("opencreds", "OpenCreds", "A portable vault for the credentials behind an agent's accounts"),
       s("credential-sharing", "Credential Sharing", "End-to-end-encrypted team vaults with source and target diffs, approval, sync, rollback and audit")
     ]
