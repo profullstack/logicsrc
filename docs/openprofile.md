@@ -2,7 +2,7 @@
 
 OpenProfile.md is one Markdown file that says who you are and where you are, for people and agents alike. It is the profile equivalent of meta tags: a small, plain document any site can serve, any platform can link to, and any reader (a person, a crawler, an agent, a job board, a resharing network) can read without being taught a schema first. It is maintained by Profullstack, Inc. as part of the LogicSRC open-standards surface.
 
-Status: **0.2**. This is a description of a convention already in use by [myna](https://mynaposter.com) and [agenticjobs](https://agenticjobs.work), published so others can serve and read the same file.
+Status: **0.3**. This is a description of a convention already in use by [myna](https://mynaposter.com) and [agenticjobs](https://agenticjobs.work), published so others can serve and read the same file.
 
 Slug: `openprofile`
 
@@ -106,6 +106,8 @@ There are nine, and every one of them degrades rather than fails.
 - `Handle`: the name you go by, with or without a leading `@`. One handle, the one you would write on a slide. Per-network handles belong in Accounts.
 - `Web`: your home page. Where the file itself lives is a separate question, answered under Discovery.
 - `Email`, `Location`, `Pronouns`, `Timezone`, `Languages`: kept as written.
+- `Gender`: kept as written. `woman`, `man` and `non-binary` are the words in common use, and any other word is kept too. It may sit here or under Match, and means the same in both; a reader takes whichever it finds first.
+- `Voice`: how a machine should sound when it speaks for you. `female`, `male`, or a provider's voice id kept as written (`Telnyx.KokoroTTS.am_adam`, `ElevenLabs.Premade.Rachel`). A platform that reads your words aloud (a phone room reading a chat line, a screen reader for your posts) chooses from `Voice`, then `Gender`, then `Pronouns`, and never from a name, a photo or another site. Absent all three, it picks one and keeps picking the same one for you.
 - `Avatar`: an image URL.
 - `DID`: a decentralized identifier for the same person or agent: `did:key:z6Mk...`, `did:web:example.com`, or an AT Protocol `did:plc:...`. Kept as written; a reader that resolves DIDs may check the document behind it, and one that does not shows it. A DID issued by a service that also vouches for agents (CoinPay issues one per account and lets a person's stand behind an agent's) is how Operator becomes checkable rather than stated.
 - `Pay`: where money for you goes. A [CAIP-10](https://github.com/ChainAgnostic/CAIPs/blob/main/CAIPs/caip-10.md) account (`eip155:8453:0x...`), a bare address, a Lightning address, or a payment page URL. Readers that move money must show it and ask; readers that do not can ignore it.
@@ -138,7 +140,7 @@ No Reshare section means you are not offering to reshare. Nothing here obliges a
 About you:
 
 - `Born`: an ISO date (`1990-05-12`), a year, or an age. A date wins over a year, a year over an age. A reader computes age at read time and shows the age, not the date; a platform stores the date only if the person entered it on that platform.
-- `Gender`, `Orientation`, `Pronouns` (which may also sit in the identity block): kept as written. `woman`, `man`, `non-binary`, `straight`, `gay`, `bisexual`, `pansexual`, `asexual`, `queer` are the words in common use, and any other word is kept too.
+- `Gender`, `Orientation`, `Pronouns` (`Gender` and `Pronouns` may also sit in the identity block, where they mean the same): kept as written. `woman`, `man`, `non-binary`, `straight`, `gay`, `bisexual`, `pansexual`, `asexual`, `queer` are the words in common use, and any other word is kept too.
 - `Status`: `single`, `divorced`, `widowed`, `separated`, `partnered`, `married`. `Monogamy`: `monogamous`, `non-monogamous`, `open`.
 - `Height`: `168 cm` or `5'6"`. `Body`: kept as written.
 - `Children`: `none`, a count, or a count with a word (`2, grown`). `Wants children`: `yes`, `no`, `open`, `undecided`.
@@ -238,6 +240,7 @@ By hand, in any editor, in five minutes. Or:
 | 0.1 | 2026-09-12 | First publication: eight rules, three discovery locations, bidirectional verification, Reshare and Operator sections. |
 | 0.1.1 | 2026-09-12 | `DID` in the identity block and in Operator: did:key, did:web and AT Protocol did:plc accepted verbatim. |
 | 0.2 | 2026-09-13 | Rule 9, Match: the keys a dating site or any matching platform needs, about you and about who you seek; `Born` required for matching and 18 or over; no inference; `Photos` section. |
+| 0.3 | 2026-09-13 | `Gender` and `Voice` in the identity block: how a machine should sound when it speaks for you, and the order a reader chooses in (`Voice`, `Gender`, `Pronouns`, never a name or a photo). First reader: nixamp's party line reading trollbox lines to callers. |
 
 ## License
 
