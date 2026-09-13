@@ -38,6 +38,8 @@ a different product. The member protocols keep their `ip` names.
 | `paid2seed` | Server protocol for paid seeding: leases, storage challenges and probes over the wire, GiB-month settlement, the seeder client | [`paid2seed.md`](./openswarm/paid2seed.md) |
 | `pay2stream` | Client protocol for paid live streams: consent for channels, relay offers, tickets and listings, watching as a peer or on any HLS player | [`pay2stream.md`](./openswarm/pay2stream.md) |
 | `paid2stream` | Server protocol for paid live streams: relay leases per hour, presence proofs, gateways serving standard HLS, M3U and EPG | [`paid2stream.md`](./openswarm/paid2stream.md) |
+| OpenFile | The web door onto an `ipfile` swarm: `/.well-known/openfile.json` lists a publisher's files with fetch routes, verification, consent, price and holders | [`openfile.md`](./openfile.md) |
+| OpenDisk | The web door onto a `paid2seed` seeder: `/.well-known/opendisk.json` lists free GiB, price, policy, proof cadence and hub standing, so a disk is found instead of waited for | [`opendisk.md`](./opendisk.md) |
 
 Supporting documents:
 
