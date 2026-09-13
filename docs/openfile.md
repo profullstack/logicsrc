@@ -32,7 +32,14 @@ A publisher serves a JSON document at `/.well-known/openfile.json` on its own or
     "operator": "https://dartmoor.example/.well-known/openprofile.md",
     "key": "ed25519:5d292428e8a68946e5225136c8b10e8f33ab78a45e1663d0730996dd2b63d59e",
     "feed": "ed25519:5d292428e8a68946e5225136c8b10e8f33ab78a45e1663d0730996dd2b63d59e/default",
-    "hubs": ["https://bittorrented.com/api/openswarm"]
+    "hubs": ["https://bittorrented.com/api/openswarm"],
+    "developer": {
+      "cli": {
+        "name": "ip",
+        "install": { "curl": "curl -fsSL https://bittorrented.com/install.sh | sh" },
+        "docs": "https://bittorrented.com/docs/cli"
+      }
+    }
   },
   "updated": "2026-09-13T06:00:00Z",
   "files": [
@@ -84,7 +91,7 @@ The rules, and every one degrades:
 
 1. **`publisher.name`, `files[].id` and `files[].name` are the only required keys.** A descriptor with those alone is valid. A reader lists what it was given and reports the rest as unstated rather than assumed.
 2. **`files[].id` is the content hash of the plaintext**, `sha256:` and hex. For an `ipfile` swarm it is the manifest's `plainRoot`, so the id a reader gets here is the root the decrypted file verifies against. For a plain HTTP file it is the SHA-256 of the bytes. It is the dedupe key: two publishers serving the same bytes list the same id, and a directory that meets the same id twice has one file with two publishers, not two files.
-3. **`publisher`** is who put it up. `web` is the site, `operator` the person or organisation answerable as an [OpenProfile.md](/openprofile) URL, `key` the OpenSwarm publisher key that signed the manifests, `feed` the `ipdb` feed a swarm reader can follow instead of polling this file, `hubs` the `ippay` hubs whose passes the publisher accepts. A publisher with no swarm has none of the last three.
+3. **`publisher`** is who put it up. `web` is the site, `operator` the person or organisation answerable as an [OpenProfile.md](/openprofile) URL, `key` the OpenSwarm publisher key that signed the manifests, `feed` the `ipdb` feed a swarm reader can follow instead of polling this file, `hubs` the `ippay` hubs whose passes the publisher accepts, and `developer` the block [OpenServer](/docs/openserver) 0.2 defines, unchanged, naming the CLI a reader fetches with (`cli.name`, `cli.install` as the guide prints it, `cli.docs`, `cli.repo`). A publisher with no swarm has none of `key`, `feed` and `hubs`.
 4. **`updated`** on the descriptor is when anything in it last changed; **`updated`** on a file is when that file last changed and wins for that file. A reader with the descriptor's `updated` unchanged since its last fetch may skip the rest.
 5. **`descriptor`** is the URL of the same file object served on its own, next to the file: `<name>.openfile.json`, or wherever the publisher puts it. A reader handed a single file's descriptor by that route has everything below without the listing.
 6. **`size`, `contentType`, `pieces`** describe the bytes. `size` is the plaintext length in bytes. `pieces.length` is the piece length, a power of two; `pieces.count` follows from it; `pieces.layer` is where to fetch the plaintext piece layer, so a reader can verify each piece as it arrives rather than the whole at the end.
@@ -167,7 +174,7 @@ The first directory reading OpenFile is `bittorrented.com`, which today lists ba
 
 **No DRM.** A pass holder gets the key and the bytes, as `ipfile` says. A publisher that wants to control a device after delivery is reading the wrong specification.
 
-**No product domain yet.** A directory and a marketplace for OpenFile is planned under a name not yet chosen. `bittorrented.com` is the reference reader until then.
+**Product domain.** The directory and marketplace for OpenFile is planned as fi1zes.com, the name chosen on 2026-09-13 and not yet registered. `bittorrented.com` is the reference reader until it exists.
 
 ## Serving one
 
