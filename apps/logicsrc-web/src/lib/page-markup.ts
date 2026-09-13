@@ -4,14 +4,8 @@
 // browser. Interactivity (hire-us form, CoinPay button, section scroll) lives in
 // the `home-interactivity` client component.
 import { renderInstallCommand } from "./install-command";
-
-const primitives = [
-  { name: "Identity", detail: "DIDs, OAuth accounts, profiles, and organization membership." },
-  { name: "Coordination", detail: "Boards, posts, threads, comments, tasks, bids, and submissions." },
-  { name: "Agents", detail: "Agent profiles, capabilities, runs, logs, permissions, and audit trails." },
-  { name: "Value", detail: "Payments, escrow, wallets, reputation events, and settlement hooks." },
-  { name: "Events", detail: "Event streams, webhooks, schema versions, and integration audit logs." }
-];
+import { renderNavHtml } from "./nav";
+import { FAMILIES, familyTree } from "./specs";
 
 const schemas = [
   { name: "logicsrc-task", path: "packages/schemas/schemas/logicsrc-task.schema.json" },
@@ -128,26 +122,7 @@ export function renderPageMarkup(): string {
         </div>
       </div>
       ${renderInstallCommand("rail")}
-      <nav aria-label="LogicSRC sections">
-        <a class="active" href="#overview">Overview</a>
-        <a href="#schemas">Schemas</a>
-        <a href="/agent-swarm">Soon</a>
-        <a href="/agentbyte">AgentByte</a>
-        <a href="/credential-sharing">Credentials</a>
-        <a href="/openontology">OpenOntology</a>
-        <a href="/openprd">OpenPRD</a>
-        <a href="#cli">CLI</a>
-        <a href="/docs">Docs</a>
-        <a href="/blog">Blog</a>
-        <a href="/openspec">OpenSpec</a>
-        <a href="/pricing">Pricing</a>
-        <a href="/hire-us">Hire Us</a>
-        <a href="/about">About</a>
-        <a href="https://github.com/profullstack/logicsrc" target="_blank" rel="noreferrer">GitHub ↗</a>
-        <a href="/terms">Terms</a>
-        <a href="/privacy">Privacy</a>
-        <a href="#reference">Reference</a>
-      </nav>
+      <nav aria-label="LogicSRC sections">${renderNavHtml("/")}</nav>
     </aside>
     <section class="workspace">
       <header id="overview" class="hero">
@@ -170,16 +145,18 @@ export function renderPageMarkup(): string {
       <section class="band">
         <div class="section-head">
           <h2>Standards Surface</h2>
-          <p>LogicSRC defines the shared language; products can implement it without owning the standard.</p>
+          <p>Four families of specifications. LogicSRC defines the shared language; products implement it without owning the standard.</p>
         </div>
         <div class="primitive-grid">
-          ${primitives.map((item) => `
+          ${FAMILIES.map((family) => `
             <article class="tile">
-              <h3>${item.name}</h3>
-              <p>${item.detail}</p>
+              <h3><a href="/specs/${family.slug}">${family.name}</a></h3>
+              <p>${family.line}.</p>
+              <p class="tile-specs">${familyTree(family).map(({ spec }) => `<a href="${spec.landing ?? spec.doc ?? "/specs"}">${spec.name}</a>`).join(" · ")}</p>
             </article>
           `).join("")}
         </div>
+        <p class="section-foot"><a href="/specs">Every spec, by family →</a></p>
       </section>
 
       <section id="agent-swarm" class="band coming-soon">

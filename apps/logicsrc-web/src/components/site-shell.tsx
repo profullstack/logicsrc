@@ -1,48 +1,12 @@
 import type { ReactNode } from "react";
 import { renderInstallCommand } from "@/lib/install-command";
+import { NAV_GROUPS } from "@/lib/nav";
 
-// Mirrors the rail/nav from page-markup.ts so standalone routes (e.g. /blog)
-// share the site chrome. Anchor links point at the homepage sections.
-const NAV: Array<{ href: string; label: string; external?: boolean }> = [
-  { href: "/#overview", label: "Overview" },
-  { href: "/#schemas", label: "Schemas" },
-  { href: "/agent-swarm", label: "Soon" },
-  { href: "/agentbyte", label: "AgentByte" },
-  { href: "/credential-sharing", label: "Credentials" },
-  { href: "/openontology", label: "OpenOntology" },
-  { href: "/opencreds", label: "OpenCreds" },
-  { href: "/openswarm", label: "OpenSwarm" },
-  { href: "/openprd", label: "OpenPRD" },
-  { href: "/asdlc", label: "ASDLC" },
-  { href: "/openprofile", label: "OpenProfile" },
-  { href: "/openbroadcast", label: "OpenBroadcast" },
-  { href: "/openguest", label: "OpenGuest" },
-  { href: "/openmcp", label: "OpenMCP" },
-  { href: "/openaccess", label: "OpenAccess" },
-  { href: "/openserver", label: "OpenServer" },
-  { href: "/openthreat", label: "OpenThreat" },
-  { href: "/opencpu", label: "OpenCPU" },
-  { href: "/openmemory", label: "OpenMemory" },
-  { href: "/opengpu", label: "OpenGPU" },
-  { href: "/openbandwidth", label: "OpenBandwidth" },
-  { href: "/openfile", label: "OpenFile" },
-  { href: "/opendisk", label: "OpenDisk" },
-  { href: "/opencoupon", label: "OpenCoupon" },
-  { href: "/openrecipe", label: "OpenRecipe.md" },
-  { href: "/openaffiliate", label: "OpenAffiliate" },
-  { href: "/#cli", label: "CLI" },
-  { href: "/docs", label: "Docs" },
-  { href: "/blog", label: "Blog" },
-  { href: "/openspec", label: "OpenSpec" },
-  { href: "/pricing", label: "Pricing" },
-  { href: "/hire-us", label: "Hire Us" },
-  { href: "/about", label: "About" },
-  { href: "https://github.com/profullstack/logicsrc", label: "GitHub ↗", external: true },
-  { href: "/terms", label: "Terms" },
-  { href: "/privacy", label: "Privacy" },
-  { href: "/#reference", label: "Reference" },
-];
-
+/**
+ * The site chrome for every standalone route. The sidebar comes from
+ * lib/nav.ts, the same array the home page renders, so the two cannot drift.
+ * `active` is a label or an href; either marks the current entry.
+ */
 export function SiteShell({
   children,
   active,
@@ -64,17 +28,25 @@ export function SiteShell({
             Static content from a module constant -- nothing user-supplied. */}
         <div dangerouslySetInnerHTML={{ __html: renderInstallCommand("rail") }} />
         <nav aria-label="LogicSRC sections">
-          {NAV.map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
-              className={item.label === active ? "active" : undefined}
-              aria-current={item.label === active ? "page" : undefined}
-              target={item.external ? "_blank" : undefined}
-              rel={item.external ? "noreferrer" : undefined}
-            >
-              {item.label}
-            </a>
+          {NAV_GROUPS.map((group) => (
+            <div key={group.label} className="nav-group-block">
+              <span className="nav-group">{group.label}</span>
+              {group.items.map((item) => {
+                const isActive = item.label === active || item.href === active;
+                return (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    className={isActive ? "active" : undefined}
+                    aria-current={isActive ? "page" : undefined}
+                    target={item.external ? "_blank" : undefined}
+                    rel={item.external ? "noreferrer" : undefined}
+                  >
+                    {item.label}
+                  </a>
+                );
+              })}
+            </div>
           ))}
         </nav>
       </aside>
@@ -96,8 +68,10 @@ export function SiteShell({
         >
           <span>© {new Date().getFullYear()} Profullstack, Inc. · LogicSRC</span>
           <span style={{ display: "flex", gap: "0.75rem" }}>
+            <a href="/specs" style={{ color: "inherit" }}>Specs</a>
             <a href="/docs" style={{ color: "inherit" }}>Docs</a>
             <a href="/blog/rss.xml" style={{ color: "inherit" }}>RSS</a>
+            <a href="/llms.txt" style={{ color: "inherit" }}>llms.txt</a>
             <a href="/terms" style={{ color: "inherit" }}>Terms</a>
             <a href="/privacy" style={{ color: "inherit" }}>Privacy</a>
           </span>
