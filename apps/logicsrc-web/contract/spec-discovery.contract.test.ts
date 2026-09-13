@@ -9,6 +9,7 @@ import sitemap from "../src/app/sitemap";
 vi.mock("../src/lib/supabase", () => ({ publicClient: () => { throw new Error("offline"); } }));
 
 describe.each([
+  { slug: "openagent", name: "OpenAgent", family: "people" },
   { slug: "openabtest", name: "OpenABTest", family: "process" },
   { slug: "openfleet", name: "OpenFleet", family: "process" },
   { slug: "openrental", name: "OpenRental", family: "catalogs" },

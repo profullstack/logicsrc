@@ -51,6 +51,7 @@ export const FAMILIES: Family[] = [
       "One Markdown file for a person or an agent, served from their own domain and linked from every platform that has a page for them. The profile carries the identity, the accounts and the topics; the sections carry what a platform needs to match on, so a job board, a booking site or a dating app reads the file instead of asking forty questions again.",
     specs: [
       s("openprofile", "OpenProfile.md", "One Markdown file for who you are and where you are, people and agents alike", { status: "0.2" }),
+      s("openagent", "OpenAgent", "A portable agent profile: identity, owner, skills and requested permissions", { status: "0.1" }),
       s("openwall", "OpenWall", "Consent-based broadcasts and direct messages across contact networks, with an AT Protocol mapping", { landing: undefined, status: "draft" }),
       s("openresume", "OpenResume.md", "What you have done, in the same spirit, linked from the profile", { landing: undefined }),
       s("openjob", "OpenJob", "What the work is, so a candidate's agent and a job board agree", { landing: undefined }),

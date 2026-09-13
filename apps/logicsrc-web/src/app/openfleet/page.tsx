@@ -251,6 +251,7 @@ export default function OpenFleetPage(): ReactNode {
           <h2>Where everything lives</h2>
         </div>
         <ul style={{ color: "#41505d", lineHeight: 1.9, paddingLeft: "1.1rem" }}>
+          <li><Link href="/openagent">OpenAgent</Link>: the durable agent profile; one identity can have many running fleet members</li>
           <li>
             <Link href="/docs/openfleet">Specification</Link>: the terms, the record, the
             environment, claiming and deriving, the ledger&apos;s eight events, five verbs, fifteen
