@@ -36,6 +36,7 @@ import { parsePositiveInteger } from "./numeric-options.js";
 import { exportOpenSpecSummary, importOpenSpec, writeOpenSpecChange } from "./openspec.js";
 import { registerOpenContextCommands } from "./context.js";
 import { registerOpenCredsCommands } from "./creds.js";
+import { registerFleetCommands } from "./fleet.js";
 import { registerOntologyCommands } from "./ontology.js";
 import { registerPrdCommands } from "./prd.js";
 import { registerOpenMcpCommands } from "./openmcp.js";
@@ -1057,6 +1058,7 @@ registerOpenContextCommands(program);
 registerOpenCredsCommands(program);
 registerOntologyCommands(program);
 registerPrdCommands(program);
+registerFleetCommands(program);
 registerOpenMcpCommands(program);
 registerMcpCommands(program);
 // Every other word under `logicsrc openspec` is OpenSpec.dev's own CLI.

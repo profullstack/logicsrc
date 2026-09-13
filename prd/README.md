@@ -18,3 +18,4 @@ Status lives in each file's front-matter and is the source of truth:
 | [0005](./0005-add-logicsrc-openswarm-spec.md) | Add the LogicSRC OpenSwarm specification family | Draft | openswarm, ipfile, ipdb, ipaudio, ipvideo, iplive, bittorrent, x402, c0mpute |
 | [0006](./0006-add-pay2seed-spec.md) | Add pay2seed, paid2seed, pay2stream and paid2stream to the OpenSwarm family | Draft | openswarm, pay2seed, paid2seed, pay2stream, paid2stream, iplive, hls, ipfile, ippay, ipdb, bittorrent, torlink, bittorrented, c0mpute |
 | [0007](./0007-add-tech-stack-and-monetization-to-openprd.md) | Add Tech Stack and Monetization sections to OpenPRD | Draft | openprd, standards, monetization |
+| [0008](./0008-openfleet-reference-implementation.md) | Ship the OpenFleet reference implementation | Draft | openfleet, agents, fleet, swarm, claude-code, moshcode, cli |
