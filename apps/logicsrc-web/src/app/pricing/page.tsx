@@ -5,7 +5,7 @@ import { SiteShell } from "@/components/site-shell";
 export const metadata: Metadata = {
   title: "Pricing · LogicSRC",
   description:
-    "LogicSRC the open specification, schemas, SDKs, and CLI are free and open source. Implementation help is $400/hour for accepted work, paid via CoinPay.",
+    "LogicSRC the open specification, schemas, SDKs, and CLI are free and open source. Implementation help is $400/hour/agent for accepted work, paid via CoinPay.",
   alternates: { canonical: "/pricing" },
 };
 
@@ -16,7 +16,7 @@ const FAQ: Array<{ q: string; a: string }> = [
   },
   {
     q: "How does pricing work?",
-    a: "The standard is free. If you want Profullstack to build a LogicSRC-based system for you, implementation work is billed at $400/hour against actual hours worked, invoiced through CoinPay after you approve them. The minimum engagement is 10 hours.",
+    a: "The standard is free. If you want Profullstack to build a LogicSRC-based system for you, implementation work is billed at $400/hour/agent against actual agent-hours worked, invoiced through CoinPay after you approve them. The minimum engagement is 10 agent-hours.",
   },
   {
     q: "Who is LogicSRC for?",
@@ -61,10 +61,10 @@ export default function PricingPage(): ReactNode {
               CLI, TUI, and reference plugins are open source.
             </li>
             <li>
-              <strong>Implementation — $400/hour.</strong> Profullstack builds
+              <strong>Implementation — $400/hour/agent.</strong> Profullstack builds
               LogicSRC-based systems for accepted projects, billed against actual
               hours worked and invoiced via CoinPay once you approve them.
-              Ten-hour minimum engagement. See <a href="/hire-us">Hire Us</a> and{" "}
+              Ten-agent-hour minimum engagement. See <a href="/hire-us">Hire Us</a> and{" "}
               <a href="/terms">Terms</a>.
             </li>
           </ul>

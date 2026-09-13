@@ -66,7 +66,7 @@ test.describe("LogicSRC PWA", () => {
     await expect(page.getByRole("heading", { name: "Hire Us", exact: true })).toBeVisible();
     await expect(page.locator(".price-row strong", { hasText: "$400" })).toBeVisible();
     await expect(page.getByText("per hour")).toBeVisible();
-    await expect(page.getByText("Ten-hour minimum engagement")).toBeVisible();
+    await expect(page.getByText("Ten-agent-hour minimum engagement")).toBeVisible();
     await expect(page.getByText("open infrastructure and open specs for AI agent systems")).toBeVisible();
     await expect(page.getByRole("button", { name: "Request review" })).toBeVisible();
     await expect(page.getByPlaceholder("you@example.com")).toBeVisible();

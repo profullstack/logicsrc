@@ -43,7 +43,7 @@ ${guides}
 ## Company & legal
 
 - [About](${SITE_URL}/about): What LogicSRC is and who maintains it (Profullstack, Inc.).
-- [Hire Us](${SITE_URL}/hire-us): Implementation help at $400/hour for accepted LogicSRC work.
+- [Hire Us](${SITE_URL}/hire-us): Implementation help at $400/hour/agent for accepted LogicSRC work.
 - [Pricing](${SITE_URL}/pricing)
 - [Terms](${SITE_URL}/terms)
 - [Privacy](${SITE_URL}/privacy)

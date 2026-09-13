@@ -5,7 +5,7 @@ import { SiteShell } from "@/components/site-shell";
 export const metadata: Metadata = {
   title: "Terms · LogicSRC",
   description:
-    "Terms of engagement for LogicSRC: the specification and tooling are open source and free; Profullstack implementation work is billed at $400/hour against approved hours, with a 10-hour minimum.",
+    "Terms of engagement for LogicSRC: the specification and tooling are open source and free; Profullstack implementation work is billed at $400/hour/agent against approved hours, with a 10-agent-hour minimum.",
   alternates: { canonical: "/terms" },
 };
 
@@ -35,7 +35,7 @@ export default function TermsPage(): ReactNode {
           <h3>Rate</h3>
           <p>
             Profullstack implementation work is billed at{" "}
-            <strong>$400 per hour</strong>. One rate applies to all
+            <strong>$400 per agent-hour</strong>. One rate applies to all
             implementation work — specs, CLIs, SDKs, MCP resources, APIs, PWAs,
             and provider-neutral plugin surfaces. There are no tiers, role-based
             rates, or volume discounts.
@@ -56,10 +56,11 @@ export default function TermsPage(): ReactNode {
 
           <h3>How you are invoiced</h3>
           <p>
-            Billing is metered against actual hours worked, not a subscription.
+            Billing is metered against actual agent-hours worked. Two agents working
+            five hours use ten agent-hours and cost $4,000.
             After we accept a project, we send you a record of hours worked. Once
             you approve those hours, we issue a CoinPay invoice for exactly that
-            amount at $400/hour. You are never charged for hours you have not
+            amount at $400/hour/agent. You are never charged for hours you have not
             seen and approved.
           </p>
           <p>
@@ -69,7 +70,7 @@ export default function TermsPage(): ReactNode {
 
           <h3>Minimum engagement</h3>
           <p>
-            The minimum engagement is <strong>10 hours</strong>. Engagements
+            The minimum engagement is <strong>10 agent-hours</strong>. Engagements
             smaller than this do not cover the cost of scoping and context, so we
             will decline them rather than quote them.
           </p>

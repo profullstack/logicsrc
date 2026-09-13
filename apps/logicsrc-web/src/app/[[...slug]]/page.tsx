@@ -25,7 +25,7 @@ const ROUTE_META: Record<string, { title: string; description: string }> = {
   },
   "hire-us": {
     title: "Hire Us · LogicSRC",
-    description: "Implementation help for LogicSRC, AgentSwarm, and Credential Sharing at $400/hour for accepted work, paid via CoinPay.",
+    description: "Implementation help for LogicSRC, AgentSwarm, and Credential Sharing at $400/hour/agent for accepted work, paid via CoinPay.",
   },
   // /agent-swarm was the AgentSwarm placeholder band. It is now the OpenFleet
   // spec at app/openfleet; next.config.ts redirects the old path there.

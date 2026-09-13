@@ -4,7 +4,7 @@ import { json } from "@/lib/http";
 export const dynamic = "force-dynamic";
 
 // POST /api/hire-us/project-request — accept a Hire Us project request before any
-// CoinPay invoice is created. Hire Us bills metered hours at $400/hour, so there is
+// CoinPay invoice is created. Hire Us bills metered hours at $400/hour/agent, so there is
 // no amount until we accept the project and hours are approved.
 const RATE_USD_PER_HOUR = 400;
 const MINIMUM_HOURS = 10;
