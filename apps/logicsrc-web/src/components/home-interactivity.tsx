@@ -45,7 +45,7 @@ export function HomeInteractivity(): null {
         }
 
         result.replaceChildren(
-          buildParagraph("Request received. If it is a fit, we will scope the work and invoice approved hours at $400/hour via CoinPay.")
+          buildParagraph("Request received. If it is a fit, we will scope the work and invoice approved hours at $400/hour/agent via CoinPay.")
         );
       } catch (error) {
         result.replaceChildren(

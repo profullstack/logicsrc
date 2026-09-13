@@ -72,9 +72,9 @@ const pages = [
   { id: "blog", title: "Blog", detail: "Project notes for LogicSRC, AgentSwarm, AgentByte, OpenSpec workflows, and reference implementations." },
   { id: "openspec", title: "OpenSpec", detail: "Comparison and compatibility notes for OpenSpec.dev-style repo-local specs, proposals, tasks, and deltas." },
   { id: "credential-sharing", title: "Credential Sharing", detail: "Open replacement architecture for portable secret sync across end-to-end-encrypted team vaults, .env, Doppler, Railway variables, GitHub Secrets, and sh1pt." },
-  { id: "hire-us", title: "Hire Us", detail: "$400/hour LogicSRC work on open infrastructure, specs, AI agent workflows, and reference implementations paid through CoinPay after project acceptance." },
+  { id: "hire-us", title: "Hire Us", detail: "$400/hour/agent LogicSRC work on open infrastructure, specs, AI agent workflows, and reference implementations paid through CoinPay after project acceptance." },
   { id: "about", title: "About", detail: "LogicSRC is the Profullstack open specification project for human and AI agent coordination." },
-  { id: "terms", title: "Terms", detail: "Terms of engagement: the $400/hour rate, what is billable, how approved hours are invoiced, the 10-hour minimum, cancellation, acceptable use, and reference implementation boundaries." },
+  { id: "terms", title: "Terms", detail: "Terms of engagement: the $400/hour/agent rate, what is billable, how approved hours are invoiced, the 10-agent-hour minimum, cancellation, acceptable use, and reference implementation boundaries." },
   { id: "privacy", title: "Privacy", detail: "What this site collects and what it does not: analytics, the Hire Us form, the CoinPay sign-in cookie, and where credential data does and does not go." }
 ];
 
@@ -363,7 +363,7 @@ logicsrc secrets ssh agent profullstack  # load into ssh-agent, never onto disk<
       <section id="hire-us" class="band hire-us">
         <div class="section-head">
           <h2>Hire Us</h2>
-          <p>$400/hour for accepted LogicSRC work using open infrastructure and open specs for AI agent systems.</p>
+          <p>$400/hour/agent for accepted LogicSRC work using open infrastructure and open specs for AI agent systems.</p>
         </div>
         <div class="hire-layout">
           <article class="hire-panel">
@@ -372,9 +372,9 @@ logicsrc secrets ssh agent profullstack  # load into ssh-agent, never onto disk<
             <p>Hire us to turn agent ideas into portable LogicSRC specs, CLIs, SDKs, MCP resources, PWAs, APIs, and provider-neutral plugin workflows. We prioritize auditable contracts, repo-local artifacts, and integrations that can move between model providers and infrastructure.</p>
             <div class="price-row">
               <strong>$400</strong>
-              <span>per hour</span>
+              <span>per agent-hour</span>
             </div>
-            <p class="price-terms">Billed against actual hours worked, invoiced after you approve them. Ten-hour minimum engagement; cancel any time with one week&rsquo;s notice and pay only for hours already approved. See <a href="/terms">Terms</a>.</p>
+            <p class="price-terms">Billed against actual agent-hours worked, invoiced after you approve them. Ten-agent-hour minimum engagement; cancel any time with one week&rsquo;s notice and pay only for hours already approved. See <a href="/terms">Terms</a>.</p>
             <form id="project-request-form" class="project-request-form">
               <label>
                 <span>Contact</span>
@@ -402,7 +402,7 @@ logicsrc secrets ssh agent profullstack  # load into ssh-agent, never onto disk<
             </div>
             <article id="coinpay-setup" class="coinpay-panel">
               <h3>CoinPay hourly invoice</h3>
-              <p>After we accept the project, we invoice approved hours at $400/hour through CoinPay without exposing merchant credentials to the browser.</p>
+              <p>After we accept the project, we invoice approved hours at $400/hour/agent through CoinPay without exposing merchant credentials to the browser.</p>
               <pre><code>COINPAY_ORG=profullstack
 COINPAY_PRODUCT=logicsrc-hire-us
 COINPAY_RATE_USD_PER_HOUR=400

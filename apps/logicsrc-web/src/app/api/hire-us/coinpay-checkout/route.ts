@@ -5,12 +5,13 @@ import { choosePaymentRail, fetchMerchantEligibility, parseJson } from "@/lib/co
 export const dynamic = "force-dynamic";
 
 // POST /api/hire-us/coinpay-checkout — create a CoinPay checkout for approved
-// Hire Us hours at $400/hour, choosing card/crypto/both based on merchant
+// Hire Us hours at $400/hour/agent, choosing card/crypto/both based on merchant
 // eligibility. Billing is metered: the caller supplies the approved hours and the
 // amount is derived from them, never a fixed recurring figure.
 const RATE_USD_PER_HOUR = 400;
 const MINIMUM_HOURS = 10;
 
+// Hours represent total approved agent-hours, not wall-clock duration.
 // Hours are quoted in quarter-hour increments; anything finer is a rounding
 // artifact rather than a real billing unit.
 function parseHours(value: unknown): number | null {
@@ -43,7 +44,7 @@ export async function POST(request: NextRequest) {
       return json(
         {
           success: false,
-          error: `Approved hours must be a quarter-hour increment of at least ${MINIMUM_HOURS}`
+          error: `Approved agent-hours must be a quarter-hour increment of at least ${MINIMUM_HOURS}`
         },
         422
       );
@@ -69,7 +70,7 @@ export async function POST(request: NextRequest) {
         payment_method: paymentRail.method,
         currency: paymentRail.currency,
         ...(paymentRail.blockchain ? { blockchain: paymentRail.blockchain } : {}),
-        description: `LogicSRC Hire Us - ${hours}h @ $${RATE_USD_PER_HOUR}/hour`,
+        description: `LogicSRC Hire Us - ${hours} agent-hours @ $${RATE_USD_PER_HOUR}/agent-hour`,
         success_url: `${publicUrl}/hire-us?payment=success`,
         cancel_url: `${publicUrl}/hire-us?payment=cancelled`,
         redirect_url: `${publicUrl}/hire-us?payment=coinpay`,
@@ -77,6 +78,7 @@ export async function POST(request: NextRequest) {
         metadata: {
           product: "logicsrc-hire-us",
           billing: "metered_hours",
+          unit: "agent_hour",
           hours,
           rate_usd_per_hour: RATE_USD_PER_HOUR,
           source: "logicsrc.com/hire-us",

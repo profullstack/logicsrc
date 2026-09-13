@@ -177,7 +177,7 @@ describe("POST /api/hire-us/coinpay-checkout", () => {
       payment_method: "both",
       currency: "usdc_pol",
       blockchain: "USDC_POL",
-      description: "LogicSRC Hire Us - 10h @ $400/hour",
+      description: "LogicSRC Hire Us - 10 agent-hours @ $400/agent-hour",
       success_url: "https://logicsrc.test/hire-us?payment=success",
       cancel_url: "https://logicsrc.test/hire-us?payment=cancelled",
       redirect_url: "https://logicsrc.test/hire-us?payment=coinpay",
@@ -277,7 +277,7 @@ describe("POST /api/hire-us/coinpay-checkout", () => {
 
     expect(response.status).toBe(201);
     expect(createBody.amount_usd).toBe(10100);
-    expect(createBody.description).toBe("LogicSRC Hire Us - 25.25h @ $400/hour");
+    expect(createBody.description).toBe("LogicSRC Hire Us - 25.25 agent-hours @ $400/agent-hour");
     expect(createBody.metadata).toMatchObject({ billing: "metered_hours", hours: 25.25, rate_usd_per_hour: 400 });
     expect(body.payment).toMatchObject({ amount_usd: 10100, hours: 25.25, rate_usd_per_hour: 400 });
   });
@@ -303,7 +303,7 @@ describe("POST /api/hire-us/coinpay-checkout", () => {
       expect(response.status).toBe(422);
       expect(body).toEqual({
         success: false,
-        error: "Approved hours must be a quarter-hour increment of at least 10"
+        error: "Approved agent-hours must be a quarter-hour increment of at least 10"
       });
     }
 
