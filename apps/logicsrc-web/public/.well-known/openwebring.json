@@ -1,0 +1,19 @@
+{
+  "openwebring": "0.1",
+  "site": {
+    "url": "https://logicsrc.com/blog",
+    "name": "LogicSRC Blog",
+    "feed": "https://logicsrc.com/blog/rss.xml",
+    "lang": "en",
+    "author": "https://logicsrc.com/.well-known/openprofile.md"
+  },
+  "made_by": "both",
+  "disclosure": "ai-generated",
+  "rings": [
+    {
+      "ring": "https://rssamplifier.com/ring/profullstack",
+      "slug": "logicsrc-blog"
+    }
+  ],
+  "updated": "2026-09-13T09:50:00Z"
+}

@@ -60,6 +60,17 @@ export function SiteShell({
             <a href="/terms" style={{ color: "inherit" }}>Terms</a>
             <a href="/privacy" style={{ color: "inherit" }}>Privacy</a>
           </span>
+          {/* Member of the Profullstack OpenWebring (/openwebring): the ring reads these three links. */}
+          <span style={{ display: "flex", gap: "0.75rem", width: "100%" }}>
+            <a href="https://rssamplifier.com/ring/profullstack/previous?from=https://logicsrc.com/blog" style={{ color: "inherit" }}>
+              ← previous
+            </a>
+            <a href="https://rssamplifier.com/ring/profullstack" style={{ color: "inherit" }}>Profullstack ring</a>
+            <a href="https://rssamplifier.com/ring/profullstack/random" style={{ color: "inherit" }}>random</a>
+            <a href="https://rssamplifier.com/ring/profullstack/next?from=https://logicsrc.com/blog" style={{ color: "inherit" }}>
+              next →
+            </a>
+          </span>
         </footer>
       </section>
     </main>
