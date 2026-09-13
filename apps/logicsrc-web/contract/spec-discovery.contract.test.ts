@@ -20,7 +20,12 @@ describe.each([
   });
 
   it("includes a reachable docs URL and the full contract in the LLM feeds", async () => {
-    expect(await llms().text()).toMatch(new RegExp(`\\[${name}\\]\\(https://[^)]+/docs/${slug}\\)`));
+    // A spec with a landing page is linked there and cites its docs URL after
+    // it; a docs-only spec is linked straight to /docs/<slug>. Both must name
+    // the docs URL somewhere on the line.
+    const text = await llms().text();
+    expect(text).toMatch(new RegExp(`\\[${name}\\]\\(https://[^)]+/(docs/)?${slug}\\)`));
+    expect(text).toContain(`/docs/${slug}`);
     expect(await llmsFull().text()).toContain(readDoc(slug)!.trim());
   });
 
