@@ -14,7 +14,8 @@ describe.each([
   { slug: "openabtest", name: "OpenABTest", family: "process" },
   { slug: "openfleet", name: "OpenFleet", family: "process" },
   { slug: "openrental", name: "OpenRental", family: "catalogs" },
-  { slug: "openwall", name: "OpenWall", family: "people" }
+  { slug: "openwall", name: "OpenWall", family: "people" },
+  { slug: "openstack", name: "OpenStack.md", family: "catalogs" }
 ])("$name public discovery", ({ slug, name, family }) => {
   it("serves the specification through its family and docs index", () => {
     expect(familyOfSpec(slug)?.slug).toBe(family);
