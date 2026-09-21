@@ -44,6 +44,8 @@ a different product. The member protocols keep their `ip` names.
 | `paid2stream` | Server protocol for paid live streams: relay leases per hour, presence proofs, gateways serving standard HLS, M3U and EPG | [`paid2stream.md`](./openswarm/paid2stream.md) |
 | OpenFile | The web door onto an `ipfile` swarm: `/.well-known/openfile.json` lists a publisher's files with fetch routes, verification, consent, price and holders | [`openfile.md`](./openfile.md) |
 | OpenDisk | The web door onto a `paid2seed` seeder: `/.well-known/opendisk.json` lists free GiB, price, policy, proof cadence and hub standing, so a disk is found instead of waited for | [`opendisk.md`](./opendisk.md) |
+| OpenObject | A bucket you can mount: keyed objects as `ipfile` swarms placed on OpenDisk disks under `pay2seed` at a stated redundancy, an `ipdb` index, repair, an API and a mount | [`openobject.md`](./openobject.md) |
+| OpenSlice | A container whose compute is a host and whose disk is an OpenObject mount: `/.well-known/openslice.json`, the slice file, and a reservation that is a `paid2seed` lease applied to compute | [`openslice.md`](./openslice.md) |
 
 Supporting documents:
 

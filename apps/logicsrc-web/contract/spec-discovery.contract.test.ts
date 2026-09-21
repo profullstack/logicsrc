@@ -15,6 +15,8 @@ describe.each([
   { slug: "openfleet", name: "OpenFleet", family: "process" },
   { slug: "openrental", name: "OpenRental", family: "catalogs" },
   { slug: "openwall", name: "OpenWall", family: "people" },
+  { slug: "openobject", name: "OpenObject", family: "catalogs" },
+  { slug: "openslice", name: "OpenSlice", family: "catalogs" },
   { slug: "openstack", name: "OpenStack.md", family: "catalogs" }
 ])("$name public discovery", ({ slug, name, family }) => {
   it("serves the specification through its family and docs index", () => {
