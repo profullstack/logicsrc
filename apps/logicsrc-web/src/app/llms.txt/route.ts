@@ -11,9 +11,10 @@ export function GET(): Response {
       const url = `${SITE_URL}${spec.landing ?? spec.doc ?? ""}`;
       const doc = spec.doc && spec.landing ? ` Specification: ${SITE_URL}${spec.doc}.` : "";
       const head = `- [${spec.name}](${url}): ${spec.line}.${doc}`;
-      const kids = children.map(
-        (c) => `  - [${c.name}](${SITE_URL}${c.landing ?? c.doc ?? ""}): ${c.line}.`
-      );
+      const kids = children.map((c) => {
+        const kidDoc = c.doc && c.landing ? ` Specification: ${SITE_URL}${c.doc}.` : "";
+        return `  - [${c.name}](${SITE_URL}${c.landing ?? c.doc ?? ""}): ${c.line}.${kidDoc}`;
+      });
       return [head, ...kids];
     });
     return `## ${family.name}\n\n${family.line}. Family page: ${SITE_URL}/specs/${family.slug}\n\n${lines.join("\n")}`;
