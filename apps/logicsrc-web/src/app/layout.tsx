@@ -81,6 +81,8 @@ export default function RootLayout({ children }: { children: ReactNode }): React
         {/* OpenProfile.md discovery (/openprofile, rule "A link element"): the
             site points at its own profile, the one relays name as operator. */}
         <link rel="openprofile" href={`${SITE_URL}/.well-known/openprofile.md`} />
+        {/* OpenStack.md discovery (/openstack, rule 9): what this site is built on. */}
+        <link rel="openstack" href={`${SITE_URL}/.well-known/openstack.md`} />
       </head>
       <body>
         <script
