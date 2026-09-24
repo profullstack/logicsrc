@@ -22,6 +22,9 @@
   top: 0;
   z-index: 3;
   display: grid;
+  /* minmax(0, 1fr), not auto: an auto column takes the min-content width of
+     the widest row, so one unbreakable control would widen the whole page. */
+  grid-template-columns: minmax(0, 1fr);
   gap: 0.6rem;
   padding: 0.75rem 0 0.8rem;
   background: #f6f7f4;
@@ -54,18 +57,29 @@
   gap: 0.6rem 0.9rem;
 }
 
+/*
+ * The style group grows a tab per colour style the set ships, so it can be
+ * wider than a phone; it scrolls inside its own border instead of stretching
+ * the toolbar and putting the whole page on a horizontal scrollbar.
+ */
 .segmented {
   display: inline-flex;
+  min-width: 0;
+  max-width: 100%;
   border: 1px solid #cfd5cc;
   border-radius: 0.55rem;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
   background: #fff;
 }
 
 .seg,
 .segOn {
+  flex: none;
   padding: 0.4rem 0.75rem;
   font-size: 0.86rem;
+  white-space: nowrap;
   background: #fff;
   color: #101418;
   border-right: 1px solid #e3e6e0;
@@ -272,12 +286,31 @@
 }
 
 .hero {
-  display: flex;
-  align-items: center;
-  gap: 1.4rem;
+  display: grid;
+  gap: 1rem;
   padding: 1.2rem;
   border-radius: 0.9rem;
   background: radial-gradient(circle at 30% 20%, #ffffff, #eef1ec);
+}
+
+.heroMain {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.4rem;
+}
+
+/*
+ * One tile per colour style, and the set may add more of them; a row that
+ * cannot wrap pushes the later styles out of the panel, so this is a grid
+ * that reflows rather than a flex line.
+ */
+.heroStyles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(4.25rem, 1fr));
+  gap: 0.7rem 0.5rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid rgb(16 20 24 / 7%);
 }
 
 .heroSmall {
@@ -400,8 +433,16 @@
 .heroHq {
   display: grid;
   justify-items: center;
-  gap: 0.2rem;
-  margin-left: auto;
+  gap: 0.25rem;
+  min-width: 0;
   font-size: 0.7rem;
+  line-height: 1.25;
+  text-align: center;
   color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.heroHq img {
+  max-width: 100%;
+  height: auto;
 }
