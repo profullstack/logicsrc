@@ -97,6 +97,7 @@ export const FAMILIES: Family[] = [
       s("openrecipe", "OpenRecipe.md", "One Markdown file that is a recipe, with schema.org derived from it and never the reverse"),
       s("opensong", "OpenSong", "One plain-text file that is a song: title, style, exclusions and lyrics as the blocks a generator takes, kept beside the audio"),
       s("openemoji", "OpenEmoji", "An emoji set as a folder: one file that states coverage, licence and whether a person or a model drew it, and glyphs named by the codepoints they draw"),
+      s("openicon", "OpenIcon", "An icon set as a folder: every icon named, with aliases, 24x24 currentColor SVGs and a Nerd Font, Unicode and ASCII glyph each, so a terminal draws the best one it can"),
       s("openthreat", "OpenThreat", "One file a security tool serves about what it found in the open: public subjects only, secrets never located"),
       s("openrental", "OpenRental", "One file an operator serves about the agents and file swarms it rents out: members, metadata and rates through CoinPay", { landing: undefined, status: "draft" }),
       s("opensite", "OpenSite", "One record about a page or a site: the card a reader would draw, declared by the site or read from it, kept by an index"),
