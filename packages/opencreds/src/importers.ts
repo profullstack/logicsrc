@@ -308,6 +308,118 @@ function mapKeePassRow(row: Record<string, string>, folders: ReturnType<typeof f
   } as Partial<Item>);
 }
 
+/** NordPass: name, url, username, password, note, folder, type, card columns. */
+function mapNordPassRow(row: Record<string, string>, folders: ReturnType<typeof folderAssigner>): Item {
+  const common = {
+    name: firstOf(row, "name"),
+    notes: firstOf(row, "note", "notes"),
+    folderId: folders.idFor(firstOf(row, "folder")),
+  };
+  const type = firstOf(row, "type").toLowerCase();
+
+  if (type === "credit_card" || firstOf(row, "cardnumber")) {
+    const expiry = firstOf(row, "expirydate");
+    const [month = "", year = ""] = expiry.includes("/") ? expiry.split("/") : ["", ""];
+    return createItem("card", {
+      ...common,
+      card: {
+        cardholderName: firstOf(row, "cardholdername"),
+        number: firstOf(row, "cardnumber"),
+        code: firstOf(row, "cvc", "cvv"),
+        expMonth: month.trim(),
+        expYear: expandYear(year.trim()),
+      },
+    } as Partial<Item>);
+  }
+
+  if (type === "note" || (!firstOf(row, "password") && !firstOf(row, "url"))) {
+    return createItem("note", common as Partial<Item>);
+  }
+
+  const uri = firstOf(row, "url");
+  return createItem("login", {
+    ...common,
+    name: common.name || hostOf(uri),
+    login: {
+      username: firstOf(row, "username"),
+      password: firstOf(row, "password"),
+      uris: uri ? [{ uri, match: "domain" as const }] : [],
+    },
+  } as Partial<Item>);
+}
+
+/** Dashlane: title, username, username2, password, note, url, category, otpSecret. */
+function mapDashlaneRow(row: Record<string, string>, folders: ReturnType<typeof folderAssigner>): Item {
+  const uri = firstOf(row, "url");
+  return createItem("login", {
+    name: firstOf(row, "title", "name") || hostOf(uri),
+    notes: firstOf(row, "note", "notes"),
+    folderId: folders.idFor(firstOf(row, "category")),
+    login: {
+      // Dashlane keeps alternates in username2/username3; the first is the one
+      // it signs in with.
+      username: firstOf(row, "username", "username2", "username3"),
+      password: firstOf(row, "password"),
+      totp: firstOf(row, "otpsecret", "otpurl"),
+      uris: uri ? [{ uri, match: "domain" as const }] : [],
+    },
+  } as Partial<Item>);
+}
+
+/** Proton Pass: type, name, url, email, username, password, note, totp, vault. */
+function mapProtonPassRow(row: Record<string, string>, folders: ReturnType<typeof folderAssigner>): Item {
+  const common = {
+    name: firstOf(row, "name"),
+    notes: firstOf(row, "note", "notes"),
+    folderId: folders.idFor(firstOf(row, "vault")),
+  };
+  const type = firstOf(row, "type").toLowerCase();
+  if (type === "note") return createItem("note", common as Partial<Item>);
+
+  const uri = firstOf(row, "url");
+  return createItem("login", {
+    ...common,
+    name: common.name || hostOf(uri),
+    login: {
+      // Proton splits the two; whichever is filled is the sign-in name.
+      username: firstOf(row, "username", "email"),
+      password: firstOf(row, "password"),
+      totp: firstOf(row, "totp"),
+      uris: uri ? [{ uri, match: "domain" as const }] : [],
+    },
+  } as Partial<Item>);
+}
+
+/** RoboForm: Name, Url, MatchUrl, Login, Pwd, Note, Folder. */
+function mapRoboFormRow(row: Record<string, string>, folders: ReturnType<typeof folderAssigner>): Item {
+  const uri = firstOf(row, "url", "matchurl");
+  return createItem("login", {
+    name: firstOf(row, "name") || hostOf(uri),
+    notes: firstOf(row, "note", "notes"),
+    folderId: folders.idFor(firstOf(row, "folder")),
+    login: {
+      username: firstOf(row, "login", "username"),
+      password: firstOf(row, "pwd", "password"),
+      uris: uri ? [{ uri, match: "domain" as const }] : [],
+    },
+  } as Partial<Item>);
+}
+
+/** Apple Passwords: Title, URL, Username, Password, Notes, OTPAuth. */
+function mapAppleRow(row: Record<string, string>): Item {
+  const uri = firstOf(row, "url");
+  return createItem("login", {
+    name: firstOf(row, "title") || hostOf(uri),
+    notes: firstOf(row, "notes", "note"),
+    login: {
+      username: firstOf(row, "username"),
+      password: firstOf(row, "password"),
+      totp: firstOf(row, "otpauth"),
+      uris: uri ? [{ uri, match: "domain" as const }] : [],
+    },
+  } as Partial<Item>);
+}
+
 /**
  * Supported sources. Each `detect` looks at the header row, so a person can
  * drop in a file without first telling us where it came from.
@@ -335,6 +447,40 @@ export const IMPORT_SOURCES: Readonly<Record<string, ImportSource>> = Object.fre
     detect: (headers) => headers.includes("url") && headers.includes("username") && headers.includes("type"),
     map: mapOnePasswordRow,
   },
+  nordpass: {
+    label: "NordPass",
+    detect: (headers) => headers.includes("cardholdername") && headers.includes("folder"),
+    map: mapNordPassRow,
+  },
+  dashlane: {
+    label: "Dashlane",
+    detect: (headers) => headers.includes("otpsecret") || headers.includes("username2"),
+    map: mapDashlaneRow,
+  },
+  protonpass: {
+    label: "Proton Pass",
+    detect: (headers) => headers.includes("vault") && headers.includes("totp"),
+    map: mapProtonPassRow,
+  },
+  roboform: {
+    label: "RoboForm",
+    detect: (headers) => headers.includes("matchurl") || (headers.includes("pwd") && headers.includes("login")),
+    map: mapRoboFormRow,
+  },
+  apple: {
+    label: "Apple Passwords",
+    // 1Password's CSV is title,url,username,password,otpauth,notes,**type** and
+    // would otherwise match this too. Apple's export has no type column.
+    detect: (headers) =>
+      headers.includes("otpauth") && headers.includes("title") && !headers.includes("type"),
+    map: mapAppleRow,
+  },
+  firefox: {
+    label: "Firefox",
+    detect: (headers) =>
+      headers.includes("formactionorigin") || headers.includes("timepasswordchanged"),
+    map: mapChromeRow,
+  },
   chrome: {
     label: "Chrome",
     detect: (headers) => headers.includes("url") && headers.includes("username") && headers.includes("password"),
@@ -348,7 +494,21 @@ export const IMPORT_SOURCES: Readonly<Record<string, ImportSource>> = Object.fre
  * Order matters: Chrome's columns are a subset of 1Password's, and LastPass's
  * overlap both, so the more specific detector has to be asked first.
  */
-export const DETECT_ORDER: readonly string[] = ["bitwarden", "lastpass", "keepass", "onepassword", "chrome"];
+export const DETECT_ORDER: readonly string[] = [
+  "bitwarden",
+  "nordpass",
+  "dashlane",
+  "protonpass",
+  "roboform",
+  "lastpass",
+  "keepass",
+  "firefox",
+  // 1Password before Apple: their columns overlap and 1Password's `type` is the
+  // only thing that separates them, so ask the one that owns it first.
+  "onepassword",
+  "apple",
+  "chrome",
+];
 
 export function detectSource(headers: string[]): string | null {
   for (const key of DETECT_ORDER) {
