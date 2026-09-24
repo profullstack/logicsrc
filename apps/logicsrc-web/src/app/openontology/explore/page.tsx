@@ -1,18 +1,14 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/page-meta";
 import { getService } from "@/lib/ontology-service";
 import { SiteShell } from "@/components/site-shell";
 import { CLAIM_STATUS, card, mono, table, th, td, StatusBadge } from "../ui";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: "Explore · OpenOntology · LogicSRC",
-  description:
-    "A read-only explorer over the OpenOntology example package: entity types, entities, claims with provenance, and the saved queries that answer real questions.",
-  alternates: { canonical: "/openontology/explore" }
-};
+export const metadata: Metadata = pageMetadata("/openontology/explore");
 
 export default async function ExplorePage(): Promise<ReactNode> {
   const state = await getService();

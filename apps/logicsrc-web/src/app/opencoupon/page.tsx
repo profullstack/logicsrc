@@ -1,15 +1,14 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { specMetadata } from "@/lib/page-meta";
 import { SiteShell } from "@/components/site-shell";
 import { mono, pre, table, td, th } from "../openontology/ui";
 
-export const metadata: Metadata = {
-  title: "OpenCoupon · LogicSRC",
-  description:
-    "OpenCoupon is one file a merchant serves about what is on offer right now, at /.well-known/opencoupon.json: every code, sale and shipping threshold with its kind, value, scope, dates, status and regions, expired codes kept so directories learn they died. A coupon site reads the merchant instead of a forum thread.",
-  alternates: { canonical: "/opencoupon" }
-};
+export const metadata: Metadata = specMetadata(
+  "/opencoupon",
+  "OpenCoupon is one file a merchant serves about what is on offer right now, at /.well-known/opencoupon.json: every code, sale and shipping threshold with its kind, value, scope, dates, status and regions, expired codes kept so directories learn they died. A coupon site reads the merchant instead of a forum thread."
+);
 
 const DESCRIPTOR = `{
   "merchant": { "name": "Northwind Outfitters", "web": "https://northwind.example",

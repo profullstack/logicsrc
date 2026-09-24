@@ -1,14 +1,14 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { specMetadata } from "@/lib/page-meta";
 import { SiteShell } from "@/components/site-shell";
 import { listSkills } from "@/lib/skills";
 import { pre, table, td, th } from "../openontology/ui";
 
-export const metadata: Metadata = {
-  title: "OpenSkill · Human skills and knowledge · LogicSRC",
-  description: "Portable descriptions of human skills, knowledge and occupations, linked to ESCO and O*NET and carried in OpenProfile.",
-  alternates: { canonical: "/openskill" }
-};
+export const metadata: Metadata = specMetadata(
+  "/openskill",
+  "Portable descriptions of human skills, knowledge and occupations, linked to ESCO and O*NET and carried in OpenProfile."
+);
 
 export default function OpenSkillPage() {
   const concepts = listSkills();

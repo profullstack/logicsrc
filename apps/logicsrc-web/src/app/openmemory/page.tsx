@@ -1,13 +1,12 @@
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { specMetadata } from "@/lib/page-meta";
 import { ResourceSpecPage, type ResourceSpec } from "@/components/resource-spec-page";
 
-export const metadata: Metadata = {
-  title: "OpenMemory · LogicSRC",
-  description:
-    "OpenMemory is the memory block of an OpenServer offer: RAM in mebibytes, DDR generation and speed, ECC as three states, reserved or balloonable allocation, and a range that says how much more a buyer can add at checkout and for how much.",
-  alternates: { canonical: "/openmemory" }
-};
+export const metadata: Metadata = specMetadata(
+  "/openmemory",
+  "OpenMemory is the memory block of an OpenServer offer: RAM in mebibytes, DDR generation and speed, ECC as three states, reserved or balloonable allocation, and a range that says how much more a buyer can add at checkout and for how much."
+);
 
 const SPEC: ResourceSpec = {
   name: "OpenMemory",

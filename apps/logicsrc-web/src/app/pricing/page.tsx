@@ -1,13 +1,9 @@
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/page-meta";
 import { SiteShell } from "@/components/site-shell";
 
-export const metadata: Metadata = {
-  title: "Pricing · LogicSRC",
-  description:
-    "LogicSRC the open specification, schemas, SDKs, and CLI are free and open source. Implementation help is $400/hour/agent for accepted work, paid via CoinPay.",
-  alternates: { canonical: "/pricing" },
-};
+export const metadata: Metadata = pageMetadata("/pricing");
 
 const FAQ: Array<{ q: string; a: string }> = [
   {

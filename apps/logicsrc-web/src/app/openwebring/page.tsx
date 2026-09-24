@@ -1,15 +1,14 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { specMetadata } from "@/lib/page-meta";
 import { SiteShell } from "@/components/site-shell";
 import { mono, pre, table, td, th } from "../openontology/ui";
 
-export const metadata: Metadata = {
-  title: "OpenWebring · LogicSRC",
-  description:
-    "OpenWebring is a webring that says who made it: one file a ring serves about its members at /.well-known/openwebring.json, one file a member may serve about itself, plain links between them, and a made_by declaration on every member, human, ai or both, so a reader can follow the human web or the machine web on purpose.",
-  alternates: { canonical: "/openwebring" }
-};
+export const metadata: Metadata = specMetadata(
+  "/openwebring",
+  "OpenWebring is a webring that says who made it: one file a ring serves about its members at /.well-known/openwebring.json, one file a member may serve about itself, plain links between them, and a made_by declaration on every member, human, ai or both, so a reader can follow the human web or the machine web on purpose."
+);
 
 const MEMBER = `{
   "openwebring": "0.1",

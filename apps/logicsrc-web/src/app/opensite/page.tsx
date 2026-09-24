@@ -1,15 +1,14 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { specMetadata } from "@/lib/page-meta";
 import { SiteShell } from "@/components/site-shell";
 import { mono, pre, table, td, th } from "../openontology/ui";
 
-export const metadata: Metadata = {
-  title: "OpenSite · LogicSRC",
-  description:
-    "OpenSite is one record about a page or a site: the card a careful reader would draw from one URL, declared by the site at /.well-known/opensite.json or read from the page by written-down rules, kept by an index and handed to anyone. Title, description, picture, kind, author, feeds, and the card tags verbatim.",
-  alternates: { canonical: "/opensite" }
-};
+export const metadata: Metadata = specMetadata(
+  "/opensite",
+  "OpenSite is one record about a page or a site: the card a careful reader would draw from one URL, declared by the site at /.well-known/opensite.json or read from the page by written-down rules, kept by an index and handed to anyone. Title, description, picture, kind, author, feeds, and the card tags verbatim."
+);
 
 const RECORD = `{
   "opensite": "0.1",

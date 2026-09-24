@@ -1,15 +1,14 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { specMetadata } from "@/lib/page-meta";
 import { SiteShell } from "@/components/site-shell";
 import { mono, pre, table, td, th } from "../openontology/ui";
 
-export const metadata: Metadata = {
-  title: "OpenDisk · LogicSRC",
-  description:
-    "OpenDisk is one file a machine serves about the disk it will rent: free GiB, price per GiB-month, location, policy, proof cadence and hub standing, at /.well-known/opendisk.json. What a peer-to-peer storage market is made of. Reference marketplace d1sks.com.",
-  alternates: { canonical: "/opendisk" }
-};
+export const metadata: Metadata = specMetadata(
+  "/opendisk",
+  "OpenDisk is one file a machine serves about the disk it will rent: free GiB, price per GiB-month, location, policy, proof cadence and hub standing, at /.well-known/opendisk.json. What a peer-to-peer storage market is made of. Reference marketplace d1sks.com."
+);
 
 const DESCRIPTOR = `{
   "name": "seeder-a41e, Falkenstein",

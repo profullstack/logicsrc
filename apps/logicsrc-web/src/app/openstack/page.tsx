@@ -1,15 +1,14 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { specMetadata } from "@/lib/page-meta";
 import { SiteShell } from "@/components/site-shell";
 import { mono, pre, table, td, th } from "../openontology/ui";
 
-export const metadata: Metadata = {
-  title: "OpenStack.md · LogicSRC",
-  description:
-    "OpenStack.md is one Markdown file that says what a piece of software is built on: languages, runtimes, every interface and what each is made of, data, services, tooling, hosting, the rules, and what it must never depend on. Read by a person in a minute, by an agent in one prompt, and inherited by the next project through Extends.",
-  alternates: { canonical: "/openstack" }
-};
+export const metadata: Metadata = specMetadata(
+  "/openstack",
+  "OpenStack.md is one Markdown file that says what a piece of software is built on: languages, runtimes, every interface and what each is made of, data, services, tooling, hosting, the rules, and what it must never depend on. Read by a person in a minute, by an agent in one prompt, and inherited by the next project through Extends."
+);
 
 const FILE = `# LogicSRC
 

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { contentMetadata, notFoundMetadata } from "@/lib/page-meta";
 import { SiteShell } from "@/components/site-shell";
 import { SpecList } from "@/components/spec-list";
 import { FAMILIES, familyBySlug } from "@/lib/specs";
@@ -17,12 +18,12 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { family: slug } = await params;
   const family = familyBySlug(slug);
-  if (!family) return {};
-  return {
-    title: `${family.name} · Specs · LogicSRC`,
+  if (!family) return notFoundMetadata("spec family");
+  return contentMetadata({
+    title: `${family.name}: LogicSRC Specs`,
     description: `${family.line}. ${family.specs.map((s) => s.name).join(", ")}.`,
-    alternates: { canonical: `/specs/${family.slug}` }
-  };
+    path: `/specs/${family.slug}`
+  });
 }
 
 export default async function FamilyPage({

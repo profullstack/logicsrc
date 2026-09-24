@@ -1,15 +1,14 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { specMetadata } from "@/lib/page-meta";
 import { SiteShell } from "@/components/site-shell";
 import { mono, pre, table, td, th } from "../openontology/ui";
 
-export const metadata: Metadata = {
-  title: "OpenSong · LogicSRC",
-  description:
-    "OpenSong is one plain-text file that is a song: TITLE, STYLE, EXCLUDE STYLES and LYRICS as labelled blocks that paste straight into a music generator, [Section - direction] tags in the lyrics, no Markdown. Kept beside the audio as the same name with .txt; ID3 tags are derived from it, never the reverse.",
-  alternates: { canonical: "/opensong" }
-};
+export const metadata: Metadata = specMetadata(
+  "/opensong",
+  "OpenSong is one plain-text file that is a song: TITLE, STYLE, EXCLUDE STYLES and LYRICS as labelled blocks that paste straight into a music generator, [Section - direction] tags in the lyrics, no Markdown. Kept beside the audio as the same name with .txt; ID3 tags are derived from it, never the reverse."
+);
 
 const EXAMPLE = `TITLE:
 Who Fired First

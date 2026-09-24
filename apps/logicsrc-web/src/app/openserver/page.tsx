@@ -1,15 +1,14 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { specMetadata } from "@/lib/page-meta";
 import { SiteShell } from "@/components/site-shell";
 import { mono, pre, table, td, th } from "../openontology/ui";
 
-export const metadata: Metadata = {
-  title: "OpenServer · LogicSRC",
-  description:
-    "OpenServer is one file a hosting provider serves about what it sells: every server, instance, rack, function and peer-market listing, with specs, price, location and stock, at /.well-known/openserver.json. Cloud, VPS, dedicated, bare metal, colocation, on-prem, managed, unmanaged, PaaS, serverless, storage, GPU, edge and p2p.",
-  alternates: { canonical: "/openserver" }
-};
+export const metadata: Metadata = specMetadata(
+  "/openserver",
+  "OpenServer is one file a hosting provider serves about what it sells: every server, instance, rack, function and peer-market listing, with specs, price, location and stock, at /.well-known/openserver.json. Cloud, VPS, dedicated, bare metal, colocation, on-prem, managed, unmanaged, PaaS, serverless, storage, GPU, edge and p2p."
+);
 
 const DESCRIPTOR = `{
   "provider": {

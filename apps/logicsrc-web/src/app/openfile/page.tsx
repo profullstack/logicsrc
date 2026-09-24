@@ -1,15 +1,14 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { specMetadata } from "@/lib/page-meta";
 import { SiteShell } from "@/components/site-shell";
 import { mono, pre, table, td, th } from "../openontology/ui";
 
-export const metadata: Metadata = {
-  title: "OpenFile · LogicSRC",
-  description:
-    "OpenFile is one file a publisher serves about the files it has published: content hash, swarm and HTTP fetch routes, verification, consent basis, price, and who holds it now, at /.well-known/openfile.json. The web door onto an OpenSwarm ipfile swarm.",
-  alternates: { canonical: "/openfile" }
-};
+export const metadata: Metadata = specMetadata(
+  "/openfile",
+  "OpenFile is one file a publisher serves about the files it has published: content hash, swarm and HTTP fetch routes, verification, consent basis, price, and who holds it now, at /.well-known/openfile.json. The web door onto an OpenSwarm ipfile swarm."
+);
 
 const DESCRIPTOR = `{
   "publisher": {

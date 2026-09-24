@@ -1,15 +1,14 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { specMetadata } from "@/lib/page-meta";
 import { SiteShell } from "@/components/site-shell";
 import { mono, pre, table, td, th } from "../openontology/ui";
 
-export const metadata: Metadata = {
-  title: "OpenMCP · LogicSRC",
-  description:
-    "OpenMCP is an open catalog protocol for MCP relays: a relay serves /.well-known/openmcp.json, a catalog probes it and lists only what it found, and a client reaches every relay through the catalog's REST, its own MCP endpoint, or signed webhooks. Reference implementation at github.com/logicsrc/openmcp.",
-  alternates: { canonical: "/openmcp" }
-};
+export const metadata: Metadata = specMetadata(
+  "/openmcp",
+  "OpenMCP is an open catalog protocol for MCP relays: a relay serves /.well-known/openmcp.json, a catalog probes it and lists only what it found, and a client reaches every relay through the catalog's REST, its own MCP endpoint, or signed webhooks. Reference implementation at github.com/logicsrc/openmcp."
+);
 
 const DESCRIPTOR = `{
   "openmcp": "0.1",

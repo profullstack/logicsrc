@@ -2,6 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { contentMetadata, notFoundMetadata } from "@/lib/page-meta";
+import { docTitle, readDoc } from "@/lib/docs";
 import { marked } from "marked";
 import { hasReports, readReportJson, readReportMarkdown, reportIds, REPORTED_SPECS } from "@/lib/reports";
 import { SiteShell } from "@/components/site-shell";
@@ -25,12 +27,15 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug, id } = await params;
   const r = readReportJson(slug, id);
-  if (!r) return { title: "Not found · LogicSRC" };
-  return {
-    title: `${r.implementation.name} ${r.implementation.version} benchmark · ${slug} · LogicSRC`,
-    description: `Reproducible ${slug} benchmark: ${r.environment.runtime} on ${r.environment.os}, generated ${r.generatedAt}.`,
-    alternates: { canonical: `/docs/${slug}/reports/${id}` },
-  };
+  if (!r) return notFoundMetadata("benchmark report");
+  const md = readDoc(slug);
+  const name = md ? docTitle(md, slug) : slug;
+  return contentMetadata({
+    title: `${r.implementation.name} ${r.implementation.version} ${name} benchmark`,
+    description: `Reproducible ${name} benchmark: ${r.environment.runtime} on ${r.environment.os}, generated ${r.generatedAt}.`,
+    path: `/docs/${slug}/reports/${id}`,
+    type: "article",
+  });
 }
 
 export default async function ReportPage({

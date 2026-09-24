@@ -3,7 +3,8 @@ import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
 import { marked } from "marked";
-import { DOC_SLUGS, docExcerpt, docTitle, readDoc } from "@/lib/docs";
+import { DOC_SLUGS, docExcerpt, docSubtitle, docTitle, readDoc } from "@/lib/docs";
+import { composeTitle, contentMetadata, notFoundMetadata } from "@/lib/page-meta";
 import { SiteShell } from "@/components/site-shell";
 import { sanitizeRenderedHtml } from "@/lib/html";
 
@@ -21,12 +22,18 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const md = readDoc(slug);
-  if (!md) return { title: "Not found · LogicSRC" };
-  return {
-    title: `${docTitle(md, slug)} · LogicSRC Docs`,
-    description: docExcerpt(md) || undefined,
-    alternates: { canonical: `/docs/${slug}` },
-  };
+  if (!md) return notFoundMetadata("doc");
+  // Every spec's H1 is just its name, so "OpenStream" alone was the whole
+  // title. The subject line comes from the registry (or the guide list).
+  const name = docTitle(md, slug);
+  const subtitle = docSubtitle(slug);
+  return contentMetadata({
+    title: subtitle ? composeTitle(name, subtitle) : name,
+    description:
+      docExcerpt(md) || `${name}: ${subtitle}. Part of the LogicSRC open-standards surface.`,
+    path: `/docs/${slug}`,
+    type: "article",
+  });
 }
 
 export default async function DocPage({

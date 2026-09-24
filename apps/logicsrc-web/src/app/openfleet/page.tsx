@@ -1,15 +1,14 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { specMetadata } from "@/lib/page-meta";
 import { SiteShell } from "@/components/site-shell";
 import { mono, pre, table, td, th } from "../openontology/ui";
 
-export const metadata: Metadata = {
-  title: "OpenFleet · LogicSRC",
-  description:
-    "OpenFleet is the record an agent session carries about where it sits: which human answers for it, who spawned it, for what task, at what depth and under what ceiling. A fleet is every session one human is answerable for; a swarm is the sessions one spawner starts inside it to do one task. Fleets are always human controlled.",
-  alternates: { canonical: "/openfleet" }
-};
+export const metadata: Metadata = specMetadata(
+  "/openfleet",
+  "OpenFleet is the record an agent session carries about where it sits: which human answers for it, who spawned it, for what task, at what depth and under what ceiling. A fleet is every session one human is answerable for; a swarm is the sessions one spawner starts inside it to do one task. Fleets are always human controlled."
+);
 
 const RECORD = `{
   "openfleet": "0.1",

@@ -1,13 +1,12 @@
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { specMetadata } from "@/lib/page-meta";
 import { ProfileSectionPage, type ProfileSection } from "@/components/profile-section-page";
 
-export const metadata: Metadata = {
-  title: "OpenGuest · LogicSRC",
-  description:
-    "OpenGuest is the Guest section of an OpenProfile.md: that a person is available to appear on shows, their expertise and credentials, formats, availability, rate, past appearances and dealbreakers, so a guest and a host are matched from two files rather than two forms. An expert is a guest with Expertise and Credentials.",
-  alternates: { canonical: "/openguest" }
-};
+export const metadata: Metadata = specMetadata(
+  "/openguest",
+  "OpenGuest is the Guest section of an OpenProfile.md: that a person is available to appear on shows, their expertise and credentials, formats, availability, rate, past appearances and dealbreakers, so a guest and a host are matched from two files rather than two forms. An expert is a guest with Expertise and Credentials."
+);
 
 const SPEC: ProfileSection = {
   name: "OpenGuest",

@@ -1,18 +1,16 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/page-meta";
 import { publicClient } from "@/lib/supabase";
 import { SiteShell } from "@/components/site-shell";
 import { AdUnit } from "@/components/ad-unit";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: "Blog · LogicSRC",
-  description:
-    "Project notes for LogicSRC OpenSpec standards, AgentSwarm, AgentByte, SDKs, MCP, and reference implementations.",
-  alternates: { types: { "application/rss+xml": "/blog/rss.xml" } },
-};
+export const metadata: Metadata = pageMetadata("/blog", {
+  alternateTypes: { "application/rss+xml": "/blog/rss.xml" },
+});
 
 type PostRow = {
   slug: string;

@@ -1,13 +1,9 @@
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/page-meta";
 import { SiteShell } from "@/components/site-shell";
 
-export const metadata: Metadata = {
-  title: "About · LogicSRC",
-  description:
-    "LogicSRC is the Profullstack, Inc. open-specification project for coordination between humans and AI agents — schemas, primitives, and conventions that products implement without owning the standard.",
-  alternates: { canonical: "/about" },
-};
+export const metadata: Metadata = pageMetadata("/about");
 
 export default function AboutPage(): ReactNode {
   return (

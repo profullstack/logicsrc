@@ -1,13 +1,12 @@
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { specMetadata } from "@/lib/page-meta";
 import { ResourceSpecPage, type ResourceSpec } from "@/components/resource-spec-page";
 
-export const metadata: Metadata = {
-  title: "OpenBandwidth · LogicSRC",
-  description:
-    "OpenBandwidth is the network block of an OpenServer offer: port speed, how traffic is metered (transfer, unmetered, 95th percentile, flat), what overage costs, IPv4 and IPv6 addresses as a priced resource, DDoS scrubbing, and a range that says what a buyer can add at checkout and for how much.",
-  alternates: { canonical: "/openbandwidth" }
-};
+export const metadata: Metadata = specMetadata(
+  "/openbandwidth",
+  "OpenBandwidth is the network block of an OpenServer offer: port speed, how traffic is metered (transfer, unmetered, 95th percentile, flat), what overage costs, IPv4 and IPv6 addresses as a priced resource, DDoS scrubbing, and a range that says what a buyer can add at checkout and for how much."
+);
 
 const SPEC: ResourceSpec = {
   name: "OpenBandwidth",

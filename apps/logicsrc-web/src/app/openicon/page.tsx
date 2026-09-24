@@ -1,17 +1,16 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { specMetadata } from "@/lib/page-meta";
 import { SiteShell } from "@/components/site-shell";
 import { mono, pre, table, td, th } from "../openontology/ui";
 import { Gallery } from "./gallery";
 import { OPENICON_REPO } from "./set";
 
-export const metadata: Metadata = {
-  title: "OpenIcon · LogicSRC",
-  description:
-    "OpenIcon is an icon set as a folder: one openicon.json naming every icon with aliases and keywords, 24x24 currentColor SVGs, and three terminal glyphs per icon (Nerd Font, Unicode, ASCII) so a TUI draws the best one it can. Brand logos say they are brands.",
-  alternates: { canonical: "/openicon" }
-};
+export const metadata: Metadata = specMetadata(
+  "/openicon",
+  "OpenIcon is an icon set as a folder: one openicon.json naming every icon with aliases and keywords, 24x24 currentColor SVGs, and three terminal glyphs per icon (Nerd Font, Unicode, ASCII) so a TUI draws the best one it can. Brand logos say they are brands."
+);
 
 
 /** key, Nerd Font codepoint, Unicode, ASCII: straight from openicon.json. */
