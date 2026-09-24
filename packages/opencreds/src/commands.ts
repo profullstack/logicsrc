@@ -26,6 +26,7 @@ import {
 } from "./database.js";
 import { categorizeItem, parseCategories, toSimpleCsv } from "./categories.js";
 import { CSV_LOSSY_FIELDS, IMPORT_SOURCES, parseCsvImport, toBitwardenCsv } from "./importers.js";
+import { looksLikeBitwardenText, parseBitwardenJson } from "./bitwarden.js";
 import {
   createItem,
   decryptItems,
@@ -799,7 +800,10 @@ export function registerCredsCommands(parent: Command): void {
 
   parent
     .command("import")
-    .argument("<file>", "an OpenCreds database, or a CSV export from another product")
+    .argument(
+      "<file>",
+      "an OpenCreds database, a Bitwarden JSON export, or a CSV export from another product",
+    )
     .description("import into the vault")
     .addHelpText("after", examples(`
   $CLI import bitwarden.csv --dry-run         see what would be imported
@@ -842,8 +846,26 @@ export function registerCredsCommands(parent: Command): void {
         let sourceLabel: string;
         let skipped: Array<{ row: number; reason: string }> = [];
 
+        // A Bitwarden JSON export also starts with "{". It used to be handed
+        // straight to parseDatabase and rejected as "Not an OpenCreds database",
+        // which is why importing one meant converting it by hand first. Sniff
+        // the shape before deciding which reader owns the file.
         const isJson = text.trimStart().startsWith("{");
-        if (isJson) {
+        const isBitwardenJson = isJson && looksLikeBitwardenText(text);
+
+        if (isBitwardenJson) {
+          const parsed = parseBitwardenJson(text);
+          if (parsed.items.length === 0) {
+            fail(
+              parsed.skipped[0]?.reason ?? `Nothing to import from ${file}`,
+              EXIT.VALIDATION,
+            );
+          }
+          incoming = { folders: parsed.folders, items: parsed.items };
+          skipped = parsed.skipped;
+          sourceLabel = "bitwarden";
+          process.stdout.write(`  Source      ${file} (Bitwarden JSON)\n\n`);
+        } else if (isJson) {
           const db = parseDatabase(text);
           const header = readHeader(db);
           process.stdout.write(

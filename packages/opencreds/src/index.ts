@@ -124,6 +124,8 @@ export {
   type ImportSource,
 } from "./importers.js";
 
+export { parseBitwardenJson, looksLikeBitwardenJson } from "./bitwarden.js";
+
 export {
   validateItem,
   validateDatabase,
