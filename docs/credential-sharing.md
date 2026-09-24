@@ -292,6 +292,37 @@ automation, write the link explicitly with
 directory path and team/project/environment names; they live in the user's
 LogicSRC config directory, never in the project and never contain secret values.
 
+### Finding and exporting secrets by category
+
+Every secret has a category, worked out from its name: `DATABASE_URL` is `db`,
+`TWITTER_API_KEY` is `social`, `SSH_PORT` is `server`, `TMDB_API_KEY` is `api`.
+A named service wins over a generic word, so `STRIPE_WEBHOOK_SECRET` is
+`finance` (it belongs with the rest of Stripe) rather than `auth`.
+
+```bash
+logicsrc teams categories                        # the categories and what each catches
+logicsrc teams categories acme                   # how many secrets acme has in each
+
+logicsrc teams secrets acme                      # every secret NAME in every vault
+logicsrc teams secrets acme --category db        # only databases (aliases work: database, sql)
+logicsrc teams secrets acme -c social,api        # several at once
+logicsrc teams secrets acme web prod -s stripe   # one vault, names containing "stripe"
+logicsrc teams secrets acme --format csv         # names as CSV, still no values
+
+logicsrc teams export acme --category db -o db.csv          # decrypt into a CSV
+logicsrc teams export acme web prod -o web-prod.csv --yes   # one vault, no prompt
+```
+
+`secrets` never decrypts anything. `export` decrypts on your machine and writes
+`team,project,env,category,key,value,updated_at`, one row per secret, mode 0600.
+It asks before writing plaintext; pass `--yes` in scripts. Vaults you have no
+grant for are skipped and listed rather than failing the export.
+
+The categories are `crypto`, `ai`, `finance`, `email`, `messaging`, `social`,
+`storage`, `db`, `dns`, `analytics`, `devtools`, `cloud`, `server`, `auth`,
+`api`, `config` (settings that are not secrets) and `other`. The same table
+filters the personal vault: `logicsrc vault list --category db`.
+
 ### Rotating a vault key
 
 ```bash

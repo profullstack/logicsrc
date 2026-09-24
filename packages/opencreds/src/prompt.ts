@@ -8,7 +8,9 @@
  */
 
 import { createInterface } from "node:readline";
-import { stdin, stdout } from "node:process";
+// Prompts go to stderr so stdout carries only the answer: `eval "$(opencreds
+// unlock)"` then captures the export line and nothing else.
+import { stdin, stderr } from "node:process";
 
 /** Read a line with the terminal's echo turned off. */
 export async function promptSecret(label: string): Promise<string> {
@@ -18,7 +20,7 @@ export async function promptSecret(label: string): Promise<string> {
     return readLineFromStdin();
   }
 
-  const rl = createInterface({ input: stdin, output: stdout, terminal: true });
+  const rl = createInterface({ input: stdin, output: stderr, terminal: true });
   const asMutable = rl as unknown as { output: { write: (chunk: string) => void }; _writeToOutput?: (s: string) => void };
 
   let muted = false;
@@ -51,7 +53,7 @@ export async function promptNewSecret(label: string, confirmLabel = "Repeat: "):
 }
 
 export async function promptLine(label: string): Promise<string> {
-  const rl = createInterface({ input: stdin, output: stdout });
+  const rl = createInterface({ input: stdin, output: stderr });
   const answer = await new Promise<string>((resolve) => rl.question(label, resolve));
   rl.close();
   return answer;

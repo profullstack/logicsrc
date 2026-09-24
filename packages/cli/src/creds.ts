@@ -18,13 +18,46 @@ import { registerCredsCommands } from "@logicsrc/opencreds/commands";
  * account — encrypted end to end and portable as one file rather than a
  * plaintext CSV. They meet at the `key` item: a synced .env entry, stored.
  */
+export const VAULT_GUIDE = `
+There are two vaults. Pick the one you need:
+
+  Team secrets    .env keys shared with your team (DATABASE_URL, STRIPE_SECRET_KEY, …)
+                  -> logicsrc teams …     (this is where the company secrets are)
+  Personal vault  your own logins, cards, SSH keys, notes
+                  -> logicsrc vault …
+
+Team secrets, the everyday commands:
+  logicsrc login                                           once per machine
+  logicsrc teams list                                      the teams you are in
+  logicsrc teams secrets <team>                            every secret name + its category
+  logicsrc teams secrets <team> --category db              only database secrets
+  logicsrc teams secrets <team> -s stripe                  names containing "stripe"
+  logicsrc teams export <team> --category db -o db.csv     decrypt them into a CSV
+  logicsrc teams pull <team> <project> <env>               write one vault into ./.env
+  logicsrc teams categories                                db, social, server, api, cloud, …
+
+Personal vault:
+  logicsrc vault init                                      create it (once)
+  eval "$(logicsrc vault unlock)"                          unlock for this shell
+  logicsrc vault add login --name GitHub --username me --password -
+  logicsrc vault list --category social                    never shows values
+  logicsrc vault get GitHub --field login.password --reveal
+  logicsrc vault export --format csv --category db --out db.csv --yes
+  logicsrc vault import bitwarden.csv
+
+Help for any command: logicsrc vault <command> --help   (or: logicsrc vault help <command>)
+`;
+
 export function registerOpenCredsCommands(program: Command): void {
   const vault = program
     .command("vault")
     .description(
-      "OpenCreds: an end-to-end-encrypted vault for logins, cards, identities, notes, keys " +
-        "and accounts, portable as one file. Also available as the standalone `opencreds` command.",
-    );
+      "Your personal encrypted vault (logins, cards, keys, notes). " +
+        "Team .env secrets are under `logicsrc teams` — examples below.",
+    )
+    // Most people typing `logicsrc vault` want the TEAM secrets, which live
+    // under `teams`. Say so first, with commands they can paste.
+    .addHelpText("after", VAULT_GUIDE);
 
   registerCredsCommands(vault);
 }

@@ -24,6 +24,7 @@ import {
   parseDatabase,
   readHeader,
 } from "./database.js";
+import { categorizeItem, parseCategories, toSimpleCsv } from "./categories.js";
 import { CSV_LOSSY_FIELDS, IMPORT_SOURCES, parseCsvImport, toBitwardenCsv } from "./importers.js";
 import {
   createItem,
@@ -68,6 +69,12 @@ class CliError extends Error {
   }
 }
 
+/**
+ * The command as the person typed it — `opencreds` standalone, `logicsrc vault`
+ * when mounted — so every hint and example is one they can paste as is.
+ */
+let cli = "opencreds";
+
 function fail(message: string, code: number): never {
   throw new CliError(message, code);
 }
@@ -94,7 +101,7 @@ function storeFor(command: Command) {
 
 function requireMeta(store: ReturnType<typeof createVaultStore>) {
   const meta = store.readMeta();
-  if (!meta) fail(`No vault at ${store.baseDir} — run \`opencreds init\` first`, EXIT.USAGE);
+  if (!meta) fail(`No vault at ${store.baseDir} — create one with \`${cli} init\``, EXIT.USAGE);
   return meta;
 }
 
@@ -257,14 +264,27 @@ function applyTypeFlags(command: Command, type: ItemTypeName): Command {
   return command;
 }
 
+function categoriesOrFail(input: string | undefined): Set<string> | undefined {
+  try {
+    return parseCategories(input);
+  } catch (error) {
+    return fail((error as Error).message, EXIT.USAGE);
+  }
+}
+
 function printItemLine(item: Item): string {
   const type = item.type.padEnd(8);
   const id = item.id.slice(0, 8);
-  return `${id}  ${type}  ${item.name}`;
+  const category = categorizeItem(item).padEnd(9);
+  return `${id}  ${type}  ${category}  ${item.name}`;
 }
 
 /** Register every OpenCreds command onto `parent`. */
 export function registerCredsCommands(parent: Command): void {
+  const names: string[] = [];
+  for (let c: Command | null = parent; c; c = c.parent) names.unshift(c.name());
+  cli = names.join(" ");
+  const examples = (lines: string) => `\nExamples:\n${lines.replace(/^\n/, "").replace(/\$CLI/g, cli)}\n`;
   parent.option("--home <dir>", "vault directory (default $OPENCREDS_HOME)");
 
   // ---------------------------------------------------------------- vault ---
@@ -272,6 +292,9 @@ export function registerCredsCommands(parent: Command): void {
   parent
     .command("init")
     .description("create a vault")
+    .addHelpText("after", examples(`
+  $CLI init                                   create your vault (asks for a master password)
+  $CLI status                                 is there a vault, is it unlocked, what is in it`))
     .option("--namespace <name>", "domain-separation namespace", "opencreds")
     .option("--iterations <n>", "PBKDF2 iterations", (v: string) => Number.parseInt(v, 10))
     .option("--password-stdin", "read the master password from stdin instead of prompting twice")
@@ -311,6 +334,9 @@ export function registerCredsCommands(parent: Command): void {
   parent
     .command("unlock")
     .description("start a session")
+    .addHelpText("after", examples(`
+  eval "$($CLI unlock)"                      unlock for this shell only (nothing written to disk)
+  $CLI unlock --persist --timeout 30          unlock for scripts for 30 minutes; \`lock\` ends it`))
     .option("--persist", "write the session to a 0600 file instead of printing a token")
     .option("--password-stdin", "read the master password from stdin")
     .option("--timeout <minutes>", "session lifetime when persisted", (v: string) => Number.parseInt(v, 10), 15)
@@ -335,7 +361,7 @@ export function registerCredsCommands(parent: Command): void {
           process.stdout.write(`Session written to ${path}, expiring in ${opts.timeout} minutes.\n`);
           process.stdout.write(
             "That file holds the key to this vault. Anything that can read it can read\n" +
-              "every item. Run `opencreds lock` when you are done.\n",
+              "every item. Run `" + cli + " lock` when you are done.\n",
           );
           return;
         }
@@ -433,7 +459,13 @@ export function registerCredsCommands(parent: Command): void {
 
   // ---------------------------------------------------------------- items ---
 
-  const add = parent.command("add").description("add an item");
+  const add = parent
+    .command("add")
+    .description("add an item")
+    .addHelpText("after", examples(`
+  $CLI add login --name GitHub --username me --password -       password read from stdin
+  $CLI add key --name DATABASE_URL --key-type env --value -     one .env secret
+  $CLI add login --help                                          every flag for one type`));
   for (const type of ITEM_TYPE_NAMES) {
     const sub = add
       .command(type)
@@ -484,11 +516,20 @@ export function registerCredsCommands(parent: Command): void {
   parent
     .command("list")
     .description("list items; never prints secret values")
+    .addHelpText("after", examples(`
+  $CLI list                                   everything (never shows values)
+  $CLI list --category db                     database credentials only
+  $CLI list -c social,api                     two categories at once
+  $CLI list --type login --search github`))
     .option("--type <type>", "filter by item type")
+    .option("-c, --category <names>", "filter by category: db, social, server, api, … (comma-separated)")
     .option("--folder <name>", "filter by folder")
     .option("--search <text>", "match against the item name")
     .option("--json", "machine-readable output, masked identically")
-    .action(async function (this: Command, opts: { type?: string; folder?: string; search?: string; json?: boolean }) {
+    .action(async function (
+      this: Command,
+      opts: { type?: string; category?: string; folder?: string; search?: string; json?: boolean },
+    ) {
       await run(async () => {
         const store = storeFor(this);
         const userKey = await unlock(store);
@@ -500,9 +541,11 @@ export function registerCredsCommands(parent: Command): void {
         const folderId = opts.folder ? folders.find((f) => f.name === opts.folder)?.id : undefined;
         if (opts.folder && !folderId) fail(`No folder named "${opts.folder}"`, EXIT.USAGE);
 
+        const categories = categoriesOrFail(opts.category);
         const needle = opts.search?.toLowerCase();
         const filtered = items
           .filter((item) => (opts.type ? item.type === opts.type : true))
+          .filter((item) => (categories ? categories.has(categorizeItem(item)) : true))
           .filter((item) => (folderId ? item.folderId === folderId : true))
           .filter((item) => (needle ? item.name.toLowerCase().includes(needle) : true))
           .sort((a, b) => a.name.localeCompare(b.name) || a.id.localeCompare(b.id));
@@ -523,6 +566,9 @@ export function registerCredsCommands(parent: Command): void {
     .command("get")
     .argument("<needle>", "item id or name")
     .description("show one item, with every secret masked")
+    .addHelpText("after", examples(`
+  $CLI get GitHub                             the item, secrets masked
+  $CLI get GitHub --field login.password --reveal   one value, in the clear`))
     .option("--field <path>", "a single dotted field path, e.g. login.password")
     .option("--reveal", "print the value of --field in the clear")
     .option("--json", "machine-readable output, masked identically")
@@ -649,22 +695,35 @@ export function registerCredsCommands(parent: Command): void {
   parent
     .command("export")
     .description("export the vault as an OpenCreds database")
+    .addHelpText("after", examples(`
+  $CLI export --format csv --out vault.csv --yes              everything, one flat row per item
+  $CLI export --format csv --category db --out db.csv --yes   one category
+  $CLI export --out backup.opencreds                          encrypted backup (asks for a passphrase)`))
     .option("--out <file>", "output file", `vault${DATABASE_EXTENSION}`)
     .option("--passphrase-stdin", "read the export passphrase from stdin")
     .option("--plaintext", "write every secret in the clear (requires --yes)")
-    .option("--format <format>", "opencreds or bitwarden-csv", "opencreds")
+    .option("--format <format>", "opencreds, csv (one flat row per item) or bitwarden-csv", "opencreds")
+    .option("-c, --category <names>", "only items in these categories: db, social, server, api, …")
     .option("--yes", "confirm a plaintext export")
     .action(async function (
       this: Command,
-      opts: { out: string; passphraseStdin?: boolean; plaintext?: boolean; format: string; yes?: boolean },
+      opts: { out: string; passphraseStdin?: boolean; plaintext?: boolean; format: string; category?: string; yes?: boolean },
     ) {
       await run(async () => {
+        if (!["opencreds", "csv", "bitwarden-csv"].includes(opts.format)) {
+          fail(`Unknown format "${opts.format}"; expected opencreds, csv or bitwarden-csv`, EXIT.USAGE);
+        }
+        if (opts.format !== "opencreds" && this.getOptionValueSource("out") === "default") opts.out = "vault.csv";
+        const categories = categoriesOrFail(opts.category);
         const store = storeFor(this);
         const meta = requireMeta(store);
         const userKey = await unlock(store);
-        const payload = await loadPayload(store, userKey);
+        const loaded = await loadPayload(store, userKey);
+        const payload = categories
+          ? { ...loaded, items: loaded.items.filter((item) => categories.has(categorizeItem(item))) }
+          : loaded;
 
-        const wantsPlaintext = Boolean(opts.plaintext) || opts.format === "bitwarden-csv";
+        const wantsPlaintext = Boolean(opts.plaintext) || opts.format !== "opencreds";
 
         if (wantsPlaintext) {
           process.stdout.write(
@@ -675,6 +734,18 @@ export function registerCredsCommands(parent: Command): void {
           if (!opts.yes && !(await confirm("Continue?"))) {
             fail("Refused: a plaintext export needs --yes", EXIT.REFUSED);
           }
+        }
+
+        if (opts.format === "csv") {
+          writeFileSync(opts.out, toSimpleCsv(payload.items, payload.folders), { encoding: "utf8", mode: 0o600 });
+          try {
+            chmodSync(opts.out, 0o600);
+          } catch {
+            /* no modes on this platform */
+          }
+          store.appendAudit(auditEvent({ action: "database.export_plaintext", itemCount: payload.items.length }));
+          process.stdout.write(`Wrote ${opts.out} — ${payload.items.length} items, every secret in the clear.\n`);
+          return;
         }
 
         if (opts.format === "bitwarden-csv") {
@@ -730,6 +801,10 @@ export function registerCredsCommands(parent: Command): void {
     .command("import")
     .argument("<file>", "an OpenCreds database, or a CSV export from another product")
     .description("import into the vault")
+    .addHelpText("after", examples(`
+  $CLI import bitwarden.csv --dry-run         see what would be imported
+  $CLI import bitwarden.csv                   import it (Bitwarden, 1Password, Chrome, LastPass or KeePass CSV)
+  $CLI import backup.opencreds                restore an OpenCreds export`))
     .option("--dry-run", "report what would happen and write nothing")
     .option("--merge <strategy>", "skip, replace or duplicate", "skip")
     .option("--source <name>", `force a CSV source (${Object.keys(IMPORT_SOURCES).join(", ")})`)

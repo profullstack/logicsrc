@@ -20,6 +20,9 @@ import {
   teamsAcceptAction,
   teamsMembersAction,
   teamsVaultsAction,
+  teamsCategoriesAction,
+  teamsSecretsAction,
+  teamsExportAction,
   teamsGrantAction,
   teamsTuiAction,
   teamsPushAction,
@@ -716,7 +719,25 @@ credentials
     print(credentialEngine().exportCredentialAudit(options.run), options.format as OutputFormat);
   });
 
-const teams = program.command("teams").description("Share credentials with teammates by email — end-to-end encrypted team vaults.");
+const teams = program
+  .command("teams")
+  .description("Share credentials with teammates by email — end-to-end encrypted team vaults.")
+  .addHelpText(
+    "after",
+    `
+Quick start (<team> is e.g. profullstack; see yours with "logicsrc teams list"):
+  logicsrc login                                           once per machine
+  logicsrc teams vaults <team>                             the vaults: <project>--<env>
+  logicsrc teams secrets <team>                            every secret name + its category
+  logicsrc teams secrets <team> --category db              filter: db, social, server, api, …
+  logicsrc teams export <team> --category db -o db.csv     decrypt into a CSV
+  logicsrc teams pull <team> <project> <env>               vault -> ./.env
+  logicsrc teams push <team> <project> <env>               ./.env -> vault
+  logicsrc teams grant <team> <project> <env> dev@example.com
+
+Categories: logicsrc teams categories. Help for one command: logicsrc teams <command> --help
+`
+  );
 
 teams
   .command("create")
@@ -761,6 +782,83 @@ teams
   .option("--format <format>", "table, json, or markdown", "table")
   .description("List a team's credential vaults.")
   .action((slug, options) => teamsVaultsAction(slug, options.format as OutputFormat));
+
+// `--category db --category api` and `--category db,api` both work.
+const collectCategory = (value: string, previous: string[] = []) => [...previous, value];
+
+teams
+  .command("categories")
+  .argument("[slug]", "Team slug; when given, counts that team's secrets per category")
+  .option("--format <format>", "table, json, or markdown", "table")
+  .description("List the secret categories you can filter by (db, social, server, api, …).")
+  .addHelpText(
+    "after",
+    `
+Examples:
+  logicsrc teams categories                      the category words and what each one catches
+  logicsrc teams categories profullstack         how many secrets the team has in each
+
+The category is worked out from the secret's NAME, e.g. DATABASE_URL is db and
+TWITTER_API_KEY is social. Use a category with "teams secrets" and "teams export".
+`
+  )
+  .action((slug, options) => teamsCategoriesAction(slug, { format: options.format as OutputFormat }));
+
+teams
+  .command("secrets")
+  .alias("ls")
+  .argument("<slug>", "Team slug")
+  .argument("[project]", "Only this project (omit for every vault in the team)")
+  .argument("[env]", "Only this environment (prod, staging, …)")
+  .option("-c, --category <names>", "db, social, server, api, … (comma-separated or repeated)", collectCategory)
+  .option("-s, --search <text>", "only keys whose name contains this")
+  .option("--format <format>", "table, json, markdown, or csv", "table")
+  .description("List secret names and their category. Never decrypts or shows a value.")
+  .addHelpText(
+    "after",
+    `
+Examples:
+  logicsrc teams secrets profullstack                       every secret name in the team
+  logicsrc teams secrets profullstack --category db         database secrets only
+  logicsrc teams secrets profullstack -c social,api         two categories at once
+  logicsrc teams secrets profullstack coinpayportal prod    one vault
+  logicsrc teams secrets profullstack -s stripe             names containing "stripe"
+  logicsrc teams secrets profullstack --format csv > names.csv
+
+Categories: logicsrc teams categories
+`
+  )
+  .action((slug, project, env, options) =>
+    teamsSecretsAction(slug, { project, env, category: options.category, search: options.search }, { format: options.format })
+  );
+
+teams
+  .command("export")
+  .argument("<slug>", "Team slug")
+  .argument("[project]", "Only this project (omit for every vault in the team)")
+  .argument("[env]", "Only this environment (prod, staging, …)")
+  .option("-o, --out <file>", "CSV file to write, or - for stdout", "secrets.csv")
+  .option("-c, --category <names>", "db, social, server, api, … (comma-separated or repeated)", collectCategory)
+  .option("-s, --search <text>", "only keys whose name contains this")
+  .option("-y, --yes", "skip the are-you-sure prompt (needed when not in a terminal)")
+  .description("Decrypt secrets into a CSV: team,project,env,category,key,value,updated_at.")
+  .addHelpText(
+    "after",
+    `
+Examples:
+  logicsrc teams export profullstack                        everything you can decrypt -> secrets.csv
+  logicsrc teams export profullstack --category db -o db.csv
+  logicsrc teams export profullstack coinpayportal prod -o coinpay-prod.csv
+  logicsrc teams export profullstack -c social --out - --yes | less
+
+The file holds every value in the clear (written 0600). Delete it when done:
+  shred -u secrets.csv
+Vaults you have no access to are skipped and listed at the end.
+`
+  )
+  .action((slug, project, env, options) =>
+    teamsExportAction(slug, { project, env, category: options.category, search: options.search }, { out: options.out, yes: options.yes })
+  );
 
 teams
   .command("tui")
