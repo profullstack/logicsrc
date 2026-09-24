@@ -69,6 +69,11 @@
         "nerd_name": "md-plus",
         "unicode": "+",
         "ascii": "+"
+      },
+      "hq": {
+        "png": "hq/png/{size}/add.png",
+        "webp": "hq/webp/{size}/add.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -87,6 +92,11 @@
         "nerd_name": "md-minus",
         "unicode": "−",
         "ascii": "-"
+      },
+      "hq": {
+        "png": "hq/png/{size}/minus.png",
+        "webp": "hq/webp/{size}/minus.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -110,6 +120,11 @@
         "nerd_name": "md-close",
         "unicode": "✕",
         "ascii": "x"
+      },
+      "hq": {
+        "png": "hq/png/{size}/close.png",
+        "webp": "hq/webp/{size}/close.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -130,6 +145,11 @@
         "nerd_name": "md-check",
         "unicode": "✓",
         "ascii": "v"
+      },
+      "hq": {
+        "png": "hq/png/{size}/check.png",
+        "webp": "hq/webp/{size}/check.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -148,6 +168,11 @@
         "nerd_name": "md-check_circle_outline",
         "unicode": "✅",
         "ascii": "(v)"
+      },
+      "hq": {
+        "png": "hq/png/{size}/check-circle.png",
+        "webp": "hq/webp/{size}/check-circle.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -165,6 +190,11 @@
         "nerd_name": "md-close_circle_outline",
         "unicode": "❎",
         "ascii": "(x)"
+      },
+      "hq": {
+        "png": "hq/png/{size}/x-circle.png",
+        "webp": "hq/webp/{size}/x-circle.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -179,6 +209,11 @@
         "nerd_name": "md-plus_circle_outline",
         "unicode": "⊕",
         "ascii": "(+)"
+      },
+      "hq": {
+        "png": "hq/png/{size}/plus-circle.png",
+        "webp": "hq/webp/{size}/plus-circle.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -193,6 +228,11 @@
         "nerd_name": "md-minus_circle_outline",
         "unicode": "⊖",
         "ascii": "(-)"
+      },
+      "hq": {
+        "png": "hq/png/{size}/minus-circle.png",
+        "webp": "hq/webp/{size}/minus-circle.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -214,6 +254,11 @@
         "nerd_name": "md-pencil",
         "unicode": "✎",
         "ascii": "/e"
+      },
+      "hq": {
+        "png": "hq/png/{size}/edit.png",
+        "webp": "hq/webp/{size}/edit.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -235,6 +280,11 @@
         "nerd_name": "md-trash_can_outline",
         "unicode": "🗑",
         "ascii": "del"
+      },
+      "hq": {
+        "png": "hq/png/{size}/delete.png",
+        "webp": "hq/webp/{size}/delete.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -256,6 +306,11 @@
         "nerd_name": "md-magnify",
         "unicode": "🔍",
         "ascii": "?"
+      },
+      "hq": {
+        "png": "hq/png/{size}/search.png",
+        "webp": "hq/webp/{size}/search.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -270,6 +325,11 @@
         "nerd_name": "md-magnify_plus_outline",
         "unicode": "🔎",
         "ascii": "+?"
+      },
+      "hq": {
+        "png": "hq/png/{size}/zoom-in.png",
+        "webp": "hq/webp/{size}/zoom-in.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -284,6 +344,11 @@
         "nerd_name": "md-magnify_minus_outline",
         "unicode": "🔎",
         "ascii": "-?"
+      },
+      "hq": {
+        "png": "hq/png/{size}/zoom-out.png",
+        "webp": "hq/webp/{size}/zoom-out.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -306,6 +371,11 @@
         "nerd_name": "md-cog",
         "unicode": "⚙",
         "ascii": "*"
+      },
+      "hq": {
+        "png": "hq/png/{size}/settings.png",
+        "webp": "hq/webp/{size}/settings.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -325,6 +395,11 @@
         "nerd_name": "md-tune_variant",
         "unicode": "🎚",
         "ascii": "=|="
+      },
+      "hq": {
+        "png": "hq/png/{size}/sliders.png",
+        "webp": "hq/webp/{size}/sliders.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -342,6 +417,11 @@
         "nerd_name": "md-filter_outline",
         "unicode": "⏷",
         "ascii": "Y"
+      },
+      "hq": {
+        "png": "hq/png/{size}/filter.png",
+        "webp": "hq/webp/{size}/filter.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -359,6 +439,11 @@
         "nerd_name": "md-sort",
         "unicode": "⇅",
         "ascii": "^v"
+      },
+      "hq": {
+        "png": "hq/png/{size}/sort.png",
+        "webp": "hq/webp/{size}/sort.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -373,6 +458,11 @@
         "nerd_name": "md-sort_ascending",
         "unicode": "↑",
         "ascii": "a-z"
+      },
+      "hq": {
+        "png": "hq/png/{size}/sort-asc.png",
+        "webp": "hq/webp/{size}/sort-asc.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -387,6 +477,11 @@
         "nerd_name": "md-sort_descending",
         "unicode": "↓",
         "ascii": "z-a"
+      },
+      "hq": {
+        "png": "hq/png/{size}/sort-desc.png",
+        "webp": "hq/webp/{size}/sort-desc.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -408,6 +503,11 @@
         "nerd_name": "md-menu",
         "unicode": "☰",
         "ascii": "="
+      },
+      "hq": {
+        "png": "hq/png/{size}/menu.png",
+        "webp": "hq/webp/{size}/menu.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -428,6 +528,11 @@
         "nerd_name": "md-dots_horizontal",
         "unicode": "⋯",
         "ascii": "..."
+      },
+      "hq": {
+        "png": "hq/png/{size}/more-horizontal.png",
+        "webp": "hq/webp/{size}/more-horizontal.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -448,6 +553,11 @@
         "nerd_name": "md-dots_vertical",
         "unicode": "⋮",
         "ascii": ":"
+      },
+      "hq": {
+        "png": "hq/png/{size}/more-vertical.png",
+        "webp": "hq/webp/{size}/more-vertical.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -468,6 +578,11 @@
         "nerd_name": "md-content_copy",
         "unicode": "⧉",
         "ascii": "cp"
+      },
+      "hq": {
+        "png": "hq/png/{size}/copy.png",
+        "webp": "hq/webp/{size}/copy.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -485,6 +600,11 @@
         "nerd_name": "md-clipboard_outline",
         "unicode": "📋",
         "ascii": "[=]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/clipboard.png",
+        "webp": "hq/webp/{size}/clipboard.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -502,6 +622,11 @@
         "nerd_name": "md-clipboard_check_outline",
         "unicode": "📋",
         "ascii": "[v]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/clipboard-check.png",
+        "webp": "hq/webp/{size}/clipboard-check.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -519,6 +644,11 @@
         "nerd_name": "md-content_cut",
         "unicode": "✂",
         "ascii": "8<"
+      },
+      "hq": {
+        "png": "hq/png/{size}/cut.png",
+        "webp": "hq/webp/{size}/cut.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -533,6 +663,11 @@
         "nerd_name": "md-share_variant_outline",
         "unicode": "⤴",
         "ascii": "<"
+      },
+      "hq": {
+        "png": "hq/png/{size}/share.png",
+        "webp": "hq/webp/{size}/share.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -550,6 +685,11 @@
         "nerd_name": "md-export_variant",
         "unicode": "⇪",
         "ascii": "^"
+      },
+      "hq": {
+        "png": "hq/png/{size}/share-out.png",
+        "webp": "hq/webp/{size}/share-out.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -567,6 +707,11 @@
         "nerd_name": "md-download",
         "unicode": "⤓",
         "ascii": "v_"
+      },
+      "hq": {
+        "png": "hq/png/{size}/download.png",
+        "webp": "hq/webp/{size}/download.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -581,6 +726,11 @@
         "nerd_name": "md-upload",
         "unicode": "⤒",
         "ascii": "^_"
+      },
+      "hq": {
+        "png": "hq/png/{size}/upload.png",
+        "webp": "hq/webp/{size}/upload.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -599,6 +749,11 @@
         "nerd_name": "md-refresh",
         "unicode": "⟳",
         "ascii": "@"
+      },
+      "hq": {
+        "png": "hq/png/{size}/refresh.png",
+        "webp": "hq/webp/{size}/refresh.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -613,6 +768,11 @@
         "nerd_name": "md-undo",
         "unicode": "↶",
         "ascii": "<-"
+      },
+      "hq": {
+        "png": "hq/png/{size}/undo.png",
+        "webp": "hq/webp/{size}/undo.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -627,6 +787,11 @@
         "nerd_name": "md-redo",
         "unicode": "↷",
         "ascii": "->"
+      },
+      "hq": {
+        "png": "hq/png/{size}/redo.png",
+        "webp": "hq/webp/{size}/redo.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -647,6 +812,11 @@
         "nerd_name": "md-content_save_outline",
         "unicode": "💾",
         "ascii": "[s]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/save.png",
+        "webp": "hq/webp/{size}/save.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -664,6 +834,11 @@
         "nerd_name": "md-printer_outline",
         "unicode": "🖨",
         "ascii": "prn"
+      },
+      "hq": {
+        "png": "hq/png/{size}/print.png",
+        "webp": "hq/webp/{size}/print.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -685,6 +860,11 @@
         "nerd_name": "md-open_in_new",
         "unicode": "↗",
         "ascii": "->]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/external-link.png",
+        "webp": "hq/webp/{size}/external-link.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -705,6 +885,11 @@
         "nerd_name": "md-fullscreen",
         "unicode": "⛶",
         "ascii": "[ ]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/maximize.png",
+        "webp": "hq/webp/{size}/maximize.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -725,6 +910,11 @@
         "nerd_name": "md-fullscreen_exit",
         "unicode": "⊡",
         "ascii": "]["
+      },
+      "hq": {
+        "png": "hq/png/{size}/minimize.png",
+        "webp": "hq/webp/{size}/minimize.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -744,6 +934,11 @@
         "nerd_name": "md-lock_outline",
         "unicode": "🔒",
         "ascii": "[#]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/lock.png",
+        "webp": "hq/webp/{size}/lock.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -761,6 +956,11 @@
         "nerd_name": "md-lock_open_variant_outline",
         "unicode": "🔓",
         "ascii": "[ ]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/unlock.png",
+        "webp": "hq/webp/{size}/unlock.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -779,6 +979,11 @@
         "nerd_name": "md-key_outline",
         "unicode": "🔑",
         "ascii": "o-"
+      },
+      "hq": {
+        "png": "hq/png/{size}/key.png",
+        "webp": "hq/webp/{size}/key.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -800,6 +1005,11 @@
         "nerd_name": "md-eye_outline",
         "unicode": "👁",
         "ascii": "o"
+      },
+      "hq": {
+        "png": "hq/png/{size}/eye.png",
+        "webp": "hq/webp/{size}/eye.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -821,6 +1031,11 @@
         "nerd_name": "md-eye_off_outline",
         "unicode": "🙈",
         "ascii": "-o-"
+      },
+      "hq": {
+        "png": "hq/png/{size}/eye-off.png",
+        "webp": "hq/webp/{size}/eye-off.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -838,6 +1053,11 @@
         "nerd_name": "md-pin_outline",
         "unicode": "📌",
         "ascii": "-|"
+      },
+      "hq": {
+        "png": "hq/png/{size}/pin.png",
+        "webp": "hq/webp/{size}/pin.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -855,6 +1075,11 @@
         "nerd_name": "md-bookmark_outline",
         "unicode": "🔖",
         "ascii": "[]>"
+      },
+      "hq": {
+        "png": "hq/png/{size}/bookmark.png",
+        "webp": "hq/webp/{size}/bookmark.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -875,6 +1100,11 @@
         "nerd_name": "md-star_outline",
         "unicode": "★",
         "ascii": "*"
+      },
+      "hq": {
+        "png": "hq/png/{size}/star.png",
+        "webp": "hq/webp/{size}/star.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -896,6 +1126,11 @@
         "nerd_name": "md-heart_outline",
         "unicode": "♥",
         "ascii": "<3"
+      },
+      "hq": {
+        "png": "hq/png/{size}/heart.png",
+        "webp": "hq/webp/{size}/heart.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -916,6 +1151,11 @@
         "nerd_name": "md-thumb_up_outline",
         "unicode": "👍",
         "ascii": "+1"
+      },
+      "hq": {
+        "png": "hq/png/{size}/thumbs-up.png",
+        "webp": "hq/webp/{size}/thumbs-up.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -933,6 +1173,11 @@
         "nerd_name": "md-thumb_down_outline",
         "unicode": "👎",
         "ascii": "-1"
+      },
+      "hq": {
+        "png": "hq/png/{size}/thumbs-down.png",
+        "webp": "hq/webp/{size}/thumbs-down.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -950,6 +1195,11 @@
         "nerd_name": "md-flag_outline",
         "unicode": "⚑",
         "ascii": "|>"
+      },
+      "hq": {
+        "png": "hq/png/{size}/flag.png",
+        "webp": "hq/webp/{size}/flag.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -967,6 +1217,11 @@
         "nerd_name": "md-tag_outline",
         "unicode": "🏷",
         "ascii": "#"
+      },
+      "hq": {
+        "png": "hq/png/{size}/tag.png",
+        "webp": "hq/webp/{size}/tag.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -981,6 +1236,11 @@
         "nerd_name": "md-archive_outline",
         "unicode": "🗄",
         "ascii": "[_]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/archive.png",
+        "webp": "hq/webp/{size}/archive.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -995,6 +1255,11 @@
         "nerd_name": "md-inbox",
         "unicode": "📥",
         "ascii": "[v]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/inbox.png",
+        "webp": "hq/webp/{size}/inbox.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1015,6 +1280,11 @@
         "nerd_name": "md-send_outline",
         "unicode": "➤",
         "ascii": ">>"
+      },
+      "hq": {
+        "png": "hq/png/{size}/send.png",
+        "webp": "hq/webp/{size}/send.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1032,6 +1302,11 @@
         "nerd_name": "md-reply",
         "unicode": "↩",
         "ascii": "<-"
+      },
+      "hq": {
+        "png": "hq/png/{size}/reply.png",
+        "webp": "hq/webp/{size}/reply.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1046,6 +1321,11 @@
         "nerd_name": "md-share",
         "unicode": "↪",
         "ascii": "->"
+      },
+      "hq": {
+        "png": "hq/png/{size}/forward.png",
+        "webp": "hq/webp/{size}/forward.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1067,6 +1347,11 @@
         "nerd_name": "md-login",
         "unicode": "⇥",
         "ascii": "->|"
+      },
+      "hq": {
+        "png": "hq/png/{size}/log-in.png",
+        "webp": "hq/webp/{size}/log-in.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1088,6 +1373,11 @@
         "nerd_name": "md-logout",
         "unicode": "⇤",
         "ascii": "|->"
+      },
+      "hq": {
+        "png": "hq/png/{size}/log-out.png",
+        "webp": "hq/webp/{size}/log-out.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1106,6 +1396,11 @@
         "nerd_name": "md-power",
         "unicode": "⏻",
         "ascii": "(|)"
+      },
+      "hq": {
+        "png": "hq/png/{size}/power.png",
+        "webp": "hq/webp/{size}/power.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1124,6 +1419,11 @@
         "nerd_name": "md-view_grid_outline",
         "unicode": "▦",
         "ascii": "::"
+      },
+      "hq": {
+        "png": "hq/png/{size}/grid.png",
+        "webp": "hq/webp/{size}/grid.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1141,6 +1441,11 @@
         "nerd_name": "md-format_list_bulleted",
         "unicode": "☷",
         "ascii": "-="
+      },
+      "hq": {
+        "png": "hq/png/{size}/list.png",
+        "webp": "hq/webp/{size}/list.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1159,6 +1464,11 @@
         "nerd_name": "md-drag",
         "unicode": "⠿",
         "ascii": "::"
+      },
+      "hq": {
+        "png": "hq/png/{size}/grip.png",
+        "webp": "hq/webp/{size}/grip.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1178,6 +1488,11 @@
         "nerd_name": "md-link_variant",
         "unicode": "🔗",
         "ascii": "~"
+      },
+      "hq": {
+        "png": "hq/png/{size}/link.png",
+        "webp": "hq/webp/{size}/link.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1195,6 +1510,11 @@
         "nerd_name": "md-link_variant_off",
         "unicode": "⛓",
         "ascii": "~/"
+      },
+      "hq": {
+        "png": "hq/png/{size}/unlink.png",
+        "webp": "hq/webp/{size}/unlink.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1215,6 +1535,11 @@
         "nerd_name": "md-home_outline",
         "unicode": "🏠",
         "ascii": "~"
+      },
+      "hq": {
+        "png": "hq/png/{size}/home.png",
+        "webp": "hq/webp/{size}/home.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1229,6 +1554,11 @@
         "nerd_name": "md-arrow_up",
         "unicode": "↑",
         "ascii": "^"
+      },
+      "hq": {
+        "png": "hq/png/{size}/arrow-up.png",
+        "webp": "hq/webp/{size}/arrow-up.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1243,6 +1573,11 @@
         "nerd_name": "md-arrow_down",
         "unicode": "↓",
         "ascii": "v"
+      },
+      "hq": {
+        "png": "hq/png/{size}/arrow-down.png",
+        "webp": "hq/webp/{size}/arrow-down.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1260,6 +1595,11 @@
         "nerd_name": "md-arrow_left",
         "unicode": "←",
         "ascii": "<-"
+      },
+      "hq": {
+        "png": "hq/png/{size}/arrow-left.png",
+        "webp": "hq/webp/{size}/arrow-left.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1277,6 +1617,11 @@
         "nerd_name": "md-arrow_right",
         "unicode": "→",
         "ascii": "->"
+      },
+      "hq": {
+        "png": "hq/png/{size}/arrow-right.png",
+        "webp": "hq/webp/{size}/arrow-right.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1291,6 +1636,11 @@
         "nerd_name": "md-arrow_top_right",
         "unicode": "↗",
         "ascii": "/^"
+      },
+      "hq": {
+        "png": "hq/png/{size}/arrow-up-right.png",
+        "webp": "hq/webp/{size}/arrow-up-right.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1305,6 +1655,11 @@
         "nerd_name": "md-chevron_up",
         "unicode": "⌃",
         "ascii": "^"
+      },
+      "hq": {
+        "png": "hq/png/{size}/chevron-up.png",
+        "webp": "hq/webp/{size}/chevron-up.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1322,6 +1677,11 @@
         "nerd_name": "md-chevron_down",
         "unicode": "⌄",
         "ascii": "v"
+      },
+      "hq": {
+        "png": "hq/png/{size}/chevron-down.png",
+        "webp": "hq/webp/{size}/chevron-down.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1336,6 +1696,11 @@
         "nerd_name": "md-chevron_left",
         "unicode": "‹",
         "ascii": "<"
+      },
+      "hq": {
+        "png": "hq/png/{size}/chevron-left.png",
+        "webp": "hq/webp/{size}/chevron-left.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1350,6 +1715,11 @@
         "nerd_name": "md-chevron_right",
         "unicode": "›",
         "ascii": ">"
+      },
+      "hq": {
+        "png": "hq/png/{size}/chevron-right.png",
+        "webp": "hq/webp/{size}/chevron-right.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1367,6 +1737,11 @@
         "nerd_name": "md-chevron_double_left",
         "unicode": "«",
         "ascii": "<<"
+      },
+      "hq": {
+        "png": "hq/png/{size}/chevrons-left.png",
+        "webp": "hq/webp/{size}/chevrons-left.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1384,6 +1759,11 @@
         "nerd_name": "md-chevron_double_right",
         "unicode": "»",
         "ascii": ">>"
+      },
+      "hq": {
+        "png": "hq/png/{size}/chevrons-right.png",
+        "webp": "hq/webp/{size}/chevrons-right.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1402,6 +1782,11 @@
         "nerd_name": "md-keyboard_return",
         "unicode": "↵",
         "ascii": "<-|"
+      },
+      "hq": {
+        "png": "hq/png/{size}/enter.png",
+        "webp": "hq/webp/{size}/enter.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1420,6 +1805,11 @@
         "nerd_name": "md-dock_left",
         "unicode": "▥",
         "ascii": "|="
+      },
+      "hq": {
+        "png": "hq/png/{size}/sidebar.png",
+        "webp": "hq/webp/{size}/sidebar.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1437,6 +1827,11 @@
         "nerd_name": "md-compass_outline",
         "unicode": "🧭",
         "ascii": "(N)"
+      },
+      "hq": {
+        "png": "hq/png/{size}/compass.png",
+        "webp": "hq/webp/{size}/compass.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1451,6 +1846,11 @@
         "nerd_name": "md-map_outline",
         "unicode": "🗺",
         "ascii": "[#]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/map.png",
+        "webp": "hq/webp/{size}/map.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1473,6 +1873,11 @@
         "nerd_name": "md-map_marker_outline",
         "unicode": "📍",
         "ascii": "@"
+      },
+      "hq": {
+        "png": "hq/png/{size}/map-pin.png",
+        "webp": "hq/webp/{size}/map-pin.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1491,6 +1896,11 @@
         "nerd_name": "md-navigation_variant_outline",
         "unicode": "➶",
         "ascii": ">"
+      },
+      "hq": {
+        "png": "hq/png/{size}/navigation.png",
+        "webp": "hq/webp/{size}/navigation.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1513,6 +1923,11 @@
         "nerd_name": "md-web",
         "unicode": "🌐",
         "ascii": "(#)"
+      },
+      "hq": {
+        "png": "hq/png/{size}/globe.png",
+        "webp": "hq/webp/{size}/globe.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1530,6 +1945,11 @@
         "nerd_name": "md-layers_outline",
         "unicode": "☰",
         "ascii": "="
+      },
+      "hq": {
+        "png": "hq/png/{size}/layers.png",
+        "webp": "hq/webp/{size}/layers.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1552,6 +1972,11 @@
         "nerd_name": "md-email_outline",
         "unicode": "✉",
         "ascii": "@"
+      },
+      "hq": {
+        "png": "hq/png/{size}/mail.png",
+        "webp": "hq/webp/{size}/mail.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1569,6 +1994,11 @@
         "nerd_name": "md-email_open_outline",
         "unicode": "📨",
         "ascii": "@"
+      },
+      "hq": {
+        "png": "hq/png/{size}/mail-open.png",
+        "webp": "hq/webp/{size}/mail-open.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1587,6 +2017,11 @@
         "nerd_name": "md-phone_outline",
         "unicode": "☎",
         "ascii": "tel"
+      },
+      "hq": {
+        "png": "hq/png/{size}/phone.png",
+        "webp": "hq/webp/{size}/phone.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1605,6 +2040,11 @@
         "nerd_name": "md-phone_in_talk_outline",
         "unicode": "📞",
         "ascii": "tel"
+      },
+      "hq": {
+        "png": "hq/png/{size}/phone-call.png",
+        "webp": "hq/webp/{size}/phone-call.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1622,6 +2062,11 @@
         "nerd_name": "md-phone_off_outline",
         "unicode": "📵",
         "ascii": "x-t"
+      },
+      "hq": {
+        "png": "hq/png/{size}/phone-off.png",
+        "webp": "hq/webp/{size}/phone-off.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1640,6 +2085,11 @@
         "nerd_name": "md-message_processing_outline",
         "unicode": "💬",
         "ascii": "sms"
+      },
+      "hq": {
+        "png": "hq/png/{size}/sms.png",
+        "webp": "hq/webp/{size}/sms.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1662,6 +2112,11 @@
         "nerd_name": "md-chat_outline",
         "unicode": "💬",
         "ascii": "()"
+      },
+      "hq": {
+        "png": "hq/png/{size}/chat.png",
+        "webp": "hq/webp/{size}/chat.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1679,6 +2134,11 @@
         "nerd_name": "md-chat_processing_outline",
         "unicode": "💬",
         "ascii": "(..)"
+      },
+      "hq": {
+        "png": "hq/png/{size}/chat-dots.png",
+        "webp": "hq/webp/{size}/chat-dots.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1701,6 +2161,11 @@
         "nerd_name": "md-at",
         "unicode": "@",
         "ascii": "@"
+      },
+      "hq": {
+        "png": "hq/png/{size}/at.png",
+        "webp": "hq/webp/{size}/at.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1715,6 +2180,11 @@
         "nerd_name": "md-voicemail",
         "unicode": "⌨",
         "ascii": "oo"
+      },
+      "hq": {
+        "png": "hq/png/{size}/voicemail.png",
+        "webp": "hq/webp/{size}/voicemail.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1733,6 +2203,11 @@
         "nerd_name": "md-video_outline",
         "unicode": "📹",
         "ascii": "[>"
+      },
+      "hq": {
+        "png": "hq/png/{size}/video.png",
+        "webp": "hq/webp/{size}/video.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1754,6 +2229,11 @@
         "nerd_name": "md-microphone_outline",
         "unicode": "🎤",
         "ascii": "mic"
+      },
+      "hq": {
+        "png": "hq/png/{size}/mic.png",
+        "webp": "hq/webp/{size}/mic.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1771,6 +2251,11 @@
         "nerd_name": "md-microphone_off",
         "unicode": "🔇",
         "ascii": "x-m"
+      },
+      "hq": {
+        "png": "hq/png/{size}/mic-off.png",
+        "webp": "hq/webp/{size}/mic-off.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1792,6 +2277,11 @@
         "nerd_name": "md-bell_outline",
         "unicode": "🔔",
         "ascii": "(!)"
+      },
+      "hq": {
+        "png": "hq/png/{size}/bell.png",
+        "webp": "hq/webp/{size}/bell.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1810,6 +2300,11 @@
         "nerd_name": "md-bell_off_outline",
         "unicode": "🔕",
         "ascii": "(x)"
+      },
+      "hq": {
+        "png": "hq/png/{size}/bell-off.png",
+        "webp": "hq/webp/{size}/bell-off.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1831,6 +2326,11 @@
         "nerd_name": "md-bullhorn_outline",
         "unicode": "📣",
         "ascii": "<|"
+      },
+      "hq": {
+        "png": "hq/png/{size}/megaphone.png",
+        "webp": "hq/webp/{size}/megaphone.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1849,6 +2349,11 @@
         "nerd_name": "md-rss",
         "unicode": "📡",
         "ascii": "rss"
+      },
+      "hq": {
+        "png": "hq/png/{size}/rss.png",
+        "webp": "hq/webp/{size}/rss.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1869,6 +2374,11 @@
         "nerd_name": "md-card_account_details_outline",
         "unicode": "📇",
         "ascii": "[@]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/contact.png",
+        "webp": "hq/webp/{size}/contact.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1888,6 +2398,11 @@
         "nerd_name": "md-account_outline",
         "unicode": "👤",
         "ascii": "@"
+      },
+      "hq": {
+        "png": "hq/png/{size}/user.png",
+        "webp": "hq/webp/{size}/user.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1910,6 +2425,11 @@
         "nerd_name": "md-account_multiple_outline",
         "unicode": "👥",
         "ascii": "@@"
+      },
+      "hq": {
+        "png": "hq/png/{size}/users.png",
+        "webp": "hq/webp/{size}/users.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1931,6 +2451,11 @@
         "nerd_name": "md-account_plus_outline",
         "unicode": "👤",
         "ascii": "@+"
+      },
+      "hq": {
+        "png": "hq/png/{size}/user-plus.png",
+        "webp": "hq/webp/{size}/user-plus.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1948,6 +2473,11 @@
         "nerd_name": "md-account_minus_outline",
         "unicode": "👤",
         "ascii": "@-"
+      },
+      "hq": {
+        "png": "hq/png/{size}/user-minus.png",
+        "webp": "hq/webp/{size}/user-minus.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1965,6 +2495,11 @@
         "nerd_name": "md-account_check_outline",
         "unicode": "👤",
         "ascii": "@v"
+      },
+      "hq": {
+        "png": "hq/png/{size}/user-check.png",
+        "webp": "hq/webp/{size}/user-check.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -1982,6 +2517,11 @@
         "nerd_name": "md-account_circle_outline",
         "unicode": "👤",
         "ascii": "(@)"
+      },
+      "hq": {
+        "png": "hq/png/{size}/user-circle.png",
+        "webp": "hq/webp/{size}/user-circle.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2003,6 +2543,11 @@
         "nerd_name": "md-card_account_details_outline",
         "unicode": "🪪",
         "ascii": "[id]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/id-card.png",
+        "webp": "hq/webp/{size}/id-card.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2021,6 +2566,11 @@
         "nerd_name": "md-play",
         "unicode": "▶",
         "ascii": ">"
+      },
+      "hq": {
+        "png": "hq/png/{size}/play.png",
+        "webp": "hq/webp/{size}/play.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2035,6 +2585,11 @@
         "nerd_name": "md-pause",
         "unicode": "⏸",
         "ascii": "||"
+      },
+      "hq": {
+        "png": "hq/png/{size}/pause.png",
+        "webp": "hq/webp/{size}/pause.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2049,6 +2604,11 @@
         "nerd_name": "md-stop",
         "unicode": "⏹",
         "ascii": "[]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/stop.png",
+        "webp": "hq/webp/{size}/stop.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2066,6 +2626,11 @@
         "nerd_name": "md-skip_next",
         "unicode": "⏭",
         "ascii": ">|"
+      },
+      "hq": {
+        "png": "hq/png/{size}/skip-forward.png",
+        "webp": "hq/webp/{size}/skip-forward.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2083,6 +2648,11 @@
         "nerd_name": "md-skip_previous",
         "unicode": "⏮",
         "ascii": "|<"
+      },
+      "hq": {
+        "png": "hq/png/{size}/skip-back.png",
+        "webp": "hq/webp/{size}/skip-back.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2097,6 +2667,11 @@
         "nerd_name": "md-fast_forward",
         "unicode": "⏩",
         "ascii": ">>"
+      },
+      "hq": {
+        "png": "hq/png/{size}/fast-forward.png",
+        "webp": "hq/webp/{size}/fast-forward.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2111,6 +2686,11 @@
         "nerd_name": "md-rewind",
         "unicode": "⏪",
         "ascii": "<<"
+      },
+      "hq": {
+        "png": "hq/png/{size}/rewind.png",
+        "webp": "hq/webp/{size}/rewind.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2128,6 +2708,11 @@
         "nerd_name": "md-repeat",
         "unicode": "🔁",
         "ascii": "<->"
+      },
+      "hq": {
+        "png": "hq/png/{size}/repeat.png",
+        "webp": "hq/webp/{size}/repeat.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2145,6 +2730,11 @@
         "nerd_name": "md-shuffle_variant",
         "unicode": "🔀",
         "ascii": "><"
+      },
+      "hq": {
+        "png": "hq/png/{size}/shuffle.png",
+        "webp": "hq/webp/{size}/shuffle.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2166,6 +2756,11 @@
         "nerd_name": "md-volume_high",
         "unicode": "🔊",
         "ascii": "<))"
+      },
+      "hq": {
+        "png": "hq/png/{size}/volume.png",
+        "webp": "hq/webp/{size}/volume.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2180,6 +2775,11 @@
         "nerd_name": "md-volume_medium",
         "unicode": "🔉",
         "ascii": "<)"
+      },
+      "hq": {
+        "png": "hq/png/{size}/volume-low.png",
+        "webp": "hq/webp/{size}/volume-low.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2200,6 +2800,11 @@
         "nerd_name": "md-volume_off",
         "unicode": "🔇",
         "ascii": "<x"
+      },
+      "hq": {
+        "png": "hq/png/{size}/volume-off.png",
+        "webp": "hq/webp/{size}/volume-off.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2221,6 +2826,11 @@
         "nerd_name": "md-music_note",
         "unicode": "🎵",
         "ascii": "#"
+      },
+      "hq": {
+        "png": "hq/png/{size}/music.png",
+        "webp": "hq/webp/{size}/music.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2239,6 +2849,11 @@
         "nerd_name": "md-headphones",
         "unicode": "🎧",
         "ascii": "hp"
+      },
+      "hq": {
+        "png": "hq/png/{size}/headphones.png",
+        "webp": "hq/webp/{size}/headphones.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2260,6 +2875,11 @@
         "nerd_name": "md-camera_outline",
         "unicode": "📷",
         "ascii": "[o]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/camera.png",
+        "webp": "hq/webp/{size}/camera.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2281,6 +2901,11 @@
         "nerd_name": "md-image_outline",
         "unicode": "🖼",
         "ascii": "[^]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/image.png",
+        "webp": "hq/webp/{size}/image.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2301,6 +2926,11 @@
         "nerd_name": "md-filmstrip",
         "unicode": "🎞",
         "ascii": "[#]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/film.png",
+        "webp": "hq/webp/{size}/film.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2320,6 +2950,11 @@
         "nerd_name": "md-access_point",
         "unicode": "📻",
         "ascii": "(o)"
+      },
+      "hq": {
+        "png": "hq/png/{size}/radio.png",
+        "webp": "hq/webp/{size}/radio.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2337,6 +2972,11 @@
         "nerd_name": "md-television",
         "unicode": "📺",
         "ascii": "[_]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/tv.png",
+        "webp": "hq/webp/{size}/tv.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2354,6 +2994,11 @@
         "nerd_name": "md-cast",
         "unicode": "📡",
         "ascii": "))"
+      },
+      "hq": {
+        "png": "hq/png/{size}/cast.png",
+        "webp": "hq/webp/{size}/cast.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2374,6 +3019,11 @@
         "nerd_name": "md-file_outline",
         "unicode": "📄",
         "ascii": "[f]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/file.png",
+        "webp": "hq/webp/{size}/file.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2392,6 +3042,11 @@
         "nerd_name": "md-file_document_outline",
         "unicode": "📄",
         "ascii": "[t]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/file-text.png",
+        "webp": "hq/webp/{size}/file-text.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2409,6 +3064,11 @@
         "nerd_name": "md-file_plus_outline",
         "unicode": "📄",
         "ascii": "[+]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/file-plus.png",
+        "webp": "hq/webp/{size}/file-plus.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2426,6 +3086,11 @@
         "nerd_name": "md-file_code_outline",
         "unicode": "📄",
         "ascii": "[<>]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/file-code.png",
+        "webp": "hq/webp/{size}/file-code.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2443,6 +3108,11 @@
         "nerd_name": "md-folder_outline",
         "unicode": "📁",
         "ascii": "[d]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/folder.png",
+        "webp": "hq/webp/{size}/folder.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2457,6 +3127,11 @@
         "nerd_name": "md-folder_open_outline",
         "unicode": "📂",
         "ascii": "[d]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/folder-open.png",
+        "webp": "hq/webp/{size}/folder-open.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2474,6 +3149,11 @@
         "nerd_name": "md-folder_plus_outline",
         "unicode": "📁",
         "ascii": "[d+]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/folder-plus.png",
+        "webp": "hq/webp/{size}/folder-plus.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2492,6 +3172,11 @@
         "nerd_name": "md-paperclip",
         "unicode": "📎",
         "ascii": "0/"
+      },
+      "hq": {
+        "png": "hq/png/{size}/paperclip.png",
+        "webp": "hq/webp/{size}/paperclip.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2506,6 +3191,11 @@
         "nerd_name": "md-cloud_outline",
         "unicode": "☁",
         "ascii": "(~)"
+      },
+      "hq": {
+        "png": "hq/png/{size}/cloud.png",
+        "webp": "hq/webp/{size}/cloud.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2520,6 +3210,11 @@
         "nerd_name": "md-cloud_upload_outline",
         "unicode": "☁",
         "ascii": "(^)"
+      },
+      "hq": {
+        "png": "hq/png/{size}/cloud-upload.png",
+        "webp": "hq/webp/{size}/cloud-upload.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2534,6 +3229,11 @@
         "nerd_name": "md-cloud_download_outline",
         "unicode": "☁",
         "ascii": "(v)"
+      },
+      "hq": {
+        "png": "hq/png/{size}/cloud-download.png",
+        "webp": "hq/webp/{size}/cloud-download.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2555,6 +3255,11 @@
         "nerd_name": "md-database_outline",
         "unicode": "🛢",
         "ascii": "[=]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/database.png",
+        "webp": "hq/webp/{size}/database.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2573,6 +3278,11 @@
         "nerd_name": "md-server",
         "unicode": "🖥",
         "ascii": "[:]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/server.png",
+        "webp": "hq/webp/{size}/server.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2591,6 +3301,11 @@
         "nerd_name": "md-harddisk",
         "unicode": "🖴",
         "ascii": "[o]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/hard-drive.png",
+        "webp": "hq/webp/{size}/hard-drive.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2612,6 +3327,11 @@
         "nerd_name": "md-package_variant_closed",
         "unicode": "📦",
         "ascii": "[#]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/package.png",
+        "webp": "hq/webp/{size}/package.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2631,6 +3351,11 @@
         "nerd_name": "md-book_outline",
         "unicode": "📕",
         "ascii": "[B]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/book.png",
+        "webp": "hq/webp/{size}/book.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2649,6 +3374,11 @@
         "nerd_name": "md-book_open_outline",
         "unicode": "📖",
         "ascii": "[]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/book-open.png",
+        "webp": "hq/webp/{size}/book-open.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2668,6 +3398,11 @@
         "nerd_name": "md-newspaper_variant_outline",
         "unicode": "📰",
         "ascii": "[n]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/newspaper.png",
+        "webp": "hq/webp/{size}/newspaper.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2688,6 +3423,11 @@
         "nerd_name": "md-information_outline",
         "unicode": "ℹ",
         "ascii": "i"
+      },
+      "hq": {
+        "png": "hq/png/{size}/info.png",
+        "webp": "hq/webp/{size}/info.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2709,6 +3449,11 @@
         "nerd_name": "md-alert_outline",
         "unicode": "⚠",
         "ascii": "!"
+      },
+      "hq": {
+        "png": "hq/png/{size}/warning.png",
+        "webp": "hq/webp/{size}/warning.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2730,6 +3475,11 @@
         "nerd_name": "md-alert_circle_outline",
         "unicode": "⛔",
         "ascii": "!!"
+      },
+      "hq": {
+        "png": "hq/png/{size}/error.png",
+        "webp": "hq/webp/{size}/error.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2751,6 +3501,11 @@
         "nerd_name": "md-help_circle_outline",
         "unicode": "❓",
         "ascii": "?"
+      },
+      "hq": {
+        "png": "hq/png/{size}/help.png",
+        "webp": "hq/webp/{size}/help.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2772,6 +3527,11 @@
         "nerd_name": "md-cancel",
         "unicode": "🚫",
         "ascii": "(/)"
+      },
+      "hq": {
+        "png": "hq/png/{size}/ban.png",
+        "webp": "hq/webp/{size}/ban.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2793,6 +3553,11 @@
         "nerd_name": "md-loading",
         "unicode": "◌",
         "ascii": "..."
+      },
+      "hq": {
+        "png": "hq/png/{size}/loader.png",
+        "webp": "hq/webp/{size}/loader.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2810,6 +3575,11 @@
         "nerd_name": "md-clock_outline",
         "unicode": "🕒",
         "ascii": "(t)"
+      },
+      "hq": {
+        "png": "hq/png/{size}/clock.png",
+        "webp": "hq/webp/{size}/clock.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2830,6 +3600,11 @@
         "nerd_name": "md-timer_sand",
         "unicode": "⏳",
         "ascii": "8"
+      },
+      "hq": {
+        "png": "hq/png/{size}/hourglass.png",
+        "webp": "hq/webp/{size}/hourglass.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2849,6 +3624,11 @@
         "nerd_name": "md-pulse",
         "unicode": "📈",
         "ascii": "/\\/"
+      },
+      "hq": {
+        "png": "hq/png/{size}/activity.png",
+        "webp": "hq/webp/{size}/activity.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2871,6 +3651,11 @@
         "nerd_name": "md-lightning_bolt_outline",
         "unicode": "⚡",
         "ascii": "/"
+      },
+      "hq": {
+        "png": "hq/png/{size}/zap.png",
+        "webp": "hq/webp/{size}/zap.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2889,6 +3674,11 @@
         "nerd_name": "md-shield_outline",
         "unicode": "🛡",
         "ascii": "[S]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/shield.png",
+        "webp": "hq/webp/{size}/shield.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2908,6 +3698,11 @@
         "nerd_name": "md-shield_check_outline",
         "unicode": "🛡",
         "ascii": "[v]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/shield-check.png",
+        "webp": "hq/webp/{size}/shield-check.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2926,6 +3721,11 @@
         "nerd_name": "md-bug_outline",
         "unicode": "🐛",
         "ascii": "bug"
+      },
+      "hq": {
+        "png": "hq/png/{size}/bug.png",
+        "webp": "hq/webp/{size}/bug.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2947,6 +3747,11 @@
         "nerd_name": "md-creation",
         "unicode": "✨",
         "ascii": "*+"
+      },
+      "hq": {
+        "png": "hq/png/{size}/sparkles.png",
+        "webp": "hq/webp/{size}/sparkles.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2967,6 +3772,11 @@
         "nerd_name": "md-checkbox_marked_outline",
         "unicode": "☑",
         "ascii": "[x]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/checkbox.png",
+        "webp": "hq/webp/{size}/checkbox.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -2987,6 +3797,11 @@
         "nerd_name": "md-checkbox_blank_outline",
         "unicode": "☐",
         "ascii": "[ ]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/checkbox-empty.png",
+        "webp": "hq/webp/{size}/checkbox-empty.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3004,6 +3819,11 @@
         "nerd_name": "md-radiobox_marked",
         "unicode": "◉",
         "ascii": "(*)"
+      },
+      "hq": {
+        "png": "hq/png/{size}/radio-on.png",
+        "webp": "hq/webp/{size}/radio-on.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3022,6 +3842,11 @@
         "nerd_name": "fa-circle",
         "unicode": "○",
         "ascii": "( )"
+      },
+      "hq": {
+        "png": "hq/png/{size}/radio-off.png",
+        "webp": "hq/webp/{size}/radio-off.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3040,6 +3865,11 @@
         "nerd_name": "md-toggle_switch",
         "unicode": "🔘",
         "ascii": "[=o]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/toggle-on.png",
+        "webp": "hq/webp/{size}/toggle-on.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3058,6 +3888,11 @@
         "nerd_name": "md-toggle_switch_off_outline",
         "unicode": "🔘",
         "ascii": "[o=]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/toggle-off.png",
+        "webp": "hq/webp/{size}/toggle-off.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3077,6 +3912,11 @@
         "nerd_name": "md-circle_slice_8",
         "unicode": "🟢",
         "ascii": "(o)"
+      },
+      "hq": {
+        "png": "hq/png/{size}/online.png",
+        "webp": "hq/webp/{size}/online.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3098,6 +3938,11 @@
         "nerd_name": "md-calendar_blank_outline",
         "unicode": "📅",
         "ascii": "[=]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/calendar.png",
+        "webp": "hq/webp/{size}/calendar.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3115,6 +3960,11 @@
         "nerd_name": "md-calendar_check_outline",
         "unicode": "📅",
         "ascii": "[v]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/calendar-check.png",
+        "webp": "hq/webp/{size}/calendar-check.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3132,6 +3982,11 @@
         "nerd_name": "md-calendar_plus",
         "unicode": "📅",
         "ascii": "[+]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/calendar-plus.png",
+        "webp": "hq/webp/{size}/calendar-plus.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3153,6 +4008,11 @@
         "nerd_name": "md-alarm",
         "unicode": "⏰",
         "ascii": "(!)"
+      },
+      "hq": {
+        "png": "hq/png/{size}/alarm.png",
+        "webp": "hq/webp/{size}/alarm.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3173,6 +4033,11 @@
         "nerd_name": "md-timer_outline",
         "unicode": "⏱",
         "ascii": "(:)"
+      },
+      "hq": {
+        "png": "hq/png/{size}/timer.png",
+        "webp": "hq/webp/{size}/timer.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3194,6 +4059,11 @@
         "nerd_name": "md-history",
         "unicode": "🕘",
         "ascii": "<(t)"
+      },
+      "hq": {
+        "png": "hq/png/{size}/history.png",
+        "webp": "hq/webp/{size}/history.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3215,6 +4085,11 @@
         "nerd_name": "md-cart_outline",
         "unicode": "🛒",
         "ascii": "\\_/"
+      },
+      "hq": {
+        "png": "hq/png/{size}/cart.png",
+        "webp": "hq/webp/{size}/cart.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3235,6 +4110,11 @@
         "nerd_name": "md-shopping_outline",
         "unicode": "🛍",
         "ascii": "[u]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/bag.png",
+        "webp": "hq/webp/{size}/bag.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3256,6 +4136,11 @@
         "nerd_name": "md-credit_card_outline",
         "unicode": "💳",
         "ascii": "[=]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/credit-card.png",
+        "webp": "hq/webp/{size}/credit-card.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3274,6 +4159,11 @@
         "nerd_name": "md-wallet_outline",
         "unicode": "👛",
         "ascii": "[$]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/wallet.png",
+        "webp": "hq/webp/{size}/wallet.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3296,6 +4186,11 @@
         "nerd_name": "md-currency_usd",
         "unicode": "$",
         "ascii": "$"
+      },
+      "hq": {
+        "png": "hq/png/{size}/dollar.png",
+        "webp": "hq/webp/{size}/dollar.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3317,6 +4212,11 @@
         "nerd_name": "md-receipt",
         "unicode": "🧾",
         "ascii": "[$]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/receipt.png",
+        "webp": "hq/webp/{size}/receipt.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3337,6 +4237,11 @@
         "nerd_name": "md-gift_outline",
         "unicode": "🎁",
         "ascii": "[+]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/gift.png",
+        "webp": "hq/webp/{size}/gift.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3358,6 +4263,11 @@
         "nerd_name": "md-storefront_outline",
         "unicode": "🏪",
         "ascii": "[S]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/store.png",
+        "webp": "hq/webp/{size}/store.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3376,6 +4286,11 @@
         "nerd_name": "md-truck_outline",
         "unicode": "🚚",
         "ascii": "[=o"
+      },
+      "hq": {
+        "png": "hq/png/{size}/truck.png",
+        "webp": "hq/webp/{size}/truck.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3397,6 +4312,11 @@
         "nerd_name": "md-percent",
         "unicode": "%",
         "ascii": "%"
+      },
+      "hq": {
+        "png": "hq/png/{size}/percent.png",
+        "webp": "hq/webp/{size}/percent.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3416,6 +4336,11 @@
         "nerd_name": "md-hand_coin_outline",
         "unicode": "🪙",
         "ascii": "(o)"
+      },
+      "hq": {
+        "png": "hq/png/{size}/coins.png",
+        "webp": "hq/webp/{size}/coins.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3434,6 +4359,11 @@
         "nerd_name": "md-barcode",
         "unicode": "▥",
         "ascii": "|||"
+      },
+      "hq": {
+        "png": "hq/png/{size}/barcode.png",
+        "webp": "hq/webp/{size}/barcode.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3454,6 +4384,11 @@
         "nerd_name": "md-qrcode",
         "unicode": "▦",
         "ascii": "[#]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/qr-code.png",
+        "webp": "hq/webp/{size}/qr-code.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3476,6 +4411,11 @@
         "nerd_name": "md-console",
         "unicode": "⌨",
         "ascii": ">_"
+      },
+      "hq": {
+        "png": "hq/png/{size}/terminal.png",
+        "webp": "hq/webp/{size}/terminal.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3498,6 +4438,11 @@
         "nerd_name": "md-code_tags",
         "unicode": "⟨⟩",
         "ascii": "</>"
+      },
+      "hq": {
+        "png": "hq/png/{size}/code.png",
+        "webp": "hq/webp/{size}/code.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3520,6 +4465,11 @@
         "nerd_name": "md-code_braces",
         "unicode": "{}",
         "ascii": "{}"
+      },
+      "hq": {
+        "png": "hq/png/{size}/braces.png",
+        "webp": "hq/webp/{size}/braces.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3537,6 +4487,11 @@
         "nerd_name": "oct-git_branch",
         "unicode": "⎇",
         "ascii": "Y"
+      },
+      "hq": {
+        "png": "hq/png/{size}/git-branch.png",
+        "webp": "hq/webp/{size}/git-branch.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3554,6 +4509,11 @@
         "nerd_name": "oct-git_commit",
         "unicode": "⊸",
         "ascii": "-o-"
+      },
+      "hq": {
+        "png": "hq/png/{size}/git-commit.png",
+        "webp": "hq/webp/{size}/git-commit.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3571,6 +4531,11 @@
         "nerd_name": "oct-git_merge",
         "unicode": "⑂",
         "ascii": ">-"
+      },
+      "hq": {
+        "png": "hq/png/{size}/git-merge.png",
+        "webp": "hq/webp/{size}/git-merge.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3592,6 +4557,11 @@
         "nerd_name": "oct-git_pull_request",
         "unicode": "⇄",
         "ascii": "PR"
+      },
+      "hq": {
+        "png": "hq/png/{size}/git-pull-request.png",
+        "webp": "hq/webp/{size}/git-pull-request.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3613,6 +4583,11 @@
         "nerd_name": "md-chip",
         "unicode": "🔲",
         "ascii": "[#]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/cpu.png",
+        "webp": "hq/webp/{size}/cpu.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3634,6 +4609,11 @@
         "nerd_name": "md-apple_keyboard_command",
         "unicode": "⌘",
         "ascii": "cmd"
+      },
+      "hq": {
+        "png": "hq/png/{size}/command.png",
+        "webp": "hq/webp/{size}/command.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3655,6 +4635,11 @@
         "nerd_name": "md-pound",
         "unicode": "#",
         "ascii": "#"
+      },
+      "hq": {
+        "png": "hq/png/{size}/hash.png",
+        "webp": "hq/webp/{size}/hash.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3676,6 +4661,11 @@
         "nerd_name": "md-power_plug_outline",
         "unicode": "🔌",
         "ascii": "-["
+      },
+      "hq": {
+        "png": "hq/png/{size}/plug.png",
+        "webp": "hq/webp/{size}/plug.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3694,6 +4684,11 @@
         "nerd_name": "md-webhook",
         "unicode": "🪝",
         "ascii": "<~>"
+      },
+      "hq": {
+        "png": "hq/png/{size}/webhook.png",
+        "webp": "hq/webp/{size}/webhook.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3714,6 +4709,11 @@
         "nerd_name": "md-gauge",
         "unicode": "⏲",
         "ascii": "(/)"
+      },
+      "hq": {
+        "png": "hq/png/{size}/gauge.png",
+        "webp": "hq/webp/{size}/gauge.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3736,6 +4736,11 @@
         "nerd_name": "md-flask_outline",
         "unicode": "⚗",
         "ascii": "/_\\"
+      },
+      "hq": {
+        "png": "hq/png/{size}/flask.png",
+        "webp": "hq/webp/{size}/flask.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3754,6 +4759,11 @@
         "nerd_name": "md-api",
         "unicode": "⚙",
         "ascii": "api"
+      },
+      "hq": {
+        "png": "hq/png/{size}/api.png",
+        "webp": "hq/webp/{size}/api.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3773,6 +4783,11 @@
         "nerd_name": "md-cube_outline",
         "unicode": "📦",
         "ascii": "[c]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/container.png",
+        "webp": "hq/webp/{size}/container.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3793,6 +4808,11 @@
         "nerd_name": "md-laptop",
         "unicode": "💻",
         "ascii": "[_]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/laptop.png",
+        "webp": "hq/webp/{size}/laptop.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3814,6 +4834,11 @@
         "nerd_name": "md-monitor",
         "unicode": "🖥",
         "ascii": "[ ]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/monitor.png",
+        "webp": "hq/webp/{size}/monitor.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3836,6 +4861,11 @@
         "nerd_name": "md-cellphone",
         "unicode": "📱",
         "ascii": "[.]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/smartphone.png",
+        "webp": "hq/webp/{size}/smartphone.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3853,6 +4883,11 @@
         "nerd_name": "md-tablet",
         "unicode": "📱",
         "ascii": "[..]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/tablet.png",
+        "webp": "hq/webp/{size}/tablet.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3871,6 +4906,11 @@
         "nerd_name": "md-watch",
         "unicode": "⌚",
         "ascii": "(:)"
+      },
+      "hq": {
+        "png": "hq/png/{size}/watch.png",
+        "webp": "hq/webp/{size}/watch.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3889,6 +4929,11 @@
         "nerd_name": "md-keyboard_outline",
         "unicode": "⌨",
         "ascii": "[kb]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/keyboard.png",
+        "webp": "hq/webp/{size}/keyboard.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3907,6 +4952,11 @@
         "nerd_name": "md-mouse",
         "unicode": "🖱",
         "ascii": "(|)"
+      },
+      "hq": {
+        "png": "hq/png/{size}/mouse.png",
+        "webp": "hq/webp/{size}/mouse.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3926,6 +4976,11 @@
         "nerd_name": "md-wifi",
         "unicode": "📶",
         "ascii": "((."
+      },
+      "hq": {
+        "png": "hq/png/{size}/wifi.png",
+        "webp": "hq/webp/{size}/wifi.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3944,6 +4999,11 @@
         "nerd_name": "md-wifi_off",
         "unicode": "📵",
         "ascii": "x(("
+      },
+      "hq": {
+        "png": "hq/png/{size}/wifi-off.png",
+        "webp": "hq/webp/{size}/wifi-off.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3962,6 +5022,11 @@
         "nerd_name": "md-bluetooth",
         "unicode": "ᛒ",
         "ascii": "B"
+      },
+      "hq": {
+        "png": "hq/png/{size}/bluetooth.png",
+        "webp": "hq/webp/{size}/bluetooth.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3980,6 +5045,11 @@
         "nerd_name": "md-battery_outline",
         "unicode": "🔋",
         "ascii": "[=="
+      },
+      "hq": {
+        "png": "hq/png/{size}/battery.png",
+        "webp": "hq/webp/{size}/battery.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -3997,6 +5067,11 @@
         "nerd_name": "md-battery_charging",
         "unicode": "🔌",
         "ascii": "[=~"
+      },
+      "hq": {
+        "png": "hq/png/{size}/battery-charging.png",
+        "webp": "hq/webp/{size}/battery-charging.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -4018,6 +5093,11 @@
         "nerd_name": "md-signal",
         "unicode": "📶",
         "ascii": ".:|"
+      },
+      "hq": {
+        "png": "hq/png/{size}/cell-signal.png",
+        "webp": "hq/webp/{size}/cell-signal.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -4035,6 +5115,11 @@
         "nerd_name": "md-format_bold",
         "unicode": "𝐁",
         "ascii": "B"
+      },
+      "hq": {
+        "png": "hq/png/{size}/bold.png",
+        "webp": "hq/webp/{size}/bold.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -4052,6 +5137,11 @@
         "nerd_name": "md-format_italic",
         "unicode": "𝐼",
         "ascii": "/"
+      },
+      "hq": {
+        "png": "hq/png/{size}/italic.png",
+        "webp": "hq/webp/{size}/italic.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -4066,6 +5156,11 @@
         "nerd_name": "md-format_underline",
         "unicode": "U̲",
         "ascii": "_"
+      },
+      "hq": {
+        "png": "hq/png/{size}/underline.png",
+        "webp": "hq/webp/{size}/underline.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -4080,6 +5175,11 @@
         "nerd_name": "md-format_strikethrough",
         "unicode": "S̶",
         "ascii": "-s-"
+      },
+      "hq": {
+        "png": "hq/png/{size}/strikethrough.png",
+        "webp": "hq/webp/{size}/strikethrough.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -4098,6 +5198,11 @@
         "nerd_name": "md-format_header_pound",
         "unicode": "H",
         "ascii": "H"
+      },
+      "hq": {
+        "png": "hq/png/{size}/heading.png",
+        "webp": "hq/webp/{size}/heading.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -4115,6 +5220,11 @@
         "nerd_name": "md-format_list_numbered",
         "unicode": "⒈",
         "ascii": "1."
+      },
+      "hq": {
+        "png": "hq/png/{size}/list-ordered.png",
+        "webp": "hq/webp/{size}/list-ordered.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -4133,6 +5243,11 @@
         "nerd_name": "md-format_list_bulleted",
         "unicode": "•",
         "ascii": "*"
+      },
+      "hq": {
+        "png": "hq/png/{size}/list-bullet.png",
+        "webp": "hq/webp/{size}/list-bullet.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -4151,6 +5266,11 @@
         "nerd_name": "md-format_quote_open",
         "unicode": "❝",
         "ascii": "\""
+      },
+      "hq": {
+        "png": "hq/png/{size}/quote.png",
+        "webp": "hq/webp/{size}/quote.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -4165,6 +5285,11 @@
         "nerd_name": "md-format_align_left",
         "unicode": "⫷",
         "ascii": "|="
+      },
+      "hq": {
+        "png": "hq/png/{size}/align-left.png",
+        "webp": "hq/webp/{size}/align-left.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -4179,6 +5304,11 @@
         "nerd_name": "md-format_align_center",
         "unicode": "≡",
         "ascii": "="
+      },
+      "hq": {
+        "png": "hq/png/{size}/align-center.png",
+        "webp": "hq/webp/{size}/align-center.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -4193,6 +5323,11 @@
         "nerd_name": "md-format_align_right",
         "unicode": "⫸",
         "ascii": "=|"
+      },
+      "hq": {
+        "png": "hq/png/{size}/align-right.png",
+        "webp": "hq/webp/{size}/align-right.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -4212,6 +5347,11 @@
         "nerd_name": "md-format_text",
         "unicode": "T",
         "ascii": "T"
+      },
+      "hq": {
+        "png": "hq/png/{size}/type.png",
+        "webp": "hq/webp/{size}/type.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -4230,6 +5370,11 @@
         "nerd_name": "md-table",
         "unicode": "▦",
         "ascii": "[#]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/table.png",
+        "webp": "hq/webp/{size}/table.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -4248,6 +5393,11 @@
         "nerd_name": "md-image_plus",
         "unicode": "🖼",
         "ascii": "[+]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/image-plus.png",
+        "webp": "hq/webp/{size}/image-plus.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -4269,6 +5419,11 @@
         "nerd_name": "md-white_balance_sunny",
         "unicode": "☀",
         "ascii": "*"
+      },
+      "hq": {
+        "png": "hq/png/{size}/sun.png",
+        "webp": "hq/webp/{size}/sun.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -4287,6 +5442,11 @@
         "nerd_name": "md-weather_night",
         "unicode": "🌙",
         "ascii": "C"
+      },
+      "hq": {
+        "png": "hq/png/{size}/moon.png",
+        "webp": "hq/webp/{size}/moon.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -4308,6 +5468,11 @@
         "nerd_name": "md-theme_light_dark",
         "unicode": "◐",
         "ascii": "(|)"
+      },
+      "hq": {
+        "png": "hq/png/{size}/theme.png",
+        "webp": "hq/webp/{size}/theme.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -4326,6 +5491,11 @@
         "nerd_name": "md-thermometer",
         "unicode": "🌡",
         "ascii": "|o"
+      },
+      "hq": {
+        "png": "hq/png/{size}/thermometer.png",
+        "webp": "hq/webp/{size}/thermometer.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -4345,6 +5515,11 @@
         "nerd_name": "md-water_outline",
         "unicode": "💧",
         "ascii": "o"
+      },
+      "hq": {
+        "png": "hq/png/{size}/droplet.png",
+        "webp": "hq/webp/{size}/droplet.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -4364,6 +5539,11 @@
         "nerd_name": "md-leaf",
         "unicode": "🍃",
         "ascii": "~"
+      },
+      "hq": {
+        "png": "hq/png/{size}/leaf.png",
+        "webp": "hq/webp/{size}/leaf.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -4385,6 +5565,11 @@
         "nerd_name": "md-office_building_outline",
         "unicode": "🏢",
         "ascii": "[#]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/building.png",
+        "webp": "hq/webp/{size}/building.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -4406,6 +5591,11 @@
         "nerd_name": "md-briefcase_outline",
         "unicode": "💼",
         "ascii": "[b]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/briefcase.png",
+        "webp": "hq/webp/{size}/briefcase.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -4425,6 +5615,11 @@
         "nerd_name": "md-medal_outline",
         "unicode": "🏅",
         "ascii": "(*)"
+      },
+      "hq": {
+        "png": "hq/png/{size}/award.png",
+        "webp": "hq/webp/{size}/award.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -4446,6 +5641,11 @@
         "nerd_name": "md-trophy_outline",
         "unicode": "🏆",
         "ascii": "\\_/"
+      },
+      "hq": {
+        "png": "hq/png/{size}/trophy.png",
+        "webp": "hq/webp/{size}/trophy.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -4467,6 +5667,11 @@
         "nerd_name": "md-target",
         "unicode": "🎯",
         "ascii": "(o)"
+      },
+      "hq": {
+        "png": "hq/png/{size}/target.png",
+        "webp": "hq/webp/{size}/target.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -4488,6 +5693,11 @@
         "nerd_name": "md-lightbulb_outline",
         "unicode": "💡",
         "ascii": "i"
+      },
+      "hq": {
+        "png": "hq/png/{size}/lightbulb.png",
+        "webp": "hq/webp/{size}/lightbulb.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -4510,6 +5720,11 @@
         "nerd_name": "md-rocket_launch_outline",
         "unicode": "🚀",
         "ascii": "^"
+      },
+      "hq": {
+        "png": "hq/png/{size}/rocket.png",
+        "webp": "hq/webp/{size}/rocket.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -4529,6 +5744,11 @@
         "nerd_name": "md-coffee_outline",
         "unicode": "☕",
         "ascii": "c[_]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/coffee.png",
+        "webp": "hq/webp/{size}/coffee.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -4550,6 +5770,11 @@
         "nerd_name": "md-puzzle_outline",
         "unicode": "🧩",
         "ascii": "[+]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/puzzle.png",
+        "webp": "hq/webp/{size}/puzzle.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -4571,6 +5796,11 @@
         "nerd_name": "md-palette_outline",
         "unicode": "🎨",
         "ascii": "(:)"
+      },
+      "hq": {
+        "png": "hq/png/{size}/palette.png",
+        "webp": "hq/webp/{size}/palette.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -4589,6 +5819,11 @@
         "nerd_name": "md-brush",
         "unicode": "🖌",
         "ascii": "/~"
+      },
+      "hq": {
+        "png": "hq/png/{size}/brush.png",
+        "webp": "hq/webp/{size}/brush.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -4607,6 +5842,11 @@
         "nerd_name": "md-fountain_pen_tip",
         "unicode": "✒",
         "ascii": "_/"
+      },
+      "hq": {
+        "png": "hq/png/{size}/pen-tool.png",
+        "webp": "hq/webp/{size}/pen-tool.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -4624,6 +5864,11 @@
         "nerd_name": "md-ruler",
         "unicode": "📏",
         "ascii": "|-|"
+      },
+      "hq": {
+        "png": "hq/png/{size}/ruler.png",
+        "webp": "hq/webp/{size}/ruler.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -4638,6 +5883,11 @@
         "nerd_name": "md-crop",
         "unicode": "⌗",
         "ascii": "[_"
+      },
+      "hq": {
+        "png": "hq/png/{size}/crop.png",
+        "webp": "hq/webp/{size}/crop.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -4657,6 +5907,11 @@
         "nerd_name": "md-cursor_move",
         "unicode": "✥",
         "ascii": "+"
+      },
+      "hq": {
+        "png": "hq/png/{size}/move.png",
+        "webp": "hq/webp/{size}/move.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -4676,6 +5931,11 @@
         "nerd_name": "md-crosshairs",
         "unicode": "⌖",
         "ascii": "-+-"
+      },
+      "hq": {
+        "png": "hq/png/{size}/crosshair.png",
+        "webp": "hq/webp/{size}/crosshair.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -4697,6 +5957,11 @@
         "nerd_name": "md-translate",
         "unicode": "🌐",
         "ascii": "A/a"
+      },
+      "hq": {
+        "png": "hq/png/{size}/translate.png",
+        "webp": "hq/webp/{size}/translate.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -4718,6 +5983,11 @@
         "nerd_name": "md-human",
         "unicode": "♿",
         "ascii": "a11y"
+      },
+      "hq": {
+        "png": "hq/png/{size}/accessibility.png",
+        "webp": "hq/webp/{size}/accessibility.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -4739,6 +6009,11 @@
         "nerd_name": "md-emoticon_happy_outline",
         "unicode": "🙂",
         "ascii": ":)"
+      },
+      "hq": {
+        "png": "hq/png/{size}/smile.png",
+        "webp": "hq/webp/{size}/smile.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -4757,6 +6032,11 @@
         "nerd_name": "md-emoticon_sad_outline",
         "unicode": "🙁",
         "ascii": ":("
+      },
+      "hq": {
+        "png": "hq/png/{size}/frown.png",
+        "webp": "hq/webp/{size}/frown.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -4778,6 +6058,11 @@
         "nerd_name": "md-fingerprint",
         "unicode": "🫆",
         "ascii": "(@)"
+      },
+      "hq": {
+        "png": "hq/png/{size}/fingerprint.png",
+        "webp": "hq/webp/{size}/fingerprint.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -4796,6 +6081,11 @@
         "nerd_name": "md-anchor",
         "unicode": "⚓",
         "ascii": "t"
+      },
+      "hq": {
+        "png": "hq/png/{size}/anchor.png",
+        "webp": "hq/webp/{size}/anchor.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -4815,6 +6105,11 @@
         "nerd_name": "md-umbrella_outline",
         "unicode": "☂",
         "ascii": "T"
+      },
+      "hq": {
+        "png": "hq/png/{size}/umbrella.png",
+        "webp": "hq/webp/{size}/umbrella.webp",
+        "made_by": "ai"
       }
     },
     {
@@ -4834,6 +6129,14 @@
         "nerd_name": "md-github",
         "unicode": "🐙",
         "ascii": "gh"
+      },
+      "hq": {
+        "png": "hq/png/{size}/github.png",
+        "webp": "hq/webp/{size}/github.webp",
+        "made_by": "human",
+        "svg": "hq/svg/github.svg",
+        "hex": "#181717",
+        "hex_source": "simple-icons:github"
       }
     },
     {
@@ -4853,6 +6156,14 @@
         "nerd_name": "md-gitlab",
         "unicode": "🦊",
         "ascii": "gl"
+      },
+      "hq": {
+        "png": "hq/png/{size}/gitlab.png",
+        "webp": "hq/webp/{size}/gitlab.webp",
+        "made_by": "human",
+        "svg": "hq/svg/gitlab.svg",
+        "hex": "#FC6D26",
+        "hex_source": "simple-icons:gitlab"
       }
     },
     {
@@ -4872,6 +6183,14 @@
         "nerd_name": "md-bitbucket",
         "unicode": "🪣",
         "ascii": "bb"
+      },
+      "hq": {
+        "png": "hq/png/{size}/bitbucket.png",
+        "webp": "hq/webp/{size}/bitbucket.webp",
+        "made_by": "human",
+        "svg": "hq/svg/bitbucket.svg",
+        "hex": "#0052CC",
+        "hex_source": "simple-icons:bitbucket"
       }
     },
     {
@@ -4891,6 +6210,14 @@
         "nerd_name": "linux-codeberg",
         "unicode": "⛰",
         "ascii": "cb"
+      },
+      "hq": {
+        "png": "hq/png/{size}/codeberg.png",
+        "webp": "hq/webp/{size}/codeberg.webp",
+        "made_by": "human",
+        "svg": "hq/svg/codeberg.svg",
+        "hex": "#2185D0",
+        "hex_source": "simple-icons:codeberg"
       }
     },
     {
@@ -4910,6 +6237,14 @@
         "nerd_name": "linux-gitea",
         "unicode": "🍵",
         "ascii": "gt"
+      },
+      "hq": {
+        "png": "hq/png/{size}/gitea.png",
+        "webp": "hq/webp/{size}/gitea.webp",
+        "made_by": "human",
+        "svg": "hq/svg/gitea.svg",
+        "hex": "#609926",
+        "hex_source": "simple-icons:gitea"
       }
     },
     {
@@ -4926,6 +6261,14 @@
       "tui": {
         "unicode": "◯",
         "ascii": "srht"
+      },
+      "hq": {
+        "png": "hq/png/{size}/sourcehut.png",
+        "webp": "hq/webp/{size}/sourcehut.webp",
+        "made_by": "human",
+        "svg": "hq/svg/sourcehut.svg",
+        "hex": "#000000",
+        "hex_source": "simple-icons:sourcehut"
       }
     },
     {
@@ -4945,6 +6288,14 @@
         "nerd_name": "md-npm",
         "unicode": "📦",
         "ascii": "npm"
+      },
+      "hq": {
+        "png": "hq/png/{size}/npm.png",
+        "webp": "hq/webp/{size}/npm.webp",
+        "made_by": "human",
+        "svg": "hq/svg/npm.svg",
+        "hex": "#CB3837",
+        "hex_source": "simple-icons:npm"
       }
     },
     {
@@ -4964,6 +6315,14 @@
         "nerd_name": "md-docker",
         "unicode": "🐳",
         "ascii": "dkr"
+      },
+      "hq": {
+        "png": "hq/png/{size}/docker.png",
+        "webp": "hq/webp/{size}/docker.webp",
+        "made_by": "human",
+        "svg": "hq/svg/docker.svg",
+        "hex": "#2496ED",
+        "hex_source": "simple-icons:docker"
       }
     },
     {
@@ -4983,6 +6342,14 @@
         "nerd_name": "md-kubernetes",
         "unicode": "☸",
         "ascii": "k8s"
+      },
+      "hq": {
+        "png": "hq/png/{size}/kubernetes.png",
+        "webp": "hq/webp/{size}/kubernetes.webp",
+        "made_by": "human",
+        "svg": "hq/svg/kubernetes.svg",
+        "hex": "#326CE5",
+        "hex_source": "simple-icons:kubernetes"
       }
     },
     {
@@ -5005,6 +6372,14 @@
         "nerd_name": "md-nodejs",
         "unicode": "⬢",
         "ascii": "node"
+      },
+      "hq": {
+        "png": "hq/png/{size}/nodejs.png",
+        "webp": "hq/webp/{size}/nodejs.webp",
+        "made_by": "human",
+        "svg": "hq/svg/nodejs.svg",
+        "hex": "#5FA04E",
+        "hex_source": "simple-icons:nodedotjs"
       }
     },
     {
@@ -5024,6 +6399,14 @@
         "nerd_name": "dev-denojs",
         "unicode": "🦕",
         "ascii": "deno"
+      },
+      "hq": {
+        "png": "hq/png/{size}/deno.png",
+        "webp": "hq/webp/{size}/deno.webp",
+        "made_by": "human",
+        "svg": "hq/svg/deno.svg",
+        "hex": "#000000",
+        "hex_source": "simple-icons:deno"
       }
     },
     {
@@ -5043,6 +6426,14 @@
         "nerd_name": "dev-bun",
         "unicode": "🥟",
         "ascii": "bun"
+      },
+      "hq": {
+        "png": "hq/png/{size}/bun.png",
+        "webp": "hq/webp/{size}/bun.webp",
+        "made_by": "human",
+        "svg": "hq/svg/bun.svg",
+        "hex": "#000000",
+        "hex_source": "simple-icons:bun"
       }
     },
     {
@@ -5062,6 +6453,14 @@
         "nerd_name": "md-language_typescript",
         "unicode": "TS",
         "ascii": "ts"
+      },
+      "hq": {
+        "png": "hq/png/{size}/typescript.png",
+        "webp": "hq/webp/{size}/typescript.webp",
+        "made_by": "human",
+        "svg": "hq/svg/typescript.svg",
+        "hex": "#3178C6",
+        "hex_source": "simple-icons:typescript"
       }
     },
     {
@@ -5081,6 +6480,14 @@
         "nerd_name": "md-language_javascript",
         "unicode": "JS",
         "ascii": "js"
+      },
+      "hq": {
+        "png": "hq/png/{size}/javascript.png",
+        "webp": "hq/webp/{size}/javascript.webp",
+        "made_by": "human",
+        "svg": "hq/svg/javascript.svg",
+        "hex": "#F7DF1E",
+        "hex_source": "simple-icons:javascript"
       }
     },
     {
@@ -5100,6 +6507,14 @@
         "nerd_name": "md-language_python",
         "unicode": "🐍",
         "ascii": "py"
+      },
+      "hq": {
+        "png": "hq/png/{size}/python.png",
+        "webp": "hq/webp/{size}/python.webp",
+        "made_by": "human",
+        "svg": "hq/svg/python.svg",
+        "hex": "#3776AB",
+        "hex_source": "simple-icons:python"
       }
     },
     {
@@ -5119,6 +6534,14 @@
         "nerd_name": "md-language_rust",
         "unicode": "🦀",
         "ascii": "rs"
+      },
+      "hq": {
+        "png": "hq/png/{size}/rust.png",
+        "webp": "hq/webp/{size}/rust.webp",
+        "made_by": "human",
+        "svg": "hq/svg/rust.svg",
+        "hex": "#000000",
+        "hex_source": "simple-icons:rust"
       }
     },
     {
@@ -5141,6 +6564,14 @@
         "nerd_name": "md-language_go",
         "unicode": "🐹",
         "ascii": "go"
+      },
+      "hq": {
+        "png": "hq/png/{size}/go.png",
+        "webp": "hq/webp/{size}/go.webp",
+        "made_by": "human",
+        "svg": "hq/svg/go.svg",
+        "hex": "#00ADD8",
+        "hex_source": "simple-icons:go"
       }
     },
     {
@@ -5160,6 +6591,14 @@
         "nerd_name": "md-stack_overflow",
         "unicode": "📚",
         "ascii": "so"
+      },
+      "hq": {
+        "png": "hq/png/{size}/stack-overflow.png",
+        "webp": "hq/webp/{size}/stack-overflow.webp",
+        "made_by": "human",
+        "svg": "hq/svg/stack-overflow.svg",
+        "hex": "#F58025",
+        "hex_source": "simple-icons:stackoverflow"
       }
     },
     {
@@ -5179,6 +6618,14 @@
         "nerd_name": "md-triangle",
         "unicode": "▲",
         "ascii": "vc"
+      },
+      "hq": {
+        "png": "hq/png/{size}/vercel.png",
+        "webp": "hq/webp/{size}/vercel.webp",
+        "made_by": "human",
+        "svg": "hq/svg/vercel.svg",
+        "hex": "#000000",
+        "hex_source": "simple-icons:vercel"
       }
     },
     {
@@ -5198,6 +6645,14 @@
         "nerd_name": "dev-netlify",
         "unicode": "◆",
         "ascii": "ntl"
+      },
+      "hq": {
+        "png": "hq/png/{size}/netlify.png",
+        "webp": "hq/webp/{size}/netlify.webp",
+        "made_by": "human",
+        "svg": "hq/svg/netlify.svg",
+        "hex": "#00C7B7",
+        "hex_source": "simple-icons:netlify"
       }
     },
     {
@@ -5217,6 +6672,14 @@
         "nerd_name": "dev-cloudflare",
         "unicode": "☁",
         "ascii": "cf"
+      },
+      "hq": {
+        "png": "hq/png/{size}/cloudflare.png",
+        "webp": "hq/webp/{size}/cloudflare.webp",
+        "made_by": "human",
+        "svg": "hq/svg/cloudflare.svg",
+        "hex": "#F38020",
+        "hex_source": "simple-icons:cloudflare"
       }
     },
     {
@@ -5236,6 +6699,14 @@
         "nerd_name": "dev-railway",
         "unicode": "🚆",
         "ascii": "rly"
+      },
+      "hq": {
+        "png": "hq/png/{size}/railway.png",
+        "webp": "hq/webp/{size}/railway.webp",
+        "made_by": "human",
+        "svg": "hq/svg/railway.svg",
+        "hex": "#0B0D0E",
+        "hex_source": "simple-icons:railway"
       }
     },
     {
@@ -5255,6 +6726,14 @@
         "nerd_name": "dev-supabase",
         "unicode": "⚡",
         "ascii": "sb"
+      },
+      "hq": {
+        "png": "hq/png/{size}/supabase.png",
+        "webp": "hq/webp/{size}/supabase.webp",
+        "made_by": "human",
+        "svg": "hq/svg/supabase.svg",
+        "hex": "#3FCF8E",
+        "hex_source": "simple-icons:supabase"
       }
     },
     {
@@ -5271,6 +6750,14 @@
       "tui": {
         "unicode": "Ⓐ",
         "ascii": "ant"
+      },
+      "hq": {
+        "png": "hq/png/{size}/anthropic.png",
+        "webp": "hq/webp/{size}/anthropic.webp",
+        "made_by": "human",
+        "svg": "hq/svg/anthropic.svg",
+        "hex": "#191919",
+        "hex_source": "simple-icons:anthropic"
       }
     },
     {
@@ -5287,6 +6774,14 @@
       "tui": {
         "unicode": "✳",
         "ascii": "cl"
+      },
+      "hq": {
+        "png": "hq/png/{size}/claude.png",
+        "webp": "hq/webp/{size}/claude.webp",
+        "made_by": "human",
+        "svg": "hq/svg/claude.svg",
+        "hex": "#D97757",
+        "hex_source": "simple-icons:claude"
       }
     },
     {
@@ -5306,6 +6801,14 @@
         "nerd_name": "fa-figma",
         "unicode": "🎨",
         "ascii": "fig"
+      },
+      "hq": {
+        "png": "hq/png/{size}/figma.png",
+        "webp": "hq/webp/{size}/figma.webp",
+        "made_by": "human",
+        "svg": "hq/svg/figma.svg",
+        "hex": "#F24E1E",
+        "hex_source": "simple-icons:figma"
       }
     },
     {
@@ -5325,6 +6828,14 @@
         "nerd_name": "dev-notion",
         "unicode": "Ⓝ",
         "ascii": "ntn"
+      },
+      "hq": {
+        "png": "hq/png/{size}/notion.png",
+        "webp": "hq/webp/{size}/notion.webp",
+        "made_by": "human",
+        "svg": "hq/svg/notion.svg",
+        "hex": "#000000",
+        "hex_source": "simple-icons:notion"
       }
     },
     {
@@ -5344,6 +6855,14 @@
         "nerd_name": "md-trello",
         "unicode": "▤",
         "ascii": "tr"
+      },
+      "hq": {
+        "png": "hq/png/{size}/trello.png",
+        "webp": "hq/webp/{size}/trello.webp",
+        "made_by": "human",
+        "svg": "hq/svg/trello.svg",
+        "hex": "#0052CC",
+        "hex_source": "simple-icons:trello"
       }
     },
     {
@@ -5363,6 +6882,14 @@
         "nerd_name": "md-jira",
         "unicode": "◈",
         "ascii": "jira"
+      },
+      "hq": {
+        "png": "hq/png/{size}/jira.png",
+        "webp": "hq/webp/{size}/jira.webp",
+        "made_by": "human",
+        "svg": "hq/svg/jira.svg",
+        "hex": "#0052CC",
+        "hex_source": "simple-icons:jira"
       }
     },
     {
@@ -5382,6 +6909,14 @@
         "nerd_name": "fa-keybase",
         "unicode": "🔑",
         "ascii": "kb"
+      },
+      "hq": {
+        "png": "hq/png/{size}/keybase.png",
+        "webp": "hq/webp/{size}/keybase.webp",
+        "made_by": "human",
+        "svg": "hq/svg/keybase.svg",
+        "hex": "#33A0FF",
+        "hex_source": "simple-icons:keybase"
       }
     },
     {
@@ -5404,6 +6939,14 @@
         "nerd_name": "md-alpha_x",
         "unicode": "𝕏",
         "ascii": "x"
+      },
+      "hq": {
+        "png": "hq/png/{size}/x.png",
+        "webp": "hq/webp/{size}/x.webp",
+        "made_by": "human",
+        "svg": "hq/svg/x.svg",
+        "hex": "#000000",
+        "hex_source": "simple-icons:x"
       }
     },
     {
@@ -5423,6 +6966,14 @@
         "nerd_name": "md-butterfly",
         "unicode": "🦋",
         "ascii": "bsky"
+      },
+      "hq": {
+        "png": "hq/png/{size}/bluesky.png",
+        "webp": "hq/webp/{size}/bluesky.webp",
+        "made_by": "human",
+        "svg": "hq/svg/bluesky.svg",
+        "hex": "#1185FE",
+        "hex_source": "simple-icons:bluesky"
       }
     },
     {
@@ -5442,6 +6993,14 @@
         "nerd_name": "md-mastodon",
         "unicode": "🐘",
         "ascii": "mdn"
+      },
+      "hq": {
+        "png": "hq/png/{size}/mastodon.png",
+        "webp": "hq/webp/{size}/mastodon.webp",
+        "made_by": "human",
+        "svg": "hq/svg/mastodon.svg",
+        "hex": "#6364FF",
+        "hex_source": "simple-icons:mastodon"
       }
     },
     {
@@ -5461,6 +7020,14 @@
         "nerd_name": "md-at",
         "unicode": "@",
         "ascii": "th"
+      },
+      "hq": {
+        "png": "hq/png/{size}/threads.png",
+        "webp": "hq/webp/{size}/threads.webp",
+        "made_by": "human",
+        "svg": "hq/svg/threads.svg",
+        "hex": "#000000",
+        "hex_source": "simple-icons:threads"
       }
     },
     {
@@ -5480,6 +7047,14 @@
         "nerd_name": "md-instagram",
         "unicode": "📷",
         "ascii": "ig"
+      },
+      "hq": {
+        "png": "hq/png/{size}/instagram.png",
+        "webp": "hq/webp/{size}/instagram.webp",
+        "made_by": "human",
+        "svg": "hq/svg/instagram.svg",
+        "hex": "#FF0069",
+        "hex_source": "simple-icons:instagram"
       }
     },
     {
@@ -5499,6 +7074,14 @@
         "nerd_name": "md-facebook",
         "unicode": "ⓕ",
         "ascii": "fb"
+      },
+      "hq": {
+        "png": "hq/png/{size}/facebook.png",
+        "webp": "hq/webp/{size}/facebook.webp",
+        "made_by": "human",
+        "svg": "hq/svg/facebook.svg",
+        "hex": "#0866FF",
+        "hex_source": "simple-icons:facebook"
       }
     },
     {
@@ -5518,6 +7101,14 @@
         "nerd_name": "md-music_note",
         "unicode": "♪",
         "ascii": "tt"
+      },
+      "hq": {
+        "png": "hq/png/{size}/tiktok.png",
+        "webp": "hq/webp/{size}/tiktok.webp",
+        "made_by": "human",
+        "svg": "hq/svg/tiktok.svg",
+        "hex": "#000000",
+        "hex_source": "simple-icons:tiktok"
       }
     },
     {
@@ -5537,6 +7128,14 @@
         "nerd_name": "md-youtube",
         "unicode": "▶",
         "ascii": "yt"
+      },
+      "hq": {
+        "png": "hq/png/{size}/youtube.png",
+        "webp": "hq/webp/{size}/youtube.webp",
+        "made_by": "human",
+        "svg": "hq/svg/youtube.svg",
+        "hex": "#FF0000",
+        "hex_source": "simple-icons:youtube"
       }
     },
     {
@@ -5556,6 +7155,14 @@
         "nerd_name": "md-twitch",
         "unicode": "📺",
         "ascii": "ttv"
+      },
+      "hq": {
+        "png": "hq/png/{size}/twitch.png",
+        "webp": "hq/webp/{size}/twitch.webp",
+        "made_by": "human",
+        "svg": "hq/svg/twitch.svg",
+        "hex": "#9146FF",
+        "hex_source": "simple-icons:twitch"
       }
     },
     {
@@ -5572,6 +7179,14 @@
       "tui": {
         "unicode": "Ⓚ",
         "ascii": "kick"
+      },
+      "hq": {
+        "png": "hq/png/{size}/kick.png",
+        "webp": "hq/webp/{size}/kick.webp",
+        "made_by": "human",
+        "svg": "hq/svg/kick.svg",
+        "hex": "#53FC19",
+        "hex_source": "simple-icons:kick"
       }
     },
     {
@@ -5591,6 +7206,14 @@
         "nerd_name": "md-reddit",
         "unicode": "👽",
         "ascii": "rd"
+      },
+      "hq": {
+        "png": "hq/png/{size}/reddit.png",
+        "webp": "hq/webp/{size}/reddit.webp",
+        "made_by": "human",
+        "svg": "hq/svg/reddit.svg",
+        "hex": "#FF4500",
+        "hex_source": "simple-icons:reddit"
       }
     },
     {
@@ -5610,6 +7233,14 @@
         "nerd_name": "md-pinterest",
         "unicode": "📌",
         "ascii": "pin"
+      },
+      "hq": {
+        "png": "hq/png/{size}/pinterest.png",
+        "webp": "hq/webp/{size}/pinterest.webp",
+        "made_by": "human",
+        "svg": "hq/svg/pinterest.svg",
+        "hex": "#BD081C",
+        "hex_source": "simple-icons:pinterest"
       }
     },
     {
@@ -5629,6 +7260,14 @@
         "nerd_name": "md-snapchat",
         "unicode": "👻",
         "ascii": "snap"
+      },
+      "hq": {
+        "png": "hq/png/{size}/snapchat.png",
+        "webp": "hq/webp/{size}/snapchat.webp",
+        "made_by": "human",
+        "svg": "hq/svg/snapchat.svg",
+        "hex": "#FFFC00",
+        "hex_source": "simple-icons:snapchat"
       }
     },
     {
@@ -5648,6 +7287,14 @@
         "nerd_name": "fa-tumblr",
         "unicode": "ⓣ",
         "ascii": "tb"
+      },
+      "hq": {
+        "png": "hq/png/{size}/tumblr.png",
+        "webp": "hq/webp/{size}/tumblr.webp",
+        "made_by": "human",
+        "svg": "hq/svg/tumblr.svg",
+        "hex": "#36465D",
+        "hex_source": "simple-icons:tumblr"
       }
     },
     {
@@ -5667,6 +7314,14 @@
         "nerd_name": "md-discord",
         "unicode": "🎮",
         "ascii": "dc"
+      },
+      "hq": {
+        "png": "hq/png/{size}/discord.png",
+        "webp": "hq/webp/{size}/discord.webp",
+        "made_by": "human",
+        "svg": "hq/svg/discord.svg",
+        "hex": "#5865F2",
+        "hex_source": "simple-icons:discord"
       }
     },
     {
@@ -5686,6 +7341,14 @@
         "nerd_name": "fa-telegram",
         "unicode": "✈",
         "ascii": "tg"
+      },
+      "hq": {
+        "png": "hq/png/{size}/telegram.png",
+        "webp": "hq/webp/{size}/telegram.webp",
+        "made_by": "human",
+        "svg": "hq/svg/telegram.svg",
+        "hex": "#26A5E4",
+        "hex_source": "simple-icons:telegram"
       }
     },
     {
@@ -5705,6 +7368,14 @@
         "nerd_name": "md-message_lock_outline",
         "unicode": "💬",
         "ascii": "sig"
+      },
+      "hq": {
+        "png": "hq/png/{size}/signal.png",
+        "webp": "hq/webp/{size}/signal.webp",
+        "made_by": "human",
+        "svg": "hq/svg/signal.svg",
+        "hex": "#3B45FD",
+        "hex_source": "simple-icons:signal"
       }
     },
     {
@@ -5724,6 +7395,14 @@
         "nerd_name": "md-whatsapp",
         "unicode": "📞",
         "ascii": "wa"
+      },
+      "hq": {
+        "png": "hq/png/{size}/whatsapp.png",
+        "webp": "hq/webp/{size}/whatsapp.webp",
+        "made_by": "human",
+        "svg": "hq/svg/whatsapp.svg",
+        "hex": "#25D366",
+        "hex_source": "simple-icons:whatsapp"
       }
     },
     {
@@ -5743,6 +7422,14 @@
         "nerd_name": "md-facebook_messenger",
         "unicode": "💬",
         "ascii": "msg"
+      },
+      "hq": {
+        "png": "hq/png/{size}/messenger.png",
+        "webp": "hq/webp/{size}/messenger.webp",
+        "made_by": "human",
+        "svg": "hq/svg/messenger.svg",
+        "hex": "#0866FF",
+        "hex_source": "simple-icons:messenger"
       }
     },
     {
@@ -5762,6 +7449,14 @@
         "nerd_name": "md-wechat",
         "unicode": "💬",
         "ascii": "wx"
+      },
+      "hq": {
+        "png": "hq/png/{size}/wechat.png",
+        "webp": "hq/webp/{size}/wechat.webp",
+        "made_by": "human",
+        "svg": "hq/svg/wechat.svg",
+        "hex": "#07C160",
+        "hex_source": "simple-icons:wechat"
       }
     },
     {
@@ -5781,6 +7476,14 @@
         "nerd_name": "fa-line",
         "unicode": "💬",
         "ascii": "line"
+      },
+      "hq": {
+        "png": "hq/png/{size}/line.png",
+        "webp": "hq/webp/{size}/line.webp",
+        "made_by": "human",
+        "svg": "hq/svg/line.svg",
+        "hex": "#00C300",
+        "hex_source": "simple-icons:line"
       }
     },
     {
@@ -5800,6 +7503,14 @@
         "nerd_name": "md-matrix",
         "unicode": "Ⓜ",
         "ascii": "[m]"
+      },
+      "hq": {
+        "png": "hq/png/{size}/matrix.png",
+        "webp": "hq/webp/{size}/matrix.webp",
+        "made_by": "human",
+        "svg": "hq/svg/matrix.svg",
+        "hex": "#000000",
+        "hex_source": "simple-icons:matrix"
       }
     },
     {
@@ -5819,6 +7530,14 @@
         "nerd_name": "md-matrix",
         "unicode": "Ⓔ",
         "ascii": "el"
+      },
+      "hq": {
+        "png": "hq/png/{size}/element.png",
+        "webp": "hq/webp/{size}/element.webp",
+        "made_by": "human",
+        "svg": "hq/svg/element.svg",
+        "hex": "#0DBD8B",
+        "hex_source": "simple-icons:element"
       }
     },
     {
@@ -5835,6 +7554,14 @@
       "tui": {
         "unicode": "Ⓩ",
         "ascii": "zl"
+      },
+      "hq": {
+        "png": "hq/png/{size}/zulip.png",
+        "webp": "hq/webp/{size}/zulip.webp",
+        "made_by": "human",
+        "svg": "hq/svg/zulip.svg",
+        "hex": "#6492FE",
+        "hex_source": "simple-icons:zulip"
       }
     },
     {
@@ -5851,6 +7578,14 @@
       "tui": {
         "unicode": "Ⓜ",
         "ascii": "mm"
+      },
+      "hq": {
+        "png": "hq/png/{size}/mattermost.png",
+        "webp": "hq/webp/{size}/mattermost.webp",
+        "made_by": "human",
+        "svg": "hq/svg/mattermost.svg",
+        "hex": "#0058CC",
+        "hex_source": "simple-icons:mattermost"
       }
     },
     {
@@ -5870,6 +7605,14 @@
         "nerd_name": "fa-rocketchat",
         "unicode": "🚀",
         "ascii": "rc"
+      },
+      "hq": {
+        "png": "hq/png/{size}/rocketchat.png",
+        "webp": "hq/webp/{size}/rocketchat.webp",
+        "made_by": "human",
+        "svg": "hq/svg/rocketchat.svg",
+        "hex": "#F5455C",
+        "hex_source": "simple-icons:rocketdotchat"
       }
     },
     {
@@ -5889,6 +7632,14 @@
         "nerd_name": "md-xmpp",
         "unicode": "💬",
         "ascii": "xmpp"
+      },
+      "hq": {
+        "png": "hq/png/{size}/xmpp.png",
+        "webp": "hq/webp/{size}/xmpp.webp",
+        "made_by": "human",
+        "svg": "hq/svg/xmpp.svg",
+        "hex": "#002B5C",
+        "hex_source": "simple-icons:xmpp"
       }
     },
     {
@@ -5905,6 +7656,14 @@
       "tui": {
         "unicode": "🐭",
         "ascii": "lmy"
+      },
+      "hq": {
+        "png": "hq/png/{size}/lemmy.png",
+        "webp": "hq/webp/{size}/lemmy.webp",
+        "made_by": "human",
+        "svg": "hq/svg/lemmy.svg",
+        "hex": "#000000",
+        "hex_source": "simple-icons:lemmy"
       }
     },
     {
@@ -5921,6 +7680,14 @@
       "tui": {
         "unicode": "🖼",
         "ascii": "pxf"
+      },
+      "hq": {
+        "png": "hq/png/{size}/pixelfed.png",
+        "webp": "hq/webp/{size}/pixelfed.webp",
+        "made_by": "human",
+        "svg": "hq/svg/pixelfed.svg",
+        "hex": "#6366F1",
+        "hex_source": "simple-icons:pixelfed"
       }
     },
     {
@@ -5937,6 +7704,14 @@
       "tui": {
         "unicode": "▶",
         "ascii": "pt"
+      },
+      "hq": {
+        "png": "hq/png/{size}/peertube.png",
+        "webp": "hq/webp/{size}/peertube.webp",
+        "made_by": "human",
+        "svg": "hq/svg/peertube.svg",
+        "hex": "#F1680D",
+        "hex_source": "simple-icons:peertube"
       }
     },
     {
@@ -5953,6 +7728,14 @@
       "tui": {
         "unicode": "Ⓜ",
         "ascii": "mk"
+      },
+      "hq": {
+        "png": "hq/png/{size}/misskey.png",
+        "webp": "hq/webp/{size}/misskey.webp",
+        "made_by": "human",
+        "svg": "hq/svg/misskey.svg",
+        "hex": "#A1CA03",
+        "hex_source": "simple-icons:misskey"
       }
     },
     {
@@ -5969,6 +7752,14 @@
       "tui": {
         "unicode": "⛩",
         "ascii": "fc"
+      },
+      "hq": {
+        "png": "hq/png/{size}/farcaster.png",
+        "webp": "hq/webp/{size}/farcaster.webp",
+        "made_by": "human",
+        "svg": "hq/svg/farcaster.svg",
+        "hex": "#855DCD",
+        "hex_source": "simple-icons:farcaster"
       }
     },
     {
@@ -5988,6 +7779,14 @@
         "nerd_name": "md-video_outline",
         "unicode": "📹",
         "ascii": "meet"
+      },
+      "hq": {
+        "png": "hq/png/{size}/google-meet.png",
+        "webp": "hq/webp/{size}/google-meet.webp",
+        "made_by": "human",
+        "svg": "hq/svg/google-meet.svg",
+        "hex": "#00897B",
+        "hex_source": "simple-icons:googlemeet"
       }
     },
     {
@@ -6007,6 +7806,14 @@
         "nerd_name": "md-video",
         "unicode": "📹",
         "ascii": "zm"
+      },
+      "hq": {
+        "png": "hq/png/{size}/zoom.png",
+        "webp": "hq/webp/{size}/zoom.webp",
+        "made_by": "human",
+        "svg": "hq/svg/zoom.svg",
+        "hex": "#0B5CFF",
+        "hex_source": "simple-icons:zoom"
       }
     },
     {
@@ -6026,6 +7833,14 @@
         "nerd_name": "md-gmail",
         "unicode": "✉",
         "ascii": "gm"
+      },
+      "hq": {
+        "png": "hq/png/{size}/gmail.png",
+        "webp": "hq/webp/{size}/gmail.webp",
+        "made_by": "human",
+        "svg": "hq/svg/gmail.svg",
+        "hex": "#EA4335",
+        "hex_source": "simple-icons:gmail"
       }
     },
     {
@@ -6045,6 +7860,14 @@
         "nerd_name": "md-email_lock",
         "unicode": "✉",
         "ascii": "pm"
+      },
+      "hq": {
+        "png": "hq/png/{size}/proton-mail.png",
+        "webp": "hq/webp/{size}/proton-mail.webp",
+        "made_by": "human",
+        "svg": "hq/svg/proton-mail.svg",
+        "hex": "#6D4AFF",
+        "hex_source": "simple-icons:protonmail"
       }
     },
     {
@@ -6064,6 +7887,14 @@
         "nerd_name": "md-spotify",
         "unicode": "🎵",
         "ascii": "spot"
+      },
+      "hq": {
+        "png": "hq/png/{size}/spotify.png",
+        "webp": "hq/webp/{size}/spotify.webp",
+        "made_by": "human",
+        "svg": "hq/svg/spotify.svg",
+        "hex": "#1ED760",
+        "hex_source": "simple-icons:spotify"
       }
     },
     {
@@ -6083,6 +7914,14 @@
         "nerd_name": "fa-itunes_note",
         "unicode": "🎵",
         "ascii": "am"
+      },
+      "hq": {
+        "png": "hq/png/{size}/apple-music.png",
+        "webp": "hq/webp/{size}/apple-music.webp",
+        "made_by": "human",
+        "svg": "hq/svg/apple-music.svg",
+        "hex": "#FA243C",
+        "hex_source": "simple-icons:applemusic"
       }
     },
     {
@@ -6102,6 +7941,14 @@
         "nerd_name": "md-soundcloud",
         "unicode": "☁",
         "ascii": "sc"
+      },
+      "hq": {
+        "png": "hq/png/{size}/soundcloud.png",
+        "webp": "hq/webp/{size}/soundcloud.webp",
+        "made_by": "human",
+        "svg": "hq/svg/soundcloud.svg",
+        "hex": "#FF5500",
+        "hex_source": "simple-icons:soundcloud"
       }
     },
     {
@@ -6121,6 +7968,14 @@
         "nerd_name": "fa-bandcamp",
         "unicode": "◢",
         "ascii": "bc"
+      },
+      "hq": {
+        "png": "hq/png/{size}/bandcamp.png",
+        "webp": "hq/webp/{size}/bandcamp.webp",
+        "made_by": "human",
+        "svg": "hq/svg/bandcamp.svg",
+        "hex": "#408294",
+        "hex_source": "simple-icons:bandcamp"
       }
     },
     {
@@ -6140,6 +7995,14 @@
         "nerd_name": "md-vimeo",
         "unicode": "ⓥ",
         "ascii": "vm"
+      },
+      "hq": {
+        "png": "hq/png/{size}/vimeo.png",
+        "webp": "hq/webp/{size}/vimeo.webp",
+        "made_by": "human",
+        "svg": "hq/svg/vimeo.svg",
+        "hex": "#1AB7EA",
+        "hex_source": "simple-icons:vimeo"
       }
     },
     {
@@ -6159,6 +8022,14 @@
         "nerd_name": "fa-medium",
         "unicode": "Ⓜ",
         "ascii": "md"
+      },
+      "hq": {
+        "png": "hq/png/{size}/medium.png",
+        "webp": "hq/webp/{size}/medium.webp",
+        "made_by": "human",
+        "svg": "hq/svg/medium.svg",
+        "hex": "#000000",
+        "hex_source": "simple-icons:medium"
       }
     },
     {
@@ -6178,6 +8049,14 @@
         "nerd_name": "md-email_newsletter",
         "unicode": "✉",
         "ascii": "ss"
+      },
+      "hq": {
+        "png": "hq/png/{size}/substack.png",
+        "webp": "hq/webp/{size}/substack.webp",
+        "made_by": "human",
+        "svg": "hq/svg/substack.svg",
+        "hex": "#FF6719",
+        "hex_source": "simple-icons:substack"
       }
     },
     {
@@ -6197,6 +8076,14 @@
         "nerd_name": "fa-dev",
         "unicode": "DEV",
         "ascii": "dev"
+      },
+      "hq": {
+        "png": "hq/png/{size}/dev-to.png",
+        "webp": "hq/webp/{size}/dev-to.webp",
+        "made_by": "human",
+        "svg": "hq/svg/dev-to.svg",
+        "hex": "#0A0A0A",
+        "hex_source": "simple-icons:devdotto"
       }
     },
     {
@@ -6213,6 +8100,14 @@
       "tui": {
         "unicode": "#",
         "ascii": "hn#"
+      },
+      "hq": {
+        "png": "hq/png/{size}/hashnode.png",
+        "webp": "hq/webp/{size}/hashnode.webp",
+        "made_by": "human",
+        "svg": "hq/svg/hashnode.svg",
+        "hex": "#2962FF",
+        "hex_source": "simple-icons:hashnode"
       }
     },
     {
@@ -6232,6 +8127,14 @@
         "nerd_name": "md-ghost",
         "unicode": "👻",
         "ascii": "gst"
+      },
+      "hq": {
+        "png": "hq/png/{size}/ghost.png",
+        "webp": "hq/webp/{size}/ghost.webp",
+        "made_by": "human",
+        "svg": "hq/svg/ghost.svg",
+        "hex": "#15171A",
+        "hex_source": "simple-icons:ghost"
       }
     },
     {
@@ -6251,6 +8154,14 @@
         "nerd_name": "md-wordpress",
         "unicode": "Ⓦ",
         "ascii": "wp"
+      },
+      "hq": {
+        "png": "hq/png/{size}/wordpress.png",
+        "webp": "hq/webp/{size}/wordpress.webp",
+        "made_by": "human",
+        "svg": "hq/svg/wordpress.svg",
+        "hex": "#21759B",
+        "hex_source": "simple-icons:wordpress"
       }
     },
     {
@@ -6270,6 +8181,14 @@
         "nerd_name": "fa-product_hunt",
         "unicode": "Ⓟ",
         "ascii": "ph"
+      },
+      "hq": {
+        "png": "hq/png/{size}/product-hunt.png",
+        "webp": "hq/webp/{size}/product-hunt.webp",
+        "made_by": "human",
+        "svg": "hq/svg/product-hunt.svg",
+        "hex": "#DA552F",
+        "hex_source": "simple-icons:producthunt"
       }
     },
     {
@@ -6289,6 +8208,14 @@
         "nerd_name": "fa-y_combinator",
         "unicode": "Ⓨ",
         "ascii": "yc"
+      },
+      "hq": {
+        "png": "hq/png/{size}/y-combinator.png",
+        "webp": "hq/webp/{size}/y-combinator.webp",
+        "made_by": "human",
+        "svg": "hq/svg/y-combinator.svg",
+        "hex": "#F0652F",
+        "hex_source": "simple-icons:ycombinator"
       }
     },
     {
@@ -6308,6 +8235,14 @@
         "nerd_name": "fa-dribbble",
         "unicode": "🏀",
         "ascii": "drb"
+      },
+      "hq": {
+        "png": "hq/png/{size}/dribbble.png",
+        "webp": "hq/webp/{size}/dribbble.webp",
+        "made_by": "human",
+        "svg": "hq/svg/dribbble.svg",
+        "hex": "#EA4C89",
+        "hex_source": "simple-icons:dribbble"
       }
     },
     {
@@ -6327,6 +8262,14 @@
         "nerd_name": "fa-behance",
         "unicode": "Bē",
         "ascii": "be"
+      },
+      "hq": {
+        "png": "hq/png/{size}/behance.png",
+        "webp": "hq/webp/{size}/behance.webp",
+        "made_by": "human",
+        "svg": "hq/svg/behance.svg",
+        "hex": "#1769FF",
+        "hex_source": "simple-icons:behance"
       }
     },
     {
@@ -6346,6 +8289,14 @@
         "nerd_name": "md-patreon",
         "unicode": "Ⓟ",
         "ascii": "pat"
+      },
+      "hq": {
+        "png": "hq/png/{size}/patreon.png",
+        "webp": "hq/webp/{size}/patreon.webp",
+        "made_by": "human",
+        "svg": "hq/svg/patreon.svg",
+        "hex": "#000000",
+        "hex_source": "simple-icons:patreon"
       }
     },
     {
@@ -6365,6 +8316,14 @@
         "nerd_name": "md-coffee",
         "unicode": "☕",
         "ascii": "kofi"
+      },
+      "hq": {
+        "png": "hq/png/{size}/ko-fi.png",
+        "webp": "hq/webp/{size}/ko-fi.webp",
+        "made_by": "human",
+        "svg": "hq/svg/ko-fi.svg",
+        "hex": "#FF6433",
+        "hex_source": "simple-icons:kofi"
       }
     },
     {
@@ -6384,6 +8343,14 @@
         "nerd_name": "md-coffee",
         "unicode": "☕",
         "ascii": "bmc"
+      },
+      "hq": {
+        "png": "hq/png/{size}/buy-me-a-coffee.png",
+        "webp": "hq/webp/{size}/buy-me-a-coffee.webp",
+        "made_by": "human",
+        "svg": "hq/svg/buy-me-a-coffee.svg",
+        "hex": "#FFDD00",
+        "hex_source": "simple-icons:buymeacoffee"
       }
     },
     {
@@ -6403,6 +8370,14 @@
         "nerd_name": "fa-paypal",
         "unicode": "Ⓟ",
         "ascii": "pp"
+      },
+      "hq": {
+        "png": "hq/png/{size}/paypal.png",
+        "webp": "hq/webp/{size}/paypal.webp",
+        "made_by": "human",
+        "svg": "hq/svg/paypal.svg",
+        "hex": "#002991",
+        "hex_source": "simple-icons:paypal"
       }
     },
     {
@@ -6422,6 +8397,14 @@
         "nerd_name": "fa-stripe",
         "unicode": "Ⓢ",
         "ascii": "str"
+      },
+      "hq": {
+        "png": "hq/png/{size}/stripe.png",
+        "webp": "hq/webp/{size}/stripe.webp",
+        "made_by": "human",
+        "svg": "hq/svg/stripe.svg",
+        "hex": "#635BFF",
+        "hex_source": "simple-icons:stripe"
       }
     },
     {
@@ -6441,6 +8424,14 @@
         "nerd_name": "md-bitcoin",
         "unicode": "₿",
         "ascii": "btc"
+      },
+      "hq": {
+        "png": "hq/png/{size}/bitcoin.png",
+        "webp": "hq/webp/{size}/bitcoin.webp",
+        "made_by": "human",
+        "svg": "hq/svg/bitcoin.svg",
+        "hex": "#F7931A",
+        "hex_source": "simple-icons:bitcoin"
       }
     },
     {
@@ -6460,6 +8451,14 @@
         "nerd_name": "md-ethereum",
         "unicode": "Ξ",
         "ascii": "eth"
+      },
+      "hq": {
+        "png": "hq/png/{size}/ethereum.png",
+        "webp": "hq/webp/{size}/ethereum.webp",
+        "made_by": "human",
+        "svg": "hq/svg/ethereum.svg",
+        "hex": "#3C3C3D",
+        "hex_source": "simple-icons:ethereum"
       }
     },
     {
@@ -6479,6 +8478,14 @@
         "nerd_name": "fa-etsy",
         "unicode": "Ⓔ",
         "ascii": "etsy"
+      },
+      "hq": {
+        "png": "hq/png/{size}/etsy.png",
+        "webp": "hq/webp/{size}/etsy.webp",
+        "made_by": "human",
+        "svg": "hq/svg/etsy.svg",
+        "hex": "#F16521",
+        "hex_source": "simple-icons:etsy"
       }
     },
     {
@@ -6498,6 +8505,14 @@
         "nerd_name": "md-shopping",
         "unicode": "🛍",
         "ascii": "shp"
+      },
+      "hq": {
+        "png": "hq/png/{size}/shopify.png",
+        "webp": "hq/webp/{size}/shopify.webp",
+        "made_by": "human",
+        "svg": "hq/svg/shopify.svg",
+        "hex": "#7AB55C",
+        "hex_source": "simple-icons:shopify"
       }
     },
     {
@@ -6517,6 +8532,14 @@
         "nerd_name": "fa-ebay",
         "unicode": "ⓔ",
         "ascii": "ebay"
+      },
+      "hq": {
+        "png": "hq/png/{size}/ebay.png",
+        "webp": "hq/webp/{size}/ebay.webp",
+        "made_by": "human",
+        "svg": "hq/svg/ebay.svg",
+        "hex": "#E53238",
+        "hex_source": "simple-icons:ebay"
       }
     },
     {
@@ -6536,6 +8559,14 @@
         "nerd_name": "md-apple",
         "unicode": "🍎",
         "ascii": "mac"
+      },
+      "hq": {
+        "png": "hq/png/{size}/apple.png",
+        "webp": "hq/webp/{size}/apple.webp",
+        "made_by": "human",
+        "svg": "hq/svg/apple.svg",
+        "hex": "#000000",
+        "hex_source": "simple-icons:apple"
       }
     },
     {
@@ -6555,6 +8586,14 @@
         "nerd_name": "md-google",
         "unicode": "Ⓖ",
         "ascii": "g"
+      },
+      "hq": {
+        "png": "hq/png/{size}/google.png",
+        "webp": "hq/webp/{size}/google.webp",
+        "made_by": "human",
+        "svg": "hq/svg/google.svg",
+        "hex": "#4285F4",
+        "hex_source": "simple-icons:google"
       }
     },
     {
@@ -6574,6 +8613,14 @@
         "nerd_name": "md-android",
         "unicode": "🤖",
         "ascii": "and"
+      },
+      "hq": {
+        "png": "hq/png/{size}/android.png",
+        "webp": "hq/webp/{size}/android.webp",
+        "made_by": "human",
+        "svg": "hq/svg/android.svg",
+        "hex": "#3DDC84",
+        "hex_source": "simple-icons:android"
       }
     },
     {
@@ -6593,6 +8640,14 @@
         "nerd_name": "md-linux",
         "unicode": "🐧",
         "ascii": "lnx"
+      },
+      "hq": {
+        "png": "hq/png/{size}/linux.png",
+        "webp": "hq/webp/{size}/linux.webp",
+        "made_by": "human",
+        "svg": "hq/svg/linux.svg",
+        "hex": "#FCC624",
+        "hex_source": "simple-icons:linux"
       }
     },
     {
@@ -6612,6 +8667,14 @@
         "nerd_name": "md-ubuntu",
         "unicode": "◎",
         "ascii": "ubu"
+      },
+      "hq": {
+        "png": "hq/png/{size}/ubuntu.png",
+        "webp": "hq/webp/{size}/ubuntu.webp",
+        "made_by": "human",
+        "svg": "hq/svg/ubuntu.svg",
+        "hex": "#E95420",
+        "hex_source": "simple-icons:ubuntu"
       }
     },
     {
@@ -6631,6 +8694,14 @@
         "nerd_name": "md-debian",
         "unicode": "🌀",
         "ascii": "deb"
+      },
+      "hq": {
+        "png": "hq/png/{size}/debian.png",
+        "webp": "hq/webp/{size}/debian.webp",
+        "made_by": "human",
+        "svg": "hq/svg/debian.svg",
+        "hex": "#A81D33",
+        "hex_source": "simple-icons:debian"
       }
     },
     {
@@ -6650,6 +8721,14 @@
         "nerd_name": "md-firefox",
         "unicode": "🦊",
         "ascii": "ff"
+      },
+      "hq": {
+        "png": "hq/png/{size}/firefox.png",
+        "webp": "hq/webp/{size}/firefox.webp",
+        "made_by": "human",
+        "svg": "hq/svg/firefox.svg",
+        "hex": "#FF7139",
+        "hex_source": "simple-icons:firefox"
       }
     },
     {
@@ -6669,6 +8748,14 @@
         "nerd_name": "md-google_chrome",
         "unicode": "◉",
         "ascii": "chr"
+      },
+      "hq": {
+        "png": "hq/png/{size}/chrome.png",
+        "webp": "hq/webp/{size}/chrome.webp",
+        "made_by": "human",
+        "svg": "hq/svg/chrome.svg",
+        "hex": "#4285F4",
+        "hex_source": "simple-icons:googlechrome"
       }
     },
     {
@@ -6688,6 +8775,14 @@
         "nerd_name": "md-apple_safari",
         "unicode": "🧭",
         "ascii": "saf"
+      },
+      "hq": {
+        "png": "hq/png/{size}/safari.png",
+        "webp": "hq/webp/{size}/safari.webp",
+        "made_by": "human",
+        "svg": "hq/svg/safari.svg",
+        "hex": "#006CFF",
+        "hex_source": "simple-icons:safari"
       }
     },
     {
@@ -6707,6 +8802,14 @@
         "nerd_name": "md-shield_outline",
         "unicode": "🦁",
         "ascii": "brv"
+      },
+      "hq": {
+        "png": "hq/png/{size}/brave.png",
+        "webp": "hq/webp/{size}/brave.webp",
+        "made_by": "human",
+        "svg": "hq/svg/brave.svg",
+        "hex": "#FB542B",
+        "hex_source": "simple-icons:brave"
       }
     },
     {
@@ -6726,6 +8829,14 @@
         "nerd_name": "linux-tor",
         "unicode": "🧅",
         "ascii": "tor"
+      },
+      "hq": {
+        "png": "hq/png/{size}/tor.png",
+        "webp": "hq/webp/{size}/tor.webp",
+        "made_by": "human",
+        "svg": "hq/svg/tor.svg",
+        "hex": "#7D4698",
+        "hex_source": "simple-icons:torproject"
       }
     },
     {
@@ -6745,6 +8856,14 @@
         "nerd_name": "md-slack",
         "unicode": "#",
         "ascii": "slk"
+      },
+      "hq": {
+        "png": "hq/png/{size}/slack.png",
+        "webp": "hq/webp/{size}/slack.webp",
+        "made_by": "human",
+        "svg": "hq/svg/slack.svg",
+        "hex": "#4A154B",
+        "hex_source": "https://slack.com/media-kit (Aubergine, primary brand colour)"
       }
     },
     {
@@ -6764,6 +8883,14 @@
         "nerd_name": "md-linkedin",
         "unicode": "ⓘ",
         "ascii": "in"
+      },
+      "hq": {
+        "png": "hq/png/{size}/linkedin.png",
+        "webp": "hq/webp/{size}/linkedin.webp",
+        "made_by": "human",
+        "svg": "hq/svg/linkedin.svg",
+        "hex": "#0A66C2",
+        "hex_source": "https://brand.linkedin.com/visual-identity/color-palettes (LinkedIn Blue)"
       }
     },
     {
@@ -6783,6 +8910,14 @@
         "nerd_name": "md-microsoft_windows",
         "unicode": "⊞",
         "ascii": "win"
+      },
+      "hq": {
+        "png": "hq/png/{size}/windows.png",
+        "webp": "hq/webp/{size}/windows.webp",
+        "made_by": "human",
+        "svg": "hq/svg/windows.svg",
+        "hex": "#0078D4",
+        "hex_source": "https://learn.microsoft.com/en-us/windows/apps/design/signature-experiences/color (Windows accent blue)"
       }
     },
     {
@@ -6802,6 +8937,14 @@
         "nerd_name": "md-microsoft",
         "unicode": "⊞",
         "ascii": "ms"
+      },
+      "hq": {
+        "png": "hq/png/{size}/microsoft.png",
+        "webp": "hq/webp/{size}/microsoft.webp",
+        "made_by": "human",
+        "svg": "hq/svg/microsoft.svg",
+        "hex": "#737373",
+        "hex_source": "https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks (wordmark grey)"
       }
     },
     {
@@ -6821,6 +8964,14 @@
         "nerd_name": "fa-hacker_news",
         "unicode": "Ⓨ",
         "ascii": "hn"
+      },
+      "hq": {
+        "png": "hq/png/{size}/hacker-news.png",
+        "webp": "hq/webp/{size}/hacker-news.webp",
+        "made_by": "human",
+        "svg": "hq/svg/hacker-news.svg",
+        "hex": "#FF6600",
+        "hex_source": "https://news.ycombinator.com (the site header orange)"
       }
     },
     {
@@ -6837,6 +8988,14 @@
       "tui": {
         "unicode": "✺",
         "ascii": "oai"
+      },
+      "hq": {
+        "png": "hq/png/{size}/openai.png",
+        "webp": "hq/webp/{size}/openai.webp",
+        "made_by": "human",
+        "svg": "hq/svg/openai.svg",
+        "hex": "#000000",
+        "hex_source": "https://openai.com/brand (black logomark)"
       }
     },
     {
@@ -6856,6 +9015,14 @@
         "nerd_name": "md-skype",
         "unicode": "Ⓢ",
         "ascii": "sky"
+      },
+      "hq": {
+        "png": "hq/png/{size}/skype.png",
+        "webp": "hq/webp/{size}/skype.webp",
+        "made_by": "human",
+        "svg": "hq/svg/skype.svg",
+        "hex": "#00AFF0",
+        "hex_source": "https://www.skype.com (Skype blue)"
       }
     },
     {
@@ -6875,6 +9042,14 @@
         "nerd_name": "md-codepen",
         "unicode": "⬡",
         "ascii": "cpn"
+      },
+      "hq": {
+        "png": "hq/png/{size}/codepen.png",
+        "webp": "hq/webp/{size}/codepen.webp",
+        "made_by": "human",
+        "svg": "hq/svg/codepen.svg",
+        "hex": "#000000",
+        "hex_source": "https://blog.codepen.io/documentation/brand-assets/logos/ (black)"
       }
     },
     {
@@ -6894,7 +9069,43 @@
         "nerd_name": "fa-amazon",
         "unicode": "ⓐ",
         "ascii": "amz"
+      },
+      "hq": {
+        "png": "hq/png/{size}/amazon.png",
+        "webp": "hq/webp/{size}/amazon.webp",
+        "made_by": "human",
+        "svg": "hq/svg/amazon.svg",
+        "hex": "#FF9900",
+        "hex_source": "https://www.aboutamazon.com (Amazon smile orange)"
       }
     }
-  ]
+  ],
+  "styles": [
+    "simple",
+    "hq"
+  ],
+  "hq": {
+    "sizes": [
+      16,
+      20,
+      24,
+      32,
+      48,
+      64,
+      128,
+      256
+    ],
+    "webp_sizes": [
+      64,
+      128
+    ],
+    "made_by": "both",
+    "ai_model": "gpt-image-2",
+    "ai_provider": "OpenAI",
+    "ai_prompt_url": "hq/style.txt",
+    "coverage": {
+      "total": 370,
+      "done": 370
+    }
+  }
 }
