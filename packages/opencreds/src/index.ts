@@ -127,6 +127,26 @@ export {
 export { parseBitwardenJson, looksLikeBitwardenJson } from "./bitwarden.js";
 
 export {
+  parseOnePasswordExport,
+  looksLikeOnePasswordExport,
+  stableUuid,
+} from "./onepassword.js";
+
+export { looksLikeZip, readZipEntry, zipEntryNames } from "./zip.js";
+
+export {
+  ALL_SOURCES,
+  SOURCE_NAMES,
+  sourceHelp,
+  isKnownSource,
+  detectContainer,
+  routeImport,
+  type Container,
+  type SourceInfo,
+  type RouteResult,
+} from "./import-router.js";
+
+export {
   validateItem,
   validateDatabase,
   validateDocument,

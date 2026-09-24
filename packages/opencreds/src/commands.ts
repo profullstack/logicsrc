@@ -25,8 +25,13 @@ import {
   readHeader,
 } from "./database.js";
 import { categorizeItem, parseCategories, toSimpleCsv } from "./categories.js";
-import { CSV_LOSSY_FIELDS, IMPORT_SOURCES, parseCsvImport, toBitwardenCsv } from "./importers.js";
-import { looksLikeBitwardenText, parseBitwardenJson } from "./bitwarden.js";
+import { CSV_LOSSY_FIELDS, toBitwardenCsv } from "./importers.js";
+import {
+  isKnownSource,
+  routeImport,
+  sourceHelp,
+  SOURCE_NAMES,
+} from "./import-router.js";
 import {
   createItem,
   decryptItems,
@@ -802,7 +807,7 @@ export function registerCredsCommands(parent: Command): void {
     .command("import")
     .argument(
       "<file>",
-      "an OpenCreds database, a Bitwarden JSON export, or a CSV export from another product",
+      "an OpenCreds database, a Bitwarden JSON export, a 1Password .1pux, or a CSV export",
     )
     .description("import into the vault")
     .addHelpText("after", examples(`
@@ -811,7 +816,10 @@ export function registerCredsCommands(parent: Command): void {
   $CLI import backup.opencreds                restore an OpenCreds export`))
     .option("--dry-run", "report what would happen and write nothing")
     .option("--merge <strategy>", "skip, replace or duplicate", "skip")
-    .option("--source <name>", `force a CSV source (${Object.keys(IMPORT_SOURCES).join(", ")})`)
+    .option(
+      "--source <name>",
+      `where the export came from, when it cannot be told from the file (${SOURCE_NAMES.join(", ")})`,
+    )
     .option("--passphrase-stdin", "read the database passphrase from stdin")
     .option("--allow-unregistered-namespace", "open a database whose namespace is not registered")
     .action(async function (
@@ -835,37 +843,52 @@ export function registerCredsCommands(parent: Command): void {
           fail(`Unknown merge strategy "${opts.merge}"`, EXIT.USAGE);
         }
 
-        let text: string;
+        if (opts.source && !isKnownSource(opts.source)) {
+          fail(
+            `Unknown --source "${opts.source}".\n  Valid sources: ${SOURCE_NAMES.join(", ")}`,
+            EXIT.USAGE,
+          );
+        }
+
+        // Read as bytes: a .1pux is a ZIP, so decoding as UTF-8 up front would
+        // corrupt it before anything got the chance to look.
+        let buf: Buffer;
         try {
-          text = readFileSync(file, "utf8");
+          buf = readFileSync(file);
         } catch {
           fail(`Could not read ${file}`, EXIT.USAGE);
         }
+        const text = buf.toString("utf8");
 
         let incoming: DatabasePayload;
         let sourceLabel: string;
         let skipped: Array<{ row: number; reason: string }> = [];
 
-        // A Bitwarden JSON export also starts with "{". It used to be handed
-        // straight to parseDatabase and rejected as "Not an OpenCreds database",
-        // which is why importing one meant converting it by hand first. Sniff
-        // the shape before deciding which reader owns the file.
-        const isJson = text.trimStart().startsWith("{");
-        const isBitwardenJson = isJson && looksLikeBitwardenText(text);
+        // One router decides which reader owns the file, so --source can name
+        // any product rather than only a CSV one.
+        const route = routeImport(buf, opts.source);
 
-        if (isBitwardenJson) {
-          const parsed = parseBitwardenJson(text);
-          if (parsed.items.length === 0) {
+        if (!route.isOpenCredsDatabase) {
+          const parsed = route.parsed;
+          if (!parsed || parsed.items.length === 0) {
+            const why = route.reason ?? parsed?.skipped[0]?.reason;
             fail(
-              parsed.skipped[0]?.reason ?? `Nothing to import from ${file}`,
+              [
+                why && why !== "Unrecognised export format"
+                  ? `${why}`
+                  : `Could not identify the export format of ${file}`,
+                "",
+                "  Say where it came from with --source <name>:",
+                `    ${sourceHelp()}`,
+              ].join("\n"),
               EXIT.VALIDATION,
             );
           }
           incoming = { folders: parsed.folders, items: parsed.items };
           skipped = parsed.skipped;
-          sourceLabel = "bitwarden";
-          process.stdout.write(`  Source      ${file} (Bitwarden JSON)\n\n`);
-        } else if (isJson) {
+          sourceLabel = parsed.source ?? "unknown";
+          process.stdout.write(`  Source      ${file} (${route.description})\n\n`);
+        } else {
           const db = parseDatabase(text);
           const header = readHeader(db);
           process.stdout.write(
@@ -893,20 +916,6 @@ export function registerCredsCommands(parent: Command): void {
           }
           process.stdout.write(`  Manifest    verified — ${incoming.items.length} items, ${incoming.folders.length} folders\n\n`);
           sourceLabel = "opencreds";
-        } else {
-          const parsed = parseCsvImport(text, opts.source ? { source: opts.source } : {});
-          if (!parsed.source) {
-            fail(
-              parsed.skipped[0]?.reason === "Unrecognised export format"
-                ? `Could not identify the export format of ${file}; pass --source`
-                : `Nothing to import from ${file}`,
-              EXIT.VALIDATION,
-            );
-          }
-          incoming = { folders: parsed.folders, items: parsed.items };
-          skipped = parsed.skipped;
-          sourceLabel = IMPORT_SOURCES[parsed.source]!.label;
-          process.stdout.write(`  Source      ${file} (${sourceLabel} CSV)\n\n`);
         }
 
         const existing = await loadPayload(store, userKey);
