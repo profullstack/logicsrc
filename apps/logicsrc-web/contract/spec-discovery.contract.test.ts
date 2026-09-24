@@ -14,6 +14,7 @@ describe.each([
   { slug: "openabtest", name: "OpenABTest", family: "process" },
   { slug: "openfleet", name: "OpenFleet", family: "process" },
   { slug: "openrental", name: "OpenRental", family: "catalogs" },
+  { slug: "openmodel", name: "OpenModel", family: "catalogs" },
   { slug: "openwall", name: "OpenWall", family: "people" },
   { slug: "openobject", name: "OpenObject", family: "catalogs" },
   { slug: "openslice", name: "OpenSlice", family: "catalogs" },

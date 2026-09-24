@@ -93,6 +93,7 @@ export const FAMILIES: Family[] = [
       s("openmcp", "OpenMCP", "An open catalog of MCP relays: a relay serves /.well-known/openmcp.json and a catalog probes it"),
       s("opencoupon", "OpenCoupon", "One file a merchant serves about what is on offer right now, expired codes kept so directories learn they died"),
       s("opensaas", "OpenSaaS", "One file a subscription service serves about the way in and the way out of every plan, for a person and for an agent"),
+      s("openmodel", "OpenModel", "One file a model provider serves about the models it serves and what they cost: price per million tokens, context, modalities and what each model can do", { landing: undefined }),
       s("openaffiliate", "OpenAffiliate", "One file a merchant serves about the commission it pays"),
       s("openrecipe", "OpenRecipe.md", "One Markdown file that is a recipe, with schema.org derived from it and never the reverse"),
       s("opensong", "OpenSong", "One plain-text file that is a song: title, style, exclusions and lyrics as the blocks a generator takes, kept beside the audio"),
