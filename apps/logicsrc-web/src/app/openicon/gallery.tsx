@@ -443,6 +443,7 @@ function Detail({ icon, set, color, onClose }: { icon: Icon; set: IconSet; color
   }, [icon.svg]);
 
   const t = icon.tui ?? {};
+  const colourIds = Object.keys(stylesOf(icon));
   const img = `<img src="${OPENICON_RAW}/${icon.svg}" alt="${icon.name}" width="24" height="24">`;
   return (
     <aside className={styles.detail} aria-label={`${icon.name} details`}>
@@ -450,18 +451,24 @@ function Detail({ icon, set, color, onClose }: { icon: Icon; set: IconSet; color
         ×
       </button>
       <div className={styles.hero}>
-        <span role="img" aria-label={icon.name} style={maskStyle(icon, color, 96)} />
-        <div className={styles.heroSmall}>
-          {[16, 24, 32].map((size) => (
-            <span key={size} style={maskStyle(icon, color, size)} />
-          ))}
-        </div>
-        {Object.keys(stylesOf(icon)).map((id) => (
-          <div className={styles.heroHq} key={id}>
-            <Art icon={icon} style={id} color={color} size={72} />
-            <span>{set.style_info?.[id]?.label ?? id}</span>
+        <div className={styles.heroMain}>
+          <span role="img" aria-label={icon.name} style={maskStyle(icon, color, 96)} />
+          <div className={styles.heroSmall}>
+            {[16, 24, 32].map((size) => (
+              <span key={size} style={maskStyle(icon, color, size)} />
+            ))}
           </div>
-        ))}
+        </div>
+        {colourIds.length ? (
+          <div className={styles.heroStyles}>
+            {colourIds.map((id) => (
+              <div className={styles.heroHq} key={id}>
+                <Art icon={icon} style={id} color={color} size={64} />
+                <span>{set.style_info?.[id]?.label ?? id}</span>
+              </div>
+            ))}
+          </div>
+        ) : null}
       </div>
       <h3>{icon.name}</h3>
       <dl className={styles.facts}>
