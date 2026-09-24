@@ -3,6 +3,8 @@ import type { ReactNode } from "react";
 import type { Metadata } from "next";
 import { SiteShell } from "@/components/site-shell";
 import { mono, pre, table, td, th } from "../openontology/ui";
+import { Gallery } from "./gallery";
+import { OPENICON_REPO } from "./set";
 
 export const metadata: Metadata = {
   title: "OpenIcon · LogicSRC",
@@ -11,14 +13,6 @@ export const metadata: Metadata = {
   alternates: { canonical: "/openicon" }
 };
 
-/** From the reference set, profullstack/openicon; copied into public/openicon. */
-const SAMPLE = [
-  "mail", "phone", "chat", "at", "link", "search", "settings", "filter", "menu", "add", "edit", "delete",
-  "copy", "share", "download", "upload", "refresh", "bell", "calendar", "user", "users", "lock", "key", "eye",
-  "home", "map-pin", "globe", "cloud", "database", "package", "terminal", "code", "git-branch", "git-pull-request",
-  "rocket", "sparkles", "rss", "github", "x", "bluesky", "mastodon", "discord", "slack", "signal", "whatsapp",
-  "youtube", "npm"
-];
 
 /** key, Nerd Font codepoint, Unicode, ASCII: straight from openicon.json. */
 const GLYPHS: Array<[string, string, string, string]> = [
@@ -95,33 +89,17 @@ export default function OpenIconPage(): ReactNode {
         </p>
       </div>
 
-      <div className="band">
-        <div className="section-head">
-          <h2>The reference set</h2>
-          <p>
-            370 icons: 259 drawn on a 24x24 grid with 2px strokes, 111 brand logos from Simple Icons and Font Awesome
-            Free. <a href="https://github.com/profullstack/openicon">profullstack/openicon</a>.
+      <div className="band" id="gallery">
+        <div style={{ maxWidth: "52rem", marginBottom: "0.4rem" }}>
+          <h2 style={{ margin: "0 0 0.4rem" }}>The reference set: all 370</h2>
+          <p style={{ color: "#41505d", margin: 0, lineHeight: 1.6 }}>
+            259 icons drawn on a 24x24 grid with 2px strokes, and 111 brand logos from Simple Icons and Font Awesome
+            Free. Search by name, alias or keyword, filter by category or brand, and switch between the SVG and the
+            glyph a terminal gets (Nerd Font, Unicode, ASCII). Click one for its glyphs, SVG and downloads. The files
+            are in <a href={OPENICON_REPO}>profullstack/openicon</a>.
           </p>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(76px, 1fr))", gap: "0.45rem" }}>
-          {SAMPLE.map((key) => (
-            <figure
-              key={key}
-              style={{
-                margin: 0,
-                padding: "0.75rem 0.25rem 0.5rem",
-                border: "1px solid #e3e6e0",
-                borderRadius: "0.6rem",
-                background: "#fff",
-                textAlign: "center"
-              }}
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={`/openicon/${key}.svg`} alt="" width={28} height={28} />
-              <figcaption style={{ fontSize: "0.7rem", color: "#5b6b7a", marginTop: "0.35rem" }}>{key}</figcaption>
-            </figure>
-          ))}
-        </div>
+        <Gallery />
       </div>
 
       <div className="band">
