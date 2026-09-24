@@ -447,3 +447,161 @@
   border-color: var(--accent);
   color: var(--accent);
 }
+
+.networks {
+  display: grid;
+  gap: 0.4rem;
+  margin-bottom: 0.9rem;
+}
+
+.networkRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.networkRow > span:first-child {
+  min-width: 7.5rem;
+}
+
+.kind_emoji,
+.kind_stickers,
+.kind_media {
+  font-size: 0.66rem;
+  font-weight: 600;
+  padding: 0.05rem 0.4rem;
+  border-radius: 999px;
+  letter-spacing: 0.02em;
+}
+
+.kind_emoji {
+  background: #e3f4ec;
+  color: #0a6a4c;
+}
+
+.kind_stickers {
+  background: #efe8fb;
+  color: #5b3aa6;
+}
+
+.kind_media {
+  background: #fdf0dc;
+  color: #8a5a00;
+}
+
+.chipOn .kind_emoji,
+.chipOn .kind_stickers,
+.chipOn .kind_media {
+  background: rgb(255 255 255 / 22%);
+  color: #fff;
+}
+
+.panel {
+  border: 1px solid var(--line);
+  border-radius: 0.9rem;
+  background: #fff;
+  padding: 1rem 1.1rem;
+  margin-bottom: 1rem;
+}
+
+.panelHead h3 {
+  margin: 0 0 0.35rem;
+  font-size: 1.15rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.panelHead p {
+  margin: 0 0 0.5rem;
+  color: #41505d;
+  font-size: 0.9rem;
+}
+
+.highlight {
+  font-size: 0.86rem;
+}
+
+.linkish {
+  background: none;
+  padding: 0;
+  margin-right: 0.6rem;
+  color: var(--accent);
+  font-size: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.panelBody {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1rem 1.4rem;
+}
+
+.steps {
+  margin: 0;
+  padding-left: 1.2rem;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: #26323c;
+}
+
+.steps li + li {
+  margin-top: 0.3rem;
+}
+
+.packs table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.84rem;
+}
+
+.packs th {
+  text-align: left;
+  color: var(--muted);
+  font-weight: 600;
+  padding: 0 0.5rem 0.35rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.packs td {
+  padding: 0.35rem 0.5rem 0.35rem 0;
+  border-bottom: 1px solid #f0f2ee;
+}
+
+.packOn td {
+  background: #eef8f3;
+}
+
+.packActions {
+  white-space: nowrap;
+  text-align: right;
+}
+
+.docs {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.onNetwork {
+  font-size: 0.86rem;
+  margin: 0 0 0.8rem;
+  color: #26323c;
+}
+
+@media (max-width: 760px) {
+  .panelBody {
+    grid-template-columns: 1fr;
+  }
+  .networkRow {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 0.2rem;
+  }
+  .networkRow > * {
+    flex: none;
+  }
+}
