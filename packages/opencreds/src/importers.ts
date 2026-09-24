@@ -124,7 +124,7 @@ function truthy(value: string): boolean {
 }
 
 /** Best-effort hostname, used to name an item whose export had no title. */
-function hostOf(uri: string): string {
+export function hostOf(uri: string): string {
   if (!uri) return "";
   try {
     return new URL(uri).hostname.replace(/^www\./, "");
@@ -134,7 +134,7 @@ function hostOf(uri: string): string {
 }
 
 /** Two-digit years are expanded to 20xx; a card that expired in 1926 is a typo. */
-function expandYear(value: string): string {
+export function expandYear(value: string): string {
   const clean = value.trim();
   if (/^\d{2}$/.test(clean)) return `20${clean}`;
   return clean;
