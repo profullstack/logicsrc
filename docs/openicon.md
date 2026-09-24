@@ -66,7 +66,7 @@ Two entries from the reference set: a drawn icon and a brand logo.
 
 ## The rules
 
-There are eight, and every one of them degrades rather than fails.
+There are eight for the canonical style, three more for the optional HQ style, and every one of them degrades rather than fails.
 
 **1. A set is a folder with `openicon.json` at its root.** Every path is relative to that file. Top-level keys a reader should understand: `openicon` (the spec version, required), `name` (required), `version`, `license` (SPDX, covering every icon without its own), `homepage`, `grid`, `sizes`, `sprite` and `icons` (required). Unknown keys are kept and ignored.
 
@@ -83,6 +83,38 @@ There are eight, and every one of them degrades rather than fails.
 **7. A brand says it is one.** A logo carries `brand: true`, a `trademark` note, its `source` (`simple-icons:<slug>`, `font-awesome:<name>`, or a URL) and its own `license`, because the licence of a drawing is not permission to use a mark. Brand logos are taken from their owners or from a set that publishes them; a set does not redraw them.
 
 **8. The set says what made it.** `made_by` is `human`, `ai` or `both`, the [OpenWebring](/docs/openwebring) vocabulary, and `disclosure`, `ai_model`, `ai_provider` and `ai_prompt_url` are the W3C AI Content Disclosure vocabulary, as in [OpenEmoji](/docs/openemoji). Any of them may be repeated on an icon that differs from the set: in the reference set the drawn icons are `ai` and every brand logo is `human`.
+
+## Styles: simple and HQ
+
+A set has one canonical style, **simple**: the monochrome, `currentColor` files the rules above describe. It may add an optional second style, **HQ**: the same icons in full colour, drawn to a higher finish for places where an icon is shown large or alone (a launcher, an empty state, a marketing page). HQ never replaces simple; a reader that knows nothing about it loses nothing.
+
+**9. HQ is optional, per icon, and follows simple.** A set with an HQ style says so at the top level, `"styles": ["simple", "hq"]`, and describes it once:
+
+```json
+"hq": {
+  "sizes": [16, 20, 24, 32, 48, 64, 128, 256],
+  "webp_sizes": [64, 128],
+  "made_by": "both",
+  "ai_model": "gpt-image-2",
+  "ai_provider": "OpenAI",
+  "ai_prompt_url": "hq/style.txt",
+  "coverage": { "total": 370, "done": 370 }
+}
+```
+
+Each icon that has it carries an `hq` block with its own files and provenance:
+
+```json
+"hq": { "png": "hq/png/{size}/mail.png", "webp": "hq/webp/{size}/mail.webp", "made_by": "ai" }
+"hq": { "png": "hq/png/{size}/github.png", "webp": "hq/webp/{size}/github.webp", "svg": "hq/svg/github.svg",
+        "made_by": "human", "hex": "#181717", "hex_source": "simple-icons:github" }
+```
+
+An HQ icon depicts what its simple icon depicts, with the same silhouette, so a reader can swap one for the other without a layout changing meaning. An icon without an `hq` block falls back to simple. HQ files carry their own colour and never use `currentColor`.
+
+**10. A brand's colour is its owner's.** An HQ brand logo is the simple logo in the owner's published colour, never a redrawing and never a guess: `hex` is that colour and `hex_source` says where it is published (a Simple Icons slug, or the brand's own guidelines page). A logo whose owner publishes no colour has no HQ form.
+
+**11. Provenance is per style.** `made_by`, `disclosure` and the `ai_*` fields on the `hq` block describe the HQ files, not the simple ones. In the reference set, simple icons are authored as SVG and HQ icons are drawn by an image model from them, so the same icon is `ai` in one style and says so in each.
 
 ## Discovery
 
@@ -107,7 +139,7 @@ An importer from any of these is a rename and a copy. Only `tui.unicode` and `tu
 
 ## What is deliberately absent
 
-- **No colour.** Icons are monochrome and take the text colour. A brand's own colour is the brand's business; a set may add `hex` to a brand entry and a reader may ignore it.
+- **No colour in the canonical style.** Simple icons are monochrome and take the text colour. Colour lives only in the optional HQ style (rules 9 to 11).
 - **No style variants.** Outline, filled and duotone versions of one icon are three sets, or three icons with three keys. One key, one drawing.
 - **No icon font format.** A webfont is a build output a set may ship, not part of the spec; the SVGs and the `tui` glyphs are the interchange.
 - **No registry of names.** Keys are the set's own. Aliases are how one set answers to another's names.
