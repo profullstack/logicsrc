@@ -1,13 +1,9 @@
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/page-meta";
 import { SiteShell } from "@/components/site-shell";
 
-export const metadata: Metadata = {
-  title: "Privacy · LogicSRC",
-  description:
-    "What logicsrc.com collects and what it does not: privacy-friendly analytics, the Hire Us project form, the CoinPay sign-in cookie, and the boundary that keeps credential values off our servers.",
-  alternates: { canonical: "/privacy" },
-};
+export const metadata: Metadata = pageMetadata("/privacy");
 
 export default function PrivacyPage(): ReactNode {
   return (

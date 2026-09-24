@@ -1,14 +1,13 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { specMetadata } from "@/lib/page-meta";
 import { SiteShell } from "@/components/site-shell";
 
-export const metadata: Metadata = {
-  title: "OpenOntology · LogicSRC",
-  description:
-    "LogicSRC OpenOntology is an open contract for durable, source-backed domain knowledge shared by humans and AI agents: typed entities, claims with provenance and time, portable queries, and governed change sets.",
-  alternates: { canonical: "/openontology" },
-};
+export const metadata: Metadata = specMetadata(
+  "/openontology",
+  "LogicSRC OpenOntology is an open contract for durable, source-backed domain knowledge shared by humans and AI agents: typed entities, claims with provenance and time, portable queries, and governed change sets."
+);
 
 const card = {
   border: "1px solid #e3e6e0",

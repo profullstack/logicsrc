@@ -1,15 +1,14 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { specMetadata } from "@/lib/page-meta";
 import { SiteShell } from "@/components/site-shell";
 import { mono, pre, table, td, th } from "../openontology/ui";
 
-export const metadata: Metadata = {
-  title: "OpenRecipe.md · LogicSRC",
-  description:
-    "OpenRecipe.md is one Markdown file that is a recipe: a summary block (Serves, Prep, Cook, Cuisine, Diet, Author, Source), ingredients and steps as written, notes and nutrition, served next to the recipe page or linked with rel=\"openrecipe\". schema.org/Recipe JSON-LD is derived from it, never the reverse.",
-  alternates: { canonical: "/openrecipe" }
-};
+export const metadata: Metadata = specMetadata(
+  "/openrecipe",
+  "OpenRecipe.md is one Markdown file that is a recipe: a summary block (Serves, Prep, Cook, Cuisine, Diet, Author, Source), ingredients and steps as written, notes and nutrition, served next to the recipe page or linked with rel=\"openrecipe\". schema.org/Recipe JSON-LD is derived from it, never the reverse."
+);
 
 const EXAMPLE = `# Shakshuka
 

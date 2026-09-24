@@ -1,15 +1,11 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/page-meta";
 import { SiteShell } from "@/components/site-shell";
 import { FAMILIES, familyTree } from "@/lib/specs";
 
-export const metadata: Metadata = {
-  title: "Specs · LogicSRC",
-  description:
-    "Every LogicSRC specification in four families: people and agents, access and credentials, catalogs a site serves about itself, and agents and process. Each family drills down to its specs, each spec to an overview and the specification text.",
-  alternates: { canonical: "/specs" }
-};
+export const metadata: Metadata = pageMetadata("/specs");
 
 export default function SpecsIndex(): ReactNode {
   return (

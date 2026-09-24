@@ -1,15 +1,14 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { specMetadata } from "@/lib/page-meta";
 import { SiteShell } from "@/components/site-shell";
 import { mono, pre, table, td, th } from "../openontology/ui";
 
-export const metadata: Metadata = {
-  title: "OpenSlice · LogicSRC",
-  description:
-    "OpenSlice is a container whose compute is rented from one market and whose disk is mounted from another: a host serves /.well-known/openslice.json, a slice is one signed file, the state lives in an OpenObject bucket, so the host is interchangeable. Reference marketplace slic3s.com.",
-  alternates: { canonical: "/openslice" }
-};
+export const metadata: Metadata = specMetadata(
+  "/openslice",
+  "OpenSlice is a container whose compute is rented from one market and whose disk is mounted from another: a host serves /.well-known/openslice.json, a slice is one signed file, the state lives in an OpenObject bucket, so the host is interchangeable. Reference marketplace slic3s.com."
+);
 
 const DESCRIPTOR = `{
   "name": "rig-7b, Helsinki",

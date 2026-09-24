@@ -1,13 +1,12 @@
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { specMetadata } from "@/lib/page-meta";
 import { ResourceSpecPage, type ResourceSpec } from "@/components/resource-spec-page";
 
-export const metadata: Metadata = {
-  title: "OpenGPU · LogicSRC",
-  description:
-    "OpenGPU is the gpu block of an OpenServer offer: the card by its vendor name, count and VRAM per device, the interconnect between them, passthrough, MIG, vGPU or shared access, and a range that says how many more a buyer can add at checkout and for how much.",
-  alternates: { canonical: "/opengpu" }
-};
+export const metadata: Metadata = specMetadata(
+  "/opengpu",
+  "OpenGPU is the gpu block of an OpenServer offer: the card by its vendor name, count and VRAM per device, the interconnect between them, passthrough, MIG, vGPU or shared access, and a range that says how many more a buyer can add at checkout and for how much."
+);
 
 const SPEC: ResourceSpec = {
   name: "OpenGPU",

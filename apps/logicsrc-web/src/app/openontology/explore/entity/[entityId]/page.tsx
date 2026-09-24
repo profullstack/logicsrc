@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { contentMetadata, notFoundMetadata } from "@/lib/page-meta";
 import { getService } from "@/lib/ontology-service";
 import { SiteShell } from "@/components/site-shell";
 import { CLAIM_STATUS, Confidence, StatusBadge, formatObject, mono, table, td, th } from "../../../ui";
@@ -17,12 +18,15 @@ export async function generateMetadata({
   const id = decodeURIComponent(entityId);
   const state = await getService();
   const entity = state.engine?.store.getEntity(id);
-  return {
-    title: `${entity?.canonicalName ?? id} · OpenOntology · LogicSRC`,
+  return contentMetadata({
+    title: entity
+      ? `${entity.canonicalName} (${entity.type}) · OpenOntology`
+      : `${id} · OpenOntology`,
     description: entity
       ? `${entity.canonicalName} (${entity.type}) and the source-backed claims about it.`
-      : "OpenOntology entity"
-  };
+      : `The OpenOntology entity ${id}, and the source-backed claims about it.`,
+    path: `/openontology/explore/entity/${encodeURIComponent(id)}`
+  });
 }
 
 export default async function EntityPage({

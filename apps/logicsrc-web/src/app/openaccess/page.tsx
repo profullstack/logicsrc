@@ -1,15 +1,14 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { specMetadata } from "@/lib/page-meta";
 import { SiteShell } from "@/components/site-shell";
 import { mono, pre, table, td, th } from "../openontology/ui";
 
-export const metadata: Metadata = {
-  title: "OpenAccess · LogicSRC",
-  description:
-    "OpenAccess is OAuth 2.1 with a grant you can carry: one hub account per person or agent, every app keeps its own users and links them once, permissions delegate narrower to agents, and a subscription bought in one app is honoured by every app that honours the product. Reference hub at openaccess.logicsrc.com.",
-  alternates: { canonical: "/openaccess" }
-};
+export const metadata: Metadata = specMetadata(
+  "/openaccess",
+  "OpenAccess is OAuth 2.1 with a grant you can carry: one hub account per person or agent, every app keeps its own users and links them once, permissions delegate narrower to agents, and a subscription bought in one app is honoured by every app that honours the product. Reference hub at openaccess.logicsrc.com."
+);
 
 const DESCRIPTOR = `{
   "openaccess": "0.1",

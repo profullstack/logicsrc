@@ -1,15 +1,14 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { specMetadata } from "@/lib/page-meta";
 import { SiteShell } from "@/components/site-shell";
 import { mono, pre, table, td, th } from "../openontology/ui";
 
-export const metadata: Metadata = {
-  title: "OpenObject · LogicSRC",
-  description:
-    "OpenObject is a bucket you can mount: keyed objects encrypted by their owner, placed on paid OpenDisk disks under a stated redundancy such as three replicas, verified every period, repaired when a disk fails, listed by prefix and read back by path. Reference store d1sks.com.",
-  alternates: { canonical: "/openobject" }
-};
+export const metadata: Metadata = specMetadata(
+  "/openobject",
+  "OpenObject is a bucket you can mount: keyed objects encrypted by their owner, placed on paid OpenDisk disks under a stated redundancy such as three replicas, verified every period, repaired when a disk fails, listed by prefix and read back by path. Reference store d1sks.com."
+);
 
 const DESCRIPTOR = `{
   "name": "d1sks.com",

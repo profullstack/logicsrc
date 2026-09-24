@@ -1,15 +1,14 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { specMetadata } from "@/lib/page-meta";
 import { SiteShell } from "@/components/site-shell";
 import { mono, pre, table, td, th } from "../openontology/ui";
 
-export const metadata: Metadata = {
-  title: "OpenAffiliate · LogicSRC",
-  description:
-    "OpenAffiliate is one file a merchant serves about the commission it pays, at /.well-known/openaffiliate.json, and four calls that let a person or an agent earn it: join with a profile, link with one parameter, read your own ledger, get paid to your own address. No network in the money.",
-  alternates: { canonical: "/openaffiliate" }
-};
+export const metadata: Metadata = specMetadata(
+  "/openaffiliate",
+  "OpenAffiliate is one file a merchant serves about the commission it pays, at /.well-known/openaffiliate.json, and four calls that let a person or an agent earn it: join with a profile, link with one parameter, read your own ledger, get paid to your own address. No network in the money."
+);
 
 const DESCRIPTOR = `{
   "merchant": { "name": "CrawlProof", "web": "https://crawlproof.com", "currency": "USD",

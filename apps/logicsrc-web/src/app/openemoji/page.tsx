@@ -1,15 +1,14 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { specMetadata } from "@/lib/page-meta";
 import { SiteShell } from "@/components/site-shell";
 import { mono, pre, table, td, th } from "../openontology/ui";
 
-export const metadata: Metadata = {
-  title: "OpenEmoji · LogicSRC",
-  description:
-    "OpenEmoji is an emoji set as a folder: one openemoji.json that states coverage, licence and who or what drew it (made_by, W3C AI disclosure), and glyphs named by fully-qualified codepoint sequence. Standard and custom emoji, PNG, SVG and colour fonts, rendered as text with the character as alt.",
-  alternates: { canonical: "/openemoji" }
-};
+export const metadata: Metadata = specMetadata(
+  "/openemoji",
+  "OpenEmoji is an emoji set as a folder: one openemoji.json that states coverage, licence and who or what drew it (made_by, W3C AI disclosure), and glyphs named by fully-qualified codepoint sequence. Standard and custom emoji, PNG, SVG and colour fonts, rendered as text with the character as alt."
+);
 
 /** Drawn by the reference implementation, `emoji` in profullstack/cli-tools. */
 const SAMPLE: Array<[string, string, string]> = [

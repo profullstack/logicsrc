@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { renderPageMarkup } from "@/lib/page-markup";
+import { pageMetadata, specMetadata } from "@/lib/page-meta";
 import { HomeInteractivity } from "@/components/home-interactivity";
 
 // The legacy SPA served the same single page for every top-level path and just
@@ -14,28 +15,16 @@ import { HomeInteractivity } from "@/components/home-interactivity";
 // have a matching section id in `renderPageMarkup` -- /privacy used to be
 // listed without one, so it served the whole homepage and scrolled to a card
 // that only described the page that did not exist.
-const ROUTE_META: Record<string, { title: string; description: string }> = {
-  openspec: {
-    title: "LogicSRC vs OpenSpec.dev · LogicSRC",
-    description: "How LogicSRC's coordination standard compares with OpenSpec.dev, including MCP and agent support.",
-  },
-  "credential-sharing": {
-    title: "Credential Sharing · LogicSRC",
-    description: "End-to-end-encrypted team vaults plus source/target credential diffs, approval, sync, rollback, and audit across .env, Doppler, Railway, GitHub Secrets, and sh1pt.",
-  },
-  "hire-us": {
-    title: "Hire Us · LogicSRC",
-    description: "Implementation help for LogicSRC, AgentSwarm, and Credential Sharing at $400/hour/agent for accepted work, paid via CoinPay.",
-  },
-  // /agent-swarm was the AgentSwarm placeholder band. It is now the OpenFleet
-  // spec at app/openfleet; next.config.ts redirects the old path there.
-  agentbyte: {
-    title: "AgentByte · LogicSRC",
-    description: "Agent screening sessions, AI-assisted humans, policy events, and APIs.",
-  },
-};
-
-const KNOWN_ROUTES = new Set(Object.keys(ROUTE_META));
+// These render the homepage scrolled to their own section, so with no metadata
+// of their own they were published under the homepage's title -- the bug that
+// made every shared link read "LogicSRC — Open Coordination Standards".
+// openspec, credential-sharing and agentbyte are specs, titled from
+// lib/specs.ts; hire-us is one of the site's own pages.
+// /agent-swarm was the AgentSwarm placeholder band. It is now the OpenFleet
+// spec at app/openfleet; next.config.ts redirects the old path there.
+const SPEC_SECTIONS = new Set(["openspec", "credential-sharing", "agentbyte"]);
+const SITE_SECTIONS = new Set(["hire-us"]);
+const KNOWN_ROUTES = new Set([...SPEC_SECTIONS, ...SITE_SECTIONS]);
 
 export async function generateMetadata({
   params,
@@ -44,14 +33,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const key = slug?.[0];
-  if (key && ROUTE_META[key]) {
-    return {
-      title: ROUTE_META[key].title,
-      description: ROUTE_META[key].description,
-      alternates: { canonical: `/${key}` },
-    };
-  }
-  return {};
+  if (key && SPEC_SECTIONS.has(key)) return specMetadata(`/${key}`);
+  if (key && SITE_SECTIONS.has(key)) return pageMetadata(`/${key}`);
+  return pageMetadata("/");
 }
 
 export default async function Page({

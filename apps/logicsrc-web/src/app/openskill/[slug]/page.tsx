@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { contentMetadata, notFoundMetadata } from "@/lib/page-meta";
 import { marked } from "marked";
 import { SiteShell } from "@/components/site-shell";
 import { sanitizeRenderedHtml } from "@/lib/html";
@@ -14,13 +15,15 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const source = readSkill(slug);
-  if (!source) return { title: "Not found · OpenSkill" };
+  if (!source) return notFoundMetadata("skill");
   const concept = summarizeSkill(source, slug);
-  return {
-    title: `${concept.name} · OpenSkill · LogicSRC`,
+  return contentMetadata({
+    title: `${concept.name}: An OpenSkill Record`,
     description: concept.description,
-    alternates: { canonical: `/openskill/${slug}`, types: { "text/markdown": `/openskill/${slug}/openskill.md` } }
-  };
+    path: `/openskill/${slug}`,
+    alternateTypes: { "text/markdown": `/openskill/${slug}/openskill.md` },
+    type: "article"
+  });
 }
 
 export default async function SkillPage({ params }: { params: Promise<{ slug: string }> }) {

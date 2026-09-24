@@ -1,15 +1,14 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { specMetadata } from "@/lib/page-meta";
 import { SiteShell } from "@/components/site-shell";
 import { mono, pre, table, td, th } from "../openontology/ui";
 
-export const metadata: Metadata = {
-  title: "OpenThreat · LogicSRC",
-  description:
-    "OpenThreat is one file a security tool serves about what it found in the open, at /.well-known/openthreat.json: findings in public repositories, attacks on the reporter's own infrastructure, indicators and advisories, with severity, rule, subject and status. Private subjects are never in it and secrets are never located while open.",
-  alternates: { canonical: "/openthreat" }
-};
+export const metadata: Metadata = specMetadata(
+  "/openthreat",
+  "OpenThreat is one file a security tool serves about what it found in the open, at /.well-known/openthreat.json: findings in public repositories, attacks on the reporter's own infrastructure, indicators and advisories, with severity, rule, subject and status. Private subjects are never in it and secrets are never located while open."
+);
 
 const DESCRIPTOR = `{
   "openthreat": "0.1",

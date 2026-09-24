@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { contentMetadata, notFoundMetadata } from "@/lib/page-meta";
 import { getService } from "@/lib/ontology-service";
 import { SiteShell } from "@/components/site-shell";
 import { Confidence, StatusBadge, formatObject, mono, table, td, th } from "../../../ui";
@@ -14,10 +15,12 @@ export async function generateMetadata({
   params: Promise<{ claimId: string }>;
 }): Promise<Metadata> {
   const { claimId } = await params;
-  return {
-    title: `${decodeURIComponent(claimId)} · OpenOntology · LogicSRC`,
-    description: "A single OpenOntology claim, with the sources, evidence, and history behind it."
-  };
+  const id = decodeURIComponent(claimId);
+  return contentMetadata({
+    title: `Claim ${id} · OpenOntology`,
+    description: `The OpenOntology claim ${id}, with the sources, evidence, and history behind it.`,
+    path: `/openontology/explore/claim/${encodeURIComponent(id)}`
+  });
 }
 
 export default async function ClaimPage({

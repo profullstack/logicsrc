@@ -1,15 +1,14 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { specMetadata } from "@/lib/page-meta";
 import { SiteShell } from "@/components/site-shell";
 import { mono, pre, table, td, th } from "../openontology/ui";
 
-export const metadata: Metadata = {
-  title: "OpenSaaS · LogicSRC",
-  description:
-    "OpenSaaS is one file a subscription service serves at /.well-known/opensaas.json about how to deal with it: its plans, and how to subscribe, cancel, pause, change plan, stop the mail, export and delete, each as the page a person opens and the endpoint an agent calls with an OpenAccess scope. The way out, written down beside the way in.",
-  alternates: { canonical: "/opensaas" }
-};
+export const metadata: Metadata = specMetadata(
+  "/opensaas",
+  "OpenSaaS is one file a subscription service serves at /.well-known/opensaas.json about how to deal with it: its plans, and how to subscribe, cancel, pause, change plan, stop the mail, export and delete, each as the page a person opens and the endpoint an agent calls with an OpenAccess scope. The way out, written down beside the way in."
+);
 
 const DESCRIPTOR = `{
   "service": { "name": "NicheDB", "web": "https://nichedb.dev",

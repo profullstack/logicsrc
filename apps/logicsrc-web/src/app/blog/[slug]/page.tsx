@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { contentMetadata, notFoundMetadata } from "@/lib/page-meta";
 import { publicClient } from "@/lib/supabase";
 import { SiteShell } from "@/components/site-shell";
 import { AdUnit } from "@/components/ad-unit";
@@ -57,20 +58,21 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const post = await loadPost(slug);
-  if (!post) return { title: "Not found · LogicSRC" };
-  return {
-    title: `${post.title} · LogicSRC`,
-    description: post.excerpt ?? undefined,
+  if (!post) return notFoundMetadata("post");
+  // This route already set openGraph, which is why its og:title was right --
+  // and why it had no og:image: declaring openGraph suppresses the
+  // file-convention card, and `images: undefined` did not bring it back.
+  // contentMetadata names the card explicitly.
+  return contentMetadata({
+    title: post.title,
+    description: post.excerpt ?? `${post.title} — from the LogicSRC blog.`,
+    path: `/blog/${post.slug}`,
     // A guest post points its canonical at the original; an original post is
     // canonical to itself.
-    alternates: { canonical: post.canonical_url ?? `/blog/${post.slug}` },
-    openGraph: {
-      title: post.title,
-      description: post.excerpt ?? undefined,
-      type: "article",
-      images: post.featured_image?.url ? [post.featured_image.url] : undefined,
-    },
-  };
+    canonical: post.canonical_url ?? `/blog/${post.slug}`,
+    type: "article",
+    ...(post.featured_image?.url ? { images: [post.featured_image.url] } : {}),
+  });
 }
 
 function formatDate(value: string): string {

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { contentMetadata } from "@/lib/page-meta";
 import { docTitle, readDoc } from "@/lib/docs";
 import { hasReports, listReports, REPORTED_SPECS } from "@/lib/reports";
 import { SiteShell } from "@/components/site-shell";
@@ -20,11 +21,13 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  return {
-    title: `Benchmark reports · ${slug} · LogicSRC`,
-    description: `Reproducible benchmark reports published with each release of the ${slug} reference implementation.`,
-    alternates: { canonical: `/docs/${slug}/reports` },
-  };
+  const md = readDoc(slug);
+  const name = md ? docTitle(md, slug) : slug;
+  return contentMetadata({
+    title: `${name} benchmark reports`,
+    description: `Reproducible benchmark reports published with each release of the ${name} reference implementation.`,
+    path: `/docs/${slug}/reports`,
+  });
 }
 
 export default async function ReportsIndex({

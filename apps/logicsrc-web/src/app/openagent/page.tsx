@@ -1,14 +1,14 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { specMetadata } from "@/lib/page-meta";
 import { SiteShell } from "@/components/site-shell";
 import profile from "../../../public/examples/openagent.json";
 import { mono, pre, table, td } from "../openontology/ui";
 
-export const metadata: Metadata = {
-  title: "OpenAgent · LogicSRC",
-  description: "A portable agent profile: identity, owner, skills and requested permissions in one JSON file, with bindings to OpenProfile, OpenFleet and OpenRental.",
-  alternates: { canonical: "/openagent" }
-};
+export const metadata: Metadata = specMetadata(
+  "/openagent",
+  "A portable agent profile: identity, owner, skills and requested permissions in one JSON file, with bindings to OpenProfile, OpenFleet and OpenRental."
+);
 
 const LINKS = [
   ["OpenProfile.md", "/openprofile", "The identity, accounts and topics people read. Link the JSON descriptor from the same profile page."],

@@ -1,15 +1,14 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { specMetadata } from "@/lib/page-meta";
 import { SiteShell } from "@/components/site-shell";
 import { card, mono, pre } from "../openontology/ui";
 
-export const metadata: Metadata = {
-  title: "OpenPRD · LogicSRC",
-  description:
-    "OpenPRD is a lightweight open standard for product requirements documents: a numbered, committed collection under prd/, one Markdown file each, with front-matter, ten fixed sections, and an enforced lifecycle.",
-  alternates: { canonical: "/openprd" }
-};
+export const metadata: Metadata = specMetadata(
+  "/openprd",
+  "OpenPRD is a lightweight open standard for product requirements documents: a numbered, committed collection under prd/, one Markdown file each, with front-matter, ten fixed sections, and an enforced lifecycle."
+);
 
 const SECTIONS: Array<[string, string]> = [
   ["Problem", "The user or business problem, and why it matters now."],

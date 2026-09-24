@@ -1,14 +1,13 @@
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { specMetadata } from "@/lib/page-meta";
 import { SiteShell } from "@/components/site-shell";
 import { card, mono, pre, table, td, th } from "../openontology/ui";
 
-export const metadata: Metadata = {
-  title: "OpenSwarm · LogicSRC",
-  description:
-    "OpenSwarm is an open specification family for paid, encrypted, peer-to-peer distribution of files and media: BitTorrent plus payment plus encryption as extension messages, with audio, video, live streams and a replicated catalogue on top, and c0mpute.com nodes that seed, relay and index for money.",
-  alternates: { canonical: "/openswarm" }
-};
+export const metadata: Metadata = specMetadata(
+  "/openswarm",
+  "OpenSwarm is an open specification family for paid, encrypted, peer-to-peer distribution of files and media: BitTorrent plus payment plus encryption as extension messages, with audio, video, live streams and a replicated catalogue on top, and c0mpute.com nodes that seed, relay and index for money."
+);
 
 const PROTOCOLS: Array<[name: string, line: string]> = [
   ["ipfile", "Paid, encrypted file swarms as BitTorrent extension messages"],

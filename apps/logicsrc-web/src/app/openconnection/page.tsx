@@ -1,15 +1,14 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { specMetadata } from "@/lib/page-meta";
 import { SiteShell } from "@/components/site-shell";
 import { mono, pre, table, td, th } from "../openontology/ui";
 
-export const metadata: Metadata = {
-  title: "OpenConnection · LogicSRC",
-  description:
-    "OpenConnection is a setup token you paste. A bridge that holds a person's connections issues it, any app claims it once for an access URL and a bearer the bridge can revoke, and no app registers, keeps a key or hosts a redirect. SimpleFIN's door, written down for anything a bridge holds: social accounts, a writer, a calendar, a wallet.",
-  alternates: { canonical: "/openconnection" }
-};
+export const metadata: Metadata = specMetadata(
+  "/openconnection",
+  "OpenConnection is a setup token you paste. A bridge that holds a person's connections issues it, any app claims it once for an access URL and a bearer the bridge can revoke, and no app registers, keeps a key or hosts a redirect. SimpleFIN's door, written down for anything a bridge holds: social accounts, a writer, a calendar, a wallet."
+);
 
 const CLAIM = `POST https://mynaposter.com/openconnection/claim/2f9c7d1e-…
 Content-Type: application/json

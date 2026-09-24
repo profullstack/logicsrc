@@ -4,34 +4,24 @@ import "../styles.css";
 import Script from "next/script";
 import { FeedbackWidget } from "@profullstack/stack/feedback";
 import { CopyButtons } from "@/components/copy-buttons";
+import { PAGE_META, pageMetadata, SITE_URL } from "@/lib/page-meta";
 
-const SITE_URL = (process.env.PUBLIC_URL ?? "https://logicsrc.com").replace(/\/$/, "");
-const DESCRIPTION =
-  "Open schemas, primitives, and conventions for coordination between humans, AI agents, plugins, payment systems, and hosted products.";
+const DESCRIPTION = PAGE_META["/"].description;
 
+// The layout's metadata is the homepage's, and every child page overrides it
+// through specMetadata/pageMetadata/contentMetadata. That matters most for
+// openGraph: Next.js shallow-merges metadata, so a page that omits `openGraph`
+// inherits this object whole -- which is how every spec came to share the
+// homepage's og:title on Reddit. See lib/page-meta.ts.
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: "LogicSRC — Open Coordination Standards for Humans & AI Agents",
-  description: DESCRIPTION,
   applicationName: "LogicSRC",
   manifest: "/manifest.webmanifest",
-  alternates: { canonical: "/" },
   icons: {
     icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
     apple: "/icon.svg",
   },
-  openGraph: {
-    type: "website",
-    siteName: "LogicSRC",
-    url: SITE_URL,
-    title: "LogicSRC — Open Coordination Standards for Humans & AI Agents",
-    description: DESCRIPTION,
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "LogicSRC — Open Coordination Standards",
-    description: DESCRIPTION,
-  },
+  ...pageMetadata("/"),
 };
 
 export const viewport: Viewport = {

@@ -1,14 +1,13 @@
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { specMetadata } from "@/lib/page-meta";
 import { SiteShell } from "@/components/site-shell";
 import { card, mono, pre, table, td, th } from "../openontology/ui";
 
-export const metadata: Metadata = {
-  title: "OpenCreds · LogicSRC",
-  description:
-    "OpenCreds is an open standard for credential records and portable vaults: one record for logins, cards, identities, notes, keys and accounts, an end-to-end-encrypted envelope, and a single encrypted file that moves a vault between products without a plaintext CSV.",
-  alternates: { canonical: "/opencreds" }
-};
+export const metadata: Metadata = specMetadata(
+  "/opencreds",
+  "OpenCreds is an open standard for credential records and portable vaults: one record for logins, cards, identities, notes, keys and accounts, an end-to-end-encrypted envelope, and a single encrypted file that moves a vault between products without a plaintext CSV."
+);
 
 const TYPES: Array<[type: string, code: string, holds: string]> = [
   ["login", "1", "Username, password, TOTP seed, matching URIs, password history"],

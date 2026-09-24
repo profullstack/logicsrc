@@ -1,16 +1,12 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/page-meta";
 import { listDocs } from "@/lib/docs";
 import { FAMILIES, GUIDES, familyTree } from "@/lib/specs";
 import { SiteShell } from "@/components/site-shell";
 
-export const metadata: Metadata = {
-  title: "Docs · LogicSRC",
-  description:
-    "The specification text of every LogicSRC spec, grouped by family, and the guides: data model, CLI and TUI conventions, config, permissions, plugins.",
-  alternates: { canonical: "/docs" },
-};
+export const metadata: Metadata = pageMetadata("/docs");
 
 const row: React.CSSProperties = { padding: "0.9rem 0", borderTop: "1px solid #e3e6e0" };
 const h3: React.CSSProperties = { margin: "0 0 0.3rem", fontSize: "1.1rem", color: "#101418" };

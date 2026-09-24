@@ -1,13 +1,12 @@
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { specMetadata } from "@/lib/page-meta";
 import { ProfileSectionPage, type ProfileSection } from "@/components/profile-section-page";
 
-export const metadata: Metadata = {
-  title: "OpenBroadcast · LogicSRC",
-  description:
-    "OpenBroadcast is the Broadcast section of an OpenProfile.md: the show a person hosts (podcast, radio, live audio, stream), its format, cadence, audience, topics and slots, and who the host is seeking, so a host and a guest are matched from two files rather than two forms.",
-  alternates: { canonical: "/openbroadcast" }
-};
+export const metadata: Metadata = specMetadata(
+  "/openbroadcast",
+  "OpenBroadcast is the Broadcast section of an OpenProfile.md: the show a person hosts (podcast, radio, live audio, stream), its format, cadence, audience, topics and slots, and who the host is seeking, so a host and a guest are matched from two files rather than two forms."
+);
 
 const SPEC: ProfileSection = {
   name: "OpenBroadcast",

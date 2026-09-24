@@ -1,15 +1,14 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { specMetadata } from "@/lib/page-meta";
 import { SiteShell } from "@/components/site-shell";
 import { mono, pre, table, td, th } from "../openontology/ui";
 
-export const metadata: Metadata = {
-  title: "OpenProfile.md · LogicSRC",
-  description:
-    "OpenProfile.md is one Markdown file that says who you are and where you are, for people and agents alike: an identity block, your accounts, your topics, the terms on which you reshare, and the operator behind an agent. Served at /.well-known/openprofile.md, linked with rel=\"openprofile\", verified by linking back.",
-  alternates: { canonical: "/openprofile" }
-};
+export const metadata: Metadata = specMetadata(
+  "/openprofile",
+  "OpenProfile.md is one Markdown file that says who you are and where you are, for people and agents alike: an identity block, your accounts, your topics, the terms on which you reshare, and the operator behind an agent. Served at /.well-known/openprofile.md, linked with rel=\"openprofile\", verified by linking back."
+);
 
 const EXAMPLE = `# Ada Lovelace
 

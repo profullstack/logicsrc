@@ -1,13 +1,9 @@
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/page-meta";
 import { SiteShell } from "@/components/site-shell";
 
-export const metadata: Metadata = {
-  title: "Terms · LogicSRC",
-  description:
-    "Terms of engagement for LogicSRC: the specification and tooling are open source and free; Profullstack implementation work is billed at $400/hour/agent against approved hours, with a 10-agent-hour minimum.",
-  alternates: { canonical: "/terms" },
-};
+export const metadata: Metadata = pageMetadata("/terms");
 
 export default function TermsPage(): ReactNode {
   return (

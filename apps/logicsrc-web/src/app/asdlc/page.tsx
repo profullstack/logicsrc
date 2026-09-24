@@ -1,15 +1,14 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { specMetadata } from "@/lib/page-meta";
 import { SiteShell } from "@/components/site-shell";
 import { mono, pre, table, td, th } from "../openontology/ui";
 
-export const metadata: Metadata = {
-  title: "ASDLC · LogicSRC",
-  description:
-    "ASDLC is the Agentic Software Development Lifecycle: nine phases for building software when agents work in parallel and CI/CD is the only gate, with four conformance levels and a ratchet rule that makes testing in production defensible.",
-  alternates: { canonical: "/asdlc" }
-};
+export const metadata: Metadata = specMetadata(
+  "/asdlc",
+  "ASDLC is the Agentic Software Development Lifecycle: nine phases for building software when agents work in parallel and CI/CD is the only gate, with four conformance levels and a ratchet rule that makes testing in production defensible."
+);
 
 const PHASES: Array<[string, string]> = [
   ["Frame", "A human states intent; the agent restates scope and names what it is leaving out. The one phase where being wrong is expensive."],

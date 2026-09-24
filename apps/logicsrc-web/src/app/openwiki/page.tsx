@@ -1,15 +1,14 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { specMetadata } from "@/lib/page-meta";
 import { SiteShell } from "@/components/site-shell";
 import { mono, pre, table, td, th } from "../openontology/ui";
 
-export const metadata: Metadata = {
-  title: "OpenWiki · LogicSRC",
-  description:
-    "OpenWiki is a wiki that is a folder of Markdown files: [[Page]] links, a small front matter vocabulary, a descriptor at /.well-known/openwiki.json, an index of pages, every page and every revision readable as Markdown, and made_by on every revision, human, ai or both. Opens unchanged in Obsidian and Logseq.",
-  alternates: { canonical: "/openwiki" }
-};
+export const metadata: Metadata = specMetadata(
+  "/openwiki",
+  "OpenWiki is a wiki that is a folder of Markdown files: [[Page]] links, a small front matter vocabulary, a descriptor at /.well-known/openwiki.json, an index of pages, every page and every revision readable as Markdown, and made_by on every revision, human, ai or both. Opens unchanged in Obsidian and Logseq."
+);
 
 const PAGE = `---
 title: Going viral
