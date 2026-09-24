@@ -1,0 +1,6900 @@
+{
+  "openicon": "0.1",
+  "name": "OpenIcon",
+  "version": "2026-09-24",
+  "license": "MIT",
+  "homepage": "https://logicsrc.com/openicon",
+  "made_by": "ai",
+  "disclosure": "ai-generated",
+  "ai_model": "claude-opus-5-5",
+  "ai_provider": "Anthropic",
+  "grid": {
+    "size": 24,
+    "stroke": 2,
+    "padding": 2
+  },
+  "sizes": [
+    16,
+    20,
+    24,
+    32,
+    48,
+    64,
+    128,
+    256
+  ],
+  "formats": [
+    "svg",
+    "png",
+    "sprite"
+  ],
+  "sprite": "sprite.svg",
+  "sources": {
+    "nerd-fonts": "Nerd Fonts 3.4.0 glyph names (MIT)",
+    "simple-icons": "Simple Icons 16.32.0 (CC0-1.0)",
+    "font-awesome": "Font Awesome Free 7.3.1 brands (CC-BY-4.0)"
+  },
+  "categories": {
+    "action": "Actions",
+    "navigation": "Navigation",
+    "communication": "Communication",
+    "media": "Media",
+    "file": "Files and storage",
+    "status": "Status",
+    "time": "Time",
+    "commerce": "Commerce",
+    "dev": "Developer",
+    "device": "Devices",
+    "editor": "Editor",
+    "misc": "Everything else",
+    "brand": "Brands"
+  },
+  "icons": [
+    {
+      "key": "add",
+      "name": "Add",
+      "category": "action",
+      "aliases": [
+        "plus"
+      ],
+      "keywords": [
+        "new",
+        "create"
+      ],
+      "svg": "svg/add.svg",
+      "png": "png/{size}/add.png",
+      "tui": {
+        "nerd": "󰐕",
+        "nerd_code": "f0415",
+        "nerd_name": "md-plus",
+        "unicode": "+",
+        "ascii": "+"
+      }
+    },
+    {
+      "key": "minus",
+      "name": "Minus",
+      "category": "action",
+      "keywords": [
+        "subtract",
+        "remove"
+      ],
+      "svg": "svg/minus.svg",
+      "png": "png/{size}/minus.png",
+      "tui": {
+        "nerd": "󰍴",
+        "nerd_code": "f0374",
+        "nerd_name": "md-minus",
+        "unicode": "−",
+        "ascii": "-"
+      }
+    },
+    {
+      "key": "close",
+      "name": "Close",
+      "category": "action",
+      "aliases": [
+        "x-mark",
+        "times"
+      ],
+      "keywords": [
+        "x",
+        "dismiss",
+        "cancel"
+      ],
+      "svg": "svg/close.svg",
+      "png": "png/{size}/close.png",
+      "tui": {
+        "nerd": "󰅖",
+        "nerd_code": "f0156",
+        "nerd_name": "md-close",
+        "unicode": "✕",
+        "ascii": "x"
+      }
+    },
+    {
+      "key": "check",
+      "name": "Check",
+      "category": "action",
+      "keywords": [
+        "done",
+        "ok",
+        "tick",
+        "confirm"
+      ],
+      "svg": "svg/check.svg",
+      "png": "png/{size}/check.png",
+      "tui": {
+        "nerd": "󰄬",
+        "nerd_code": "f012c",
+        "nerd_name": "md-check",
+        "unicode": "✓",
+        "ascii": "v"
+      }
+    },
+    {
+      "key": "check-circle",
+      "name": "Check circle",
+      "category": "action",
+      "keywords": [
+        "success",
+        "complete"
+      ],
+      "svg": "svg/check-circle.svg",
+      "png": "png/{size}/check-circle.png",
+      "tui": {
+        "nerd": "󰗡",
+        "nerd_code": "f05e1",
+        "nerd_name": "md-check_circle_outline",
+        "unicode": "✅",
+        "ascii": "(v)"
+      }
+    },
+    {
+      "key": "x-circle",
+      "name": "X circle",
+      "category": "action",
+      "keywords": [
+        "error-close"
+      ],
+      "svg": "svg/x-circle.svg",
+      "png": "png/{size}/x-circle.png",
+      "tui": {
+        "nerd": "󰅚",
+        "nerd_code": "f015a",
+        "nerd_name": "md-close_circle_outline",
+        "unicode": "❎",
+        "ascii": "(x)"
+      }
+    },
+    {
+      "key": "plus-circle",
+      "name": "Plus circle",
+      "category": "action",
+      "svg": "svg/plus-circle.svg",
+      "png": "png/{size}/plus-circle.png",
+      "tui": {
+        "nerd": "󰐙",
+        "nerd_code": "f0419",
+        "nerd_name": "md-plus_circle_outline",
+        "unicode": "⊕",
+        "ascii": "(+)"
+      }
+    },
+    {
+      "key": "minus-circle",
+      "name": "Minus circle",
+      "category": "action",
+      "svg": "svg/minus-circle.svg",
+      "png": "png/{size}/minus-circle.png",
+      "tui": {
+        "nerd": "󰍷",
+        "nerd_code": "f0377",
+        "nerd_name": "md-minus_circle_outline",
+        "unicode": "⊖",
+        "ascii": "(-)"
+      }
+    },
+    {
+      "key": "edit",
+      "name": "Edit",
+      "category": "action",
+      "aliases": [
+        "pencil"
+      ],
+      "keywords": [
+        "write",
+        "modify"
+      ],
+      "svg": "svg/edit.svg",
+      "png": "png/{size}/edit.png",
+      "tui": {
+        "nerd": "󰏫",
+        "nerd_code": "f03eb",
+        "nerd_name": "md-pencil",
+        "unicode": "✎",
+        "ascii": "/e"
+      }
+    },
+    {
+      "key": "delete",
+      "name": "Delete",
+      "category": "action",
+      "aliases": [
+        "trash",
+        "bin"
+      ],
+      "keywords": [
+        "remove"
+      ],
+      "svg": "svg/delete.svg",
+      "png": "png/{size}/delete.png",
+      "tui": {
+        "nerd": "󰩺",
+        "nerd_code": "f0a7a",
+        "nerd_name": "md-trash_can_outline",
+        "unicode": "🗑",
+        "ascii": "del"
+      }
+    },
+    {
+      "key": "search",
+      "name": "Search",
+      "category": "action",
+      "aliases": [
+        "magnify",
+        "find"
+      ],
+      "keywords": [
+        "lookup"
+      ],
+      "svg": "svg/search.svg",
+      "png": "png/{size}/search.png",
+      "tui": {
+        "nerd": "󰍉",
+        "nerd_code": "f0349",
+        "nerd_name": "md-magnify",
+        "unicode": "🔍",
+        "ascii": "?"
+      }
+    },
+    {
+      "key": "zoom-in",
+      "name": "Zoom in",
+      "category": "action",
+      "svg": "svg/zoom-in.svg",
+      "png": "png/{size}/zoom-in.png",
+      "tui": {
+        "nerd": "󰛭",
+        "nerd_code": "f06ed",
+        "nerd_name": "md-magnify_plus_outline",
+        "unicode": "🔎",
+        "ascii": "+?"
+      }
+    },
+    {
+      "key": "zoom-out",
+      "name": "Zoom out",
+      "category": "action",
+      "svg": "svg/zoom-out.svg",
+      "png": "png/{size}/zoom-out.png",
+      "tui": {
+        "nerd": "󰛬",
+        "nerd_code": "f06ec",
+        "nerd_name": "md-magnify_minus_outline",
+        "unicode": "🔎",
+        "ascii": "-?"
+      }
+    },
+    {
+      "key": "settings",
+      "name": "Settings",
+      "category": "action",
+      "aliases": [
+        "gear",
+        "cog",
+        "preferences"
+      ],
+      "keywords": [
+        "options"
+      ],
+      "svg": "svg/settings.svg",
+      "png": "png/{size}/settings.png",
+      "tui": {
+        "nerd": "󰒓",
+        "nerd_code": "f0493",
+        "nerd_name": "md-cog",
+        "unicode": "⚙",
+        "ascii": "*"
+      }
+    },
+    {
+      "key": "sliders",
+      "name": "Sliders",
+      "category": "action",
+      "keywords": [
+        "adjust",
+        "controls",
+        "tune"
+      ],
+      "svg": "svg/sliders.svg",
+      "png": "png/{size}/sliders.png",
+      "tui": {
+        "nerd": "󱕂",
+        "nerd_code": "f1542",
+        "nerd_name": "md-tune_variant",
+        "unicode": "🎚",
+        "ascii": "=|="
+      }
+    },
+    {
+      "key": "filter",
+      "name": "Filter",
+      "category": "action",
+      "keywords": [
+        "funnel"
+      ],
+      "svg": "svg/filter.svg",
+      "png": "png/{size}/filter.png",
+      "tui": {
+        "nerd": "󰈳",
+        "nerd_code": "f0233",
+        "nerd_name": "md-filter_outline",
+        "unicode": "⏷",
+        "ascii": "Y"
+      }
+    },
+    {
+      "key": "sort",
+      "name": "Sort",
+      "category": "action",
+      "keywords": [
+        "order"
+      ],
+      "svg": "svg/sort.svg",
+      "png": "png/{size}/sort.png",
+      "tui": {
+        "nerd": "󰒺",
+        "nerd_code": "f04ba",
+        "nerd_name": "md-sort",
+        "unicode": "⇅",
+        "ascii": "^v"
+      }
+    },
+    {
+      "key": "sort-asc",
+      "name": "Sort asc",
+      "category": "action",
+      "svg": "svg/sort-asc.svg",
+      "png": "png/{size}/sort-asc.png",
+      "tui": {
+        "nerd": "󰒼",
+        "nerd_code": "f04bc",
+        "nerd_name": "md-sort_ascending",
+        "unicode": "↑",
+        "ascii": "a-z"
+      }
+    },
+    {
+      "key": "sort-desc",
+      "name": "Sort desc",
+      "category": "action",
+      "svg": "svg/sort-desc.svg",
+      "png": "png/{size}/sort-desc.png",
+      "tui": {
+        "nerd": "󰒽",
+        "nerd_code": "f04bd",
+        "nerd_name": "md-sort_descending",
+        "unicode": "↓",
+        "ascii": "z-a"
+      }
+    },
+    {
+      "key": "menu",
+      "name": "Menu",
+      "category": "action",
+      "aliases": [
+        "hamburger"
+      ],
+      "keywords": [
+        "bars",
+        "navigation"
+      ],
+      "svg": "svg/menu.svg",
+      "png": "png/{size}/menu.png",
+      "tui": {
+        "nerd": "󰍜",
+        "nerd_code": "f035c",
+        "nerd_name": "md-menu",
+        "unicode": "☰",
+        "ascii": "="
+      }
+    },
+    {
+      "key": "more-horizontal",
+      "name": "More horizontal",
+      "category": "action",
+      "aliases": [
+        "ellipsis"
+      ],
+      "keywords": [
+        "overflow"
+      ],
+      "svg": "svg/more-horizontal.svg",
+      "png": "png/{size}/more-horizontal.png",
+      "tui": {
+        "nerd": "󰇘",
+        "nerd_code": "f01d8",
+        "nerd_name": "md-dots_horizontal",
+        "unicode": "⋯",
+        "ascii": "..."
+      }
+    },
+    {
+      "key": "more-vertical",
+      "name": "More vertical",
+      "category": "action",
+      "aliases": [
+        "kebab"
+      ],
+      "keywords": [
+        "overflow"
+      ],
+      "svg": "svg/more-vertical.svg",
+      "png": "png/{size}/more-vertical.png",
+      "tui": {
+        "nerd": "󰇙",
+        "nerd_code": "f01d9",
+        "nerd_name": "md-dots_vertical",
+        "unicode": "⋮",
+        "ascii": ":"
+      }
+    },
+    {
+      "key": "copy",
+      "name": "Copy",
+      "category": "action",
+      "aliases": [
+        "duplicate"
+      ],
+      "keywords": [
+        "clone"
+      ],
+      "svg": "svg/copy.svg",
+      "png": "png/{size}/copy.png",
+      "tui": {
+        "nerd": "󰆏",
+        "nerd_code": "f018f",
+        "nerd_name": "md-content_copy",
+        "unicode": "⧉",
+        "ascii": "cp"
+      }
+    },
+    {
+      "key": "clipboard",
+      "name": "Clipboard",
+      "category": "action",
+      "keywords": [
+        "paste"
+      ],
+      "svg": "svg/clipboard.svg",
+      "png": "png/{size}/clipboard.png",
+      "tui": {
+        "nerd": "󰅌",
+        "nerd_code": "f014c",
+        "nerd_name": "md-clipboard_outline",
+        "unicode": "📋",
+        "ascii": "[=]"
+      }
+    },
+    {
+      "key": "clipboard-check",
+      "name": "Clipboard check",
+      "category": "action",
+      "keywords": [
+        "copied"
+      ],
+      "svg": "svg/clipboard-check.svg",
+      "png": "png/{size}/clipboard-check.png",
+      "tui": {
+        "nerd": "󰢨",
+        "nerd_code": "f08a8",
+        "nerd_name": "md-clipboard_check_outline",
+        "unicode": "📋",
+        "ascii": "[v]"
+      }
+    },
+    {
+      "key": "cut",
+      "name": "Cut",
+      "category": "action",
+      "aliases": [
+        "scissors"
+      ],
+      "svg": "svg/cut.svg",
+      "png": "png/{size}/cut.png",
+      "tui": {
+        "nerd": "󰆐",
+        "nerd_code": "f0190",
+        "nerd_name": "md-content_cut",
+        "unicode": "✂",
+        "ascii": "8<"
+      }
+    },
+    {
+      "key": "share",
+      "name": "Share",
+      "category": "action",
+      "svg": "svg/share.svg",
+      "png": "png/{size}/share.png",
+      "tui": {
+        "nerd": "󱔔",
+        "nerd_code": "f1514",
+        "nerd_name": "md-share_variant_outline",
+        "unicode": "⤴",
+        "ascii": "<"
+      }
+    },
+    {
+      "key": "share-out",
+      "name": "Share out",
+      "category": "action",
+      "keywords": [
+        "export"
+      ],
+      "svg": "svg/share-out.svg",
+      "png": "png/{size}/share-out.png",
+      "tui": {
+        "nerd": "󰮓",
+        "nerd_code": "f0b93",
+        "nerd_name": "md-export_variant",
+        "unicode": "⇪",
+        "ascii": "^"
+      }
+    },
+    {
+      "key": "download",
+      "name": "Download",
+      "category": "action",
+      "keywords": [
+        "save-file"
+      ],
+      "svg": "svg/download.svg",
+      "png": "png/{size}/download.png",
+      "tui": {
+        "nerd": "󰇚",
+        "nerd_code": "f01da",
+        "nerd_name": "md-download",
+        "unicode": "⤓",
+        "ascii": "v_"
+      }
+    },
+    {
+      "key": "upload",
+      "name": "Upload",
+      "category": "action",
+      "svg": "svg/upload.svg",
+      "png": "png/{size}/upload.png",
+      "tui": {
+        "nerd": "󰕒",
+        "nerd_code": "f0552",
+        "nerd_name": "md-upload",
+        "unicode": "⤒",
+        "ascii": "^_"
+      }
+    },
+    {
+      "key": "refresh",
+      "name": "Refresh",
+      "category": "action",
+      "aliases": [
+        "reload",
+        "sync"
+      ],
+      "svg": "svg/refresh.svg",
+      "png": "png/{size}/refresh.png",
+      "tui": {
+        "nerd": "󰑐",
+        "nerd_code": "f0450",
+        "nerd_name": "md-refresh",
+        "unicode": "⟳",
+        "ascii": "@"
+      }
+    },
+    {
+      "key": "undo",
+      "name": "Undo",
+      "category": "action",
+      "svg": "svg/undo.svg",
+      "png": "png/{size}/undo.png",
+      "tui": {
+        "nerd": "󰕌",
+        "nerd_code": "f054c",
+        "nerd_name": "md-undo",
+        "unicode": "↶",
+        "ascii": "<-"
+      }
+    },
+    {
+      "key": "redo",
+      "name": "Redo",
+      "category": "action",
+      "svg": "svg/redo.svg",
+      "png": "png/{size}/redo.png",
+      "tui": {
+        "nerd": "󰑎",
+        "nerd_code": "f044e",
+        "nerd_name": "md-redo",
+        "unicode": "↷",
+        "ascii": "->"
+      }
+    },
+    {
+      "key": "save",
+      "name": "Save",
+      "category": "action",
+      "aliases": [
+        "floppy"
+      ],
+      "keywords": [
+        "disk"
+      ],
+      "svg": "svg/save.svg",
+      "png": "png/{size}/save.png",
+      "tui": {
+        "nerd": "󰠘",
+        "nerd_code": "f0818",
+        "nerd_name": "md-content_save_outline",
+        "unicode": "💾",
+        "ascii": "[s]"
+      }
+    },
+    {
+      "key": "print",
+      "name": "Print",
+      "category": "action",
+      "aliases": [
+        "printer"
+      ],
+      "svg": "svg/print.svg",
+      "png": "png/{size}/print.png",
+      "tui": {
+        "nerd": "󱞆",
+        "nerd_code": "f1786",
+        "nerd_name": "md-printer_outline",
+        "unicode": "🖨",
+        "ascii": "prn"
+      }
+    },
+    {
+      "key": "external-link",
+      "name": "External link",
+      "category": "action",
+      "aliases": [
+        "open-in-new"
+      ],
+      "keywords": [
+        "open-new",
+        "launch"
+      ],
+      "svg": "svg/external-link.svg",
+      "png": "png/{size}/external-link.png",
+      "tui": {
+        "nerd": "󰏌",
+        "nerd_code": "f03cc",
+        "nerd_name": "md-open_in_new",
+        "unicode": "↗",
+        "ascii": "->]"
+      }
+    },
+    {
+      "key": "maximize",
+      "name": "Maximize",
+      "category": "action",
+      "aliases": [
+        "fullscreen"
+      ],
+      "keywords": [
+        "expand"
+      ],
+      "svg": "svg/maximize.svg",
+      "png": "png/{size}/maximize.png",
+      "tui": {
+        "nerd": "󰊓",
+        "nerd_code": "f0293",
+        "nerd_name": "md-fullscreen",
+        "unicode": "⛶",
+        "ascii": "[ ]"
+      }
+    },
+    {
+      "key": "minimize",
+      "name": "Minimize",
+      "category": "action",
+      "aliases": [
+        "exit-fullscreen"
+      ],
+      "keywords": [
+        "collapse"
+      ],
+      "svg": "svg/minimize.svg",
+      "png": "png/{size}/minimize.png",
+      "tui": {
+        "nerd": "󰊔",
+        "nerd_code": "f0294",
+        "nerd_name": "md-fullscreen_exit",
+        "unicode": "⊡",
+        "ascii": "]["
+      }
+    },
+    {
+      "key": "lock",
+      "name": "Lock",
+      "category": "action",
+      "keywords": [
+        "secure",
+        "private",
+        "password"
+      ],
+      "svg": "svg/lock.svg",
+      "png": "png/{size}/lock.png",
+      "tui": {
+        "nerd": "󰍁",
+        "nerd_code": "f0341",
+        "nerd_name": "md-lock_outline",
+        "unicode": "🔒",
+        "ascii": "[#]"
+      }
+    },
+    {
+      "key": "unlock",
+      "name": "Unlock",
+      "category": "action",
+      "keywords": [
+        "open-lock"
+      ],
+      "svg": "svg/unlock.svg",
+      "png": "png/{size}/unlock.png",
+      "tui": {
+        "nerd": "󰿇",
+        "nerd_code": "f0fc7",
+        "nerd_name": "md-lock_open_variant_outline",
+        "unicode": "🔓",
+        "ascii": "[ ]"
+      }
+    },
+    {
+      "key": "key",
+      "name": "Key",
+      "category": "action",
+      "keywords": [
+        "password",
+        "credential"
+      ],
+      "svg": "svg/key.svg",
+      "png": "png/{size}/key.png",
+      "tui": {
+        "nerd": "󰷖",
+        "nerd_code": "f0dd6",
+        "nerd_name": "md-key_outline",
+        "unicode": "🔑",
+        "ascii": "o-"
+      }
+    },
+    {
+      "key": "eye",
+      "name": "Eye",
+      "category": "action",
+      "aliases": [
+        "show",
+        "view"
+      ],
+      "keywords": [
+        "visible"
+      ],
+      "svg": "svg/eye.svg",
+      "png": "png/{size}/eye.png",
+      "tui": {
+        "nerd": "󰛐",
+        "nerd_code": "f06d0",
+        "nerd_name": "md-eye_outline",
+        "unicode": "👁",
+        "ascii": "o"
+      }
+    },
+    {
+      "key": "eye-off",
+      "name": "Eye off",
+      "category": "action",
+      "aliases": [
+        "hide"
+      ],
+      "keywords": [
+        "hidden",
+        "invisible"
+      ],
+      "svg": "svg/eye-off.svg",
+      "png": "png/{size}/eye-off.png",
+      "tui": {
+        "nerd": "󰛑",
+        "nerd_code": "f06d1",
+        "nerd_name": "md-eye_off_outline",
+        "unicode": "🙈",
+        "ascii": "-o-"
+      }
+    },
+    {
+      "key": "pin",
+      "name": "Pin",
+      "category": "action",
+      "aliases": [
+        "thumbtack"
+      ],
+      "svg": "svg/pin.svg",
+      "png": "png/{size}/pin.png",
+      "tui": {
+        "nerd": "󰤱",
+        "nerd_code": "f0931",
+        "nerd_name": "md-pin_outline",
+        "unicode": "📌",
+        "ascii": "-|"
+      }
+    },
+    {
+      "key": "bookmark",
+      "name": "Bookmark",
+      "category": "action",
+      "keywords": [
+        "save-for-later"
+      ],
+      "svg": "svg/bookmark.svg",
+      "png": "png/{size}/bookmark.png",
+      "tui": {
+        "nerd": "󰃃",
+        "nerd_code": "f00c3",
+        "nerd_name": "md-bookmark_outline",
+        "unicode": "🔖",
+        "ascii": "[]>"
+      }
+    },
+    {
+      "key": "star",
+      "name": "Star",
+      "category": "action",
+      "aliases": [
+        "favorite"
+      ],
+      "keywords": [
+        "rating"
+      ],
+      "svg": "svg/star.svg",
+      "png": "png/{size}/star.png",
+      "tui": {
+        "nerd": "󰓒",
+        "nerd_code": "f04d2",
+        "nerd_name": "md-star_outline",
+        "unicode": "★",
+        "ascii": "*"
+      }
+    },
+    {
+      "key": "heart",
+      "name": "Heart",
+      "category": "action",
+      "aliases": [
+        "love"
+      ],
+      "keywords": [
+        "like",
+        "favorite"
+      ],
+      "svg": "svg/heart.svg",
+      "png": "png/{size}/heart.png",
+      "tui": {
+        "nerd": "󰋕",
+        "nerd_code": "f02d5",
+        "nerd_name": "md-heart_outline",
+        "unicode": "♥",
+        "ascii": "<3"
+      }
+    },
+    {
+      "key": "thumbs-up",
+      "name": "Thumbs up",
+      "category": "action",
+      "aliases": [
+        "like"
+      ],
+      "keywords": [
+        "approve"
+      ],
+      "svg": "svg/thumbs-up.svg",
+      "png": "png/{size}/thumbs-up.png",
+      "tui": {
+        "nerd": "󰔔",
+        "nerd_code": "f0514",
+        "nerd_name": "md-thumb_up_outline",
+        "unicode": "👍",
+        "ascii": "+1"
+      }
+    },
+    {
+      "key": "thumbs-down",
+      "name": "Thumbs down",
+      "category": "action",
+      "aliases": [
+        "dislike"
+      ],
+      "svg": "svg/thumbs-down.svg",
+      "png": "png/{size}/thumbs-down.png",
+      "tui": {
+        "nerd": "󰔒",
+        "nerd_code": "f0512",
+        "nerd_name": "md-thumb_down_outline",
+        "unicode": "👎",
+        "ascii": "-1"
+      }
+    },
+    {
+      "key": "flag",
+      "name": "Flag",
+      "category": "action",
+      "keywords": [
+        "report"
+      ],
+      "svg": "svg/flag.svg",
+      "png": "png/{size}/flag.png",
+      "tui": {
+        "nerd": "󰈽",
+        "nerd_code": "f023d",
+        "nerd_name": "md-flag_outline",
+        "unicode": "⚑",
+        "ascii": "|>"
+      }
+    },
+    {
+      "key": "tag",
+      "name": "Tag",
+      "category": "action",
+      "aliases": [
+        "label"
+      ],
+      "svg": "svg/tag.svg",
+      "png": "png/{size}/tag.png",
+      "tui": {
+        "nerd": "󰓼",
+        "nerd_code": "f04fc",
+        "nerd_name": "md-tag_outline",
+        "unicode": "🏷",
+        "ascii": "#"
+      }
+    },
+    {
+      "key": "archive",
+      "name": "Archive",
+      "category": "action",
+      "svg": "svg/archive.svg",
+      "png": "png/{size}/archive.png",
+      "tui": {
+        "nerd": "󱈎",
+        "nerd_code": "f120e",
+        "nerd_name": "md-archive_outline",
+        "unicode": "🗄",
+        "ascii": "[_]"
+      }
+    },
+    {
+      "key": "inbox",
+      "name": "Inbox",
+      "category": "action",
+      "svg": "svg/inbox.svg",
+      "png": "png/{size}/inbox.png",
+      "tui": {
+        "nerd": "󰚇",
+        "nerd_code": "f0687",
+        "nerd_name": "md-inbox",
+        "unicode": "📥",
+        "ascii": "[v]"
+      }
+    },
+    {
+      "key": "send",
+      "name": "Send",
+      "category": "action",
+      "aliases": [
+        "paper-plane"
+      ],
+      "keywords": [
+        "submit"
+      ],
+      "svg": "svg/send.svg",
+      "png": "png/{size}/send.png",
+      "tui": {
+        "nerd": "󱅥",
+        "nerd_code": "f1165",
+        "nerd_name": "md-send_outline",
+        "unicode": "➤",
+        "ascii": ">>"
+      }
+    },
+    {
+      "key": "reply",
+      "name": "Reply",
+      "category": "action",
+      "keywords": [
+        "respond"
+      ],
+      "svg": "svg/reply.svg",
+      "png": "png/{size}/reply.png",
+      "tui": {
+        "nerd": "󰑚",
+        "nerd_code": "f045a",
+        "nerd_name": "md-reply",
+        "unicode": "↩",
+        "ascii": "<-"
+      }
+    },
+    {
+      "key": "forward",
+      "name": "Forward",
+      "category": "action",
+      "svg": "svg/forward.svg",
+      "png": "png/{size}/forward.png",
+      "tui": {
+        "nerd": "󰒖",
+        "nerd_code": "f0496",
+        "nerd_name": "md-share",
+        "unicode": "↪",
+        "ascii": "->"
+      }
+    },
+    {
+      "key": "log-in",
+      "name": "Log in",
+      "category": "action",
+      "aliases": [
+        "sign-in",
+        "login"
+      ],
+      "keywords": [
+        "enter"
+      ],
+      "svg": "svg/log-in.svg",
+      "png": "png/{size}/log-in.png",
+      "tui": {
+        "nerd": "󰍂",
+        "nerd_code": "f0342",
+        "nerd_name": "md-login",
+        "unicode": "⇥",
+        "ascii": "->|"
+      }
+    },
+    {
+      "key": "log-out",
+      "name": "Log out",
+      "category": "action",
+      "aliases": [
+        "sign-out",
+        "logout"
+      ],
+      "keywords": [
+        "exit"
+      ],
+      "svg": "svg/log-out.svg",
+      "png": "png/{size}/log-out.png",
+      "tui": {
+        "nerd": "󰍃",
+        "nerd_code": "f0343",
+        "nerd_name": "md-logout",
+        "unicode": "⇤",
+        "ascii": "|->"
+      }
+    },
+    {
+      "key": "power",
+      "name": "Power",
+      "category": "action",
+      "keywords": [
+        "shutdown",
+        "on-off"
+      ],
+      "svg": "svg/power.svg",
+      "png": "png/{size}/power.png",
+      "tui": {
+        "nerd": "󰐥",
+        "nerd_code": "f0425",
+        "nerd_name": "md-power",
+        "unicode": "⏻",
+        "ascii": "(|)"
+      }
+    },
+    {
+      "key": "grid",
+      "name": "Grid",
+      "category": "action",
+      "keywords": [
+        "apps",
+        "tiles"
+      ],
+      "svg": "svg/grid.svg",
+      "png": "png/{size}/grid.png",
+      "tui": {
+        "nerd": "󱇙",
+        "nerd_code": "f11d9",
+        "nerd_name": "md-view_grid_outline",
+        "unicode": "▦",
+        "ascii": "::"
+      }
+    },
+    {
+      "key": "list",
+      "name": "List",
+      "category": "action",
+      "keywords": [
+        "rows"
+      ],
+      "svg": "svg/list.svg",
+      "png": "png/{size}/list.png",
+      "tui": {
+        "nerd": "󰉹",
+        "nerd_code": "f0279",
+        "nerd_name": "md-format_list_bulleted",
+        "unicode": "☷",
+        "ascii": "-="
+      }
+    },
+    {
+      "key": "grip",
+      "name": "Grip",
+      "category": "action",
+      "keywords": [
+        "drag",
+        "handle"
+      ],
+      "svg": "svg/grip.svg",
+      "png": "png/{size}/grip.png",
+      "tui": {
+        "nerd": "󰇛",
+        "nerd_code": "f01db",
+        "nerd_name": "md-drag",
+        "unicode": "⠿",
+        "ascii": "::"
+      }
+    },
+    {
+      "key": "link",
+      "name": "Link",
+      "category": "action",
+      "keywords": [
+        "url",
+        "hyperlink",
+        "chain"
+      ],
+      "svg": "svg/link.svg",
+      "png": "png/{size}/link.png",
+      "tui": {
+        "nerd": "󰌹",
+        "nerd_code": "f0339",
+        "nerd_name": "md-link_variant",
+        "unicode": "🔗",
+        "ascii": "~"
+      }
+    },
+    {
+      "key": "unlink",
+      "name": "Unlink",
+      "category": "action",
+      "keywords": [
+        "broken-link"
+      ],
+      "svg": "svg/unlink.svg",
+      "png": "png/{size}/unlink.png",
+      "tui": {
+        "nerd": "󰌺",
+        "nerd_code": "f033a",
+        "nerd_name": "md-link_variant_off",
+        "unicode": "⛓",
+        "ascii": "~/"
+      }
+    },
+    {
+      "key": "home",
+      "name": "Home",
+      "category": "navigation",
+      "aliases": [
+        "house"
+      ],
+      "keywords": [
+        "start"
+      ],
+      "svg": "svg/home.svg",
+      "png": "png/{size}/home.png",
+      "tui": {
+        "nerd": "󰚡",
+        "nerd_code": "f06a1",
+        "nerd_name": "md-home_outline",
+        "unicode": "🏠",
+        "ascii": "~"
+      }
+    },
+    {
+      "key": "arrow-up",
+      "name": "Arrow up",
+      "category": "navigation",
+      "svg": "svg/arrow-up.svg",
+      "png": "png/{size}/arrow-up.png",
+      "tui": {
+        "nerd": "󰁝",
+        "nerd_code": "f005d",
+        "nerd_name": "md-arrow_up",
+        "unicode": "↑",
+        "ascii": "^"
+      }
+    },
+    {
+      "key": "arrow-down",
+      "name": "Arrow down",
+      "category": "navigation",
+      "svg": "svg/arrow-down.svg",
+      "png": "png/{size}/arrow-down.png",
+      "tui": {
+        "nerd": "󰁅",
+        "nerd_code": "f0045",
+        "nerd_name": "md-arrow_down",
+        "unicode": "↓",
+        "ascii": "v"
+      }
+    },
+    {
+      "key": "arrow-left",
+      "name": "Arrow left",
+      "category": "navigation",
+      "keywords": [
+        "back"
+      ],
+      "svg": "svg/arrow-left.svg",
+      "png": "png/{size}/arrow-left.png",
+      "tui": {
+        "nerd": "󰁍",
+        "nerd_code": "f004d",
+        "nerd_name": "md-arrow_left",
+        "unicode": "←",
+        "ascii": "<-"
+      }
+    },
+    {
+      "key": "arrow-right",
+      "name": "Arrow right",
+      "category": "navigation",
+      "keywords": [
+        "next"
+      ],
+      "svg": "svg/arrow-right.svg",
+      "png": "png/{size}/arrow-right.png",
+      "tui": {
+        "nerd": "󰁔",
+        "nerd_code": "f0054",
+        "nerd_name": "md-arrow_right",
+        "unicode": "→",
+        "ascii": "->"
+      }
+    },
+    {
+      "key": "arrow-up-right",
+      "name": "Arrow up right",
+      "category": "navigation",
+      "svg": "svg/arrow-up-right.svg",
+      "png": "png/{size}/arrow-up-right.png",
+      "tui": {
+        "nerd": "󰁜",
+        "nerd_code": "f005c",
+        "nerd_name": "md-arrow_top_right",
+        "unicode": "↗",
+        "ascii": "/^"
+      }
+    },
+    {
+      "key": "chevron-up",
+      "name": "Chevron up",
+      "category": "navigation",
+      "svg": "svg/chevron-up.svg",
+      "png": "png/{size}/chevron-up.png",
+      "tui": {
+        "nerd": "󰅃",
+        "nerd_code": "f0143",
+        "nerd_name": "md-chevron_up",
+        "unicode": "⌃",
+        "ascii": "^"
+      }
+    },
+    {
+      "key": "chevron-down",
+      "name": "Chevron down",
+      "category": "navigation",
+      "keywords": [
+        "expand"
+      ],
+      "svg": "svg/chevron-down.svg",
+      "png": "png/{size}/chevron-down.png",
+      "tui": {
+        "nerd": "󰅀",
+        "nerd_code": "f0140",
+        "nerd_name": "md-chevron_down",
+        "unicode": "⌄",
+        "ascii": "v"
+      }
+    },
+    {
+      "key": "chevron-left",
+      "name": "Chevron left",
+      "category": "navigation",
+      "svg": "svg/chevron-left.svg",
+      "png": "png/{size}/chevron-left.png",
+      "tui": {
+        "nerd": "󰅁",
+        "nerd_code": "f0141",
+        "nerd_name": "md-chevron_left",
+        "unicode": "‹",
+        "ascii": "<"
+      }
+    },
+    {
+      "key": "chevron-right",
+      "name": "Chevron right",
+      "category": "navigation",
+      "svg": "svg/chevron-right.svg",
+      "png": "png/{size}/chevron-right.png",
+      "tui": {
+        "nerd": "󰅂",
+        "nerd_code": "f0142",
+        "nerd_name": "md-chevron_right",
+        "unicode": "›",
+        "ascii": ">"
+      }
+    },
+    {
+      "key": "chevrons-left",
+      "name": "Chevrons left",
+      "category": "navigation",
+      "keywords": [
+        "first"
+      ],
+      "svg": "svg/chevrons-left.svg",
+      "png": "png/{size}/chevrons-left.png",
+      "tui": {
+        "nerd": "󰄽",
+        "nerd_code": "f013d",
+        "nerd_name": "md-chevron_double_left",
+        "unicode": "«",
+        "ascii": "<<"
+      }
+    },
+    {
+      "key": "chevrons-right",
+      "name": "Chevrons right",
+      "category": "navigation",
+      "keywords": [
+        "last"
+      ],
+      "svg": "svg/chevrons-right.svg",
+      "png": "png/{size}/chevrons-right.png",
+      "tui": {
+        "nerd": "󰄾",
+        "nerd_code": "f013e",
+        "nerd_name": "md-chevron_double_right",
+        "unicode": "»",
+        "ascii": ">>"
+      }
+    },
+    {
+      "key": "enter",
+      "name": "Enter",
+      "category": "navigation",
+      "keywords": [
+        "return",
+        "corner-down-left"
+      ],
+      "svg": "svg/enter.svg",
+      "png": "png/{size}/enter.png",
+      "tui": {
+        "nerd": "󰌑",
+        "nerd_code": "f0311",
+        "nerd_name": "md-keyboard_return",
+        "unicode": "↵",
+        "ascii": "<-|"
+      }
+    },
+    {
+      "key": "sidebar",
+      "name": "Sidebar",
+      "category": "navigation",
+      "keywords": [
+        "panel",
+        "drawer"
+      ],
+      "svg": "svg/sidebar.svg",
+      "png": "png/{size}/sidebar.png",
+      "tui": {
+        "nerd": "󱂪",
+        "nerd_code": "f10aa",
+        "nerd_name": "md-dock_left",
+        "unicode": "▥",
+        "ascii": "|="
+      }
+    },
+    {
+      "key": "compass",
+      "name": "Compass",
+      "category": "navigation",
+      "keywords": [
+        "explore"
+      ],
+      "svg": "svg/compass.svg",
+      "png": "png/{size}/compass.png",
+      "tui": {
+        "nerd": "󰆌",
+        "nerd_code": "f018c",
+        "nerd_name": "md-compass_outline",
+        "unicode": "🧭",
+        "ascii": "(N)"
+      }
+    },
+    {
+      "key": "map",
+      "name": "Map",
+      "category": "navigation",
+      "svg": "svg/map.svg",
+      "png": "png/{size}/map.png",
+      "tui": {
+        "nerd": "󰦂",
+        "nerd_code": "f0982",
+        "nerd_name": "md-map_outline",
+        "unicode": "🗺",
+        "ascii": "[#]"
+      }
+    },
+    {
+      "key": "map-pin",
+      "name": "Map pin",
+      "category": "navigation",
+      "aliases": [
+        "location",
+        "marker"
+      ],
+      "keywords": [
+        "place",
+        "address"
+      ],
+      "svg": "svg/map-pin.svg",
+      "png": "png/{size}/map-pin.png",
+      "tui": {
+        "nerd": "󰟙",
+        "nerd_code": "f07d9",
+        "nerd_name": "md-map_marker_outline",
+        "unicode": "📍",
+        "ascii": "@"
+      }
+    },
+    {
+      "key": "navigation",
+      "name": "Navigation",
+      "category": "navigation",
+      "keywords": [
+        "gps",
+        "direction"
+      ],
+      "svg": "svg/navigation.svg",
+      "png": "png/{size}/navigation.png",
+      "tui": {
+        "nerd": "󱣱",
+        "nerd_code": "f18f1",
+        "nerd_name": "md-navigation_variant_outline",
+        "unicode": "➶",
+        "ascii": ">"
+      }
+    },
+    {
+      "key": "globe",
+      "name": "Globe",
+      "category": "navigation",
+      "aliases": [
+        "world",
+        "web"
+      ],
+      "keywords": [
+        "website",
+        "internet"
+      ],
+      "svg": "svg/globe.svg",
+      "png": "png/{size}/globe.png",
+      "tui": {
+        "nerd": "󰖟",
+        "nerd_code": "f059f",
+        "nerd_name": "md-web",
+        "unicode": "🌐",
+        "ascii": "(#)"
+      }
+    },
+    {
+      "key": "layers",
+      "name": "Layers",
+      "category": "navigation",
+      "keywords": [
+        "stack"
+      ],
+      "svg": "svg/layers.svg",
+      "png": "png/{size}/layers.png",
+      "tui": {
+        "nerd": "󰧾",
+        "nerd_code": "f09fe",
+        "nerd_name": "md-layers_outline",
+        "unicode": "☰",
+        "ascii": "="
+      }
+    },
+    {
+      "key": "mail",
+      "name": "Mail",
+      "category": "communication",
+      "aliases": [
+        "email",
+        "envelope"
+      ],
+      "keywords": [
+        "message",
+        "inbox"
+      ],
+      "svg": "svg/mail.svg",
+      "png": "png/{size}/mail.png",
+      "tui": {
+        "nerd": "󰇰",
+        "nerd_code": "f01f0",
+        "nerd_name": "md-email_outline",
+        "unicode": "✉",
+        "ascii": "@"
+      }
+    },
+    {
+      "key": "mail-open",
+      "name": "Mail open",
+      "category": "communication",
+      "keywords": [
+        "email-read"
+      ],
+      "svg": "svg/mail-open.svg",
+      "png": "png/{size}/mail-open.png",
+      "tui": {
+        "nerd": "󰗯",
+        "nerd_code": "f05ef",
+        "nerd_name": "md-email_open_outline",
+        "unicode": "📨",
+        "ascii": "@"
+      }
+    },
+    {
+      "key": "phone",
+      "name": "Phone",
+      "category": "communication",
+      "aliases": [
+        "telephone",
+        "call"
+      ],
+      "svg": "svg/phone.svg",
+      "png": "png/{size}/phone.png",
+      "tui": {
+        "nerd": "󰷰",
+        "nerd_code": "f0df0",
+        "nerd_name": "md-phone_outline",
+        "unicode": "☎",
+        "ascii": "tel"
+      }
+    },
+    {
+      "key": "phone-call",
+      "name": "Phone call",
+      "category": "communication",
+      "keywords": [
+        "calling",
+        "ringing"
+      ],
+      "svg": "svg/phone-call.svg",
+      "png": "png/{size}/phone-call.png",
+      "tui": {
+        "nerd": "󱆂",
+        "nerd_code": "f1182",
+        "nerd_name": "md-phone_in_talk_outline",
+        "unicode": "📞",
+        "ascii": "tel"
+      }
+    },
+    {
+      "key": "phone-off",
+      "name": "Phone off",
+      "category": "communication",
+      "keywords": [
+        "hang-up"
+      ],
+      "svg": "svg/phone-off.svg",
+      "png": "png/{size}/phone-off.png",
+      "tui": {
+        "nerd": "󱆦",
+        "nerd_code": "f11a6",
+        "nerd_name": "md-phone_off_outline",
+        "unicode": "📵",
+        "ascii": "x-t"
+      }
+    },
+    {
+      "key": "sms",
+      "name": "Sms",
+      "category": "communication",
+      "keywords": [
+        "text-message",
+        "message-square"
+      ],
+      "svg": "svg/sms.svg",
+      "png": "png/{size}/sms.png",
+      "tui": {
+        "nerd": "󱅰",
+        "nerd_code": "f1170",
+        "nerd_name": "md-message_processing_outline",
+        "unicode": "💬",
+        "ascii": "sms"
+      }
+    },
+    {
+      "key": "chat",
+      "name": "Chat",
+      "category": "communication",
+      "aliases": [
+        "message",
+        "comment"
+      ],
+      "keywords": [
+        "talk",
+        "conversation"
+      ],
+      "svg": "svg/chat.svg",
+      "png": "png/{size}/chat.png",
+      "tui": {
+        "nerd": "󰻞",
+        "nerd_code": "f0ede",
+        "nerd_name": "md-chat_outline",
+        "unicode": "💬",
+        "ascii": "()"
+      }
+    },
+    {
+      "key": "chat-dots",
+      "name": "Chat dots",
+      "category": "communication",
+      "keywords": [
+        "typing"
+      ],
+      "svg": "svg/chat-dots.svg",
+      "png": "png/{size}/chat-dots.png",
+      "tui": {
+        "nerd": "󱋊",
+        "nerd_code": "f12ca",
+        "nerd_name": "md-chat_processing_outline",
+        "unicode": "💬",
+        "ascii": "(..)"
+      }
+    },
+    {
+      "key": "at",
+      "name": "At",
+      "category": "communication",
+      "aliases": [
+        "at-sign",
+        "mention"
+      ],
+      "keywords": [
+        "handle",
+        "email-address"
+      ],
+      "svg": "svg/at.svg",
+      "png": "png/{size}/at.png",
+      "tui": {
+        "nerd": "󰁥",
+        "nerd_code": "f0065",
+        "nerd_name": "md-at",
+        "unicode": "@",
+        "ascii": "@"
+      }
+    },
+    {
+      "key": "voicemail",
+      "name": "Voicemail",
+      "category": "communication",
+      "svg": "svg/voicemail.svg",
+      "png": "png/{size}/voicemail.png",
+      "tui": {
+        "nerd": "󰕽",
+        "nerd_code": "f057d",
+        "nerd_name": "md-voicemail",
+        "unicode": "⌨",
+        "ascii": "oo"
+      }
+    },
+    {
+      "key": "video",
+      "name": "Video",
+      "category": "communication",
+      "keywords": [
+        "camera-video",
+        "video-call"
+      ],
+      "svg": "svg/video.svg",
+      "png": "png/{size}/video.png",
+      "tui": {
+        "nerd": "󰯜",
+        "nerd_code": "f0bdc",
+        "nerd_name": "md-video_outline",
+        "unicode": "📹",
+        "ascii": "[>"
+      }
+    },
+    {
+      "key": "mic",
+      "name": "Mic",
+      "category": "communication",
+      "aliases": [
+        "microphone"
+      ],
+      "keywords": [
+        "record",
+        "voice"
+      ],
+      "svg": "svg/mic.svg",
+      "png": "png/{size}/mic.png",
+      "tui": {
+        "nerd": "󰍮",
+        "nerd_code": "f036e",
+        "nerd_name": "md-microphone_outline",
+        "unicode": "🎤",
+        "ascii": "mic"
+      }
+    },
+    {
+      "key": "mic-off",
+      "name": "Mic off",
+      "category": "communication",
+      "keywords": [
+        "mute-mic"
+      ],
+      "svg": "svg/mic-off.svg",
+      "png": "png/{size}/mic-off.png",
+      "tui": {
+        "nerd": "󰍭",
+        "nerd_code": "f036d",
+        "nerd_name": "md-microphone_off",
+        "unicode": "🔇",
+        "ascii": "x-m"
+      }
+    },
+    {
+      "key": "bell",
+      "name": "Bell",
+      "category": "communication",
+      "aliases": [
+        "notification"
+      ],
+      "keywords": [
+        "alert",
+        "alarm"
+      ],
+      "svg": "svg/bell.svg",
+      "png": "png/{size}/bell.png",
+      "tui": {
+        "nerd": "󰂜",
+        "nerd_code": "f009c",
+        "nerd_name": "md-bell_outline",
+        "unicode": "🔔",
+        "ascii": "(!)"
+      }
+    },
+    {
+      "key": "bell-off",
+      "name": "Bell off",
+      "category": "communication",
+      "keywords": [
+        "mute",
+        "silent"
+      ],
+      "svg": "svg/bell-off.svg",
+      "png": "png/{size}/bell-off.png",
+      "tui": {
+        "nerd": "󰪑",
+        "nerd_code": "f0a91",
+        "nerd_name": "md-bell_off_outline",
+        "unicode": "🔕",
+        "ascii": "(x)"
+      }
+    },
+    {
+      "key": "megaphone",
+      "name": "Megaphone",
+      "category": "communication",
+      "aliases": [
+        "bullhorn",
+        "announce"
+      ],
+      "keywords": [
+        "broadcast"
+      ],
+      "svg": "svg/megaphone.svg",
+      "png": "png/{size}/megaphone.png",
+      "tui": {
+        "nerd": "󰬣",
+        "nerd_code": "f0b23",
+        "nerd_name": "md-bullhorn_outline",
+        "unicode": "📣",
+        "ascii": "<|"
+      }
+    },
+    {
+      "key": "rss",
+      "name": "Rss",
+      "category": "communication",
+      "keywords": [
+        "feed",
+        "subscribe"
+      ],
+      "svg": "svg/rss.svg",
+      "png": "png/{size}/rss.png",
+      "tui": {
+        "nerd": "󰑫",
+        "nerd_code": "f046b",
+        "nerd_name": "md-rss",
+        "unicode": "📡",
+        "ascii": "rss"
+      }
+    },
+    {
+      "key": "contact",
+      "name": "Contact",
+      "category": "communication",
+      "aliases": [
+        "address-book"
+      ],
+      "keywords": [
+        "contacts"
+      ],
+      "svg": "svg/contact.svg",
+      "png": "png/{size}/contact.png",
+      "tui": {
+        "nerd": "󰶫",
+        "nerd_code": "f0dab",
+        "nerd_name": "md-card_account_details_outline",
+        "unicode": "📇",
+        "ascii": "[@]"
+      }
+    },
+    {
+      "key": "user",
+      "name": "User",
+      "category": "communication",
+      "aliases": [
+        "person",
+        "account",
+        "profile"
+      ],
+      "svg": "svg/user.svg",
+      "png": "png/{size}/user.png",
+      "tui": {
+        "nerd": "󰀓",
+        "nerd_code": "f0013",
+        "nerd_name": "md-account_outline",
+        "unicode": "👤",
+        "ascii": "@"
+      }
+    },
+    {
+      "key": "users",
+      "name": "Users",
+      "category": "communication",
+      "aliases": [
+        "people",
+        "team"
+      ],
+      "keywords": [
+        "group",
+        "members"
+      ],
+      "svg": "svg/users.svg",
+      "png": "png/{size}/users.png",
+      "tui": {
+        "nerd": "󰀏",
+        "nerd_code": "f000f",
+        "nerd_name": "md-account_multiple_outline",
+        "unicode": "👥",
+        "ascii": "@@"
+      }
+    },
+    {
+      "key": "user-plus",
+      "name": "User plus",
+      "category": "communication",
+      "aliases": [
+        "add-user",
+        "invite"
+      ],
+      "keywords": [
+        "sign-up"
+      ],
+      "svg": "svg/user-plus.svg",
+      "png": "png/{size}/user-plus.png",
+      "tui": {
+        "nerd": "󰠁",
+        "nerd_code": "f0801",
+        "nerd_name": "md-account_plus_outline",
+        "unicode": "👤",
+        "ascii": "@+"
+      }
+    },
+    {
+      "key": "user-minus",
+      "name": "User minus",
+      "category": "communication",
+      "keywords": [
+        "remove-user"
+      ],
+      "svg": "svg/user-minus.svg",
+      "png": "png/{size}/user-minus.png",
+      "tui": {
+        "nerd": "󰫬",
+        "nerd_code": "f0aec",
+        "nerd_name": "md-account_minus_outline",
+        "unicode": "👤",
+        "ascii": "@-"
+      }
+    },
+    {
+      "key": "user-check",
+      "name": "User check",
+      "category": "communication",
+      "keywords": [
+        "verified-user"
+      ],
+      "svg": "svg/user-check.svg",
+      "png": "png/{size}/user-check.png",
+      "tui": {
+        "nerd": "󰯢",
+        "nerd_code": "f0be2",
+        "nerd_name": "md-account_check_outline",
+        "unicode": "👤",
+        "ascii": "@v"
+      }
+    },
+    {
+      "key": "user-circle",
+      "name": "User circle",
+      "category": "communication",
+      "keywords": [
+        "avatar"
+      ],
+      "svg": "svg/user-circle.svg",
+      "png": "png/{size}/user-circle.png",
+      "tui": {
+        "nerd": "󰭕",
+        "nerd_code": "f0b55",
+        "nerd_name": "md-account_circle_outline",
+        "unicode": "👤",
+        "ascii": "(@)"
+      }
+    },
+    {
+      "key": "id-card",
+      "name": "Id card",
+      "category": "communication",
+      "aliases": [
+        "identity"
+      ],
+      "keywords": [
+        "badge",
+        "license"
+      ],
+      "svg": "svg/id-card.svg",
+      "png": "png/{size}/id-card.png",
+      "tui": {
+        "nerd": "󰶫",
+        "nerd_code": "f0dab",
+        "nerd_name": "md-card_account_details_outline",
+        "unicode": "🪪",
+        "ascii": "[id]"
+      }
+    },
+    {
+      "key": "play",
+      "name": "Play",
+      "category": "media",
+      "keywords": [
+        "start",
+        "run"
+      ],
+      "svg": "svg/play.svg",
+      "png": "png/{size}/play.png",
+      "tui": {
+        "nerd": "󰐊",
+        "nerd_code": "f040a",
+        "nerd_name": "md-play",
+        "unicode": "▶",
+        "ascii": ">"
+      }
+    },
+    {
+      "key": "pause",
+      "name": "Pause",
+      "category": "media",
+      "svg": "svg/pause.svg",
+      "png": "png/{size}/pause.png",
+      "tui": {
+        "nerd": "󰏤",
+        "nerd_code": "f03e4",
+        "nerd_name": "md-pause",
+        "unicode": "⏸",
+        "ascii": "||"
+      }
+    },
+    {
+      "key": "stop",
+      "name": "Stop",
+      "category": "media",
+      "svg": "svg/stop.svg",
+      "png": "png/{size}/stop.png",
+      "tui": {
+        "nerd": "󰓛",
+        "nerd_code": "f04db",
+        "nerd_name": "md-stop",
+        "unicode": "⏹",
+        "ascii": "[]"
+      }
+    },
+    {
+      "key": "skip-forward",
+      "name": "Skip forward",
+      "category": "media",
+      "keywords": [
+        "next-track"
+      ],
+      "svg": "svg/skip-forward.svg",
+      "png": "png/{size}/skip-forward.png",
+      "tui": {
+        "nerd": "󰒭",
+        "nerd_code": "f04ad",
+        "nerd_name": "md-skip_next",
+        "unicode": "⏭",
+        "ascii": ">|"
+      }
+    },
+    {
+      "key": "skip-back",
+      "name": "Skip back",
+      "category": "media",
+      "keywords": [
+        "previous-track"
+      ],
+      "svg": "svg/skip-back.svg",
+      "png": "png/{size}/skip-back.png",
+      "tui": {
+        "nerd": "󰒮",
+        "nerd_code": "f04ae",
+        "nerd_name": "md-skip_previous",
+        "unicode": "⏮",
+        "ascii": "|<"
+      }
+    },
+    {
+      "key": "fast-forward",
+      "name": "Fast forward",
+      "category": "media",
+      "svg": "svg/fast-forward.svg",
+      "png": "png/{size}/fast-forward.png",
+      "tui": {
+        "nerd": "󰈑",
+        "nerd_code": "f0211",
+        "nerd_name": "md-fast_forward",
+        "unicode": "⏩",
+        "ascii": ">>"
+      }
+    },
+    {
+      "key": "rewind",
+      "name": "Rewind",
+      "category": "media",
+      "svg": "svg/rewind.svg",
+      "png": "png/{size}/rewind.png",
+      "tui": {
+        "nerd": "󰑟",
+        "nerd_code": "f045f",
+        "nerd_name": "md-rewind",
+        "unicode": "⏪",
+        "ascii": "<<"
+      }
+    },
+    {
+      "key": "repeat",
+      "name": "Repeat",
+      "category": "media",
+      "keywords": [
+        "loop"
+      ],
+      "svg": "svg/repeat.svg",
+      "png": "png/{size}/repeat.png",
+      "tui": {
+        "nerd": "󰑖",
+        "nerd_code": "f0456",
+        "nerd_name": "md-repeat",
+        "unicode": "🔁",
+        "ascii": "<->"
+      }
+    },
+    {
+      "key": "shuffle",
+      "name": "Shuffle",
+      "category": "media",
+      "keywords": [
+        "random"
+      ],
+      "svg": "svg/shuffle.svg",
+      "png": "png/{size}/shuffle.png",
+      "tui": {
+        "nerd": "󰒟",
+        "nerd_code": "f049f",
+        "nerd_name": "md-shuffle_variant",
+        "unicode": "🔀",
+        "ascii": "><"
+      }
+    },
+    {
+      "key": "volume",
+      "name": "Volume",
+      "category": "media",
+      "aliases": [
+        "sound",
+        "speaker"
+      ],
+      "keywords": [
+        "audio"
+      ],
+      "svg": "svg/volume.svg",
+      "png": "png/{size}/volume.png",
+      "tui": {
+        "nerd": "󰕾",
+        "nerd_code": "f057e",
+        "nerd_name": "md-volume_high",
+        "unicode": "🔊",
+        "ascii": "<))"
+      }
+    },
+    {
+      "key": "volume-low",
+      "name": "Volume low",
+      "category": "media",
+      "svg": "svg/volume-low.svg",
+      "png": "png/{size}/volume-low.png",
+      "tui": {
+        "nerd": "󰖀",
+        "nerd_code": "f0580",
+        "nerd_name": "md-volume_medium",
+        "unicode": "🔉",
+        "ascii": "<)"
+      }
+    },
+    {
+      "key": "volume-off",
+      "name": "Volume off",
+      "category": "media",
+      "aliases": [
+        "mute"
+      ],
+      "keywords": [
+        "silent"
+      ],
+      "svg": "svg/volume-off.svg",
+      "png": "png/{size}/volume-off.png",
+      "tui": {
+        "nerd": "󰖁",
+        "nerd_code": "f0581",
+        "nerd_name": "md-volume_off",
+        "unicode": "🔇",
+        "ascii": "<x"
+      }
+    },
+    {
+      "key": "music",
+      "name": "Music",
+      "category": "media",
+      "aliases": [
+        "song"
+      ],
+      "keywords": [
+        "audio",
+        "note"
+      ],
+      "svg": "svg/music.svg",
+      "png": "png/{size}/music.png",
+      "tui": {
+        "nerd": "󰎇",
+        "nerd_code": "f0387",
+        "nerd_name": "md-music_note",
+        "unicode": "🎵",
+        "ascii": "#"
+      }
+    },
+    {
+      "key": "headphones",
+      "name": "Headphones",
+      "category": "media",
+      "keywords": [
+        "listen",
+        "audio"
+      ],
+      "svg": "svg/headphones.svg",
+      "png": "png/{size}/headphones.png",
+      "tui": {
+        "nerd": "󰋋",
+        "nerd_code": "f02cb",
+        "nerd_name": "md-headphones",
+        "unicode": "🎧",
+        "ascii": "hp"
+      }
+    },
+    {
+      "key": "camera",
+      "name": "Camera",
+      "category": "media",
+      "aliases": [
+        "photo-camera"
+      ],
+      "keywords": [
+        "photo",
+        "picture"
+      ],
+      "svg": "svg/camera.svg",
+      "png": "png/{size}/camera.png",
+      "tui": {
+        "nerd": "󰵝",
+        "nerd_code": "f0d5d",
+        "nerd_name": "md-camera_outline",
+        "unicode": "📷",
+        "ascii": "[o]"
+      }
+    },
+    {
+      "key": "image",
+      "name": "Image",
+      "category": "media",
+      "aliases": [
+        "picture",
+        "photo"
+      ],
+      "keywords": [
+        "gallery"
+      ],
+      "svg": "svg/image.svg",
+      "png": "png/{size}/image.png",
+      "tui": {
+        "nerd": "󰥶",
+        "nerd_code": "f0976",
+        "nerd_name": "md-image_outline",
+        "unicode": "🖼",
+        "ascii": "[^]"
+      }
+    },
+    {
+      "key": "film",
+      "name": "Film",
+      "category": "media",
+      "aliases": [
+        "movie"
+      ],
+      "keywords": [
+        "cinema"
+      ],
+      "svg": "svg/film.svg",
+      "png": "png/{size}/film.png",
+      "tui": {
+        "nerd": "󰈰",
+        "nerd_code": "f0230",
+        "nerd_name": "md-filmstrip",
+        "unicode": "🎞",
+        "ascii": "[#]"
+      }
+    },
+    {
+      "key": "radio",
+      "name": "Radio",
+      "category": "media",
+      "keywords": [
+        "broadcast",
+        "live",
+        "signal"
+      ],
+      "svg": "svg/radio.svg",
+      "png": "png/{size}/radio.png",
+      "tui": {
+        "nerd": "󰀃",
+        "nerd_code": "f0003",
+        "nerd_name": "md-access_point",
+        "unicode": "📻",
+        "ascii": "(o)"
+      }
+    },
+    {
+      "key": "tv",
+      "name": "Tv",
+      "category": "media",
+      "aliases": [
+        "television"
+      ],
+      "svg": "svg/tv.svg",
+      "png": "png/{size}/tv.png",
+      "tui": {
+        "nerd": "󰔂",
+        "nerd_code": "f0502",
+        "nerd_name": "md-television",
+        "unicode": "📺",
+        "ascii": "[_]"
+      }
+    },
+    {
+      "key": "cast",
+      "name": "Cast",
+      "category": "media",
+      "keywords": [
+        "screen-share"
+      ],
+      "svg": "svg/cast.svg",
+      "png": "png/{size}/cast.png",
+      "tui": {
+        "nerd": "󰄘",
+        "nerd_code": "f0118",
+        "nerd_name": "md-cast",
+        "unicode": "📡",
+        "ascii": "))"
+      }
+    },
+    {
+      "key": "file",
+      "name": "File",
+      "category": "file",
+      "aliases": [
+        "document"
+      ],
+      "keywords": [
+        "page"
+      ],
+      "svg": "svg/file.svg",
+      "png": "png/{size}/file.png",
+      "tui": {
+        "nerd": "󰈤",
+        "nerd_code": "f0224",
+        "nerd_name": "md-file_outline",
+        "unicode": "📄",
+        "ascii": "[f]"
+      }
+    },
+    {
+      "key": "file-text",
+      "name": "File text",
+      "category": "file",
+      "keywords": [
+        "document-text",
+        "text-file"
+      ],
+      "svg": "svg/file-text.svg",
+      "png": "png/{size}/file-text.png",
+      "tui": {
+        "nerd": "󰧮",
+        "nerd_code": "f09ee",
+        "nerd_name": "md-file_document_outline",
+        "unicode": "📄",
+        "ascii": "[t]"
+      }
+    },
+    {
+      "key": "file-plus",
+      "name": "File plus",
+      "category": "file",
+      "keywords": [
+        "new-file"
+      ],
+      "svg": "svg/file-plus.svg",
+      "png": "png/{size}/file-plus.png",
+      "tui": {
+        "nerd": "󰻭",
+        "nerd_code": "f0eed",
+        "nerd_name": "md-file_plus_outline",
+        "unicode": "📄",
+        "ascii": "[+]"
+      }
+    },
+    {
+      "key": "file-code",
+      "name": "File code",
+      "category": "file",
+      "keywords": [
+        "source"
+      ],
+      "svg": "svg/file-code.svg",
+      "png": "png/{size}/file-code.png",
+      "tui": {
+        "nerd": "󱀫",
+        "nerd_code": "f102b",
+        "nerd_name": "md-file_code_outline",
+        "unicode": "📄",
+        "ascii": "[<>]"
+      }
+    },
+    {
+      "key": "folder",
+      "name": "Folder",
+      "category": "file",
+      "aliases": [
+        "directory"
+      ],
+      "svg": "svg/folder.svg",
+      "png": "png/{size}/folder.png",
+      "tui": {
+        "nerd": "󰉖",
+        "nerd_code": "f0256",
+        "nerd_name": "md-folder_outline",
+        "unicode": "📁",
+        "ascii": "[d]"
+      }
+    },
+    {
+      "key": "folder-open",
+      "name": "Folder open",
+      "category": "file",
+      "svg": "svg/folder-open.svg",
+      "png": "png/{size}/folder-open.png",
+      "tui": {
+        "nerd": "󰷏",
+        "nerd_code": "f0dcf",
+        "nerd_name": "md-folder_open_outline",
+        "unicode": "📂",
+        "ascii": "[d]"
+      }
+    },
+    {
+      "key": "folder-plus",
+      "name": "Folder plus",
+      "category": "file",
+      "keywords": [
+        "new-folder"
+      ],
+      "svg": "svg/folder-plus.svg",
+      "png": "png/{size}/folder-plus.png",
+      "tui": {
+        "nerd": "󰮝",
+        "nerd_code": "f0b9d",
+        "nerd_name": "md-folder_plus_outline",
+        "unicode": "📁",
+        "ascii": "[d+]"
+      }
+    },
+    {
+      "key": "paperclip",
+      "name": "Paperclip",
+      "category": "file",
+      "aliases": [
+        "attachment",
+        "attach"
+      ],
+      "svg": "svg/paperclip.svg",
+      "png": "png/{size}/paperclip.png",
+      "tui": {
+        "nerd": "󰏢",
+        "nerd_code": "f03e2",
+        "nerd_name": "md-paperclip",
+        "unicode": "📎",
+        "ascii": "0/"
+      }
+    },
+    {
+      "key": "cloud",
+      "name": "Cloud",
+      "category": "file",
+      "svg": "svg/cloud.svg",
+      "png": "png/{size}/cloud.png",
+      "tui": {
+        "nerd": "󰅣",
+        "nerd_code": "f0163",
+        "nerd_name": "md-cloud_outline",
+        "unicode": "☁",
+        "ascii": "(~)"
+      }
+    },
+    {
+      "key": "cloud-upload",
+      "name": "Cloud upload",
+      "category": "file",
+      "svg": "svg/cloud-upload.svg",
+      "png": "png/{size}/cloud-upload.png",
+      "tui": {
+        "nerd": "󰭾",
+        "nerd_code": "f0b7e",
+        "nerd_name": "md-cloud_upload_outline",
+        "unicode": "☁",
+        "ascii": "(^)"
+      }
+    },
+    {
+      "key": "cloud-download",
+      "name": "Cloud download",
+      "category": "file",
+      "svg": "svg/cloud-download.svg",
+      "png": "png/{size}/cloud-download.png",
+      "tui": {
+        "nerd": "󰭽",
+        "nerd_code": "f0b7d",
+        "nerd_name": "md-cloud_download_outline",
+        "unicode": "☁",
+        "ascii": "(v)"
+      }
+    },
+    {
+      "key": "database",
+      "name": "Database",
+      "category": "file",
+      "aliases": [
+        "db"
+      ],
+      "keywords": [
+        "storage",
+        "sql"
+      ],
+      "svg": "svg/database.svg",
+      "png": "png/{size}/database.png",
+      "tui": {
+        "nerd": "󱘲",
+        "nerd_code": "f1632",
+        "nerd_name": "md-database_outline",
+        "unicode": "🛢",
+        "ascii": "[=]"
+      }
+    },
+    {
+      "key": "server",
+      "name": "Server",
+      "category": "file",
+      "keywords": [
+        "host",
+        "rack"
+      ],
+      "svg": "svg/server.svg",
+      "png": "png/{size}/server.png",
+      "tui": {
+        "nerd": "󰒋",
+        "nerd_code": "f048b",
+        "nerd_name": "md-server",
+        "unicode": "🖥",
+        "ascii": "[:]"
+      }
+    },
+    {
+      "key": "hard-drive",
+      "name": "Hard drive",
+      "category": "file",
+      "keywords": [
+        "disk",
+        "storage"
+      ],
+      "svg": "svg/hard-drive.svg",
+      "png": "png/{size}/hard-drive.png",
+      "tui": {
+        "nerd": "󰋊",
+        "nerd_code": "f02ca",
+        "nerd_name": "md-harddisk",
+        "unicode": "🖴",
+        "ascii": "[o]"
+      }
+    },
+    {
+      "key": "package",
+      "name": "Package",
+      "category": "file",
+      "aliases": [
+        "box"
+      ],
+      "keywords": [
+        "module",
+        "npm-package"
+      ],
+      "svg": "svg/package.svg",
+      "png": "png/{size}/package.png",
+      "tui": {
+        "nerd": "󰏗",
+        "nerd_code": "f03d7",
+        "nerd_name": "md-package_variant_closed",
+        "unicode": "📦",
+        "ascii": "[#]"
+      }
+    },
+    {
+      "key": "book",
+      "name": "Book",
+      "category": "file",
+      "keywords": [
+        "docs",
+        "manual",
+        "read"
+      ],
+      "svg": "svg/book.svg",
+      "png": "png/{size}/book.png",
+      "tui": {
+        "nerd": "󰭤",
+        "nerd_code": "f0b64",
+        "nerd_name": "md-book_outline",
+        "unicode": "📕",
+        "ascii": "[B]"
+      }
+    },
+    {
+      "key": "book-open",
+      "name": "Book open",
+      "category": "file",
+      "keywords": [
+        "docs",
+        "reading"
+      ],
+      "svg": "svg/book-open.svg",
+      "png": "png/{size}/book-open.png",
+      "tui": {
+        "nerd": "󰭣",
+        "nerd_code": "f0b63",
+        "nerd_name": "md-book_open_outline",
+        "unicode": "📖",
+        "ascii": "[]"
+      }
+    },
+    {
+      "key": "newspaper",
+      "name": "Newspaper",
+      "category": "file",
+      "keywords": [
+        "news",
+        "article",
+        "blog"
+      ],
+      "svg": "svg/newspaper.svg",
+      "png": "png/{size}/newspaper.png",
+      "tui": {
+        "nerd": "󱀄",
+        "nerd_code": "f1004",
+        "nerd_name": "md-newspaper_variant_outline",
+        "unicode": "📰",
+        "ascii": "[n]"
+      }
+    },
+    {
+      "key": "info",
+      "name": "Info",
+      "category": "status",
+      "aliases": [
+        "information"
+      ],
+      "keywords": [
+        "about"
+      ],
+      "svg": "svg/info.svg",
+      "png": "png/{size}/info.png",
+      "tui": {
+        "nerd": "󰋽",
+        "nerd_code": "f02fd",
+        "nerd_name": "md-information_outline",
+        "unicode": "ℹ",
+        "ascii": "i"
+      }
+    },
+    {
+      "key": "warning",
+      "name": "Warning",
+      "category": "status",
+      "aliases": [
+        "alert-triangle",
+        "caution"
+      ],
+      "keywords": [
+        "alert"
+      ],
+      "svg": "svg/warning.svg",
+      "png": "png/{size}/warning.png",
+      "tui": {
+        "nerd": "󰀪",
+        "nerd_code": "f002a",
+        "nerd_name": "md-alert_outline",
+        "unicode": "⚠",
+        "ascii": "!"
+      }
+    },
+    {
+      "key": "error",
+      "name": "Error",
+      "category": "status",
+      "aliases": [
+        "alert-circle"
+      ],
+      "keywords": [
+        "danger",
+        "failure"
+      ],
+      "svg": "svg/error.svg",
+      "png": "png/{size}/error.png",
+      "tui": {
+        "nerd": "󰗖",
+        "nerd_code": "f05d6",
+        "nerd_name": "md-alert_circle_outline",
+        "unicode": "⛔",
+        "ascii": "!!"
+      }
+    },
+    {
+      "key": "help",
+      "name": "Help",
+      "category": "status",
+      "aliases": [
+        "question",
+        "faq"
+      ],
+      "keywords": [
+        "support"
+      ],
+      "svg": "svg/help.svg",
+      "png": "png/{size}/help.png",
+      "tui": {
+        "nerd": "󰘥",
+        "nerd_code": "f0625",
+        "nerd_name": "md-help_circle_outline",
+        "unicode": "❓",
+        "ascii": "?"
+      }
+    },
+    {
+      "key": "ban",
+      "name": "Ban",
+      "category": "status",
+      "aliases": [
+        "blocked",
+        "forbidden"
+      ],
+      "keywords": [
+        "prohibited"
+      ],
+      "svg": "svg/ban.svg",
+      "png": "png/{size}/ban.png",
+      "tui": {
+        "nerd": "󰜺",
+        "nerd_code": "f073a",
+        "nerd_name": "md-cancel",
+        "unicode": "🚫",
+        "ascii": "(/)"
+      }
+    },
+    {
+      "key": "loader",
+      "name": "Loader",
+      "category": "status",
+      "aliases": [
+        "spinner",
+        "loading"
+      ],
+      "keywords": [
+        "busy"
+      ],
+      "svg": "svg/loader.svg",
+      "png": "png/{size}/loader.png",
+      "tui": {
+        "nerd": "󰝲",
+        "nerd_code": "f0772",
+        "nerd_name": "md-loading",
+        "unicode": "◌",
+        "ascii": "..."
+      }
+    },
+    {
+      "key": "clock",
+      "name": "Clock",
+      "category": "status",
+      "keywords": [
+        "time"
+      ],
+      "svg": "svg/clock.svg",
+      "png": "png/{size}/clock.png",
+      "tui": {
+        "nerd": "󰅐",
+        "nerd_code": "f0150",
+        "nerd_name": "md-clock_outline",
+        "unicode": "🕒",
+        "ascii": "(t)"
+      }
+    },
+    {
+      "key": "hourglass",
+      "name": "Hourglass",
+      "category": "status",
+      "aliases": [
+        "pending"
+      ],
+      "keywords": [
+        "wait"
+      ],
+      "svg": "svg/hourglass.svg",
+      "png": "png/{size}/hourglass.png",
+      "tui": {
+        "nerd": "󰔟",
+        "nerd_code": "f051f",
+        "nerd_name": "md-timer_sand",
+        "unicode": "⏳",
+        "ascii": "8"
+      }
+    },
+    {
+      "key": "activity",
+      "name": "Activity",
+      "category": "status",
+      "keywords": [
+        "pulse",
+        "health",
+        "monitor"
+      ],
+      "svg": "svg/activity.svg",
+      "png": "png/{size}/activity.png",
+      "tui": {
+        "nerd": "󰐰",
+        "nerd_code": "f0430",
+        "nerd_name": "md-pulse",
+        "unicode": "📈",
+        "ascii": "/\\/"
+      }
+    },
+    {
+      "key": "zap",
+      "name": "Zap",
+      "category": "status",
+      "aliases": [
+        "bolt",
+        "lightning"
+      ],
+      "keywords": [
+        "fast",
+        "power"
+      ],
+      "svg": "svg/zap.svg",
+      "png": "png/{size}/zap.png",
+      "tui": {
+        "nerd": "󱐌",
+        "nerd_code": "f140c",
+        "nerd_name": "md-lightning_bolt_outline",
+        "unicode": "⚡",
+        "ascii": "/"
+      }
+    },
+    {
+      "key": "shield",
+      "name": "Shield",
+      "category": "status",
+      "keywords": [
+        "security",
+        "protection"
+      ],
+      "svg": "svg/shield.svg",
+      "png": "png/{size}/shield.png",
+      "tui": {
+        "nerd": "󰒙",
+        "nerd_code": "f0499",
+        "nerd_name": "md-shield_outline",
+        "unicode": "🛡",
+        "ascii": "[S]"
+      }
+    },
+    {
+      "key": "shield-check",
+      "name": "Shield check",
+      "category": "status",
+      "keywords": [
+        "secure",
+        "verified",
+        "protected"
+      ],
+      "svg": "svg/shield-check.svg",
+      "png": "png/{size}/shield-check.png",
+      "tui": {
+        "nerd": "󰳈",
+        "nerd_code": "f0cc8",
+        "nerd_name": "md-shield_check_outline",
+        "unicode": "🛡",
+        "ascii": "[v]"
+      }
+    },
+    {
+      "key": "bug",
+      "name": "Bug",
+      "category": "status",
+      "keywords": [
+        "issue",
+        "defect"
+      ],
+      "svg": "svg/bug.svg",
+      "png": "png/{size}/bug.png",
+      "tui": {
+        "nerd": "󰨰",
+        "nerd_code": "f0a30",
+        "nerd_name": "md-bug_outline",
+        "unicode": "🐛",
+        "ascii": "bug"
+      }
+    },
+    {
+      "key": "sparkles",
+      "name": "Sparkles",
+      "category": "status",
+      "aliases": [
+        "ai",
+        "magic"
+      ],
+      "keywords": [
+        "new"
+      ],
+      "svg": "svg/sparkles.svg",
+      "png": "png/{size}/sparkles.png",
+      "tui": {
+        "nerd": "󰙴",
+        "nerd_code": "f0674",
+        "nerd_name": "md-creation",
+        "unicode": "✨",
+        "ascii": "*+"
+      }
+    },
+    {
+      "key": "checkbox",
+      "name": "Checkbox",
+      "category": "status",
+      "aliases": [
+        "check-square"
+      ],
+      "keywords": [
+        "checked"
+      ],
+      "svg": "svg/checkbox.svg",
+      "png": "png/{size}/checkbox.png",
+      "tui": {
+        "nerd": "󰄵",
+        "nerd_code": "f0135",
+        "nerd_name": "md-checkbox_marked_outline",
+        "unicode": "☑",
+        "ascii": "[x]"
+      }
+    },
+    {
+      "key": "checkbox-empty",
+      "name": "Checkbox empty",
+      "category": "status",
+      "aliases": [
+        "square"
+      ],
+      "keywords": [
+        "unchecked"
+      ],
+      "svg": "svg/checkbox-empty.svg",
+      "png": "png/{size}/checkbox-empty.png",
+      "tui": {
+        "nerd": "󰄱",
+        "nerd_code": "f0131",
+        "nerd_name": "md-checkbox_blank_outline",
+        "unicode": "☐",
+        "ascii": "[ ]"
+      }
+    },
+    {
+      "key": "radio-on",
+      "name": "Radio on",
+      "category": "status",
+      "keywords": [
+        "selected"
+      ],
+      "svg": "svg/radio-on.svg",
+      "png": "png/{size}/radio-on.png",
+      "tui": {
+        "nerd": "󰐾",
+        "nerd_code": "f043e",
+        "nerd_name": "md-radiobox_marked",
+        "unicode": "◉",
+        "ascii": "(*)"
+      }
+    },
+    {
+      "key": "radio-off",
+      "name": "Radio off",
+      "category": "status",
+      "keywords": [
+        "circle",
+        "unselected"
+      ],
+      "svg": "svg/radio-off.svg",
+      "png": "png/{size}/radio-off.png",
+      "tui": {
+        "nerd": "",
+        "nerd_code": "f111",
+        "nerd_name": "fa-circle",
+        "unicode": "○",
+        "ascii": "( )"
+      }
+    },
+    {
+      "key": "toggle-on",
+      "name": "Toggle on",
+      "category": "status",
+      "keywords": [
+        "switch-on",
+        "enabled"
+      ],
+      "svg": "svg/toggle-on.svg",
+      "png": "png/{size}/toggle-on.png",
+      "tui": {
+        "nerd": "󰔡",
+        "nerd_code": "f0521",
+        "nerd_name": "md-toggle_switch",
+        "unicode": "🔘",
+        "ascii": "[=o]"
+      }
+    },
+    {
+      "key": "toggle-off",
+      "name": "Toggle off",
+      "category": "status",
+      "keywords": [
+        "switch-off",
+        "disabled"
+      ],
+      "svg": "svg/toggle-off.svg",
+      "png": "png/{size}/toggle-off.png",
+      "tui": {
+        "nerd": "󰨙",
+        "nerd_code": "f0a19",
+        "nerd_name": "md-toggle_switch_off_outline",
+        "unicode": "🔘",
+        "ascii": "[o=]"
+      }
+    },
+    {
+      "key": "online",
+      "name": "Online",
+      "category": "status",
+      "keywords": [
+        "status",
+        "presence",
+        "live"
+      ],
+      "svg": "svg/online.svg",
+      "png": "png/{size}/online.png",
+      "tui": {
+        "nerd": "󰪥",
+        "nerd_code": "f0aa5",
+        "nerd_name": "md-circle_slice_8",
+        "unicode": "🟢",
+        "ascii": "(o)"
+      }
+    },
+    {
+      "key": "calendar",
+      "name": "Calendar",
+      "category": "time",
+      "aliases": [
+        "date"
+      ],
+      "keywords": [
+        "schedule",
+        "event"
+      ],
+      "svg": "svg/calendar.svg",
+      "png": "png/{size}/calendar.png",
+      "tui": {
+        "nerd": "󰭦",
+        "nerd_code": "f0b66",
+        "nerd_name": "md-calendar_blank_outline",
+        "unicode": "📅",
+        "ascii": "[=]"
+      }
+    },
+    {
+      "key": "calendar-check",
+      "name": "Calendar check",
+      "category": "time",
+      "keywords": [
+        "booked"
+      ],
+      "svg": "svg/calendar-check.svg",
+      "png": "png/{size}/calendar-check.png",
+      "tui": {
+        "nerd": "󰱄",
+        "nerd_code": "f0c44",
+        "nerd_name": "md-calendar_check_outline",
+        "unicode": "📅",
+        "ascii": "[v]"
+      }
+    },
+    {
+      "key": "calendar-plus",
+      "name": "Calendar plus",
+      "category": "time",
+      "keywords": [
+        "add-event"
+      ],
+      "svg": "svg/calendar-plus.svg",
+      "png": "png/{size}/calendar-plus.png",
+      "tui": {
+        "nerd": "󰃳",
+        "nerd_code": "f00f3",
+        "nerd_name": "md-calendar_plus",
+        "unicode": "📅",
+        "ascii": "[+]"
+      }
+    },
+    {
+      "key": "alarm",
+      "name": "Alarm",
+      "category": "time",
+      "aliases": [
+        "alarm-clock"
+      ],
+      "keywords": [
+        "reminder",
+        "wake"
+      ],
+      "svg": "svg/alarm.svg",
+      "png": "png/{size}/alarm.png",
+      "tui": {
+        "nerd": "󰀠",
+        "nerd_code": "f0020",
+        "nerd_name": "md-alarm",
+        "unicode": "⏰",
+        "ascii": "(!)"
+      }
+    },
+    {
+      "key": "timer",
+      "name": "Timer",
+      "category": "time",
+      "aliases": [
+        "stopwatch"
+      ],
+      "keywords": [
+        "countdown"
+      ],
+      "svg": "svg/timer.svg",
+      "png": "png/{size}/timer.png",
+      "tui": {
+        "nerd": "󰔛",
+        "nerd_code": "f051b",
+        "nerd_name": "md-timer_outline",
+        "unicode": "⏱",
+        "ascii": "(:)"
+      }
+    },
+    {
+      "key": "history",
+      "name": "History",
+      "category": "time",
+      "aliases": [
+        "recent"
+      ],
+      "keywords": [
+        "past",
+        "log"
+      ],
+      "svg": "svg/history.svg",
+      "png": "png/{size}/history.png",
+      "tui": {
+        "nerd": "󰋚",
+        "nerd_code": "f02da",
+        "nerd_name": "md-history",
+        "unicode": "🕘",
+        "ascii": "<(t)"
+      }
+    },
+    {
+      "key": "cart",
+      "name": "Cart",
+      "category": "commerce",
+      "aliases": [
+        "shopping-cart"
+      ],
+      "keywords": [
+        "basket",
+        "checkout"
+      ],
+      "svg": "svg/cart.svg",
+      "png": "png/{size}/cart.png",
+      "tui": {
+        "nerd": "󰄑",
+        "nerd_code": "f0111",
+        "nerd_name": "md-cart_outline",
+        "unicode": "🛒",
+        "ascii": "\\_/"
+      }
+    },
+    {
+      "key": "bag",
+      "name": "Bag",
+      "category": "commerce",
+      "aliases": [
+        "shopping-bag"
+      ],
+      "keywords": [
+        "shop"
+      ],
+      "svg": "svg/bag.svg",
+      "png": "png/{size}/bag.png",
+      "tui": {
+        "nerd": "󱇕",
+        "nerd_code": "f11d5",
+        "nerd_name": "md-shopping_outline",
+        "unicode": "🛍",
+        "ascii": "[u]"
+      }
+    },
+    {
+      "key": "credit-card",
+      "name": "Credit card",
+      "category": "commerce",
+      "aliases": [
+        "payment",
+        "card"
+      ],
+      "keywords": [
+        "billing"
+      ],
+      "svg": "svg/credit-card.svg",
+      "png": "png/{size}/credit-card.png",
+      "tui": {
+        "nerd": "󰆛",
+        "nerd_code": "f019b",
+        "nerd_name": "md-credit_card_outline",
+        "unicode": "💳",
+        "ascii": "[=]"
+      }
+    },
+    {
+      "key": "wallet",
+      "name": "Wallet",
+      "category": "commerce",
+      "keywords": [
+        "money",
+        "crypto-wallet"
+      ],
+      "svg": "svg/wallet.svg",
+      "png": "png/{size}/wallet.png",
+      "tui": {
+        "nerd": "󰯝",
+        "nerd_code": "f0bdd",
+        "nerd_name": "md-wallet_outline",
+        "unicode": "👛",
+        "ascii": "[$]"
+      }
+    },
+    {
+      "key": "dollar",
+      "name": "Dollar",
+      "category": "commerce",
+      "aliases": [
+        "usd",
+        "currency"
+      ],
+      "keywords": [
+        "money",
+        "price"
+      ],
+      "svg": "svg/dollar.svg",
+      "png": "png/{size}/dollar.png",
+      "tui": {
+        "nerd": "󰇁",
+        "nerd_code": "f01c1",
+        "nerd_name": "md-currency_usd",
+        "unicode": "$",
+        "ascii": "$"
+      }
+    },
+    {
+      "key": "receipt",
+      "name": "Receipt",
+      "category": "commerce",
+      "aliases": [
+        "invoice"
+      ],
+      "keywords": [
+        "bill",
+        "order"
+      ],
+      "svg": "svg/receipt.svg",
+      "png": "png/{size}/receipt.png",
+      "tui": {
+        "nerd": "󰑉",
+        "nerd_code": "f0449",
+        "nerd_name": "md-receipt",
+        "unicode": "🧾",
+        "ascii": "[$]"
+      }
+    },
+    {
+      "key": "gift",
+      "name": "Gift",
+      "category": "commerce",
+      "aliases": [
+        "present"
+      ],
+      "keywords": [
+        "reward"
+      ],
+      "svg": "svg/gift.svg",
+      "png": "png/{size}/gift.png",
+      "tui": {
+        "nerd": "󰊡",
+        "nerd_code": "f02a1",
+        "nerd_name": "md-gift_outline",
+        "unicode": "🎁",
+        "ascii": "[+]"
+      }
+    },
+    {
+      "key": "store",
+      "name": "Store",
+      "category": "commerce",
+      "aliases": [
+        "storefront"
+      ],
+      "keywords": [
+        "shop",
+        "marketplace"
+      ],
+      "svg": "svg/store.svg",
+      "png": "png/{size}/store.png",
+      "tui": {
+        "nerd": "󱃁",
+        "nerd_code": "f10c1",
+        "nerd_name": "md-storefront_outline",
+        "unicode": "🏪",
+        "ascii": "[S]"
+      }
+    },
+    {
+      "key": "truck",
+      "name": "Truck",
+      "category": "commerce",
+      "aliases": [
+        "shipping",
+        "delivery"
+      ],
+      "svg": "svg/truck.svg",
+      "png": "png/{size}/truck.png",
+      "tui": {
+        "nerd": "󱊝",
+        "nerd_code": "f129d",
+        "nerd_name": "md-truck_outline",
+        "unicode": "🚚",
+        "ascii": "[=o"
+      }
+    },
+    {
+      "key": "percent",
+      "name": "Percent",
+      "category": "commerce",
+      "aliases": [
+        "discount"
+      ],
+      "keywords": [
+        "sale",
+        "coupon"
+      ],
+      "svg": "svg/percent.svg",
+      "png": "png/{size}/percent.png",
+      "tui": {
+        "nerd": "󰏰",
+        "nerd_code": "f03f0",
+        "nerd_name": "md-percent",
+        "unicode": "%",
+        "ascii": "%"
+      }
+    },
+    {
+      "key": "coins",
+      "name": "Coins",
+      "category": "commerce",
+      "keywords": [
+        "money",
+        "tokens",
+        "credits"
+      ],
+      "svg": "svg/coins.svg",
+      "png": "png/{size}/coins.png",
+      "tui": {
+        "nerd": "󱢐",
+        "nerd_code": "f1890",
+        "nerd_name": "md-hand_coin_outline",
+        "unicode": "🪙",
+        "ascii": "(o)"
+      }
+    },
+    {
+      "key": "barcode",
+      "name": "Barcode",
+      "category": "commerce",
+      "keywords": [
+        "scan",
+        "sku"
+      ],
+      "svg": "svg/barcode.svg",
+      "png": "png/{size}/barcode.png",
+      "tui": {
+        "nerd": "󰁱",
+        "nerd_code": "f0071",
+        "nerd_name": "md-barcode",
+        "unicode": "▥",
+        "ascii": "|||"
+      }
+    },
+    {
+      "key": "qr-code",
+      "name": "Qr code",
+      "category": "commerce",
+      "aliases": [
+        "qr"
+      ],
+      "keywords": [
+        "scan"
+      ],
+      "svg": "svg/qr-code.svg",
+      "png": "png/{size}/qr-code.png",
+      "tui": {
+        "nerd": "󰐲",
+        "nerd_code": "f0432",
+        "nerd_name": "md-qrcode",
+        "unicode": "▦",
+        "ascii": "[#]"
+      }
+    },
+    {
+      "key": "terminal",
+      "name": "Terminal",
+      "category": "dev",
+      "aliases": [
+        "console",
+        "shell",
+        "cli"
+      ],
+      "keywords": [
+        "command-line"
+      ],
+      "svg": "svg/terminal.svg",
+      "png": "png/{size}/terminal.png",
+      "tui": {
+        "nerd": "󰆍",
+        "nerd_code": "f018d",
+        "nerd_name": "md-console",
+        "unicode": "⌨",
+        "ascii": ">_"
+      }
+    },
+    {
+      "key": "code",
+      "name": "Code",
+      "category": "dev",
+      "aliases": [
+        "source-code"
+      ],
+      "keywords": [
+        "source",
+        "html",
+        "develop"
+      ],
+      "svg": "svg/code.svg",
+      "png": "png/{size}/code.png",
+      "tui": {
+        "nerd": "󰅴",
+        "nerd_code": "f0174",
+        "nerd_name": "md-code_tags",
+        "unicode": "⟨⟩",
+        "ascii": "</>"
+      }
+    },
+    {
+      "key": "braces",
+      "name": "Braces",
+      "category": "dev",
+      "aliases": [
+        "json",
+        "curly-braces"
+      ],
+      "keywords": [
+        "object",
+        "curly"
+      ],
+      "svg": "svg/braces.svg",
+      "png": "png/{size}/braces.png",
+      "tui": {
+        "nerd": "󰅩",
+        "nerd_code": "f0169",
+        "nerd_name": "md-code_braces",
+        "unicode": "{}",
+        "ascii": "{}"
+      }
+    },
+    {
+      "key": "git-branch",
+      "name": "Git branch",
+      "category": "dev",
+      "keywords": [
+        "branch"
+      ],
+      "svg": "svg/git-branch.svg",
+      "png": "png/{size}/git-branch.png",
+      "tui": {
+        "nerd": "",
+        "nerd_code": "f418",
+        "nerd_name": "oct-git_branch",
+        "unicode": "⎇",
+        "ascii": "Y"
+      }
+    },
+    {
+      "key": "git-commit",
+      "name": "Git commit",
+      "category": "dev",
+      "keywords": [
+        "commit"
+      ],
+      "svg": "svg/git-commit.svg",
+      "png": "png/{size}/git-commit.png",
+      "tui": {
+        "nerd": "",
+        "nerd_code": "f417",
+        "nerd_name": "oct-git_commit",
+        "unicode": "⊸",
+        "ascii": "-o-"
+      }
+    },
+    {
+      "key": "git-merge",
+      "name": "Git merge",
+      "category": "dev",
+      "keywords": [
+        "merge"
+      ],
+      "svg": "svg/git-merge.svg",
+      "png": "png/{size}/git-merge.png",
+      "tui": {
+        "nerd": "",
+        "nerd_code": "f419",
+        "nerd_name": "oct-git_merge",
+        "unicode": "⑂",
+        "ascii": ">-"
+      }
+    },
+    {
+      "key": "git-pull-request",
+      "name": "Git pull request",
+      "category": "dev",
+      "aliases": [
+        "pull-request",
+        "merge-request"
+      ],
+      "keywords": [
+        "pr"
+      ],
+      "svg": "svg/git-pull-request.svg",
+      "png": "png/{size}/git-pull-request.png",
+      "tui": {
+        "nerd": "",
+        "nerd_code": "f407",
+        "nerd_name": "oct-git_pull_request",
+        "unicode": "⇄",
+        "ascii": "PR"
+      }
+    },
+    {
+      "key": "cpu",
+      "name": "Cpu",
+      "category": "dev",
+      "aliases": [
+        "chip",
+        "processor"
+      ],
+      "keywords": [
+        "hardware"
+      ],
+      "svg": "svg/cpu.svg",
+      "png": "png/{size}/cpu.png",
+      "tui": {
+        "nerd": "󰘚",
+        "nerd_code": "f061a",
+        "nerd_name": "md-chip",
+        "unicode": "🔲",
+        "ascii": "[#]"
+      }
+    },
+    {
+      "key": "command",
+      "name": "Command",
+      "category": "dev",
+      "aliases": [
+        "cmd"
+      ],
+      "keywords": [
+        "shortcut",
+        "keyboard-shortcut"
+      ],
+      "svg": "svg/command.svg",
+      "png": "png/{size}/command.png",
+      "tui": {
+        "nerd": "󰘳",
+        "nerd_code": "f0633",
+        "nerd_name": "md-apple_keyboard_command",
+        "unicode": "⌘",
+        "ascii": "cmd"
+      }
+    },
+    {
+      "key": "hash",
+      "name": "Hash",
+      "category": "dev",
+      "aliases": [
+        "hashtag"
+      ],
+      "keywords": [
+        "number",
+        "channel"
+      ],
+      "svg": "svg/hash.svg",
+      "png": "png/{size}/hash.png",
+      "tui": {
+        "nerd": "󰐣",
+        "nerd_code": "f0423",
+        "nerd_name": "md-pound",
+        "unicode": "#",
+        "ascii": "#"
+      }
+    },
+    {
+      "key": "plug",
+      "name": "Plug",
+      "category": "dev",
+      "aliases": [
+        "integration"
+      ],
+      "keywords": [
+        "connect",
+        "api"
+      ],
+      "svg": "svg/plug.svg",
+      "png": "png/{size}/plug.png",
+      "tui": {
+        "nerd": "󱐥",
+        "nerd_code": "f1425",
+        "nerd_name": "md-power_plug_outline",
+        "unicode": "🔌",
+        "ascii": "-["
+      }
+    },
+    {
+      "key": "webhook",
+      "name": "Webhook",
+      "category": "dev",
+      "keywords": [
+        "callback",
+        "hook"
+      ],
+      "svg": "svg/webhook.svg",
+      "png": "png/{size}/webhook.png",
+      "tui": {
+        "nerd": "󰘯",
+        "nerd_code": "f062f",
+        "nerd_name": "md-webhook",
+        "unicode": "🪝",
+        "ascii": "<~>"
+      }
+    },
+    {
+      "key": "gauge",
+      "name": "Gauge",
+      "category": "dev",
+      "keywords": [
+        "speed",
+        "performance",
+        "dashboard",
+        "meter"
+      ],
+      "svg": "svg/gauge.svg",
+      "png": "png/{size}/gauge.png",
+      "tui": {
+        "nerd": "󰊚",
+        "nerd_code": "f029a",
+        "nerd_name": "md-gauge",
+        "unicode": "⏲",
+        "ascii": "(/)"
+      }
+    },
+    {
+      "key": "flask",
+      "name": "Flask",
+      "category": "dev",
+      "aliases": [
+        "experiment",
+        "lab"
+      ],
+      "keywords": [
+        "test",
+        "beta"
+      ],
+      "svg": "svg/flask.svg",
+      "png": "png/{size}/flask.png",
+      "tui": {
+        "nerd": "󰂖",
+        "nerd_code": "f0096",
+        "nerd_name": "md-flask_outline",
+        "unicode": "⚗",
+        "ascii": "/_\\"
+      }
+    },
+    {
+      "key": "api",
+      "name": "Api",
+      "category": "dev",
+      "keywords": [
+        "endpoint",
+        "rest"
+      ],
+      "svg": "svg/api.svg",
+      "png": "png/{size}/api.png",
+      "tui": {
+        "nerd": "󱂛",
+        "nerd_code": "f109b",
+        "nerd_name": "md-api",
+        "unicode": "⚙",
+        "ascii": "api"
+      }
+    },
+    {
+      "key": "container",
+      "name": "Container",
+      "category": "dev",
+      "keywords": [
+        "docker",
+        "cube",
+        "image"
+      ],
+      "svg": "svg/container.svg",
+      "png": "png/{size}/container.png",
+      "tui": {
+        "nerd": "󰆧",
+        "nerd_code": "f01a7",
+        "nerd_name": "md-cube_outline",
+        "unicode": "📦",
+        "ascii": "[c]"
+      }
+    },
+    {
+      "key": "laptop",
+      "name": "Laptop",
+      "category": "device",
+      "aliases": [
+        "computer"
+      ],
+      "keywords": [
+        "notebook"
+      ],
+      "svg": "svg/laptop.svg",
+      "png": "png/{size}/laptop.png",
+      "tui": {
+        "nerd": "󰌢",
+        "nerd_code": "f0322",
+        "nerd_name": "md-laptop",
+        "unicode": "💻",
+        "ascii": "[_]"
+      }
+    },
+    {
+      "key": "monitor",
+      "name": "Monitor",
+      "category": "device",
+      "aliases": [
+        "desktop",
+        "display"
+      ],
+      "keywords": [
+        "screen"
+      ],
+      "svg": "svg/monitor.svg",
+      "png": "png/{size}/monitor.png",
+      "tui": {
+        "nerd": "󰍹",
+        "nerd_code": "f0379",
+        "nerd_name": "md-monitor",
+        "unicode": "🖥",
+        "ascii": "[ ]"
+      }
+    },
+    {
+      "key": "smartphone",
+      "name": "Smartphone",
+      "category": "device",
+      "aliases": [
+        "mobile",
+        "cellphone"
+      ],
+      "keywords": [
+        "phone-device",
+        "cell"
+      ],
+      "svg": "svg/smartphone.svg",
+      "png": "png/{size}/smartphone.png",
+      "tui": {
+        "nerd": "󰄜",
+        "nerd_code": "f011c",
+        "nerd_name": "md-cellphone",
+        "unicode": "📱",
+        "ascii": "[.]"
+      }
+    },
+    {
+      "key": "tablet",
+      "name": "Tablet",
+      "category": "device",
+      "keywords": [
+        "ipad"
+      ],
+      "svg": "svg/tablet.svg",
+      "png": "png/{size}/tablet.png",
+      "tui": {
+        "nerd": "󰓶",
+        "nerd_code": "f04f6",
+        "nerd_name": "md-tablet",
+        "unicode": "📱",
+        "ascii": "[..]"
+      }
+    },
+    {
+      "key": "watch",
+      "name": "Watch",
+      "category": "device",
+      "keywords": [
+        "smartwatch",
+        "wearable"
+      ],
+      "svg": "svg/watch.svg",
+      "png": "png/{size}/watch.png",
+      "tui": {
+        "nerd": "󰖉",
+        "nerd_code": "f0589",
+        "nerd_name": "md-watch",
+        "unicode": "⌚",
+        "ascii": "(:)"
+      }
+    },
+    {
+      "key": "keyboard",
+      "name": "Keyboard",
+      "category": "device",
+      "keywords": [
+        "typing",
+        "input"
+      ],
+      "svg": "svg/keyboard.svg",
+      "png": "png/{size}/keyboard.png",
+      "tui": {
+        "nerd": "󰥻",
+        "nerd_code": "f097b",
+        "nerd_name": "md-keyboard_outline",
+        "unicode": "⌨",
+        "ascii": "[kb]"
+      }
+    },
+    {
+      "key": "mouse",
+      "name": "Mouse",
+      "category": "device",
+      "keywords": [
+        "pointer",
+        "click"
+      ],
+      "svg": "svg/mouse.svg",
+      "png": "png/{size}/mouse.png",
+      "tui": {
+        "nerd": "󰍽",
+        "nerd_code": "f037d",
+        "nerd_name": "md-mouse",
+        "unicode": "🖱",
+        "ascii": "(|)"
+      }
+    },
+    {
+      "key": "wifi",
+      "name": "Wifi",
+      "category": "device",
+      "keywords": [
+        "wireless",
+        "network",
+        "internet"
+      ],
+      "svg": "svg/wifi.svg",
+      "png": "png/{size}/wifi.png",
+      "tui": {
+        "nerd": "󰖩",
+        "nerd_code": "f05a9",
+        "nerd_name": "md-wifi",
+        "unicode": "📶",
+        "ascii": "((."
+      }
+    },
+    {
+      "key": "wifi-off",
+      "name": "Wifi off",
+      "category": "device",
+      "keywords": [
+        "offline",
+        "no-network"
+      ],
+      "svg": "svg/wifi-off.svg",
+      "png": "png/{size}/wifi-off.png",
+      "tui": {
+        "nerd": "󰖪",
+        "nerd_code": "f05aa",
+        "nerd_name": "md-wifi_off",
+        "unicode": "📵",
+        "ascii": "x(("
+      }
+    },
+    {
+      "key": "bluetooth",
+      "name": "Bluetooth",
+      "category": "device",
+      "keywords": [
+        "wireless",
+        "pair"
+      ],
+      "svg": "svg/bluetooth.svg",
+      "png": "png/{size}/bluetooth.png",
+      "tui": {
+        "nerd": "󰂯",
+        "nerd_code": "f00af",
+        "nerd_name": "md-bluetooth",
+        "unicode": "ᛒ",
+        "ascii": "B"
+      }
+    },
+    {
+      "key": "battery",
+      "name": "Battery",
+      "category": "device",
+      "keywords": [
+        "power",
+        "charge"
+      ],
+      "svg": "svg/battery.svg",
+      "png": "png/{size}/battery.png",
+      "tui": {
+        "nerd": "󰂎",
+        "nerd_code": "f008e",
+        "nerd_name": "md-battery_outline",
+        "unicode": "🔋",
+        "ascii": "[=="
+      }
+    },
+    {
+      "key": "battery-charging",
+      "name": "Battery charging",
+      "category": "device",
+      "keywords": [
+        "charging"
+      ],
+      "svg": "svg/battery-charging.svg",
+      "png": "png/{size}/battery-charging.png",
+      "tui": {
+        "nerd": "󰂄",
+        "nerd_code": "f0084",
+        "nerd_name": "md-battery_charging",
+        "unicode": "🔌",
+        "ascii": "[=~"
+      }
+    },
+    {
+      "key": "cell-signal",
+      "name": "Cell signal",
+      "category": "device",
+      "aliases": [
+        "reception"
+      ],
+      "keywords": [
+        "bars",
+        "cellular"
+      ],
+      "svg": "svg/cell-signal.svg",
+      "png": "png/{size}/cell-signal.png",
+      "tui": {
+        "nerd": "󰒢",
+        "nerd_code": "f04a2",
+        "nerd_name": "md-signal",
+        "unicode": "📶",
+        "ascii": ".:|"
+      }
+    },
+    {
+      "key": "bold",
+      "name": "Bold",
+      "category": "editor",
+      "keywords": [
+        "strong"
+      ],
+      "svg": "svg/bold.svg",
+      "png": "png/{size}/bold.png",
+      "tui": {
+        "nerd": "󰉤",
+        "nerd_code": "f0264",
+        "nerd_name": "md-format_bold",
+        "unicode": "𝐁",
+        "ascii": "B"
+      }
+    },
+    {
+      "key": "italic",
+      "name": "Italic",
+      "category": "editor",
+      "keywords": [
+        "emphasis"
+      ],
+      "svg": "svg/italic.svg",
+      "png": "png/{size}/italic.png",
+      "tui": {
+        "nerd": "󰉷",
+        "nerd_code": "f0277",
+        "nerd_name": "md-format_italic",
+        "unicode": "𝐼",
+        "ascii": "/"
+      }
+    },
+    {
+      "key": "underline",
+      "name": "Underline",
+      "category": "editor",
+      "svg": "svg/underline.svg",
+      "png": "png/{size}/underline.png",
+      "tui": {
+        "nerd": "󰊇",
+        "nerd_code": "f0287",
+        "nerd_name": "md-format_underline",
+        "unicode": "U̲",
+        "ascii": "_"
+      }
+    },
+    {
+      "key": "strikethrough",
+      "name": "Strikethrough",
+      "category": "editor",
+      "svg": "svg/strikethrough.svg",
+      "png": "png/{size}/strikethrough.png",
+      "tui": {
+        "nerd": "󰊀",
+        "nerd_code": "f0280",
+        "nerd_name": "md-format_strikethrough",
+        "unicode": "S̶",
+        "ascii": "-s-"
+      }
+    },
+    {
+      "key": "heading",
+      "name": "Heading",
+      "category": "editor",
+      "keywords": [
+        "title",
+        "h1"
+      ],
+      "svg": "svg/heading.svg",
+      "png": "png/{size}/heading.png",
+      "tui": {
+        "nerd": "󰉴",
+        "nerd_code": "f0274",
+        "nerd_name": "md-format_header_pound",
+        "unicode": "H",
+        "ascii": "H"
+      }
+    },
+    {
+      "key": "list-ordered",
+      "name": "List ordered",
+      "category": "editor",
+      "keywords": [
+        "numbered-list"
+      ],
+      "svg": "svg/list-ordered.svg",
+      "png": "png/{size}/list-ordered.png",
+      "tui": {
+        "nerd": "󰉻",
+        "nerd_code": "f027b",
+        "nerd_name": "md-format_list_numbered",
+        "unicode": "⒈",
+        "ascii": "1."
+      }
+    },
+    {
+      "key": "list-bullet",
+      "name": "List bullet",
+      "category": "editor",
+      "keywords": [
+        "bullet-list",
+        "unordered-list"
+      ],
+      "svg": "svg/list-bullet.svg",
+      "png": "png/{size}/list-bullet.png",
+      "tui": {
+        "nerd": "󰉹",
+        "nerd_code": "f0279",
+        "nerd_name": "md-format_list_bulleted",
+        "unicode": "•",
+        "ascii": "*"
+      }
+    },
+    {
+      "key": "quote",
+      "name": "Quote",
+      "category": "editor",
+      "keywords": [
+        "blockquote",
+        "citation"
+      ],
+      "svg": "svg/quote.svg",
+      "png": "png/{size}/quote.png",
+      "tui": {
+        "nerd": "󰝗",
+        "nerd_code": "f0757",
+        "nerd_name": "md-format_quote_open",
+        "unicode": "❝",
+        "ascii": "\""
+      }
+    },
+    {
+      "key": "align-left",
+      "name": "Align left",
+      "category": "editor",
+      "svg": "svg/align-left.svg",
+      "png": "png/{size}/align-left.png",
+      "tui": {
+        "nerd": "󰉢",
+        "nerd_code": "f0262",
+        "nerd_name": "md-format_align_left",
+        "unicode": "⫷",
+        "ascii": "|="
+      }
+    },
+    {
+      "key": "align-center",
+      "name": "Align center",
+      "category": "editor",
+      "svg": "svg/align-center.svg",
+      "png": "png/{size}/align-center.png",
+      "tui": {
+        "nerd": "󰉠",
+        "nerd_code": "f0260",
+        "nerd_name": "md-format_align_center",
+        "unicode": "≡",
+        "ascii": "="
+      }
+    },
+    {
+      "key": "align-right",
+      "name": "Align right",
+      "category": "editor",
+      "svg": "svg/align-right.svg",
+      "png": "png/{size}/align-right.png",
+      "tui": {
+        "nerd": "󰉣",
+        "nerd_code": "f0263",
+        "nerd_name": "md-format_align_right",
+        "unicode": "⫸",
+        "ascii": "=|"
+      }
+    },
+    {
+      "key": "type",
+      "name": "Type",
+      "category": "editor",
+      "keywords": [
+        "text",
+        "font",
+        "typography"
+      ],
+      "svg": "svg/type.svg",
+      "png": "png/{size}/type.png",
+      "tui": {
+        "nerd": "󰊄",
+        "nerd_code": "f0284",
+        "nerd_name": "md-format_text",
+        "unicode": "T",
+        "ascii": "T"
+      }
+    },
+    {
+      "key": "table",
+      "name": "Table",
+      "category": "editor",
+      "keywords": [
+        "spreadsheet",
+        "grid-data"
+      ],
+      "svg": "svg/table.svg",
+      "png": "png/{size}/table.png",
+      "tui": {
+        "nerd": "󰓫",
+        "nerd_code": "f04eb",
+        "nerd_name": "md-table",
+        "unicode": "▦",
+        "ascii": "[#]"
+      }
+    },
+    {
+      "key": "image-plus",
+      "name": "Image plus",
+      "category": "editor",
+      "keywords": [
+        "add-image",
+        "insert-image"
+      ],
+      "svg": "svg/image-plus.svg",
+      "png": "png/{size}/image-plus.png",
+      "tui": {
+        "nerd": "󰡼",
+        "nerd_code": "f087c",
+        "nerd_name": "md-image_plus",
+        "unicode": "🖼",
+        "ascii": "[+]"
+      }
+    },
+    {
+      "key": "sun",
+      "name": "Sun",
+      "category": "misc",
+      "aliases": [
+        "light-mode",
+        "day"
+      ],
+      "keywords": [
+        "weather"
+      ],
+      "svg": "svg/sun.svg",
+      "png": "png/{size}/sun.png",
+      "tui": {
+        "nerd": "󰖨",
+        "nerd_code": "f05a8",
+        "nerd_name": "md-white_balance_sunny",
+        "unicode": "☀",
+        "ascii": "*"
+      }
+    },
+    {
+      "key": "moon",
+      "name": "Moon",
+      "category": "misc",
+      "aliases": [
+        "dark-mode",
+        "night"
+      ],
+      "svg": "svg/moon.svg",
+      "png": "png/{size}/moon.png",
+      "tui": {
+        "nerd": "󰖔",
+        "nerd_code": "f0594",
+        "nerd_name": "md-weather_night",
+        "unicode": "🌙",
+        "ascii": "C"
+      }
+    },
+    {
+      "key": "theme",
+      "name": "Theme",
+      "category": "misc",
+      "aliases": [
+        "contrast"
+      ],
+      "keywords": [
+        "appearance",
+        "light-dark"
+      ],
+      "svg": "svg/theme.svg",
+      "png": "png/{size}/theme.png",
+      "tui": {
+        "nerd": "󰔎",
+        "nerd_code": "f050e",
+        "nerd_name": "md-theme_light_dark",
+        "unicode": "◐",
+        "ascii": "(|)"
+      }
+    },
+    {
+      "key": "thermometer",
+      "name": "Thermometer",
+      "category": "misc",
+      "keywords": [
+        "temperature",
+        "weather"
+      ],
+      "svg": "svg/thermometer.svg",
+      "png": "png/{size}/thermometer.png",
+      "tui": {
+        "nerd": "󰔏",
+        "nerd_code": "f050f",
+        "nerd_name": "md-thermometer",
+        "unicode": "🌡",
+        "ascii": "|o"
+      }
+    },
+    {
+      "key": "droplet",
+      "name": "Droplet",
+      "category": "misc",
+      "keywords": [
+        "water",
+        "liquid",
+        "rain"
+      ],
+      "svg": "svg/droplet.svg",
+      "png": "png/{size}/droplet.png",
+      "tui": {
+        "nerd": "󰸊",
+        "nerd_code": "f0e0a",
+        "nerd_name": "md-water_outline",
+        "unicode": "💧",
+        "ascii": "o"
+      }
+    },
+    {
+      "key": "leaf",
+      "name": "Leaf",
+      "category": "misc",
+      "keywords": [
+        "eco",
+        "nature",
+        "green"
+      ],
+      "svg": "svg/leaf.svg",
+      "png": "png/{size}/leaf.png",
+      "tui": {
+        "nerd": "󰌪",
+        "nerd_code": "f032a",
+        "nerd_name": "md-leaf",
+        "unicode": "🍃",
+        "ascii": "~"
+      }
+    },
+    {
+      "key": "building",
+      "name": "Building",
+      "category": "misc",
+      "aliases": [
+        "company",
+        "office"
+      ],
+      "keywords": [
+        "organization"
+      ],
+      "svg": "svg/building.svg",
+      "png": "png/{size}/building.png",
+      "tui": {
+        "nerd": "󱔟",
+        "nerd_code": "f151f",
+        "nerd_name": "md-office_building_outline",
+        "unicode": "🏢",
+        "ascii": "[#]"
+      }
+    },
+    {
+      "key": "briefcase",
+      "name": "Briefcase",
+      "category": "misc",
+      "aliases": [
+        "work",
+        "job"
+      ],
+      "keywords": [
+        "business"
+      ],
+      "svg": "svg/briefcase.svg",
+      "png": "png/{size}/briefcase.png",
+      "tui": {
+        "nerd": "󰠔",
+        "nerd_code": "f0814",
+        "nerd_name": "md-briefcase_outline",
+        "unicode": "💼",
+        "ascii": "[b]"
+      }
+    },
+    {
+      "key": "award",
+      "name": "Award",
+      "category": "misc",
+      "keywords": [
+        "badge",
+        "achievement",
+        "certificate"
+      ],
+      "svg": "svg/award.svg",
+      "png": "png/{size}/award.png",
+      "tui": {
+        "nerd": "󱌦",
+        "nerd_code": "f1326",
+        "nerd_name": "md-medal_outline",
+        "unicode": "🏅",
+        "ascii": "(*)"
+      }
+    },
+    {
+      "key": "trophy",
+      "name": "Trophy",
+      "category": "misc",
+      "aliases": [
+        "prize"
+      ],
+      "keywords": [
+        "winner",
+        "leaderboard"
+      ],
+      "svg": "svg/trophy.svg",
+      "png": "png/{size}/trophy.png",
+      "tui": {
+        "nerd": "󰔺",
+        "nerd_code": "f053a",
+        "nerd_name": "md-trophy_outline",
+        "unicode": "🏆",
+        "ascii": "\\_/"
+      }
+    },
+    {
+      "key": "target",
+      "name": "Target",
+      "category": "misc",
+      "aliases": [
+        "goal",
+        "bullseye"
+      ],
+      "keywords": [
+        "aim"
+      ],
+      "svg": "svg/target.svg",
+      "png": "png/{size}/target.png",
+      "tui": {
+        "nerd": "󰓾",
+        "nerd_code": "f04fe",
+        "nerd_name": "md-target",
+        "unicode": "🎯",
+        "ascii": "(o)"
+      }
+    },
+    {
+      "key": "lightbulb",
+      "name": "Lightbulb",
+      "category": "misc",
+      "aliases": [
+        "idea"
+      ],
+      "keywords": [
+        "tip",
+        "hint"
+      ],
+      "svg": "svg/lightbulb.svg",
+      "png": "png/{size}/lightbulb.png",
+      "tui": {
+        "nerd": "󰌶",
+        "nerd_code": "f0336",
+        "nerd_name": "md-lightbulb_outline",
+        "unicode": "💡",
+        "ascii": "i"
+      }
+    },
+    {
+      "key": "rocket",
+      "name": "Rocket",
+      "category": "misc",
+      "aliases": [
+        "deploy"
+      ],
+      "keywords": [
+        "launch",
+        "ship",
+        "startup"
+      ],
+      "svg": "svg/rocket.svg",
+      "png": "png/{size}/rocket.png",
+      "tui": {
+        "nerd": "󱓟",
+        "nerd_code": "f14df",
+        "nerd_name": "md-rocket_launch_outline",
+        "unicode": "🚀",
+        "ascii": "^"
+      }
+    },
+    {
+      "key": "coffee",
+      "name": "Coffee",
+      "category": "misc",
+      "keywords": [
+        "cafe",
+        "break",
+        "donate"
+      ],
+      "svg": "svg/coffee.svg",
+      "png": "png/{size}/coffee.png",
+      "tui": {
+        "nerd": "󰛊",
+        "nerd_code": "f06ca",
+        "nerd_name": "md-coffee_outline",
+        "unicode": "☕",
+        "ascii": "c[_]"
+      }
+    },
+    {
+      "key": "puzzle",
+      "name": "Puzzle",
+      "category": "misc",
+      "aliases": [
+        "plugin",
+        "extension"
+      ],
+      "keywords": [
+        "addon"
+      ],
+      "svg": "svg/puzzle.svg",
+      "png": "png/{size}/puzzle.png",
+      "tui": {
+        "nerd": "󰩦",
+        "nerd_code": "f0a66",
+        "nerd_name": "md-puzzle_outline",
+        "unicode": "🧩",
+        "ascii": "[+]"
+      }
+    },
+    {
+      "key": "palette",
+      "name": "Palette",
+      "category": "misc",
+      "aliases": [
+        "color"
+      ],
+      "keywords": [
+        "design",
+        "theme-color"
+      ],
+      "svg": "svg/palette.svg",
+      "png": "png/{size}/palette.png",
+      "tui": {
+        "nerd": "󰸌",
+        "nerd_code": "f0e0c",
+        "nerd_name": "md-palette_outline",
+        "unicode": "🎨",
+        "ascii": "(:)"
+      }
+    },
+    {
+      "key": "brush",
+      "name": "Brush",
+      "category": "misc",
+      "keywords": [
+        "paint",
+        "draw"
+      ],
+      "svg": "svg/brush.svg",
+      "png": "png/{size}/brush.png",
+      "tui": {
+        "nerd": "󰃣",
+        "nerd_code": "f00e3",
+        "nerd_name": "md-brush",
+        "unicode": "🖌",
+        "ascii": "/~"
+      }
+    },
+    {
+      "key": "pen-tool",
+      "name": "Pen tool",
+      "category": "misc",
+      "keywords": [
+        "vector",
+        "bezier"
+      ],
+      "svg": "svg/pen-tool.svg",
+      "png": "png/{size}/pen-tool.png",
+      "tui": {
+        "nerd": "󰴓",
+        "nerd_code": "f0d13",
+        "nerd_name": "md-fountain_pen_tip",
+        "unicode": "✒",
+        "ascii": "_/"
+      }
+    },
+    {
+      "key": "ruler",
+      "name": "Ruler",
+      "category": "misc",
+      "keywords": [
+        "measure"
+      ],
+      "svg": "svg/ruler.svg",
+      "png": "png/{size}/ruler.png",
+      "tui": {
+        "nerd": "󰑭",
+        "nerd_code": "f046d",
+        "nerd_name": "md-ruler",
+        "unicode": "📏",
+        "ascii": "|-|"
+      }
+    },
+    {
+      "key": "crop",
+      "name": "Crop",
+      "category": "misc",
+      "svg": "svg/crop.svg",
+      "png": "png/{size}/crop.png",
+      "tui": {
+        "nerd": "󰆞",
+        "nerd_code": "f019e",
+        "nerd_name": "md-crop",
+        "unicode": "⌗",
+        "ascii": "[_"
+      }
+    },
+    {
+      "key": "move",
+      "name": "Move",
+      "category": "misc",
+      "keywords": [
+        "drag",
+        "pan",
+        "arrows"
+      ],
+      "svg": "svg/move.svg",
+      "png": "png/{size}/move.png",
+      "tui": {
+        "nerd": "󰆾",
+        "nerd_code": "f01be",
+        "nerd_name": "md-cursor_move",
+        "unicode": "✥",
+        "ascii": "+"
+      }
+    },
+    {
+      "key": "crosshair",
+      "name": "Crosshair",
+      "category": "misc",
+      "keywords": [
+        "aim",
+        "precise",
+        "locate"
+      ],
+      "svg": "svg/crosshair.svg",
+      "png": "png/{size}/crosshair.png",
+      "tui": {
+        "nerd": "󰆣",
+        "nerd_code": "f01a3",
+        "nerd_name": "md-crosshairs",
+        "unicode": "⌖",
+        "ascii": "-+-"
+      }
+    },
+    {
+      "key": "translate",
+      "name": "Translate",
+      "category": "misc",
+      "aliases": [
+        "language",
+        "i18n"
+      ],
+      "keywords": [
+        "localize"
+      ],
+      "svg": "svg/translate.svg",
+      "png": "png/{size}/translate.png",
+      "tui": {
+        "nerd": "󰗊",
+        "nerd_code": "f05ca",
+        "nerd_name": "md-translate",
+        "unicode": "🌐",
+        "ascii": "A/a"
+      }
+    },
+    {
+      "key": "accessibility",
+      "name": "Accessibility",
+      "category": "misc",
+      "aliases": [
+        "a11y"
+      ],
+      "keywords": [
+        "wheelchair",
+        "inclusive"
+      ],
+      "svg": "svg/accessibility.svg",
+      "png": "png/{size}/accessibility.png",
+      "tui": {
+        "nerd": "󰋦",
+        "nerd_code": "f02e6",
+        "nerd_name": "md-human",
+        "unicode": "♿",
+        "ascii": "a11y"
+      }
+    },
+    {
+      "key": "smile",
+      "name": "Smile",
+      "category": "misc",
+      "aliases": [
+        "happy"
+      ],
+      "keywords": [
+        "emoji",
+        "reaction"
+      ],
+      "svg": "svg/smile.svg",
+      "png": "png/{size}/smile.png",
+      "tui": {
+        "nerd": "󰇵",
+        "nerd_code": "f01f5",
+        "nerd_name": "md-emoticon_happy_outline",
+        "unicode": "🙂",
+        "ascii": ":)"
+      }
+    },
+    {
+      "key": "frown",
+      "name": "Frown",
+      "category": "misc",
+      "keywords": [
+        "sad",
+        "unhappy"
+      ],
+      "svg": "svg/frown.svg",
+      "png": "png/{size}/frown.png",
+      "tui": {
+        "nerd": "󰇸",
+        "nerd_code": "f01f8",
+        "nerd_name": "md-emoticon_sad_outline",
+        "unicode": "🙁",
+        "ascii": ":("
+      }
+    },
+    {
+      "key": "fingerprint",
+      "name": "Fingerprint",
+      "category": "misc",
+      "aliases": [
+        "biometric"
+      ],
+      "keywords": [
+        "passkey",
+        "touch-id"
+      ],
+      "svg": "svg/fingerprint.svg",
+      "png": "png/{size}/fingerprint.png",
+      "tui": {
+        "nerd": "󰈷",
+        "nerd_code": "f0237",
+        "nerd_name": "md-fingerprint",
+        "unicode": "🫆",
+        "ascii": "(@)"
+      }
+    },
+    {
+      "key": "anchor",
+      "name": "Anchor",
+      "category": "misc",
+      "keywords": [
+        "link-anchor",
+        "marine"
+      ],
+      "svg": "svg/anchor.svg",
+      "png": "png/{size}/anchor.png",
+      "tui": {
+        "nerd": "󰀱",
+        "nerd_code": "f0031",
+        "nerd_name": "md-anchor",
+        "unicode": "⚓",
+        "ascii": "t"
+      }
+    },
+    {
+      "key": "umbrella",
+      "name": "Umbrella",
+      "category": "misc",
+      "keywords": [
+        "insurance",
+        "rain",
+        "cover"
+      ],
+      "svg": "svg/umbrella.svg",
+      "png": "png/{size}/umbrella.png",
+      "tui": {
+        "nerd": "󰕋",
+        "nerd_code": "f054b",
+        "nerd_name": "md-umbrella_outline",
+        "unicode": "☂",
+        "ascii": "T"
+      }
+    },
+    {
+      "key": "github",
+      "name": "GitHub",
+      "category": "brand",
+      "brand": true,
+      "trademark": "GitHub and its logo are trademarks of their owner. Use them to refer to GitHub, not to imply endorsement.",
+      "source": "simple-icons:github",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/github.svg",
+      "png": "png/{size}/github.png",
+      "tui": {
+        "nerd": "󰊤",
+        "nerd_code": "f02a4",
+        "nerd_name": "md-github",
+        "unicode": "🐙",
+        "ascii": "gh"
+      }
+    },
+    {
+      "key": "gitlab",
+      "name": "GitLab",
+      "category": "brand",
+      "brand": true,
+      "trademark": "GitLab and its logo are trademarks of their owner. Use them to refer to GitLab, not to imply endorsement.",
+      "source": "simple-icons:gitlab",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/gitlab.svg",
+      "png": "png/{size}/gitlab.png",
+      "tui": {
+        "nerd": "󰮠",
+        "nerd_code": "f0ba0",
+        "nerd_name": "md-gitlab",
+        "unicode": "🦊",
+        "ascii": "gl"
+      }
+    },
+    {
+      "key": "bitbucket",
+      "name": "Bitbucket",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Bitbucket and its logo are trademarks of their owner. Use them to refer to Bitbucket, not to imply endorsement.",
+      "source": "simple-icons:bitbucket",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/bitbucket.svg",
+      "png": "png/{size}/bitbucket.png",
+      "tui": {
+        "nerd": "󰂨",
+        "nerd_code": "f00a8",
+        "nerd_name": "md-bitbucket",
+        "unicode": "🪣",
+        "ascii": "bb"
+      }
+    },
+    {
+      "key": "codeberg",
+      "name": "Codeberg",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Codeberg and its logo are trademarks of their owner. Use them to refer to Codeberg, not to imply endorsement.",
+      "source": "simple-icons:codeberg",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/codeberg.svg",
+      "png": "png/{size}/codeberg.png",
+      "tui": {
+        "nerd": "",
+        "nerd_code": "f330",
+        "nerd_name": "linux-codeberg",
+        "unicode": "⛰",
+        "ascii": "cb"
+      }
+    },
+    {
+      "key": "gitea",
+      "name": "Gitea",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Gitea and its logo are trademarks of their owner. Use them to refer to Gitea, not to imply endorsement.",
+      "source": "simple-icons:gitea",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/gitea.svg",
+      "png": "png/{size}/gitea.png",
+      "tui": {
+        "nerd": "",
+        "nerd_code": "f339",
+        "nerd_name": "linux-gitea",
+        "unicode": "🍵",
+        "ascii": "gt"
+      }
+    },
+    {
+      "key": "sourcehut",
+      "name": "SourceHut",
+      "category": "brand",
+      "brand": true,
+      "trademark": "SourceHut and its logo are trademarks of their owner. Use them to refer to SourceHut, not to imply endorsement.",
+      "source": "simple-icons:sourcehut",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/sourcehut.svg",
+      "png": "png/{size}/sourcehut.png",
+      "tui": {
+        "unicode": "◯",
+        "ascii": "srht"
+      }
+    },
+    {
+      "key": "npm",
+      "name": "npm",
+      "category": "brand",
+      "brand": true,
+      "trademark": "npm and its logo are trademarks of their owner. Use them to refer to npm, not to imply endorsement.",
+      "source": "simple-icons:npm",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/npm.svg",
+      "png": "png/{size}/npm.png",
+      "tui": {
+        "nerd": "󰛷",
+        "nerd_code": "f06f7",
+        "nerd_name": "md-npm",
+        "unicode": "📦",
+        "ascii": "npm"
+      }
+    },
+    {
+      "key": "docker",
+      "name": "Docker",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Docker and its logo are trademarks of their owner. Use them to refer to Docker, not to imply endorsement.",
+      "source": "simple-icons:docker",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/docker.svg",
+      "png": "png/{size}/docker.png",
+      "tui": {
+        "nerd": "󰡨",
+        "nerd_code": "f0868",
+        "nerd_name": "md-docker",
+        "unicode": "🐳",
+        "ascii": "dkr"
+      }
+    },
+    {
+      "key": "kubernetes",
+      "name": "Kubernetes",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Kubernetes and its logo are trademarks of their owner. Use them to refer to Kubernetes, not to imply endorsement.",
+      "source": "simple-icons:kubernetes",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/kubernetes.svg",
+      "png": "png/{size}/kubernetes.png",
+      "tui": {
+        "nerd": "󱃾",
+        "nerd_code": "f10fe",
+        "nerd_name": "md-kubernetes",
+        "unicode": "☸",
+        "ascii": "k8s"
+      }
+    },
+    {
+      "key": "nodejs",
+      "name": "Node.js",
+      "category": "brand",
+      "aliases": [
+        "node"
+      ],
+      "brand": true,
+      "trademark": "Node.js and its logo are trademarks of their owner. Use them to refer to Node.js, not to imply endorsement.",
+      "source": "simple-icons:nodedotjs",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/nodejs.svg",
+      "png": "png/{size}/nodejs.png",
+      "tui": {
+        "nerd": "󰎙",
+        "nerd_code": "f0399",
+        "nerd_name": "md-nodejs",
+        "unicode": "⬢",
+        "ascii": "node"
+      }
+    },
+    {
+      "key": "deno",
+      "name": "Deno",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Deno and its logo are trademarks of their owner. Use them to refer to Deno, not to imply endorsement.",
+      "source": "simple-icons:deno",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/deno.svg",
+      "png": "png/{size}/deno.png",
+      "tui": {
+        "nerd": "",
+        "nerd_code": "e7c0",
+        "nerd_name": "dev-denojs",
+        "unicode": "🦕",
+        "ascii": "deno"
+      }
+    },
+    {
+      "key": "bun",
+      "name": "Bun",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Bun and its logo are trademarks of their owner. Use them to refer to Bun, not to imply endorsement.",
+      "source": "simple-icons:bun",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/bun.svg",
+      "png": "png/{size}/bun.png",
+      "tui": {
+        "nerd": "",
+        "nerd_code": "e76f",
+        "nerd_name": "dev-bun",
+        "unicode": "🥟",
+        "ascii": "bun"
+      }
+    },
+    {
+      "key": "typescript",
+      "name": "TypeScript",
+      "category": "brand",
+      "brand": true,
+      "trademark": "TypeScript and its logo are trademarks of their owner. Use them to refer to TypeScript, not to imply endorsement.",
+      "source": "simple-icons:typescript",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/typescript.svg",
+      "png": "png/{size}/typescript.png",
+      "tui": {
+        "nerd": "󰛦",
+        "nerd_code": "f06e6",
+        "nerd_name": "md-language_typescript",
+        "unicode": "TS",
+        "ascii": "ts"
+      }
+    },
+    {
+      "key": "javascript",
+      "name": "JavaScript",
+      "category": "brand",
+      "brand": true,
+      "trademark": "JavaScript and its logo are trademarks of their owner. Use them to refer to JavaScript, not to imply endorsement.",
+      "source": "simple-icons:javascript",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/javascript.svg",
+      "png": "png/{size}/javascript.png",
+      "tui": {
+        "nerd": "󰌞",
+        "nerd_code": "f031e",
+        "nerd_name": "md-language_javascript",
+        "unicode": "JS",
+        "ascii": "js"
+      }
+    },
+    {
+      "key": "python",
+      "name": "Python",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Python and its logo are trademarks of their owner. Use them to refer to Python, not to imply endorsement.",
+      "source": "simple-icons:python",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/python.svg",
+      "png": "png/{size}/python.png",
+      "tui": {
+        "nerd": "󰌠",
+        "nerd_code": "f0320",
+        "nerd_name": "md-language_python",
+        "unicode": "🐍",
+        "ascii": "py"
+      }
+    },
+    {
+      "key": "rust",
+      "name": "Rust",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Rust and its logo are trademarks of their owner. Use them to refer to Rust, not to imply endorsement.",
+      "source": "simple-icons:rust",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/rust.svg",
+      "png": "png/{size}/rust.png",
+      "tui": {
+        "nerd": "󱘗",
+        "nerd_code": "f1617",
+        "nerd_name": "md-language_rust",
+        "unicode": "🦀",
+        "ascii": "rs"
+      }
+    },
+    {
+      "key": "go",
+      "name": "Go",
+      "category": "brand",
+      "aliases": [
+        "golang"
+      ],
+      "brand": true,
+      "trademark": "Go and its logo are trademarks of their owner. Use them to refer to Go, not to imply endorsement.",
+      "source": "simple-icons:go",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/go.svg",
+      "png": "png/{size}/go.png",
+      "tui": {
+        "nerd": "󰟓",
+        "nerd_code": "f07d3",
+        "nerd_name": "md-language_go",
+        "unicode": "🐹",
+        "ascii": "go"
+      }
+    },
+    {
+      "key": "stack-overflow",
+      "name": "Stack Overflow",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Stack Overflow and its logo are trademarks of their owner. Use them to refer to Stack Overflow, not to imply endorsement.",
+      "source": "simple-icons:stackoverflow",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/stack-overflow.svg",
+      "png": "png/{size}/stack-overflow.png",
+      "tui": {
+        "nerd": "󰓌",
+        "nerd_code": "f04cc",
+        "nerd_name": "md-stack_overflow",
+        "unicode": "📚",
+        "ascii": "so"
+      }
+    },
+    {
+      "key": "vercel",
+      "name": "Vercel",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Vercel and its logo are trademarks of their owner. Use them to refer to Vercel, not to imply endorsement.",
+      "source": "simple-icons:vercel",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/vercel.svg",
+      "png": "png/{size}/vercel.png",
+      "tui": {
+        "nerd": "󰔶",
+        "nerd_code": "f0536",
+        "nerd_name": "md-triangle",
+        "unicode": "▲",
+        "ascii": "vc"
+      }
+    },
+    {
+      "key": "netlify",
+      "name": "Netlify",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Netlify and its logo are trademarks of their owner. Use them to refer to Netlify, not to imply endorsement.",
+      "source": "simple-icons:netlify",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/netlify.svg",
+      "png": "png/{size}/netlify.png",
+      "tui": {
+        "nerd": "",
+        "nerd_code": "e83c",
+        "nerd_name": "dev-netlify",
+        "unicode": "◆",
+        "ascii": "ntl"
+      }
+    },
+    {
+      "key": "cloudflare",
+      "name": "Cloudflare",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Cloudflare and its logo are trademarks of their owner. Use them to refer to Cloudflare, not to imply endorsement.",
+      "source": "simple-icons:cloudflare",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/cloudflare.svg",
+      "png": "png/{size}/cloudflare.png",
+      "tui": {
+        "nerd": "",
+        "nerd_code": "e792",
+        "nerd_name": "dev-cloudflare",
+        "unicode": "☁",
+        "ascii": "cf"
+      }
+    },
+    {
+      "key": "railway",
+      "name": "Railway",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Railway and its logo are trademarks of their owner. Use them to refer to Railway, not to imply endorsement.",
+      "source": "simple-icons:railway",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/railway.svg",
+      "png": "png/{size}/railway.png",
+      "tui": {
+        "nerd": "",
+        "nerd_code": "e883",
+        "nerd_name": "dev-railway",
+        "unicode": "🚆",
+        "ascii": "rly"
+      }
+    },
+    {
+      "key": "supabase",
+      "name": "Supabase",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Supabase and its logo are trademarks of their owner. Use them to refer to Supabase, not to imply endorsement.",
+      "source": "simple-icons:supabase",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/supabase.svg",
+      "png": "png/{size}/supabase.png",
+      "tui": {
+        "nerd": "",
+        "nerd_code": "e8b6",
+        "nerd_name": "dev-supabase",
+        "unicode": "⚡",
+        "ascii": "sb"
+      }
+    },
+    {
+      "key": "anthropic",
+      "name": "Anthropic",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Anthropic and its logo are trademarks of their owner. Use them to refer to Anthropic, not to imply endorsement.",
+      "source": "simple-icons:anthropic",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/anthropic.svg",
+      "png": "png/{size}/anthropic.png",
+      "tui": {
+        "unicode": "Ⓐ",
+        "ascii": "ant"
+      }
+    },
+    {
+      "key": "claude",
+      "name": "Claude",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Claude and its logo are trademarks of their owner. Use them to refer to Claude, not to imply endorsement.",
+      "source": "simple-icons:claude",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/claude.svg",
+      "png": "png/{size}/claude.png",
+      "tui": {
+        "unicode": "✳",
+        "ascii": "cl"
+      }
+    },
+    {
+      "key": "figma",
+      "name": "Figma",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Figma and its logo are trademarks of their owner. Use them to refer to Figma, not to imply endorsement.",
+      "source": "simple-icons:figma",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/figma.svg",
+      "png": "png/{size}/figma.png",
+      "tui": {
+        "nerd": "",
+        "nerd_code": "ef47",
+        "nerd_name": "fa-figma",
+        "unicode": "🎨",
+        "ascii": "fig"
+      }
+    },
+    {
+      "key": "notion",
+      "name": "Notion",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Notion and its logo are trademarks of their owner. Use them to refer to Notion, not to imply endorsement.",
+      "source": "simple-icons:notion",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/notion.svg",
+      "png": "png/{size}/notion.png",
+      "tui": {
+        "nerd": "",
+        "nerd_code": "e848",
+        "nerd_name": "dev-notion",
+        "unicode": "Ⓝ",
+        "ascii": "ntn"
+      }
+    },
+    {
+      "key": "trello",
+      "name": "Trello",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Trello and its logo are trademarks of their owner. Use them to refer to Trello, not to imply endorsement.",
+      "source": "simple-icons:trello",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/trello.svg",
+      "png": "png/{size}/trello.png",
+      "tui": {
+        "nerd": "󰔲",
+        "nerd_code": "f0532",
+        "nerd_name": "md-trello",
+        "unicode": "▤",
+        "ascii": "tr"
+      }
+    },
+    {
+      "key": "jira",
+      "name": "Jira",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Jira and its logo are trademarks of their owner. Use them to refer to Jira, not to imply endorsement.",
+      "source": "simple-icons:jira",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/jira.svg",
+      "png": "png/{size}/jira.png",
+      "tui": {
+        "nerd": "󰌃",
+        "nerd_code": "f0303",
+        "nerd_name": "md-jira",
+        "unicode": "◈",
+        "ascii": "jira"
+      }
+    },
+    {
+      "key": "keybase",
+      "name": "Keybase",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Keybase and its logo are trademarks of their owner. Use them to refer to Keybase, not to imply endorsement.",
+      "source": "simple-icons:keybase",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/keybase.svg",
+      "png": "png/{size}/keybase.png",
+      "tui": {
+        "nerd": "",
+        "nerd_code": "edbf",
+        "nerd_name": "fa-keybase",
+        "unicode": "🔑",
+        "ascii": "kb"
+      }
+    },
+    {
+      "key": "x",
+      "name": "X",
+      "category": "brand",
+      "aliases": [
+        "twitter"
+      ],
+      "brand": true,
+      "trademark": "X and its logo are trademarks of their owner. Use them to refer to X, not to imply endorsement.",
+      "source": "simple-icons:x",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/x.svg",
+      "png": "png/{size}/x.png",
+      "tui": {
+        "nerd": "󰬅",
+        "nerd_code": "f0b05",
+        "nerd_name": "md-alpha_x",
+        "unicode": "𝕏",
+        "ascii": "x"
+      }
+    },
+    {
+      "key": "bluesky",
+      "name": "Bluesky",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Bluesky and its logo are trademarks of their owner. Use them to refer to Bluesky, not to imply endorsement.",
+      "source": "simple-icons:bluesky",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/bluesky.svg",
+      "png": "png/{size}/bluesky.png",
+      "tui": {
+        "nerd": "󱖉",
+        "nerd_code": "f1589",
+        "nerd_name": "md-butterfly",
+        "unicode": "🦋",
+        "ascii": "bsky"
+      }
+    },
+    {
+      "key": "mastodon",
+      "name": "Mastodon",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Mastodon and its logo are trademarks of their owner. Use them to refer to Mastodon, not to imply endorsement.",
+      "source": "simple-icons:mastodon",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/mastodon.svg",
+      "png": "png/{size}/mastodon.png",
+      "tui": {
+        "nerd": "󰫑",
+        "nerd_code": "f0ad1",
+        "nerd_name": "md-mastodon",
+        "unicode": "🐘",
+        "ascii": "mdn"
+      }
+    },
+    {
+      "key": "threads",
+      "name": "Threads",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Threads and its logo are trademarks of their owner. Use them to refer to Threads, not to imply endorsement.",
+      "source": "simple-icons:threads",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/threads.svg",
+      "png": "png/{size}/threads.png",
+      "tui": {
+        "nerd": "󰁥",
+        "nerd_code": "f0065",
+        "nerd_name": "md-at",
+        "unicode": "@",
+        "ascii": "th"
+      }
+    },
+    {
+      "key": "instagram",
+      "name": "Instagram",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Instagram and its logo are trademarks of their owner. Use them to refer to Instagram, not to imply endorsement.",
+      "source": "simple-icons:instagram",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/instagram.svg",
+      "png": "png/{size}/instagram.png",
+      "tui": {
+        "nerd": "󰋾",
+        "nerd_code": "f02fe",
+        "nerd_name": "md-instagram",
+        "unicode": "📷",
+        "ascii": "ig"
+      }
+    },
+    {
+      "key": "facebook",
+      "name": "Facebook",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Facebook and its logo are trademarks of their owner. Use them to refer to Facebook, not to imply endorsement.",
+      "source": "simple-icons:facebook",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/facebook.svg",
+      "png": "png/{size}/facebook.png",
+      "tui": {
+        "nerd": "󰈌",
+        "nerd_code": "f020c",
+        "nerd_name": "md-facebook",
+        "unicode": "ⓕ",
+        "ascii": "fb"
+      }
+    },
+    {
+      "key": "tiktok",
+      "name": "TikTok",
+      "category": "brand",
+      "brand": true,
+      "trademark": "TikTok and its logo are trademarks of their owner. Use them to refer to TikTok, not to imply endorsement.",
+      "source": "simple-icons:tiktok",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/tiktok.svg",
+      "png": "png/{size}/tiktok.png",
+      "tui": {
+        "nerd": "󰎇",
+        "nerd_code": "f0387",
+        "nerd_name": "md-music_note",
+        "unicode": "♪",
+        "ascii": "tt"
+      }
+    },
+    {
+      "key": "youtube",
+      "name": "YouTube",
+      "category": "brand",
+      "brand": true,
+      "trademark": "YouTube and its logo are trademarks of their owner. Use them to refer to YouTube, not to imply endorsement.",
+      "source": "simple-icons:youtube",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/youtube.svg",
+      "png": "png/{size}/youtube.png",
+      "tui": {
+        "nerd": "󰗃",
+        "nerd_code": "f05c3",
+        "nerd_name": "md-youtube",
+        "unicode": "▶",
+        "ascii": "yt"
+      }
+    },
+    {
+      "key": "twitch",
+      "name": "Twitch",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Twitch and its logo are trademarks of their owner. Use them to refer to Twitch, not to imply endorsement.",
+      "source": "simple-icons:twitch",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/twitch.svg",
+      "png": "png/{size}/twitch.png",
+      "tui": {
+        "nerd": "󰕃",
+        "nerd_code": "f0543",
+        "nerd_name": "md-twitch",
+        "unicode": "📺",
+        "ascii": "ttv"
+      }
+    },
+    {
+      "key": "kick",
+      "name": "Kick",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Kick and its logo are trademarks of their owner. Use them to refer to Kick, not to imply endorsement.",
+      "source": "simple-icons:kick",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/kick.svg",
+      "png": "png/{size}/kick.png",
+      "tui": {
+        "unicode": "Ⓚ",
+        "ascii": "kick"
+      }
+    },
+    {
+      "key": "reddit",
+      "name": "Reddit",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Reddit and its logo are trademarks of their owner. Use them to refer to Reddit, not to imply endorsement.",
+      "source": "simple-icons:reddit",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/reddit.svg",
+      "png": "png/{size}/reddit.png",
+      "tui": {
+        "nerd": "󰑍",
+        "nerd_code": "f044d",
+        "nerd_name": "md-reddit",
+        "unicode": "👽",
+        "ascii": "rd"
+      }
+    },
+    {
+      "key": "pinterest",
+      "name": "Pinterest",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Pinterest and its logo are trademarks of their owner. Use them to refer to Pinterest, not to imply endorsement.",
+      "source": "simple-icons:pinterest",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/pinterest.svg",
+      "png": "png/{size}/pinterest.png",
+      "tui": {
+        "nerd": "󰐇",
+        "nerd_code": "f0407",
+        "nerd_name": "md-pinterest",
+        "unicode": "📌",
+        "ascii": "pin"
+      }
+    },
+    {
+      "key": "snapchat",
+      "name": "Snapchat",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Snapchat and its logo are trademarks of their owner. Use them to refer to Snapchat, not to imply endorsement.",
+      "source": "simple-icons:snapchat",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/snapchat.svg",
+      "png": "png/{size}/snapchat.png",
+      "tui": {
+        "nerd": "󰒶",
+        "nerd_code": "f04b6",
+        "nerd_name": "md-snapchat",
+        "unicode": "👻",
+        "ascii": "snap"
+      }
+    },
+    {
+      "key": "tumblr",
+      "name": "Tumblr",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Tumblr and its logo are trademarks of their owner. Use them to refer to Tumblr, not to imply endorsement.",
+      "source": "simple-icons:tumblr",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/tumblr.svg",
+      "png": "png/{size}/tumblr.png",
+      "tui": {
+        "nerd": "",
+        "nerd_code": "f173",
+        "nerd_name": "fa-tumblr",
+        "unicode": "ⓣ",
+        "ascii": "tb"
+      }
+    },
+    {
+      "key": "discord",
+      "name": "Discord",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Discord and its logo are trademarks of their owner. Use them to refer to Discord, not to imply endorsement.",
+      "source": "simple-icons:discord",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/discord.svg",
+      "png": "png/{size}/discord.png",
+      "tui": {
+        "nerd": "󰙯",
+        "nerd_code": "f066f",
+        "nerd_name": "md-discord",
+        "unicode": "🎮",
+        "ascii": "dc"
+      }
+    },
+    {
+      "key": "telegram",
+      "name": "Telegram",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Telegram and its logo are trademarks of their owner. Use them to refer to Telegram, not to imply endorsement.",
+      "source": "simple-icons:telegram",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/telegram.svg",
+      "png": "png/{size}/telegram.png",
+      "tui": {
+        "nerd": "",
+        "nerd_code": "f2c6",
+        "nerd_name": "fa-telegram",
+        "unicode": "✈",
+        "ascii": "tg"
+      }
+    },
+    {
+      "key": "signal",
+      "name": "Signal",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Signal and its logo are trademarks of their owner. Use them to refer to Signal, not to imply endorsement.",
+      "source": "simple-icons:signal",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/signal.svg",
+      "png": "png/{size}/signal.png",
+      "tui": {
+        "nerd": "󱅭",
+        "nerd_code": "f116d",
+        "nerd_name": "md-message_lock_outline",
+        "unicode": "💬",
+        "ascii": "sig"
+      }
+    },
+    {
+      "key": "whatsapp",
+      "name": "WhatsApp",
+      "category": "brand",
+      "brand": true,
+      "trademark": "WhatsApp and its logo are trademarks of their owner. Use them to refer to WhatsApp, not to imply endorsement.",
+      "source": "simple-icons:whatsapp",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/whatsapp.svg",
+      "png": "png/{size}/whatsapp.png",
+      "tui": {
+        "nerd": "󰖣",
+        "nerd_code": "f05a3",
+        "nerd_name": "md-whatsapp",
+        "unicode": "📞",
+        "ascii": "wa"
+      }
+    },
+    {
+      "key": "messenger",
+      "name": "Messenger",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Messenger and its logo are trademarks of their owner. Use them to refer to Messenger, not to imply endorsement.",
+      "source": "simple-icons:messenger",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/messenger.svg",
+      "png": "png/{size}/messenger.png",
+      "tui": {
+        "nerd": "󰈎",
+        "nerd_code": "f020e",
+        "nerd_name": "md-facebook_messenger",
+        "unicode": "💬",
+        "ascii": "msg"
+      }
+    },
+    {
+      "key": "wechat",
+      "name": "WeChat",
+      "category": "brand",
+      "brand": true,
+      "trademark": "WeChat and its logo are trademarks of their owner. Use them to refer to WeChat, not to imply endorsement.",
+      "source": "simple-icons:wechat",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/wechat.svg",
+      "png": "png/{size}/wechat.png",
+      "tui": {
+        "nerd": "󰘑",
+        "nerd_code": "f0611",
+        "nerd_name": "md-wechat",
+        "unicode": "💬",
+        "ascii": "wx"
+      }
+    },
+    {
+      "key": "line",
+      "name": "LINE",
+      "category": "brand",
+      "brand": true,
+      "trademark": "LINE and its logo are trademarks of their owner. Use them to refer to LINE, not to imply endorsement.",
+      "source": "simple-icons:line",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/line.svg",
+      "png": "png/{size}/line.png",
+      "tui": {
+        "nerd": "",
+        "nerd_code": "f2fb",
+        "nerd_name": "fa-line",
+        "unicode": "💬",
+        "ascii": "line"
+      }
+    },
+    {
+      "key": "matrix",
+      "name": "Matrix",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Matrix and its logo are trademarks of their owner. Use them to refer to Matrix, not to imply endorsement.",
+      "source": "simple-icons:matrix",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/matrix.svg",
+      "png": "png/{size}/matrix.png",
+      "tui": {
+        "nerd": "󰘨",
+        "nerd_code": "f0628",
+        "nerd_name": "md-matrix",
+        "unicode": "Ⓜ",
+        "ascii": "[m]"
+      }
+    },
+    {
+      "key": "element",
+      "name": "Element",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Element and its logo are trademarks of their owner. Use them to refer to Element, not to imply endorsement.",
+      "source": "simple-icons:element",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/element.svg",
+      "png": "png/{size}/element.png",
+      "tui": {
+        "nerd": "󰘨",
+        "nerd_code": "f0628",
+        "nerd_name": "md-matrix",
+        "unicode": "Ⓔ",
+        "ascii": "el"
+      }
+    },
+    {
+      "key": "zulip",
+      "name": "Zulip",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Zulip and its logo are trademarks of their owner. Use them to refer to Zulip, not to imply endorsement.",
+      "source": "simple-icons:zulip",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/zulip.svg",
+      "png": "png/{size}/zulip.png",
+      "tui": {
+        "unicode": "Ⓩ",
+        "ascii": "zl"
+      }
+    },
+    {
+      "key": "mattermost",
+      "name": "Mattermost",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Mattermost and its logo are trademarks of their owner. Use them to refer to Mattermost, not to imply endorsement.",
+      "source": "simple-icons:mattermost",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/mattermost.svg",
+      "png": "png/{size}/mattermost.png",
+      "tui": {
+        "unicode": "Ⓜ",
+        "ascii": "mm"
+      }
+    },
+    {
+      "key": "rocketchat",
+      "name": "Rocket.Chat",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Rocket.Chat and its logo are trademarks of their owner. Use them to refer to Rocket.Chat, not to imply endorsement.",
+      "source": "simple-icons:rocketdotchat",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/rocketchat.svg",
+      "png": "png/{size}/rocketchat.png",
+      "tui": {
+        "nerd": "",
+        "nerd_code": "ed20",
+        "nerd_name": "fa-rocketchat",
+        "unicode": "🚀",
+        "ascii": "rc"
+      }
+    },
+    {
+      "key": "xmpp",
+      "name": "XMPP",
+      "category": "brand",
+      "brand": true,
+      "trademark": "XMPP and its logo are trademarks of their owner. Use them to refer to XMPP, not to imply endorsement.",
+      "source": "simple-icons:xmpp",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/xmpp.svg",
+      "png": "png/{size}/xmpp.png",
+      "tui": {
+        "nerd": "󰟿",
+        "nerd_code": "f07ff",
+        "nerd_name": "md-xmpp",
+        "unicode": "💬",
+        "ascii": "xmpp"
+      }
+    },
+    {
+      "key": "lemmy",
+      "name": "Lemmy",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Lemmy and its logo are trademarks of their owner. Use them to refer to Lemmy, not to imply endorsement.",
+      "source": "simple-icons:lemmy",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/lemmy.svg",
+      "png": "png/{size}/lemmy.png",
+      "tui": {
+        "unicode": "🐭",
+        "ascii": "lmy"
+      }
+    },
+    {
+      "key": "pixelfed",
+      "name": "Pixelfed",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Pixelfed and its logo are trademarks of their owner. Use them to refer to Pixelfed, not to imply endorsement.",
+      "source": "simple-icons:pixelfed",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/pixelfed.svg",
+      "png": "png/{size}/pixelfed.png",
+      "tui": {
+        "unicode": "🖼",
+        "ascii": "pxf"
+      }
+    },
+    {
+      "key": "peertube",
+      "name": "PeerTube",
+      "category": "brand",
+      "brand": true,
+      "trademark": "PeerTube and its logo are trademarks of their owner. Use them to refer to PeerTube, not to imply endorsement.",
+      "source": "simple-icons:peertube",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/peertube.svg",
+      "png": "png/{size}/peertube.png",
+      "tui": {
+        "unicode": "▶",
+        "ascii": "pt"
+      }
+    },
+    {
+      "key": "misskey",
+      "name": "Misskey",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Misskey and its logo are trademarks of their owner. Use them to refer to Misskey, not to imply endorsement.",
+      "source": "simple-icons:misskey",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/misskey.svg",
+      "png": "png/{size}/misskey.png",
+      "tui": {
+        "unicode": "Ⓜ",
+        "ascii": "mk"
+      }
+    },
+    {
+      "key": "farcaster",
+      "name": "Farcaster",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Farcaster and its logo are trademarks of their owner. Use them to refer to Farcaster, not to imply endorsement.",
+      "source": "simple-icons:farcaster",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/farcaster.svg",
+      "png": "png/{size}/farcaster.png",
+      "tui": {
+        "unicode": "⛩",
+        "ascii": "fc"
+      }
+    },
+    {
+      "key": "google-meet",
+      "name": "Google Meet",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Google Meet and its logo are trademarks of their owner. Use them to refer to Google Meet, not to imply endorsement.",
+      "source": "simple-icons:googlemeet",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/google-meet.svg",
+      "png": "png/{size}/google-meet.png",
+      "tui": {
+        "nerd": "󰯜",
+        "nerd_code": "f0bdc",
+        "nerd_name": "md-video_outline",
+        "unicode": "📹",
+        "ascii": "meet"
+      }
+    },
+    {
+      "key": "zoom",
+      "name": "Zoom",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Zoom and its logo are trademarks of their owner. Use them to refer to Zoom, not to imply endorsement.",
+      "source": "simple-icons:zoom",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/zoom.svg",
+      "png": "png/{size}/zoom.png",
+      "tui": {
+        "nerd": "󰕧",
+        "nerd_code": "f0567",
+        "nerd_name": "md-video",
+        "unicode": "📹",
+        "ascii": "zm"
+      }
+    },
+    {
+      "key": "gmail",
+      "name": "Gmail",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Gmail and its logo are trademarks of their owner. Use them to refer to Gmail, not to imply endorsement.",
+      "source": "simple-icons:gmail",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/gmail.svg",
+      "png": "png/{size}/gmail.png",
+      "tui": {
+        "nerd": "󰊫",
+        "nerd_code": "f02ab",
+        "nerd_name": "md-gmail",
+        "unicode": "✉",
+        "ascii": "gm"
+      }
+    },
+    {
+      "key": "proton-mail",
+      "name": "Proton Mail",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Proton Mail and its logo are trademarks of their owner. Use them to refer to Proton Mail, not to imply endorsement.",
+      "source": "simple-icons:protonmail",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/proton-mail.svg",
+      "png": "png/{size}/proton-mail.png",
+      "tui": {
+        "nerd": "󰇱",
+        "nerd_code": "f01f1",
+        "nerd_name": "md-email_lock",
+        "unicode": "✉",
+        "ascii": "pm"
+      }
+    },
+    {
+      "key": "spotify",
+      "name": "Spotify",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Spotify and its logo are trademarks of their owner. Use them to refer to Spotify, not to imply endorsement.",
+      "source": "simple-icons:spotify",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/spotify.svg",
+      "png": "png/{size}/spotify.png",
+      "tui": {
+        "nerd": "󰓇",
+        "nerd_code": "f04c7",
+        "nerd_name": "md-spotify",
+        "unicode": "🎵",
+        "ascii": "spot"
+      }
+    },
+    {
+      "key": "apple-music",
+      "name": "Apple Music",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Apple Music and its logo are trademarks of their owner. Use them to refer to Apple Music, not to imply endorsement.",
+      "source": "simple-icons:applemusic",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/apple-music.svg",
+      "png": "png/{size}/apple-music.png",
+      "tui": {
+        "nerd": "",
+        "nerd_code": "f2eb",
+        "nerd_name": "fa-itunes_note",
+        "unicode": "🎵",
+        "ascii": "am"
+      }
+    },
+    {
+      "key": "soundcloud",
+      "name": "SoundCloud",
+      "category": "brand",
+      "brand": true,
+      "trademark": "SoundCloud and its logo are trademarks of their owner. Use them to refer to SoundCloud, not to imply endorsement.",
+      "source": "simple-icons:soundcloud",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/soundcloud.svg",
+      "png": "png/{size}/soundcloud.png",
+      "tui": {
+        "nerd": "󰓀",
+        "nerd_code": "f04c0",
+        "nerd_name": "md-soundcloud",
+        "unicode": "☁",
+        "ascii": "sc"
+      }
+    },
+    {
+      "key": "bandcamp",
+      "name": "Bandcamp",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Bandcamp and its logo are trademarks of their owner. Use them to refer to Bandcamp, not to imply endorsement.",
+      "source": "simple-icons:bandcamp",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/bandcamp.svg",
+      "png": "png/{size}/bandcamp.png",
+      "tui": {
+        "nerd": "",
+        "nerd_code": "f2d5",
+        "nerd_name": "fa-bandcamp",
+        "unicode": "◢",
+        "ascii": "bc"
+      }
+    },
+    {
+      "key": "vimeo",
+      "name": "Vimeo",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Vimeo and its logo are trademarks of their owner. Use them to refer to Vimeo, not to imply endorsement.",
+      "source": "simple-icons:vimeo",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/vimeo.svg",
+      "png": "png/{size}/vimeo.png",
+      "tui": {
+        "nerd": "󰕷",
+        "nerd_code": "f0577",
+        "nerd_name": "md-vimeo",
+        "unicode": "ⓥ",
+        "ascii": "vm"
+      }
+    },
+    {
+      "key": "medium",
+      "name": "Medium",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Medium and its logo are trademarks of their owner. Use them to refer to Medium, not to imply endorsement.",
+      "source": "simple-icons:medium",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/medium.svg",
+      "png": "png/{size}/medium.png",
+      "tui": {
+        "nerd": "",
+        "nerd_code": "f23a",
+        "nerd_name": "fa-medium",
+        "unicode": "Ⓜ",
+        "ascii": "md"
+      }
+    },
+    {
+      "key": "substack",
+      "name": "Substack",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Substack and its logo are trademarks of their owner. Use them to refer to Substack, not to imply endorsement.",
+      "source": "simple-icons:substack",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/substack.svg",
+      "png": "png/{size}/substack.png",
+      "tui": {
+        "nerd": "󰾱",
+        "nerd_code": "f0fb1",
+        "nerd_name": "md-email_newsletter",
+        "unicode": "✉",
+        "ascii": "ss"
+      }
+    },
+    {
+      "key": "dev-to",
+      "name": "DEV Community",
+      "category": "brand",
+      "brand": true,
+      "trademark": "DEV Community and its logo are trademarks of their owner. Use them to refer to DEV Community, not to imply endorsement.",
+      "source": "simple-icons:devdotto",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/dev-to.svg",
+      "png": "png/{size}/dev-to.png",
+      "tui": {
+        "nerd": "",
+        "nerd_code": "eef4",
+        "nerd_name": "fa-dev",
+        "unicode": "DEV",
+        "ascii": "dev"
+      }
+    },
+    {
+      "key": "hashnode",
+      "name": "Hashnode",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Hashnode and its logo are trademarks of their owner. Use them to refer to Hashnode, not to imply endorsement.",
+      "source": "simple-icons:hashnode",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/hashnode.svg",
+      "png": "png/{size}/hashnode.png",
+      "tui": {
+        "unicode": "#",
+        "ascii": "hn#"
+      }
+    },
+    {
+      "key": "ghost",
+      "name": "Ghost",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Ghost and its logo are trademarks of their owner. Use them to refer to Ghost, not to imply endorsement.",
+      "source": "simple-icons:ghost",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/ghost.svg",
+      "png": "png/{size}/ghost.png",
+      "tui": {
+        "nerd": "󰊠",
+        "nerd_code": "f02a0",
+        "nerd_name": "md-ghost",
+        "unicode": "👻",
+        "ascii": "gst"
+      }
+    },
+    {
+      "key": "wordpress",
+      "name": "WordPress",
+      "category": "brand",
+      "brand": true,
+      "trademark": "WordPress and its logo are trademarks of their owner. Use them to refer to WordPress, not to imply endorsement.",
+      "source": "simple-icons:wordpress",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/wordpress.svg",
+      "png": "png/{size}/wordpress.png",
+      "tui": {
+        "nerd": "󰖴",
+        "nerd_code": "f05b4",
+        "nerd_name": "md-wordpress",
+        "unicode": "Ⓦ",
+        "ascii": "wp"
+      }
+    },
+    {
+      "key": "product-hunt",
+      "name": "Product Hunt",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Product Hunt and its logo are trademarks of their owner. Use them to refer to Product Hunt, not to imply endorsement.",
+      "source": "simple-icons:producthunt",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/product-hunt.svg",
+      "png": "png/{size}/product-hunt.png",
+      "tui": {
+        "nerd": "",
+        "nerd_code": "f288",
+        "nerd_name": "fa-product_hunt",
+        "unicode": "Ⓟ",
+        "ascii": "ph"
+      }
+    },
+    {
+      "key": "y-combinator",
+      "name": "Y Combinator",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Y Combinator and its logo are trademarks of their owner. Use them to refer to Y Combinator, not to imply endorsement.",
+      "source": "simple-icons:ycombinator",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/y-combinator.svg",
+      "png": "png/{size}/y-combinator.png",
+      "tui": {
+        "nerd": "",
+        "nerd_code": "f23b",
+        "nerd_name": "fa-y_combinator",
+        "unicode": "Ⓨ",
+        "ascii": "yc"
+      }
+    },
+    {
+      "key": "dribbble",
+      "name": "Dribbble",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Dribbble and its logo are trademarks of their owner. Use them to refer to Dribbble, not to imply endorsement.",
+      "source": "simple-icons:dribbble",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/dribbble.svg",
+      "png": "png/{size}/dribbble.png",
+      "tui": {
+        "nerd": "",
+        "nerd_code": "f17d",
+        "nerd_name": "fa-dribbble",
+        "unicode": "🏀",
+        "ascii": "drb"
+      }
+    },
+    {
+      "key": "behance",
+      "name": "Behance",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Behance and its logo are trademarks of their owner. Use them to refer to Behance, not to imply endorsement.",
+      "source": "simple-icons:behance",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/behance.svg",
+      "png": "png/{size}/behance.png",
+      "tui": {
+        "nerd": "",
+        "nerd_code": "f1b4",
+        "nerd_name": "fa-behance",
+        "unicode": "Bē",
+        "ascii": "be"
+      }
+    },
+    {
+      "key": "patreon",
+      "name": "Patreon",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Patreon and its logo are trademarks of their owner. Use them to refer to Patreon, not to imply endorsement.",
+      "source": "simple-icons:patreon",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/patreon.svg",
+      "png": "png/{size}/patreon.png",
+      "tui": {
+        "nerd": "󰢂",
+        "nerd_code": "f0882",
+        "nerd_name": "md-patreon",
+        "unicode": "Ⓟ",
+        "ascii": "pat"
+      }
+    },
+    {
+      "key": "ko-fi",
+      "name": "Ko-fi",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Ko-fi and its logo are trademarks of their owner. Use them to refer to Ko-fi, not to imply endorsement.",
+      "source": "simple-icons:kofi",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/ko-fi.svg",
+      "png": "png/{size}/ko-fi.png",
+      "tui": {
+        "nerd": "󰅶",
+        "nerd_code": "f0176",
+        "nerd_name": "md-coffee",
+        "unicode": "☕",
+        "ascii": "kofi"
+      }
+    },
+    {
+      "key": "buy-me-a-coffee",
+      "name": "Buy Me a Coffee",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Buy Me a Coffee and its logo are trademarks of their owner. Use them to refer to Buy Me a Coffee, not to imply endorsement.",
+      "source": "simple-icons:buymeacoffee",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/buy-me-a-coffee.svg",
+      "png": "png/{size}/buy-me-a-coffee.png",
+      "tui": {
+        "nerd": "󰅶",
+        "nerd_code": "f0176",
+        "nerd_name": "md-coffee",
+        "unicode": "☕",
+        "ascii": "bmc"
+      }
+    },
+    {
+      "key": "paypal",
+      "name": "PayPal",
+      "category": "brand",
+      "brand": true,
+      "trademark": "PayPal and its logo are trademarks of their owner. Use them to refer to PayPal, not to imply endorsement.",
+      "source": "simple-icons:paypal",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/paypal.svg",
+      "png": "png/{size}/paypal.png",
+      "tui": {
+        "nerd": "",
+        "nerd_code": "f1ed",
+        "nerd_name": "fa-paypal",
+        "unicode": "Ⓟ",
+        "ascii": "pp"
+      }
+    },
+    {
+      "key": "stripe",
+      "name": "Stripe",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Stripe and its logo are trademarks of their owner. Use them to refer to Stripe, not to imply endorsement.",
+      "source": "simple-icons:stripe",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/stripe.svg",
+      "png": "png/{size}/stripe.png",
+      "tui": {
+        "nerd": "",
+        "nerd_code": "ed53",
+        "nerd_name": "fa-stripe",
+        "unicode": "Ⓢ",
+        "ascii": "str"
+      }
+    },
+    {
+      "key": "bitcoin",
+      "name": "Bitcoin",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Bitcoin and its logo are trademarks of their owner. Use them to refer to Bitcoin, not to imply endorsement.",
+      "source": "simple-icons:bitcoin",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/bitcoin.svg",
+      "png": "png/{size}/bitcoin.png",
+      "tui": {
+        "nerd": "󰠓",
+        "nerd_code": "f0813",
+        "nerd_name": "md-bitcoin",
+        "unicode": "₿",
+        "ascii": "btc"
+      }
+    },
+    {
+      "key": "ethereum",
+      "name": "Ethereum",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Ethereum and its logo are trademarks of their owner. Use them to refer to Ethereum, not to imply endorsement.",
+      "source": "simple-icons:ethereum",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/ethereum.svg",
+      "png": "png/{size}/ethereum.png",
+      "tui": {
+        "nerd": "󰡪",
+        "nerd_code": "f086a",
+        "nerd_name": "md-ethereum",
+        "unicode": "Ξ",
+        "ascii": "eth"
+      }
+    },
+    {
+      "key": "etsy",
+      "name": "Etsy",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Etsy and its logo are trademarks of their owner. Use them to refer to Etsy, not to imply endorsement.",
+      "source": "simple-icons:etsy",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/etsy.svg",
+      "png": "png/{size}/etsy.png",
+      "tui": {
+        "nerd": "",
+        "nerd_code": "f2d7",
+        "nerd_name": "fa-etsy",
+        "unicode": "Ⓔ",
+        "ascii": "etsy"
+      }
+    },
+    {
+      "key": "shopify",
+      "name": "Shopify",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Shopify and its logo are trademarks of their owner. Use them to refer to Shopify, not to imply endorsement.",
+      "source": "simple-icons:shopify",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/shopify.svg",
+      "png": "png/{size}/shopify.png",
+      "tui": {
+        "nerd": "󰒚",
+        "nerd_code": "f049a",
+        "nerd_name": "md-shopping",
+        "unicode": "🛍",
+        "ascii": "shp"
+      }
+    },
+    {
+      "key": "ebay",
+      "name": "eBay",
+      "category": "brand",
+      "brand": true,
+      "trademark": "eBay and its logo are trademarks of their owner. Use them to refer to eBay, not to imply endorsement.",
+      "source": "simple-icons:ebay",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/ebay.svg",
+      "png": "png/{size}/ebay.png",
+      "tui": {
+        "nerd": "",
+        "nerd_code": "edbe",
+        "nerd_name": "fa-ebay",
+        "unicode": "ⓔ",
+        "ascii": "ebay"
+      }
+    },
+    {
+      "key": "apple",
+      "name": "Apple",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Apple and its logo are trademarks of their owner. Use them to refer to Apple, not to imply endorsement.",
+      "source": "simple-icons:apple",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/apple.svg",
+      "png": "png/{size}/apple.png",
+      "tui": {
+        "nerd": "󰀵",
+        "nerd_code": "f0035",
+        "nerd_name": "md-apple",
+        "unicode": "🍎",
+        "ascii": "mac"
+      }
+    },
+    {
+      "key": "google",
+      "name": "Google",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Google and its logo are trademarks of their owner. Use them to refer to Google, not to imply endorsement.",
+      "source": "simple-icons:google",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/google.svg",
+      "png": "png/{size}/google.png",
+      "tui": {
+        "nerd": "󰊭",
+        "nerd_code": "f02ad",
+        "nerd_name": "md-google",
+        "unicode": "Ⓖ",
+        "ascii": "g"
+      }
+    },
+    {
+      "key": "android",
+      "name": "Android",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Android and its logo are trademarks of their owner. Use them to refer to Android, not to imply endorsement.",
+      "source": "simple-icons:android",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/android.svg",
+      "png": "png/{size}/android.png",
+      "tui": {
+        "nerd": "󰀲",
+        "nerd_code": "f0032",
+        "nerd_name": "md-android",
+        "unicode": "🤖",
+        "ascii": "and"
+      }
+    },
+    {
+      "key": "linux",
+      "name": "Linux",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Linux and its logo are trademarks of their owner. Use them to refer to Linux, not to imply endorsement.",
+      "source": "simple-icons:linux",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/linux.svg",
+      "png": "png/{size}/linux.png",
+      "tui": {
+        "nerd": "󰌽",
+        "nerd_code": "f033d",
+        "nerd_name": "md-linux",
+        "unicode": "🐧",
+        "ascii": "lnx"
+      }
+    },
+    {
+      "key": "ubuntu",
+      "name": "Ubuntu",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Ubuntu and its logo are trademarks of their owner. Use them to refer to Ubuntu, not to imply endorsement.",
+      "source": "simple-icons:ubuntu",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/ubuntu.svg",
+      "png": "png/{size}/ubuntu.png",
+      "tui": {
+        "nerd": "󰕈",
+        "nerd_code": "f0548",
+        "nerd_name": "md-ubuntu",
+        "unicode": "◎",
+        "ascii": "ubu"
+      }
+    },
+    {
+      "key": "debian",
+      "name": "Debian",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Debian and its logo are trademarks of their owner. Use them to refer to Debian, not to imply endorsement.",
+      "source": "simple-icons:debian",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/debian.svg",
+      "png": "png/{size}/debian.png",
+      "tui": {
+        "nerd": "󰣚",
+        "nerd_code": "f08da",
+        "nerd_name": "md-debian",
+        "unicode": "🌀",
+        "ascii": "deb"
+      }
+    },
+    {
+      "key": "firefox",
+      "name": "Firefox",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Firefox and its logo are trademarks of their owner. Use them to refer to Firefox, not to imply endorsement.",
+      "source": "simple-icons:firefox",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/firefox.svg",
+      "png": "png/{size}/firefox.png",
+      "tui": {
+        "nerd": "󰈹",
+        "nerd_code": "f0239",
+        "nerd_name": "md-firefox",
+        "unicode": "🦊",
+        "ascii": "ff"
+      }
+    },
+    {
+      "key": "chrome",
+      "name": "Chrome",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Chrome and its logo are trademarks of their owner. Use them to refer to Chrome, not to imply endorsement.",
+      "source": "simple-icons:googlechrome",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/chrome.svg",
+      "png": "png/{size}/chrome.png",
+      "tui": {
+        "nerd": "󰊯",
+        "nerd_code": "f02af",
+        "nerd_name": "md-google_chrome",
+        "unicode": "◉",
+        "ascii": "chr"
+      }
+    },
+    {
+      "key": "safari",
+      "name": "Safari",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Safari and its logo are trademarks of their owner. Use them to refer to Safari, not to imply endorsement.",
+      "source": "simple-icons:safari",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/safari.svg",
+      "png": "png/{size}/safari.png",
+      "tui": {
+        "nerd": "󰀹",
+        "nerd_code": "f0039",
+        "nerd_name": "md-apple_safari",
+        "unicode": "🧭",
+        "ascii": "saf"
+      }
+    },
+    {
+      "key": "brave",
+      "name": "Brave",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Brave and its logo are trademarks of their owner. Use them to refer to Brave, not to imply endorsement.",
+      "source": "simple-icons:brave",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/brave.svg",
+      "png": "png/{size}/brave.png",
+      "tui": {
+        "nerd": "󰒙",
+        "nerd_code": "f0499",
+        "nerd_name": "md-shield_outline",
+        "unicode": "🦁",
+        "ascii": "brv"
+      }
+    },
+    {
+      "key": "tor",
+      "name": "Tor",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Tor and its logo are trademarks of their owner. Use them to refer to Tor, not to imply endorsement.",
+      "source": "simple-icons:torproject",
+      "license": "CC0-1.0",
+      "made_by": "human",
+      "svg": "svg/tor.svg",
+      "png": "png/{size}/tor.png",
+      "tui": {
+        "nerd": "",
+        "nerd_code": "f371",
+        "nerd_name": "linux-tor",
+        "unicode": "🧅",
+        "ascii": "tor"
+      }
+    },
+    {
+      "key": "slack",
+      "name": "Slack",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Slack and its logo are trademarks of their owner. Use them to refer to Slack, not to imply endorsement.",
+      "source": "font-awesome:slack",
+      "license": "CC-BY-4.0",
+      "made_by": "human",
+      "svg": "svg/slack.svg",
+      "png": "png/{size}/slack.png",
+      "tui": {
+        "nerd": "󰒱",
+        "nerd_code": "f04b1",
+        "nerd_name": "md-slack",
+        "unicode": "#",
+        "ascii": "slk"
+      }
+    },
+    {
+      "key": "linkedin",
+      "name": "LinkedIn",
+      "category": "brand",
+      "brand": true,
+      "trademark": "LinkedIn and its logo are trademarks of their owner. Use them to refer to LinkedIn, not to imply endorsement.",
+      "source": "font-awesome:linkedin",
+      "license": "CC-BY-4.0",
+      "made_by": "human",
+      "svg": "svg/linkedin.svg",
+      "png": "png/{size}/linkedin.png",
+      "tui": {
+        "nerd": "󰌻",
+        "nerd_code": "f033b",
+        "nerd_name": "md-linkedin",
+        "unicode": "ⓘ",
+        "ascii": "in"
+      }
+    },
+    {
+      "key": "windows",
+      "name": "Windows",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Windows and its logo are trademarks of their owner. Use them to refer to Windows, not to imply endorsement.",
+      "source": "font-awesome:windows",
+      "license": "CC-BY-4.0",
+      "made_by": "human",
+      "svg": "svg/windows.svg",
+      "png": "png/{size}/windows.png",
+      "tui": {
+        "nerd": "󰖳",
+        "nerd_code": "f05b3",
+        "nerd_name": "md-microsoft_windows",
+        "unicode": "⊞",
+        "ascii": "win"
+      }
+    },
+    {
+      "key": "microsoft",
+      "name": "Microsoft",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Microsoft and its logo are trademarks of their owner. Use them to refer to Microsoft, not to imply endorsement.",
+      "source": "font-awesome:microsoft",
+      "license": "CC-BY-4.0",
+      "made_by": "human",
+      "svg": "svg/microsoft.svg",
+      "png": "png/{size}/microsoft.png",
+      "tui": {
+        "nerd": "󰍲",
+        "nerd_code": "f0372",
+        "nerd_name": "md-microsoft",
+        "unicode": "⊞",
+        "ascii": "ms"
+      }
+    },
+    {
+      "key": "hacker-news",
+      "name": "Hacker News",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Hacker News and its logo are trademarks of their owner. Use them to refer to Hacker News, not to imply endorsement.",
+      "source": "font-awesome:hacker-news",
+      "license": "CC-BY-4.0",
+      "made_by": "human",
+      "svg": "svg/hacker-news.svg",
+      "png": "png/{size}/hacker-news.png",
+      "tui": {
+        "nerd": "",
+        "nerd_code": "f1d4",
+        "nerd_name": "fa-hacker_news",
+        "unicode": "Ⓨ",
+        "ascii": "hn"
+      }
+    },
+    {
+      "key": "openai",
+      "name": "OpenAI",
+      "category": "brand",
+      "brand": true,
+      "trademark": "OpenAI and its logo are trademarks of their owner. Use them to refer to OpenAI, not to imply endorsement.",
+      "source": "font-awesome:openai",
+      "license": "CC-BY-4.0",
+      "made_by": "human",
+      "svg": "svg/openai.svg",
+      "png": "png/{size}/openai.png",
+      "tui": {
+        "unicode": "✺",
+        "ascii": "oai"
+      }
+    },
+    {
+      "key": "skype",
+      "name": "Skype",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Skype and its logo are trademarks of their owner. Use them to refer to Skype, not to imply endorsement.",
+      "source": "font-awesome:skype",
+      "license": "CC-BY-4.0",
+      "made_by": "human",
+      "svg": "svg/skype.svg",
+      "png": "png/{size}/skype.png",
+      "tui": {
+        "nerd": "󰒯",
+        "nerd_code": "f04af",
+        "nerd_name": "md-skype",
+        "unicode": "Ⓢ",
+        "ascii": "sky"
+      }
+    },
+    {
+      "key": "codepen",
+      "name": "CodePen",
+      "category": "brand",
+      "brand": true,
+      "trademark": "CodePen and its logo are trademarks of their owner. Use them to refer to CodePen, not to imply endorsement.",
+      "source": "font-awesome:codepen",
+      "license": "CC-BY-4.0",
+      "made_by": "human",
+      "svg": "svg/codepen.svg",
+      "png": "png/{size}/codepen.png",
+      "tui": {
+        "nerd": "󰅵",
+        "nerd_code": "f0175",
+        "nerd_name": "md-codepen",
+        "unicode": "⬡",
+        "ascii": "cpn"
+      }
+    },
+    {
+      "key": "amazon",
+      "name": "Amazon",
+      "category": "brand",
+      "brand": true,
+      "trademark": "Amazon and its logo are trademarks of their owner. Use them to refer to Amazon, not to imply endorsement.",
+      "source": "font-awesome:amazon",
+      "license": "CC-BY-4.0",
+      "made_by": "human",
+      "svg": "svg/amazon.svg",
+      "png": "png/{size}/amazon.png",
+      "tui": {
+        "nerd": "",
+        "nerd_code": "f270",
+        "nerd_name": "fa-amazon",
+        "unicode": "ⓐ",
+        "ascii": "amz"
+      }
+    }
+  ]
+}
