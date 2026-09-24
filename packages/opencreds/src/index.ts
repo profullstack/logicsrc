@@ -197,3 +197,16 @@ export type {
   UriMatch,
   VaultMeta,
 } from "./types.js";
+
+export {
+  SECRET_CATEGORIES,
+  SECRET_CATEGORY_IDS,
+  OTHER_CATEGORY,
+  categorizeSecret,
+  categorizeItem,
+  parseCategories,
+  csvLine,
+  toSimpleCsv,
+  SIMPLE_CSV_COLUMNS,
+  type SecretCategory,
+} from "./categories.js";

@@ -3,6 +3,8 @@ import { createHash, randomBytes } from "node:crypto";
 import { hostname } from "node:os";
 import { spawn } from "node:child_process";
 import { createInterface } from "node:readline/promises";
+import { chmodSync, writeFileSync } from "node:fs";
+import { OTHER_CATEGORY, SECRET_CATEGORIES, categorizeSecret, csvLine, parseCategories } from "@logicsrc/opencreds";
 import {
   TeamClient,
   TeamApiError,
@@ -16,9 +18,11 @@ import {
   identityPath,
   unwrapVaultKey,
   wrapVaultKey,
-  type CredentialEndpoint
+  decryptValue,
+  type CredentialEndpoint,
+  type RemoteVault
 } from "@logicsrc/plugin-credential-sharing";
-import { print, type OutputFormat } from "./format.js";
+import { print, printColumns, type OutputFormat } from "./format.js";
 import { linkedDirectory, requireSecretsLink, writeSecretsLink } from "./secrets-link.js";
 
 /**
@@ -515,4 +519,214 @@ export async function teamsTuiAction(options: { theme?: string } = {}): Promise<
   const { client, identity } = authedClient();
   const { runVaultTui } = await import("./vault-tui-run.js");
   await runVaultTui({ client, identity: identity.email, theme: options.theme });
+}
+
+// ------------------------------------------------------------ categories ---
+//
+// `teams secrets` and `teams export` answer "show me every database password"
+// or "give me all the social keys as a spreadsheet". The category comes from
+// the key NAME (see @logicsrc/opencreds categories.ts), so listing never has to
+// decrypt anything and a list and an export of the same filter always agree.
+
+export interface SecretFilter {
+  project?: string;
+  env?: string;
+  category?: string | string[];
+  search?: string;
+}
+
+interface SecretRow {
+  team: string;
+  project: string;
+  env: string;
+  vault: string;
+  category: string;
+  key: string;
+  updatedAt: string;
+}
+
+/** Map with at most `limit` promises in flight; a team can hold hundreds of vaults. */
+async function mapLimit<T, R>(items: readonly T[], limit: number, fn: (item: T) => Promise<R>): Promise<R[]> {
+  const out = new Array<R>(items.length);
+  let next = 0;
+  const worker = async (): Promise<void> => {
+    while (next < items.length) {
+      const index = next++;
+      out[index] = await fn(items[index]!);
+    }
+  };
+  await Promise.all(Array.from({ length: Math.min(limit, items.length) }, worker));
+  return out;
+}
+
+/** The vaults a filter addresses: all of them, one project's, or one project/env. */
+function selectVaults(vaults: RemoteVault[], filter: SecretFilter): Array<RemoteVault & { project: string; env: string }> {
+  return vaults
+    .map((v) => {
+      const parts = splitVaultName(v.name);
+      return { ...v, project: parts?.project ?? v.name, env: parts?.env ?? "" };
+    })
+    .filter((v) => (filter.project ? v.project === filter.project : true))
+    .filter((v) => (filter.env ? v.env === filter.env : true))
+    .sort((a, b) => a.name.localeCompare(b.name));
+}
+
+function matcher(filter: SecretFilter): (row: { key: string; category: string }) => boolean {
+  const categories = parseCategories(filter.category);
+  const needle = filter.search?.toLowerCase();
+  return (row) =>
+    (!categories || categories.has(row.category)) && (!needle || row.key.toLowerCase().includes(needle));
+}
+
+/** Every secret NAME the filter matches, with its category. Decrypts nothing. */
+async function collectSecretRows(client: TeamClient, slug: string, filter: SecretFilter): Promise<SecretRow[]> {
+  const keep = matcher(filter);
+  const { vaults } = await client.listVaults(slug);
+  const selected = selectVaults(vaults, filter);
+  if (selected.length === 0) throw new Error(noVaultsMessage(slug, filter));
+  const perVault = await mapLimit(selected, 8, async (v) => {
+    const { secrets } = await client.listSecrets(v.id);
+    return secrets.map((s) => ({
+      team: slug, project: v.project, env: v.env, vault: v.name,
+      category: categorizeSecret(s.name), key: s.name, updatedAt: s.updatedAt
+    }));
+  });
+  return perVault.flat().filter(keep);
+}
+
+function noVaultsMessage(slug: string, filter: SecretFilter): string {
+  const where = [filter.project, filter.env].filter(Boolean).join("/");
+  return where
+    ? `No vault matches ${slug}/${where}. See what exists: logicsrc teams vaults ${slug}`
+    : `Team "${slug}" has no vaults yet. Push one: logicsrc teams push ${slug} <project> <env>`;
+}
+
+function namesCsv(rows: SecretRow[]): string {
+  const lines = [csvLine(["team", "project", "env", "category", "key", "updated_at"])];
+  for (const r of rows) lines.push(csvLine([r.team, r.project, r.env, r.category, r.key, r.updatedAt]));
+  return `${lines.join("\n")}\n`;
+}
+
+/** `logicsrc teams categories [team]` — the filter words, with counts when a team is given. */
+export async function teamsCategoriesAction(slug: string | undefined, options: { format: OutputFormat }): Promise<void> {
+  let counts: Map<string, number> | undefined;
+  if (slug) {
+    const { client } = authedClient();
+    counts = new Map();
+    for (const row of await collectSecretRows(client, slug, {})) counts.set(row.category, (counts.get(row.category) ?? 0) + 1);
+  }
+  const rows = [...SECRET_CATEGORIES, OTHER_CATEGORY].map((c) => ({
+    category: c.id,
+    ...(counts ? { secrets: counts.get(c.id) ?? 0 } : {}),
+    description: c.description,
+    aliases: c.aliases.join(", "),
+    examples: c.examples.join(", ")
+  }));
+  if (options.format === "table") {
+    printColumns(rows.map(({ examples: _examples, ...row }) => row));
+    console.error("\nFilter with: logicsrc teams secrets <team> --category db   (or: teams export <team> --category db)");
+    return;
+  }
+  print(rows, options.format);
+}
+
+/** `logicsrc teams secrets <team> [project] [env]` — names and categories, never values. */
+export async function teamsSecretsAction(
+  slug: string,
+  filter: SecretFilter,
+  options: { format: OutputFormat | "csv" }
+): Promise<void> {
+  const { client } = authedClient();
+  const rows = await collectSecretRows(client, slug, filter);
+  if (options.format === "csv") {
+    process.stdout.write(namesCsv(rows));
+    return;
+  }
+  if (rows.length === 0) {
+    console.error("No secrets match. Categories: logicsrc teams categories");
+    return;
+  }
+  const vaults = new Set(rows.map((r) => r.vault)).size;
+  console.error(`${rows.length} secret(s) in ${vaults} vault(s). Values stay encrypted; export them with: logicsrc teams export ${slug} …`);
+  const brief = rows.map((r) => ({ project: r.project, env: r.env, category: r.category, key: r.key }));
+  if (options.format === "table") printColumns(brief);
+  else print(options.format === "json" ? rows : brief, options.format);
+}
+
+async function confirmPlaintext(message: string): Promise<boolean> {
+  if (!process.stdin.isTTY || !process.stderr.isTTY) return false;
+  const prompt = createInterface({ input: process.stdin, output: process.stderr });
+  try {
+    return /^y(es)?$/i.test((await prompt.question(`${message} [y/N] `)).trim());
+  } finally {
+    prompt.close();
+  }
+}
+
+/**
+ * `logicsrc teams export <team> [project] [env] --out creds.csv`
+ *
+ * Decrypts on this machine and writes one CSV row per secret:
+ * team,project,env,category,key,value,updated_at. Vaults you hold no grant for
+ * are skipped and named, rather than failing the whole export.
+ */
+export async function teamsExportAction(
+  slug: string,
+  filter: SecretFilter,
+  options: { out: string; yes?: boolean }
+): Promise<void> {
+  const { client, identity } = authedClient();
+  const keep = matcher(filter);
+  const { vaults } = await client.listVaults(slug);
+  const selected = selectVaults(vaults, filter);
+  if (selected.length === 0) throw new Error(noVaultsMessage(slug, filter));
+
+  const toStdout = options.out === "-";
+  const target = toStdout ? "stdout" : options.out;
+  if (!options.yes) {
+    console.error(`About to write decrypted secrets from ${selected.length} vault(s) to ${target} in the clear.`);
+    console.error("Anyone who can read that file can use every secret in it.");
+    if (!(await confirmPlaintext("Continue?"))) {
+      throw new Error("Refused: exporting plaintext secrets needs confirmation. Re-run with --yes to skip the prompt.");
+    }
+  }
+
+  const skipped: string[] = [];
+  const perVault = await mapLimit(selected, 6, async (v) => {
+    if (!v.hasAccess) {
+      skipped.push(v.name);
+      return [];
+    }
+    const { secrets } = await client.listSecrets(v.id);
+    const wanted = secrets
+      .map((s) => ({ secret: s, category: categorizeSecret(s.name), key: s.name }))
+      .filter(keep);
+    if (wanted.length === 0) return [];
+    let dek: string;
+    try {
+      dek = await unwrapVaultKey((await client.getMyGrant(v.id)).wrappedDek, identity.keys);
+    } catch {
+      skipped.push(v.name);
+      return [];
+    }
+    return Promise.all(
+      wanted.map(async ({ secret, category }) =>
+        csvLine([slug, v.project, v.env, category, secret.name,
+          await decryptValue({ nonce: secret.nonce, ciphertext: secret.ciphertext }, dek), secret.updatedAt])
+      )
+    );
+  });
+
+  const lines = perVault.flat();
+  const csv = `${[csvLine(["team", "project", "env", "category", "key", "value", "updated_at"]), ...lines].join("\n")}\n`;
+  if (toStdout) {
+    process.stdout.write(csv);
+  } else {
+    writeFileSync(options.out, csv, { encoding: "utf8", mode: 0o600 });
+    try { chmodSync(options.out, 0o600); } catch { /* no modes on this platform */ }
+  }
+  console.error(`Exported ${lines.length} secret(s) to ${target}.${toStdout ? "" : " Delete it when you are done: shred -u " + options.out}`);
+  if (skipped.length) {
+    console.error(`Skipped ${skipped.length} vault(s) you cannot decrypt: ${skipped.sort().join(", ")}`);
+  }
 }

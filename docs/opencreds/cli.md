@@ -56,7 +56,7 @@ why it is instant on a vault of any size.
 
 ```bash
 opencreds add <type> --name <name> [type flags…]
-opencreds list [--type <type>] [--folder <name>] [--search <text>] [--json]
+opencreds list [--type <type>] [--category <names>] [--folder <name>] [--search <text>] [--json]
 opencreds get <id|name> [--field <path>] [--reveal]
 opencreds edit <id|name> [flags…]
 opencreds rm <id|name> [--purge]
@@ -67,6 +67,13 @@ opencreds restore <id>
 with every secret field masked; `--reveal` prints one field named by `--field`,
 so revealing is always a deliberate act naming a single value. `--json` output is
 masked identically — a pipeline is not an authorization.
+
+`list` prints one line per item: short id, type, category, name. The category
+(`db`, `social`, `server`, `api`, `finance`, … and `other`) is derived from the
+item type, name, account provider and login hosts, and is never stored, so it
+cannot disagree between implementations that share the rule table.
+`--category db,social` filters on it and accepts aliases (`database`,
+`payments`); an unknown word exits 1 and names the valid ones.
 
 Type flags follow the field group names, kebab-cased:
 `--username`, `--password`, `--totp`, `--url`,
@@ -83,7 +90,9 @@ secret need not appear in the shell history or the process list.
 ```bash
 opencreds export [--out vault.opencreds] [--passphrase-stdin]
 opencreds export --plaintext --out vault.json --yes
+opencreds export --format csv --out vault.csv --yes
 opencreds export --format bitwarden-csv --out vault.csv --yes
+opencreds export --format csv --category db --out db.csv --yes
 
 opencreds import <file> [--dry-run] [--merge skip|replace|duplicate]
 opencreds import <file> --source bitwarden|onepassword|chrome|lastpass|keepass
@@ -91,6 +100,13 @@ opencreds import <file> --source bitwarden|onepassword|chrome|lastpass|keepass
 
 `export` writes the encrypted form. `--plaintext` prints what it is about to do
 and exits 4 without `--yes`.
+
+`--format csv` writes one flat row per item —
+`folder,category,type,name,username,password,url,value,totp,notes` — where
+`value` is the single opaque secret of a key, account or card. It keeps the key
+and account items a Bitwarden CSV has no column for, and is meant for people and
+scripts, not re-import. `--format bitwarden-csv` is the one to hand another
+password manager. `--category` limits any export format to those categories.
 
 `import` with `--dry-run` reports counts by type, folders to be created,
 duplicates detected and rows that could not be mapped, and writes nothing. A
