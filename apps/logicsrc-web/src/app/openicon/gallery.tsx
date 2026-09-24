@@ -29,10 +29,16 @@ type Icon = {
   made_by?: string;
   svg: string;
   png?: string;
-  /** The optional full-colour style; simple (the line icon) is canonical. */
-  hq?: { png?: string; webp?: string; svg?: string; made_by?: string; hex?: string };
+  /** The first colour style, under the name it shipped with; also in `styles`. */
+  hq?: StyleFiles;
+  /** Every colour style this icon has, by style id. Simple stays canonical. */
+  styles?: Record<string, StyleFiles>;
   tui?: { nerd?: string; nerd_code?: string; nerd_name?: string; unicode?: string; ascii?: string };
 };
+
+type StyleFiles = { png?: string; webp?: string; svg?: string; made_by?: string; hex?: string };
+
+type StyleInfo = { label?: string; material?: string; dir?: string };
 
 type IconSet = {
   name: string;
@@ -40,6 +46,9 @@ type IconSet = {
   license: string;
   sizes: number[];
   categories: Record<string, string>;
+  /** simple first, then the colour styles in the order the set added them. */
+  styles?: string[];
+  style_info?: Record<string, StyleInfo>;
   icons: Icon[];
 };
 
@@ -54,8 +63,8 @@ const VIEWS: Array<[View, string]> = [
 
 type Filters = {
   q: string;
-  /** simple: the line icon in the chosen colour; hq: the full-colour style. */
-  style: "simple" | "hq";
+  /** "simple" is the line icon in the chosen colour; anything else is a style id. */
+  style: string;
   category: string;
   kind: "" | "ui" | "brand";
   view: View;
@@ -65,15 +74,24 @@ type Filters = {
 
 const DEFAULTS: Filters = { q: "", style: "simple", category: "", kind: "", view: "svg", size: 32, color: "#101418" };
 
+/** A style id is a key in the set; keep the query string from becoming a path. */
+const isStyleId = (value: string): boolean => /^[a-z0-9][a-z0-9-]{0,30}$/.test(value);
+
+/** The colour styles an icon actually has, oldest name first. */
+function stylesOf(icon: Icon): Record<string, StyleFiles> {
+  return { ...(icon.hq ? { hq: icon.hq } : {}), ...icon.styles };
+}
+
 function readFilters(): Filters {
   const p = new URLSearchParams(window.location.search);
   const view = p.get("view") as View | null;
   const kind = p.get("kind");
   const size = Number(p.get("size"));
   const color = p.get("color");
+  const style = p.get("style") ?? "";
   return {
     q: p.get("q") ?? "",
-    style: p.get("style") === "hq" ? "hq" : "simple",
+    style: style && style !== "simple" && isStyleId(style) ? style : "simple",
     category: p.get("category") ?? "",
     kind: kind === "ui" || kind === "brand" ? kind : "",
     view: view && VIEWS.some(([v]) => v === view) ? view : "svg",
@@ -86,7 +104,7 @@ function writeFilters(f: Filters, selected: string | null): void {
   const p = new URLSearchParams(window.location.search);
   for (const key of ["q", "style", "category", "kind", "view", "size", "color", "icon"]) p.delete(key);
   if (f.q) p.set("q", f.q);
-  if (f.style === "hq") p.set("style", "hq");
+  if (f.style !== "simple") p.set("style", f.style);
   if (f.category) p.set("category", f.category);
   if (f.kind) p.set("kind", f.kind);
   if (f.view !== "svg") p.set("view", f.view);
@@ -121,17 +139,17 @@ const maskStyle = (icon: Icon, color: string, size: number): CSSProperties => {
   };
 };
 
-/** The HQ artwork for an icon at a size, or null when it has none. */
-const hqSrc = (icon: Icon, size: number): string | null => {
-  const hq = icon.hq;
-  if (!hq) return null;
-  if (hq.svg) return `${GALLERY_SET}/${hq.svg}`;
-  const template = hq.webp ?? hq.png;
+/** One colour style's artwork for an icon at a size, or null when it has none. */
+const artSrc = (icon: Icon, style: string, size: number): string | null => {
+  const files = stylesOf(icon)[style];
+  if (!files) return null;
+  if (files.svg) return `${GALLERY_SET}/${files.svg}`;
+  const template = files.webp ?? files.png;
   return template ? `${GALLERY_SET}/${template.replace("{size}", String(size > 64 ? 128 : 64))}` : null;
 };
 
-function Art({ icon, style, color, size }: { icon: Icon; style: Filters["style"]; color: string; size: number }): ReactNode {
-  const src = style === "hq" ? hqSrc(icon, size * 2) : null;
+function Art({ icon, style, color, size }: { icon: Icon; style: string; color: string; size: number }): ReactNode {
+  const src = style === "simple" ? null : artSrc(icon, style, size * 2);
   if (src) {
     // eslint-disable-next-line @next/next/no-img-element
     return <img src={src} alt={icon.name} width={size} height={size} loading="lazy" decoding="async" />;
@@ -231,7 +249,17 @@ export function Gallery(): ReactNode {
   if (!set) return <p className={styles.notice}>Loading the set…</p>;
 
   const brands = set.icons.filter((i) => i.brand).length;
-  const hqCount = set.icons.filter((i) => i.hq).length;
+  // The colour styles the set actually ships, in its own order, with how many
+  // icons each covers: a style the set lists but has not drawn yet is not a tab.
+  const colourStyles = (set.styles ?? (set.icons.some((i) => i.hq) ? ["simple", "hq"] : ["simple"]))
+    .filter((id) => id !== "simple")
+    .map((id) => ({
+      id,
+      count: set.icons.filter((i) => stylesOf(i)[id]).length,
+      label: set.style_info?.[id]?.label ?? id,
+      material: set.style_info?.[id]?.material ?? "A full-colour style"
+    }))
+    .filter((s) => s.count > 0);
   const terminal = filters.view !== "svg";
   const active = filters.q || filters.category || filters.kind;
 
@@ -248,22 +276,20 @@ export function Gallery(): ReactNode {
         />
 
         <div className={styles.controls}>
-          {hqCount ? (
+          {colourStyles.length ? (
             <div className={styles.segmented} role="group" aria-label="Style">
-              {(
-                [
-                  ["simple", "Simple"],
-                  ["hq", `HQ ${hqCount}`]
-                ] as const
-              ).map(([v, label]) => (
+              {[
+                { id: "simple", label: "Simple", material: "The line icon, in any colour", count: set.icons.length },
+                ...colourStyles
+              ].map((s) => (
                 <button
                   type="button"
-                  key={v}
-                  className={filters.style === v && filters.view === "svg" ? styles.segOn : styles.seg}
-                  onClick={() => setFilters((f) => ({ ...f, style: v, view: "svg" }))}
-                  title={v === "hq" ? "The full-colour style" : "The line icon, in any colour"}
+                  key={s.id}
+                  className={filters.style === s.id && filters.view === "svg" ? styles.segOn : styles.seg}
+                  onClick={() => setFilters((f) => ({ ...f, style: s.id, view: "svg" }))}
+                  title={s.material}
                 >
-                  {label}
+                  {s.id === "simple" ? s.label : `${s.label} ${s.count}`}
                 </button>
               ))}
             </div>
@@ -360,6 +386,12 @@ export function Gallery(): ReactNode {
           <strong>{filters.view}</strong>
           {filters.view === "nerd" ? " (Nerd Font symbols served subset from this page)" : ""}.
         </p>
+      ) : filters.style !== "simple" ? (
+        <p className={styles.hint}>
+          <strong>{set.style_info?.[filters.style]?.label ?? filters.style}</strong>{" "}
+          {set.style_info?.[filters.style]?.material ?? "A full-colour style."} Simple stays canonical: a colour style is
+          a material over the same drawing, never a second drawing of it.
+        </p>
       ) : null}
 
       {results.length === 0 ? (
@@ -424,12 +456,12 @@ function Detail({ icon, set, color, onClose }: { icon: Icon; set: IconSet; color
             <span key={size} style={maskStyle(icon, color, size)} />
           ))}
         </div>
-        {icon.hq ? (
-          <div className={styles.heroHq}>
-            <Art icon={icon} style="hq" color={color} size={72} />
-            <span>HQ</span>
+        {Object.keys(stylesOf(icon)).map((id) => (
+          <div className={styles.heroHq} key={id}>
+            <Art icon={icon} style={id} color={color} size={72} />
+            <span>{set.style_info?.[id]?.label ?? id}</span>
           </div>
-        ) : null}
+        ))}
       </div>
       <h3>{icon.name}</h3>
       <dl className={styles.facts}>
@@ -504,14 +536,15 @@ function Detail({ icon, set, color, onClose }: { icon: Icon; set: IconSet; color
         <a href={`${OPENICON_RAW}/${icon.svg}`} download>
           SVG
         </a>
-        {icon.hq?.png
-          ? [128, 256]
-              .map((s) => (
-                <a key={`hq${s}`} href={`${OPENICON_RAW}/${icon.hq!.png!.replace("{size}", String(s))}`} download>
-                  HQ PNG {s}
+        {Object.entries(stylesOf(icon)).flatMap(([id, files]) =>
+          files.png
+            ? [256].map((s) => (
+                <a key={`${id}${s}`} href={`${OPENICON_RAW}/${files.png!.replace("{size}", String(s))}`} download>
+                  {set.style_info?.[id]?.label ?? id} PNG {s}
                 </a>
               ))
-          : null}
+            : []
+        )}
         {icon.png
           ? [24, 64, 128, 256]
               .filter((s) => set.sizes.includes(s))

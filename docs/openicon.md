@@ -66,7 +66,7 @@ Two entries from the reference set: a drawn icon and a brand logo.
 
 ## The rules
 
-There are eight for the canonical style, three more for the optional HQ style, and every one of them degrades rather than fails.
+There are eight for the canonical style, three more for an optional colour style, two more for a set that ships several of them, and every one of them degrades rather than fails.
 
 **1. A set is a folder with `openicon.json` at its root.** Every path is relative to that file. Top-level keys a reader should understand: `openicon` (the spec version, required), `name` (required), `version`, `license` (SPDX, covering every icon without its own), `homepage`, `grid`, `sizes`, `sprite` and `icons` (required). Unknown keys are kept and ignored.
 
@@ -84,9 +84,11 @@ There are eight for the canonical style, three more for the optional HQ style, a
 
 **8. The set says what made it.** `made_by` is `human`, `ai` or `both`, the [OpenWebring](/docs/openwebring) vocabulary, and `disclosure`, `ai_model`, `ai_provider` and `ai_prompt_url` are the W3C AI Content Disclosure vocabulary, as in [OpenEmoji](/docs/openemoji). Any of them may be repeated on an icon that differs from the set: in the reference set the drawn icons are `ai` and every brand logo is `human`.
 
-## Styles: simple and HQ
+## Styles: simple, and the colour styles
 
-A set has one canonical style, **simple**: the monochrome, `currentColor` files the rules above describe. It may add an optional second style, **HQ**: the same icons in full colour, drawn to a higher finish for places where an icon is shown large or alone (a launcher, an empty state, a marketing page). HQ never replaces simple; a reader that knows nothing about it loses nothing.
+A set has one canonical style, **simple**: the monochrome, `currentColor` files the rules above describe. It may add colour styles: the same icons in full colour, drawn to a higher finish for places where an icon is shown large or alone (a launcher, an empty state, a marketing page). A colour style never replaces simple; a reader that knows nothing about them loses nothing.
+
+The first one was **HQ**, and a colour style is not one look forever: HQ was drawn beside glossy 3D emoji masters, which reads as the decade it borrows from. A set may therefore carry several, and the reference set carries four — `hq` plus three flat-material **agentic** styles (`agentic-matte`, `agentic-machined`, `agentic-emissive`) for interfaces that would rather not look like a 2004 dock. Rules 9 to 11 describe one colour style, rules 12 and 13 describe a set that has more than one.
 
 **9. HQ is optional, per icon, and follows simple.** A set with an HQ style says so at the top level, `"styles": ["simple", "hq"]`, and describes it once:
 
@@ -116,6 +118,40 @@ An HQ icon depicts what its simple icon depicts, with the same silhouette, so a 
 
 **11. Provenance is per style.** `made_by`, `disclosure` and the `ai_*` fields on the `hq` block describe the HQ files, not the simple ones. In the reference set, simple icons are authored as SVG and HQ icons are drawn by an image model from them, so the same icon is `ai` in one style and says so in each.
 
+**12. More than one colour style is a map, not a second name.** A set that ships several lists them in `styles` — simple first, then the colour styles in the order they were added — and describes each one in `style_info`, keyed by the same ids:
+
+```json
+"styles": ["simple", "hq", "agentic-matte", "agentic-machined", "agentic-emissive"],
+"style_info": {
+  "agentic-matte": {
+    "dir": "styles/agentic-matte",
+    "label": "Agentic Matte",
+    "material": "Flat tonal planes with hard boundaries and one cool edge-light: form without gloss.",
+    "sizes": [16, 20, 24, 32, 48, 64, 128, 256],
+    "webp_sizes": [64, 128],
+    "made_by": "both",
+    "ai_model": "gpt-image-2",
+    "ai_provider": "OpenAI",
+    "ai_prompt_url": "styles/agentic-matte/style.txt",
+    "coverage": { "total": 370, "done": 370 }
+  }
+}
+```
+
+Each icon carries its colour styles the same way, in a `styles` map keyed by id, each entry shaped exactly as rule 9's `hq` block:
+
+```json
+"styles": {
+  "hq": { "png": "hq/png/{size}/mail.png", "webp": "hq/webp/{size}/mail.webp", "made_by": "ai" },
+  "agentic-matte": { "png": "styles/agentic-matte/png/{size}/mail.png",
+                     "webp": "styles/agentic-matte/webp/{size}/mail.webp", "made_by": "ai" }
+}
+```
+
+A set that has an `hq` style keeps writing the top-level `hq` block and the per-icon `hq` key from rule 9 as well, so a reader written against the first HQ release keeps working. They are the same objects under an older name, never a different drawing. Every rule about HQ holds for every colour style: same silhouette as simple (rule 9), owner's colour for a brand (rule 10), provenance per style (rule 11).
+
+**13. A style says what it is for, and a reader may refuse it.** `label` names it and `material` is one line on what it is made of, because the choice between colour styles is a choice of surface: a style built from near-black bodies and lit accents is right on a dark terminal and illegible on a printed page, and only the set knows which is which. A reader that shows icons at a fixed small size should prefer the style the set names first. A family of related styles shares a prefix and the family name alone means its default member: in the reference set `agentic` means `agentic-matte`, the one that holds its colour coding at 20 pixels on a light ground as well as a dark one.
+
 ## Discovery
 
 - A `<link rel="openicon" href="/icons/openicon.json">` in a page's head: this page draws its icons from that set.
@@ -139,8 +175,8 @@ An importer from any of these is a rename and a copy. Only `tui.unicode` and `tu
 
 ## What is deliberately absent
 
-- **No colour in the canonical style.** Simple icons are monochrome and take the text colour. Colour lives only in the optional HQ style (rules 9 to 11).
-- **No style variants.** Outline, filled and duotone versions of one icon are three sets, or three icons with three keys. One key, one drawing.
+- **No colour in the canonical style.** Simple icons are monochrome and take the text colour. Colour lives only in the optional colour styles (rules 9 to 13).
+- **No style variants of the drawing.** Outline, filled and duotone versions of one icon are three sets, or three icons with three keys. One key, one drawing. A colour style is a material over that one drawing, not a second drawing of it.
 - **No icon font format.** A webfont is a build output a set may ship, not part of the spec; the SVGs and the `tui` glyphs are the interchange.
 - **No registry of names.** Keys are the set's own. Aliases are how one set answers to another's names.
 - **No animation.** A spinner is a component, not an icon.
@@ -152,6 +188,7 @@ The reference set is [profullstack/openicon](https://github.com/profullstack/ope
 ```sh
 icon build --out ./openicon   # openicon.json, svg/, png/, sprite.svg
 icon glyph mail               # 󰇰, ✉ or @, whichever this terminal can draw
+icon agentic all              # the three flat-material colour styles
 ```
 
 [hqtui](https://hqtui.com) ships the set as its default icon pack, so `icon('mail')` in a TUI draws the best glyph the terminal has.
