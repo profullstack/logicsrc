@@ -24,10 +24,39 @@ type Emoji = {
   subgroup: string;
   unicode: string;
   keywords?: string[];
+  shortcodes?: string[];
   base?: string;
   png?: string;
   svg?: string;
   webp?: string;
+};
+
+type NetworkPack = { id: string; title: string; subset: string; keys: string[]; file: string; bytes: number };
+
+type Network = {
+  id: string;
+  name: string;
+  kind: "emoji" | "stickers" | "media";
+  size: number;
+  format: string;
+  max_bytes: number;
+  name_rule?: { max: number; pattern: string; prefix: string };
+  packSize?: number;
+  packsFrom?: string;
+  highlight?: { subgroups: string[]; why: string };
+  limits: string;
+  steps: string[];
+  docs: string[];
+  packs: NetworkPack[];
+  renamed: Record<string, string>;
+};
+
+type Networks = { generated: string; download_base: string; platforms: Network[] };
+
+const KIND_LABEL: Record<Network["kind"], string> = {
+  emoji: "Custom emoji",
+  stickers: "Sticker packs",
+  media: "Images to post"
 };
 
 type Manifest = {
@@ -63,9 +92,23 @@ type Filters = {
   status: "" | "drawn" | "todo";
   sort: "unicode" | "name" | "newest";
   size: number;
+  /** A network id from platforms.json, and optionally one of its packs. */
+  platform: string;
+  pack: string;
 };
 
-const DEFAULTS: Filters = { q: "", group: "", sub: "", tone: "", version: "", status: "", sort: "unicode", size: 56 };
+const DEFAULTS: Filters = {
+  q: "",
+  group: "",
+  sub: "",
+  tone: "",
+  version: "",
+  status: "",
+  sort: "unicode",
+  size: 56,
+  platform: "",
+  pack: ""
+};
 const PAGE = 360;
 
 function readFilters(): Filters {
@@ -81,7 +124,9 @@ function readFilters(): Filters {
     version: params.get("v") ?? "",
     status: status === "drawn" || status === "todo" ? status : "",
     sort: sort === "name" || sort === "newest" ? sort : "unicode",
-    size: size >= 32 && size <= 128 ? size : DEFAULTS.size
+    size: size >= 32 && size <= 128 ? size : DEFAULTS.size,
+    platform: params.get("platform") ?? "",
+    pack: params.get("pack") ?? ""
   };
 }
 
@@ -95,6 +140,8 @@ function writeFilters(f: Filters, selected: string | null): void {
   if (f.status) params.set("status", f.status);
   if (f.sort !== "unicode") params.set("sort", f.sort);
   if (f.size !== DEFAULTS.size) params.set("size", String(f.size));
+  if (f.platform) params.set("platform", f.platform);
+  if (f.pack) params.set("pack", f.pack);
   if (selected) params.set("e", selected);
   const query = params.toString();
   window.history.replaceState(null, "", query ? `?${query}` : window.location.pathname);
@@ -120,6 +167,7 @@ const fill = (template: string, size: number): string => template.replace("{size
 
 export function Catalog(): ReactNode {
   const [manifest, setManifest] = useState<Manifest | null>(null);
+  const [networks, setNetworks] = useState<Networks | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [filters, setFilters] = useState<Filters>(DEFAULTS);
   const [query, setQuery] = useState("");
@@ -141,6 +189,11 @@ export function Catalog(): ReactNode {
       })
       .then(setManifest)
       .catch((reason: Error) => setError(reason.message));
+    // The per-network bundles are optional: without them the catalog still works.
+    fetch(`${SET_URL}/platforms.json`)
+      .then((response) => (response.ok ? (response.json() as Promise<Networks>) : null))
+      .then(setNetworks)
+      .catch(() => setNetworks(null));
   }, []);
 
   // The search box types freely; the filter follows a beat behind.
@@ -171,6 +224,7 @@ export function Catalog(): ReactNode {
     setFilters((f) => {
       const next = { ...f, [key]: value };
       if (key === "group") next.sub = "";
+      if (key === "platform") next.pack = "";
       return next;
     });
   }, []);
@@ -217,6 +271,27 @@ export function Catalog(): ReactNode {
     [index]
   );
 
+  const network = useMemo(
+    () => networks?.platforms.find((p) => p.id === filters.platform) ?? null,
+    [networks, filters.platform]
+  );
+
+  /** What the chosen network's bundles hold (or one pack of them); null when no network is chosen. */
+  const networkKeys = useMemo(() => {
+    if (!network) return null;
+    const packs = filters.pack ? network.packs.filter((p) => p.id === filters.pack) : network.packs;
+    return new Set(packs.flatMap((p) => p.keys));
+  }, [network, filters.pack]);
+
+  /** The name an emoji goes by on the chosen network. */
+  const nameOn = useCallback(
+    (e: Emoji): string | null => {
+      if (!network?.name_rule) return null;
+      return network.renamed[e.key] ?? e.shortcodes?.[0] ?? null;
+    },
+    [network]
+  );
+
   const results = useMemo(() => {
     if (!manifest || !index) return [];
     // Tone swaps come from variants the other filters may have excluded
@@ -226,13 +301,21 @@ export function Catalog(): ReactNode {
     let list = toneView(base, filters.tone);
     if (filters.status === "drawn") list = list.filter((e) => e.png);
     if (filters.status === "todo") list = list.filter((e) => !e.png);
+    if (networkKeys) {
+      // A network's bundles decide; with a tone chosen, a variant outside
+      // them falls back to its base when the base is in.
+      list = list
+        .map((e) => (networkKeys.has(e.key) ? e : e.base && networkKeys.has(e.base) ? index.byKey.get(e.base)! : null))
+        .filter((e): e is Emoji => Boolean(e));
+      list = [...new Map(list.map((e) => [e.key, e])).values()];
+    }
     if (filters.sort === "name") list = [...list].sort((a, b) => a.name.localeCompare(b.name));
     if (filters.sort === "newest")
       list = [...list].sort(
         (a, b) => compareVersions(b.unicode, a.unicode) || (index.order.get(a.key) ?? 0) - (index.order.get(b.key) ?? 0)
       );
     return list;
-  }, [manifest, index, filters, matchesBase, toneView]);
+  }, [manifest, index, filters, matchesBase, toneView, networkKeys]);
 
   const groupCounts = useMemo(() => {
     const counts = new Map<string, number>();
@@ -241,9 +324,12 @@ export function Catalog(): ReactNode {
       manifest.emoji.filter((e) => matchesBase(e, filters, { group: true })),
       filters.tone
     );
-    for (const e of list) counts.set(e.group, (counts.get(e.group) ?? 0) + 1);
+    for (const e of list) {
+      if (networkKeys && !networkKeys.has(e.key)) continue;
+      counts.set(e.group, (counts.get(e.group) ?? 0) + 1);
+    }
     return counts;
-  }, [manifest, filters, matchesBase, toneView]);
+  }, [manifest, filters, matchesBase, toneView, networkKeys]);
 
   const subgroups = useMemo(() => {
     if (!manifest || !filters.group) return [];
@@ -304,6 +390,60 @@ export function Catalog(): ReactNode {
           {manifest.unicode} · {manifest.license} · set {manifest.version}
         </span>
       </div>
+
+      {networks ? (
+        <div className={styles.networks} role="group" aria-label="Network">
+          <div className={styles.networkRow}>
+            <span className={styles.rowLabel}>Install on</span>
+            <button
+              type="button"
+              className={!filters.platform ? styles.chipOn : styles.chip}
+              onClick={() => set("platform", "")}
+            >
+              Any network
+            </button>
+          </div>
+          {(["emoji", "stickers", "media"] as const).map((kind) => (
+            <div key={kind} className={styles.networkRow}>
+              <span className={styles[`kind_${kind}`]}>{KIND_LABEL[kind]}</span>
+              {networks.platforms
+                .filter((p) => p.kind === kind)
+                .map((p) => (
+                  <button
+                    type="button"
+                    key={p.id}
+                    className={filters.platform === p.id ? styles.chipOn : styles.chip}
+                    onClick={() => {
+                      if (filters.platform === p.id) {
+                        set("platform", "");
+                        return;
+                      }
+                      // A network that names what it is for (X: flags) opens on it.
+                      const sub = p.highlight?.subgroups[0] ?? "";
+                      const group = sub ? (manifest.emoji.find((e) => e.subgroup === sub)?.group ?? "") : "";
+                      setFilters((f) => ({ ...f, platform: p.id, pack: "", group: sub ? group : f.group, sub: sub || f.sub }));
+                    }}
+                  >
+                    {p.name}
+                  </button>
+                ))}
+            </div>
+          ))}
+        </div>
+      ) : null}
+
+      {network && networks ? (
+        <NetworkPanel
+          network={network}
+          repoRaw={networks.download_base}
+          activePack={filters.pack}
+          onPack={(id) => set("pack", filters.pack === id ? "" : id)}
+          onHighlight={(sub) => {
+            const e = manifest.emoji.find((x) => x.subgroup === sub);
+            setFilters((f) => ({ ...f, group: e?.group ?? "", sub }));
+          }}
+        />
+      ) : null}
 
       <div className={styles.toolbar}>
         <input
@@ -455,7 +595,9 @@ export function Catalog(): ReactNode {
                     {e.char}
                   </span>
                 )}
-                {filters.size >= 48 ? <span className={styles.label}>{e.name}</span> : null}
+                {filters.size >= 48 ? (
+                  <span className={styles.label}>{nameOn(e) ? `:${nameOn(e)}:` : e.name}</span>
+                ) : null}
               </button>
             </li>
           ))}
@@ -466,6 +608,8 @@ export function Catalog(): ReactNode {
       {current ? (
         <Detail
           emoji={current}
+          network={network}
+          nameOnNetwork={nameOn(current)}
           variants={index.variants.get(current.base ?? current.key) ?? []}
           base={current.base ? (index.byKey.get(current.base) ?? null) : null}
           onSelect={setSelected}
@@ -480,8 +624,97 @@ export function Catalog(): ReactNode {
   );
 }
 
+function NetworkPanel({
+  network,
+  repoRaw,
+  activePack,
+  onPack,
+  onHighlight
+}: {
+  network: Network;
+  repoRaw: string;
+  activePack: string;
+  onPack: (id: string) => void;
+  onHighlight: (subgroup: string) => void;
+}): ReactNode {
+  const mb = (bytes: number) => (bytes >= 1048576 ? `${(bytes / 1048576).toFixed(1)} MB` : `${Math.max(1, Math.round(bytes / 1024))} KB`);
+  return (
+    <section className={styles.panel} aria-label={`Install on ${network.name}`}>
+      <div className={styles.panelHead}>
+        <h3>
+          {network.name} <span className={styles[`kind_${network.kind}`]}>{KIND_LABEL[network.kind]}</span>
+        </h3>
+        <p>{network.limits}</p>
+        {network.highlight ? (
+          <p className={styles.highlight}>
+            {network.highlight.why}{" "}
+            {network.highlight.subgroups.map((sub) => (
+              <button type="button" key={sub} className={styles.linkish} onClick={() => onHighlight(sub)}>
+                {sub.replace(/-/g, " ")}
+              </button>
+            ))}
+          </p>
+        ) : null}
+      </div>
+      <div className={styles.panelBody}>
+        <ol className={styles.steps}>
+          {network.steps.map((step) => (
+            <li key={step}>{step}</li>
+          ))}
+        </ol>
+        {network.packs.length ? (
+          <div className={styles.packs}>
+            <table>
+              <thead>
+                <tr>
+                  <th>Pack</th>
+                  <th>{network.kind === "stickers" ? "Stickers" : "Emoji"}</th>
+                  <th>Size</th>
+                  <th />
+                </tr>
+              </thead>
+              <tbody>
+                {network.packs.map((pack) => (
+                  <tr key={pack.id} className={activePack === pack.id ? styles.packOn : undefined}>
+                    <td>{pack.title}</td>
+                    <td>{pack.keys.length.toLocaleString()}</td>
+                    <td>{mb(pack.bytes)}</td>
+                    <td className={styles.packActions}>
+                      <button type="button" className={styles.linkish} onClick={() => onPack(pack.id)}>
+                        {activePack === pack.id ? "Show all" : "Show"}
+                      </button>
+                      <a href={`${repoRaw}/${pack.file}`} download>
+                        Download
+                      </a>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : null}
+        {network.docs.length ? (
+          <p className={styles.docs}>
+            Official docs:{" "}
+            {network.docs.map((url, i) => (
+              <span key={url}>
+                {i ? ", " : ""}
+                <a href={url} rel="noopener noreferrer" target="_blank">
+                  {new URL(url).hostname.replace(/^www\./, "")}
+                </a>
+              </span>
+            ))}
+          </p>
+        ) : null}
+      </div>
+    </section>
+  );
+}
+
 function Detail({
   emoji,
+  network,
+  nameOnNetwork,
   variants,
   base,
   onSelect,
@@ -489,6 +722,8 @@ function Detail({
   onClose
 }: {
   emoji: Emoji;
+  network: Network | null;
+  nameOnNetwork: string | null;
   variants: Emoji[];
   base: Emoji | null;
   onSelect: (key: string) => void;
@@ -551,6 +786,21 @@ function Detail({
             </button>
           ))}
         </div>
+      ) : null}
+
+      {network ? (
+        <p className={styles.onNetwork}>
+          On {network.name}:{" "}
+          {nameOnNetwork ? <code>:{nameOnNetwork}:</code> : KIND_LABEL[network.kind].toLowerCase()}
+          {(() => {
+            const packs = network.packs.filter((p) => p.keys.includes(emoji.key)).map((p) => p.title);
+            return packs.length ? <span> · in {packs.join(", ")}</span> : <span> · not in a bundle for this network</span>;
+          })()}
+        </p>
+      ) : emoji.shortcodes?.[0] ? (
+        <p className={styles.onNetwork}>
+          Shortcode <code>:{emoji.shortcodes[0]}:</code>
+        </p>
       ) : null}
 
       <div className={styles.actions}>
