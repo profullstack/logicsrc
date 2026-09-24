@@ -1,0 +1,407 @@
+/* Nerd Font symbols, subset to the glyphs OpenIcon uses (38 KB; MIT, see nerd-fonts-LICENSE.txt). */
+@font-face {
+  font-family: "OpenIcon Nerd Symbols";
+  src: url("/openicon/set/nerd-openicon.woff2") format("woff2");
+  font-display: block;
+}
+
+.gallery {
+  --line: #e3e6e0;
+  --muted: #5b6b7a;
+  --accent: #0a7d59;
+  --tile: 32px;
+}
+
+.notice {
+  color: var(--muted);
+  padding: 2rem 0;
+}
+
+.toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  display: grid;
+  gap: 0.6rem;
+  padding: 0.75rem 0 0.8rem;
+  background: #f6f7f4;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 1rem;
+}
+
+.search {
+  width: 100%;
+  font: inherit;
+  font-size: 1rem;
+  padding: 0.7rem 0.95rem;
+  border: 1px solid #cfd5cc;
+  border-radius: 0.6rem;
+  background: #fff;
+}
+
+.search:focus,
+.tile:focus-visible,
+.seg:focus-visible,
+.chip:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 0.9rem;
+}
+
+.segmented {
+  display: inline-flex;
+  border: 1px solid #cfd5cc;
+  border-radius: 0.55rem;
+  overflow: hidden;
+  background: #fff;
+}
+
+.seg,
+.segOn {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.86rem;
+  background: #fff;
+  color: #101418;
+  border-right: 1px solid #e3e6e0;
+}
+
+.segmented > :last-child {
+  border-right: 0;
+}
+
+.segOn {
+  background: var(--accent);
+  color: #fff;
+}
+
+.control {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.control input[type="range"] {
+  width: 8rem;
+  accent-color: var(--accent);
+}
+
+.control input[type="color"] {
+  width: 2rem;
+  height: 1.8rem;
+  padding: 0;
+  border: 1px solid #cfd5cc;
+  border-radius: 0.35rem;
+  background: #fff;
+}
+
+.count {
+  margin-left: auto;
+  font-size: 0.85rem;
+  color: var(--muted);
+  display: inline-flex;
+  gap: 0.5rem;
+}
+
+.reset {
+  background: none;
+  padding: 0;
+  color: var(--accent);
+  font-size: 0.85rem;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.chip,
+.chipOn {
+  padding: 0.28rem 0.68rem;
+  border-radius: 999px;
+  font-size: 0.83rem;
+  border: 1px solid #cfd5cc;
+  background: #fff;
+  color: #101418;
+}
+
+.chip small,
+.chipOn small {
+  color: var(--muted);
+  margin-left: 0.15rem;
+}
+
+.chipOn {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.chipOn small {
+  color: #d7f3e8;
+}
+
+.hint {
+  margin: -0.3rem 0 0.8rem;
+  font-size: 0.84rem;
+  color: var(--muted);
+}
+
+.grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(calc(var(--tile) + 4.2rem), 1fr));
+  gap: 0.45rem;
+}
+
+.tile {
+  width: 100%;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 0.45rem;
+  min-height: calc(var(--tile) + 3.2rem);
+  padding: 0.7rem 0.3rem 0.5rem;
+  border: 1px solid var(--line);
+  border-radius: 0.7rem;
+  background: #fff;
+  color: #101418;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease,
+    border-color 0.12s ease;
+}
+
+.tile:hover {
+  transform: translateY(-2px);
+  border-color: #b9c9bf;
+  box-shadow: 0 6px 16px rgb(16 20 24 / 8%);
+}
+
+.tileOn {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+.gridTerminal .tile {
+  background: #11161b;
+  border-color: #232b33;
+  color: #d8e3dc;
+}
+
+.gridTerminal .tile:hover {
+  border-color: #3a4a55;
+}
+
+.gridTerminal .label {
+  color: #7f909c;
+}
+
+.glyph,
+.glyphNerd {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Segoe UI Symbol", "Noto Sans Symbols 2", "Apple Symbols",
+    system-ui, monospace;
+  line-height: 1;
+  min-height: 1em;
+  white-space: pre;
+}
+
+.glyphNerd {
+  font-family: "OpenIcon Nerd Symbols", ui-monospace, SFMono-Regular, Menlo, "Segoe UI Symbol", "Noto Sans Symbols 2",
+    "Apple Symbols", system-ui, monospace;
+}
+
+.fallback {
+  position: relative;
+}
+
+.fallback::after {
+  content: "";
+  position: absolute;
+  top: 0.45rem;
+  right: 0.45rem;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 999px;
+  background: #d9a441;
+}
+
+.label {
+  max-width: 100%;
+  font-size: 0.68rem;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.detail {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  width: min(24rem, 100vw);
+  overflow-y: auto;
+  padding: 1.4rem 1.3rem 2rem;
+  background: #fff;
+  border-left: 1px solid var(--line);
+  box-shadow: -18px 0 40px rgb(16 20 24 / 12%);
+}
+
+.close {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.8rem;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  background: #f1f3ef;
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.hero {
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+  padding: 1.2rem;
+  border-radius: 0.9rem;
+  background: radial-gradient(circle at 30% 20%, #ffffff, #eef1ec);
+}
+
+.heroSmall {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.8rem;
+}
+
+.detail h3 {
+  margin: 1rem 0 0.4rem;
+  font-size: 1.25rem;
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.3rem 0.9rem;
+  margin: 0.6rem 0;
+  font-size: 0.86rem;
+}
+
+.facts dt {
+  color: var(--muted);
+}
+
+.facts dd {
+  margin: 0;
+}
+
+.trademark {
+  font-size: 0.8rem;
+  color: #8a5a00;
+  background: #fdf6e8;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.65rem;
+}
+
+.tui {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  margin: 0.8rem 0;
+}
+
+.tui caption {
+  text-align: left;
+  color: var(--muted);
+  font-size: 0.78rem;
+  margin-bottom: 0.3rem;
+}
+
+.tui th {
+  text-align: left;
+  font-weight: 600;
+  padding: 0.35rem 0.5rem 0.35rem 0;
+  white-space: nowrap;
+}
+
+.tui td {
+  padding: 0.35rem 0.5rem 0.35rem 0;
+  border-top: 1px solid #f0f2ee;
+}
+
+.tui .glyph,
+.tui .glyphNerd {
+  font-size: 1.3rem;
+}
+
+.actions,
+.downloads {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.8rem;
+  margin-bottom: 0.8rem;
+  font-size: 0.86rem;
+}
+
+.downloads span {
+  color: var(--muted);
+}
+
+.copy {
+  padding: 0.35rem 0.7rem;
+  border-radius: 0.45rem;
+  border: 1px solid #cfd5cc;
+  background: #fff;
+  color: #101418;
+  font-size: 0.82rem;
+}
+
+.copy:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.keywords {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+@media (max-width: 640px) {
+  .toolbar {
+    position: static;
+  }
+  .chips {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 0.2rem;
+  }
+  .chips > * {
+    flex: none;
+  }
+  .count {
+    margin-left: 0;
+    width: 100%;
+  }
+}
+
+.heroHq {
+  display: grid;
+  justify-items: center;
+  gap: 0.2rem;
+  margin-left: auto;
+  font-size: 0.7rem;
+  color: var(--muted);
+}
