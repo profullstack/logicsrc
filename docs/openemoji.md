@@ -91,7 +91,7 @@ There are eight, and every one of them degrades rather than fails.
 
 **3. A custom emoji's key starts with `x-`.** `x-` followed by lowercase letters, digits, `_` or `-`. It has no `char`, one or more `shortcodes` (without colons), a `name`, and `group: "Custom"` unless the set groups its own. A shortcode belongs to its set: two sets may both define `:shipit:`, and an app that loads both decides which wins. No `x-` key may be used for something Unicode has encoded; when Unicode encodes it, the set adds the standard key and may keep the custom one as an alias.
 
-**4. Files are named by key, and the descriptor says where.** An entry's `png` is a path that may contain `{size}`, filled in from the set's `sizes`; `svg` is a path; a set may add `webp`, `avif` or `apng` the same way. A reader picks the smallest size at least as large as the rendered size times the device pixel ratio, and the largest when none is. Fonts are listed once for the set with their colour format (`cbdt`, `sbix`, `colrv1`, `ot-svg`), because a browser picks among them by what it supports, not per emoji.
+**4. Files are named by key, and the descriptor says where.** An entry's `png` is a path that may contain `{size}`, filled in from the set's `sizes`; `svg` is a path; a set may add `webp`, `avif` or `apng` the same way. A reader picks the smallest size at least as large as the rendered size times the device pixel ratio, and the largest when none is. An entry with no file paths is listed but not drawn: a set may list every emoji Unicode has while it is still being drawn, and a reader treats such an entry as missing (rule 5). Fonts are listed once for the set with their colour format (`cbdt`, `sbix`, `colrv1`, `ot-svg`), because a browser picks among them by what it supports, not per emoji.
 
 **5. Coverage is stated, not implied.** `coverage.total` is the number of standard emoji in the Unicode version the set names, `coverage.drawn` how many of them it has, and `coverage.missing` their keys. A reader that meets an emoji the set does not have falls back to the platform's own, never to a blank or a box. A set that draws only faces is a valid set; it only has to say so.
 
@@ -133,6 +133,8 @@ Importing from any of them is a fetch and a rename: shortcode to `x-` key, image
 - **No required licence.** A set must say its licence; it need not be open.
 
 ## Reference implementation
+
+The set it drew is browsable at [/openemoji/catalog](/openemoji/catalog): every emoji, searchable by name and CLDR keyword, filterable by group, skin tone, Emoji version and status. Its files are in [profullstack/openemoji](https://github.com/profullstack/openemoji).
 
 `emoji` in [profullstack/cli-tools](https://github.com/profullstack/cli-tools) draws a complete set with an image model and packs it as above:
 

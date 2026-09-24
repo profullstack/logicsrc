@@ -105,6 +105,11 @@ export default function OpenEmojiPage(): ReactNode {
           Status: 0.1. Files first and <code style={mono}>made_by</code> on the work, like{" "}
           <Link href="/openwiki">OpenWiki</Link>.
         </p>
+        <p>
+          <Link href="/openemoji/catalog" className="button-primary">
+            Browse the whole set: 3,963 emoji
+          </Link>
+        </p>
       </div>
 
       <div className="band">
@@ -113,7 +118,8 @@ export default function OpenEmojiPage(): ReactNode {
           <p>
             From the reference implementation: every glyph drawn by gpt-image-2 under one art
             direction. The skin tones are edits of their base, which is why the two thumbs are the
-            same thumb.
+            same thumb. <Link href="/openemoji/catalog">The catalog</Link> has all of them, with
+            search and filters.
           </p>
         </div>
         <div
@@ -276,6 +282,10 @@ emoji build                         # sizes, SVGs, fonts, manifest`}</pre>
           <h2>Where everything lives</h2>
         </div>
         <ul style={{ color: "#41505d", lineHeight: 1.9, paddingLeft: "1.1rem" }}>
+          <li>
+            <Link href="/openemoji/catalog">Catalog</Link>: every emoji in the reference set, with
+            search, group, skin tone, version and status filters
+          </li>
           <li>
             <Link href="/docs/openemoji">Specification</Link>: the shape, eight rules, discovery, the
             mapping from Mastodon, Slack, Discord and CLDR
