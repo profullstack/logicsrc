@@ -172,6 +172,70 @@ describe("reading a Bitwarden JSON export", () => {
     expect(parsed.skipped[0]?.reason).toBe("Not valid JSON");
   });
 
+  it("maps Bitwarden's numeric URI match rules instead of assuming domain", () => {
+    // Assuming "domain" for all of them quietly widens a login pinned to an
+    // exact URL, which is a security change, not a cosmetic one.
+    const parsed = parseBitwardenJson(
+      exportOf([
+        {
+          type: 1,
+          name: "x",
+          login: {
+            uris: [
+              { uri: "https://a.test", match: 3 },
+              { uri: "https://b.test", match: 5 },
+              { uri: "https://c.test", match: null },
+              { uri: "https://d.test" },
+            ],
+          },
+        },
+      ]),
+    );
+    expect(parsed.items[0]!.login?.uris).toEqual([
+      { uri: "https://a.test", match: "exact" },
+      { uri: "https://b.test", match: "never" },
+      { uri: "https://c.test", match: "domain" },
+      { uri: "https://d.test", match: "domain" },
+    ]);
+  });
+
+  it("keeps Bitwarden's item id, so a re-import dedupes instead of duplicating", () => {
+    const id = "56126b05-485c-44c2-a6fc-acb70001e348";
+    const parsed = parseBitwardenJson(exportOf([{ type: 1, id, name: "x", login: {} }]));
+    expect(parsed.items[0]!.id).toBe(id);
+  });
+
+  it("keeps the original timestamps, the only record of when a password rotated", () => {
+    const parsed = parseBitwardenJson(
+      exportOf([
+        {
+          type: 1,
+          name: "x",
+          login: {},
+          creationDate: "2021-01-21T00:06:52.377Z",
+          revisionDate: "2023-05-02T11:00:00.000Z",
+        },
+      ]),
+    );
+    expect(parsed.items[0]!.createdAt).toBe("2021-01-21T00:06:52.377Z");
+    expect(parsed.items[0]!.updatedAt).toBe("2023-05-02T11:00:00.000Z");
+  });
+
+  it("carries password history newest first, capped at the spec limit", () => {
+    const history = Array.from({ length: 25 }, (_, i) => ({
+      password: `p${i}`,
+      // Ascending dates, so the newest is the last one written.
+      lastUsedDate: `2024-01-${String(i + 1).padStart(2, "0")}T00:00:00.000Z`,
+    }));
+    const parsed = parseBitwardenJson(
+      exportOf([{ type: 1, name: "x", login: {}, passwordHistory: history }]),
+    );
+    const got = parsed.items[0]!.history ?? [];
+    expect(got).toHaveLength(20);
+    expect(got[0]).toMatchObject({ password: "p24" });
+    expect(got[19]).toMatchObject({ password: "p5" });
+  });
+
   it("carries favourite through", () => {
     const parsed = parseBitwardenJson(
       exportOf([{ type: 1, name: "x", favorite: true, login: {} }]),

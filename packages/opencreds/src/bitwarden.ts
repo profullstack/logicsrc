@@ -10,14 +10,17 @@
  */
 import { createItem } from "./items.js";
 import { expandYear, hostOf } from "./importers.js";
+import { MAX_HISTORY_ENTRIES } from "./types.js";
 import type {
   CustomField,
   FieldKind,
   Folder,
+  HistoryEntry,
   Item,
   ItemUri,
   ParsedImport,
   SkippedRow,
+  UriMatch,
 } from "./types.js";
 
 /** Bitwarden's numeric item types. */
@@ -29,6 +32,21 @@ const BW_FIELD_KIND: Readonly<Record<number, FieldKind>> = Object.freeze({
   1: "hidden",
   2: "boolean",
   3: "linked",
+});
+
+/**
+ * Bitwarden's numeric URI match rules, in our vocabulary.
+ *
+ * `null`/absent means domain, which is also Bitwarden's default. Assuming
+ * "domain" for all of them would quietly widen a login pinned to an exact URL.
+ */
+const BW_URI_MATCH: Readonly<Record<number, UriMatch>> = Object.freeze({
+  0: "domain",
+  1: "host",
+  2: "startsWith",
+  3: "exact",
+  4: "regex",
+  5: "never",
 });
 
 interface BitwardenFile {
@@ -73,6 +91,23 @@ function str(value: unknown): string {
   return value == null ? "" : String(value);
 }
 
+const UUID_RE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+/**
+ * Adopt Bitwarden's own item id.
+ *
+ * `createItem` deliberately refuses a caller-supplied id and always mints a
+ * fresh one, so this is applied afterwards. Bitwarden ids are already UUIDs, and
+ * keeping them is what makes a re-import idempotent: the same export run twice
+ * reports its items as already present under "skip" rather than duplicating the
+ * whole vault. A value that is not a UUID is ignored rather than trusted.
+ */
+function adoptId(item: Item, id: string): Item {
+  if (UUID_RE.test(id)) item.id = id;
+  return item;
+}
+
 function bitwardenFields(raw: unknown): CustomField[] {
   if (!Array.isArray(raw)) return [];
   const out: CustomField[] = [];
@@ -97,11 +132,38 @@ function bitwardenUris(raw: unknown): ItemUri[] {
   if (!Array.isArray(raw)) return [];
   const out: ItemUri[] = [];
   for (const entry of raw) {
-    const uri =
-      typeof entry === "string" ? entry : str((entry as { uri?: unknown })?.uri);
-    if (uri) out.push({ uri, match: "domain" });
+    if (typeof entry === "string") {
+      if (entry) out.push({ uri: entry, match: "domain" });
+      continue;
+    }
+    const obj = (entry ?? {}) as { uri?: unknown; match?: unknown };
+    const uri = str(obj.uri);
+    if (!uri) continue;
+    // null/absent is Bitwarden's own default of domain.
+    const match = obj.match == null ? "domain" : BW_URI_MATCH[Number(obj.match)];
+    out.push({ uri, ...(match ? { match } : {}) });
   }
   return out;
+}
+
+/**
+ * Bitwarden's password history, newest first.
+ *
+ * `lastUsedDate` is when that password stopped being current, which is our
+ * `changedAt`. Capped at the spec's limit rather than carried whole.
+ */
+function bitwardenHistory(raw: unknown): HistoryEntry[] {
+  if (!Array.isArray(raw)) return [];
+  const out: HistoryEntry[] = [];
+  for (const entry of raw) {
+    if (!entry || typeof entry !== "object") continue;
+    const h = entry as { password?: unknown; lastUsedDate?: unknown };
+    const password = str(h.password);
+    if (!password) continue;
+    out.push({ password, changedAt: str(h.lastUsedDate) });
+  }
+  out.sort((a, b) => (a.changedAt < b.changedAt ? 1 : a.changedAt > b.changedAt ? -1 : 0));
+  return out.slice(0, MAX_HISTORY_ENTRIES);
 }
 
 /**
@@ -173,7 +235,18 @@ export function parseBitwardenJson(text: string): ParsedImport {
     }
 
     const folderId = str(raw.folderId);
+    // Bitwarden ids are already UUIDs, so carrying them makes a re-import
+    // idempotent: the same file run twice reports its items as already present
+    // under the "skip" strategy rather than duplicating the whole vault.
+    const id = str(raw.id);
+    // creationDate/revisionDate are the only record of when a password was last
+    // rotated. Restamping them to "now" on import destroys that permanently.
+    const createdAt = str(raw.creationDate);
+    const updatedAt = str(raw.revisionDate);
     const common = {
+      ...(id ? { id } : {}),
+      ...(createdAt ? { createdAt } : {}),
+      ...(updatedAt ? { updatedAt } : {}),
       name: str(raw.name),
       notes: str(raw.notes),
       favorite: raw.favorite === true,
@@ -186,7 +259,7 @@ export function parseBitwardenJson(text: string): ParsedImport {
       if (type === BW_TYPE.CARD) {
         const card = (raw.card ?? {}) as Record<string, unknown>;
         items.push(
-          createItem("card", {
+          adoptId(createItem("card", {
             ...common,
             card: {
               cardholderName: str(card.cardholderName),
@@ -196,7 +269,7 @@ export function parseBitwardenJson(text: string): ParsedImport {
               expYear: expandYear(str(card.expYear)),
               code: str(card.code),
             },
-          } as Partial<Item>),
+          } as Partial<Item>), id),
         );
         return;
       }
@@ -204,7 +277,7 @@ export function parseBitwardenJson(text: string): ParsedImport {
       if (type === BW_TYPE.IDENTITY) {
         const identity = (raw.identity ?? {}) as Record<string, unknown>;
         items.push(
-          createItem("identity", {
+          adoptId(createItem("identity", {
             ...common,
             identity: {
               title: str(identity.title),
@@ -226,13 +299,13 @@ export function parseBitwardenJson(text: string): ParsedImport {
               passportNumber: str(identity.passportNumber),
               licenseNumber: str(identity.licenseNumber),
             },
-          } as Partial<Item>),
+          } as Partial<Item>), id),
         );
         return;
       }
 
       if (type === BW_TYPE.NOTE) {
-        items.push(createItem("note", common as Partial<Item>));
+        items.push(adoptId(createItem("note", common as Partial<Item>), id));
         return;
       }
 
@@ -243,17 +316,19 @@ export function parseBitwardenJson(text: string): ParsedImport {
 
       const login = (raw.login ?? {}) as Record<string, unknown>;
       const uris = bitwardenUris(login.uris);
+      const history = bitwardenHistory(raw.passwordHistory);
       items.push(
-        createItem("login", {
+        adoptId(createItem("login", {
           ...common,
           name: common.name || hostOf(uris[0]?.uri ?? ""),
+          ...(history.length > 0 ? { history } : {}),
           login: {
             username: str(login.username),
             password: str(login.password),
             totp: str(login.totp),
             uris,
           },
-        } as Partial<Item>),
+        } as Partial<Item>), id),
       );
     } catch (err) {
       skipped.push({ row, reason: (err as Error).message });
