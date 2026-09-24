@@ -446,3 +446,15 @@
   max-width: 100%;
   height: auto;
 }
+
+/*
+ * A style that declares ground: dark gets one. Emissive bodies are near-black
+ * and the marks with no hue to raise emit neutral white, so on the hero's pale
+ * gradient the tile would be empty.
+ */
+.heroHqDark {
+  border-radius: 0.5rem;
+  padding: 0.35rem 0.2rem;
+  background: #11161b;
+  color: #8fa0ad;
+}
