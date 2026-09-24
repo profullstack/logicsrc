@@ -82,7 +82,9 @@ There are eight for the canonical style, three more for an optional colour style
 
 **7. A brand says it is one.** A logo carries `brand: true`, a `trademark` note, its `source` (`simple-icons:<slug>`, `font-awesome:<name>`, or a URL) and its own `license`, because the licence of a drawing is not permission to use a mark. Brand logos are taken from their owners or from a set that publishes them; a set does not redraw them.
 
-**8. The set says what made it.** `made_by` is `human`, `ai` or `both`, the [OpenWebring](/docs/openwebring) vocabulary, and `disclosure`, `ai_model`, `ai_provider` and `ai_prompt_url` are the W3C AI Content Disclosure vocabulary, as in [OpenEmoji](/docs/openemoji). Any of them may be repeated on an icon that differs from the set: in the reference set the drawn icons are `ai` and every brand logo is `human`.
+A colour style may re-render a mark in its own material, and that is not a redrawing: the geometry is fixed. Every shape, proportion, counter and piece of negative space stays exactly as the owner published it, figure and ground are never inverted, nothing is added, simplified or set on a container the mark does not have. What a style changes is the surface — a flat plane, a milled face, a lit panel — and never the mark. A style that cannot hold a mark to that leaves it alone (rule 10), and a mark re-rendered this way says so (rule 11): it is `both`, because the geometry is the owner's and the material is the set's.
+
+**8. The set says what made it.** `made_by` is `human`, `ai` or `both`, the [OpenWebring](/docs/openwebring) vocabulary, and `disclosure`, `ai_model`, `ai_provider` and `ai_prompt_url` are the W3C AI Content Disclosure vocabulary, as in [OpenEmoji](/docs/openemoji). Any of them may be repeated on an icon that differs from the set: in the reference set the drawn icons are `ai`, a brand logo left flat is `human`, and a mark re-rendered in a style's material is `both` — the geometry came from its owner and the surface from an image model, and neither half is the whole truth.
 
 ## Styles: simple, and the colour styles
 
@@ -114,7 +116,11 @@ Each icon that has it carries an `hq` block with its own files and provenance:
 
 An HQ icon depicts what its simple icon depicts, with the same silhouette, so a reader can swap one for the other without a layout changing meaning. An icon without an `hq` block falls back to simple. HQ files carry their own colour and never use `currentColor`.
 
-**10. A brand's colour is its owner's.** An HQ brand logo is the simple logo in the owner's published colour, never a redrawing and never a guess: `hex` is that colour and `hex_source` says where it is published (a Simple Icons slug, or the brand's own guidelines page). A logo whose owner publishes no colour has no HQ form.
+**10. A brand's colour is its owner's.** A brand logo in a colour style carries the owner's published colour, never a guess: `hex` is that colour and `hex_source` says where it is published (a Simple Icons slug, or the brand's own guidelines page). A logo whose owner publishes no colour has no coloured form.
+
+A style has two honest ways to use that colour, and both keep it. It can leave the mark flat — the simple logo filled with `hex`, which is what `hq` does — or it can re-render the mark in its material under rule 7, where the material acts on the owner's colour rather than replacing it: a red mark stays red, a blue mark stays blue. A style may never recolour a mark to suit itself, wash it to white, grey or a single neutral, or give it a hue the owner does not publish.
+
+One material cannot always obey that, and the spec says what to do rather than leaving it to a drawing. A style that works by emitting light needs a colour bright enough to emit, and a mark that is too dark has three outcomes: it emits its own colour when it can; a mark that is dark but still coloured emits a lighter tint of that same hue; and a mark that is dark with no hue left — a black wordmark — emits neutral white, because inventing a hue for it would be a guess and rule 10 forbids guesses. In the reference set 85 of the 111 marks emit their own colour, 4 a tint of it, and 22 neutral white.
 
 **11. Provenance is per style.** `made_by`, `disclosure` and the `ai_*` fields on the `hq` block describe the HQ files, not the simple ones. In the reference set, simple icons are authored as SVG and HQ icons are drawn by an image model from them, so the same icon is `ai` in one style and says so in each.
 
@@ -150,6 +156,8 @@ Each icon carries its colour styles the same way, in a `styles` map keyed by id,
 
 A set that has an `hq` style keeps writing the top-level `hq` block and the per-icon `hq` key from rule 9 as well, so a reader written against the first HQ release keeps working. They are the same objects under an older name, never a different drawing. Every rule about HQ holds for every colour style: same silhouette as simple (rule 9), owner's colour for a brand (rule 10), provenance per style (rule 11).
 
+Styles differ in how far they take a brand, and the entry says which without a reader having to compare files. A style that leaves marks flat writes `svg` on them and `made_by: "human"`: the file is the owner's logo filled with `hex`. A style that re-renders them under rule 7 writes no `svg` and `made_by: "both"`, because the material only exists in the raster. A reader wanting the plain mark takes the simple style, which is canonical and always has it; a reader that preferred `svg` wherever it found one would silently show the flat logo in a style that had drawn the mark, which is the one mistake this distinction exists to prevent.
+
 **13. A style says what it is for, and a reader may refuse it.** `label` names it and `material` is one line on what it is made of, because the choice between colour styles is a choice of surface: a style built from near-black bodies and lit accents is right on a dark terminal and illegible on a printed page, and only the set knows which is which. A reader that shows icons at a fixed small size should prefer the style the set names first. A family of related styles shares a prefix and the family name alone means its default member: in the reference set `agentic` means `agentic-matte`, the one that holds its colour coding at 20 pixels on a light ground as well as a dark one.
 
 ## Discovery
@@ -183,7 +191,7 @@ An importer from any of these is a rename and a copy. Only `tui.unicode` and `tu
 
 ## Reference implementation
 
-The reference set is [profullstack/openicon](https://github.com/profullstack/openicon): 370 icons, 259 drawn on a 24x24 grid with 2px strokes and 111 brand logos from Simple Icons and Font Awesome Free. 357 of them have a Nerd Font glyph. It is built by `icon` in [profullstack/cli-tools](https://github.com/profullstack/cli-tools):
+The reference set is [profullstack/openicon](https://github.com/profullstack/openicon): 370 icons, 259 drawn on a 24x24 grid with 2px strokes and 111 brand logos from Simple Icons and Font Awesome Free. 357 of them have a Nerd Font glyph. The `hq` style leaves the marks flat in their owners' colours; the three `agentic` styles re-render them in the material under rule 7. It is built by `icon` in [profullstack/cli-tools](https://github.com/profullstack/cli-tools):
 
 ```sh
 icon build --out ./openicon   # openicon.json, svg/, png/, sprite.svg

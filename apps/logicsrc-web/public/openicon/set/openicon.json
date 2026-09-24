@@ -11840,24 +11840,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/github.png",
           "webp": "styles/agentic-matte/webp/{size}/github.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/github.svg",
+          "made_by": "both",
           "hex": "#181717",
           "hex_source": "simple-icons:github"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/github.png",
           "webp": "styles/agentic-machined/webp/{size}/github.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/github.svg",
+          "made_by": "both",
           "hex": "#181717",
           "hex_source": "simple-icons:github"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/github.png",
           "webp": "styles/agentic-emissive/webp/{size}/github.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/github.svg",
+          "made_by": "both",
           "hex": "#181717",
           "hex_source": "simple-icons:github"
         }
@@ -11901,24 +11898,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/gitlab.png",
           "webp": "styles/agentic-matte/webp/{size}/gitlab.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/gitlab.svg",
+          "made_by": "both",
           "hex": "#FC6D26",
           "hex_source": "simple-icons:gitlab"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/gitlab.png",
           "webp": "styles/agentic-machined/webp/{size}/gitlab.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/gitlab.svg",
+          "made_by": "both",
           "hex": "#FC6D26",
           "hex_source": "simple-icons:gitlab"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/gitlab.png",
           "webp": "styles/agentic-emissive/webp/{size}/gitlab.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/gitlab.svg",
+          "made_by": "both",
           "hex": "#FC6D26",
           "hex_source": "simple-icons:gitlab"
         }
@@ -11962,24 +11956,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/bitbucket.png",
           "webp": "styles/agentic-matte/webp/{size}/bitbucket.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/bitbucket.svg",
+          "made_by": "both",
           "hex": "#0052CC",
           "hex_source": "simple-icons:bitbucket"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/bitbucket.png",
           "webp": "styles/agentic-machined/webp/{size}/bitbucket.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/bitbucket.svg",
+          "made_by": "both",
           "hex": "#0052CC",
           "hex_source": "simple-icons:bitbucket"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/bitbucket.png",
           "webp": "styles/agentic-emissive/webp/{size}/bitbucket.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/bitbucket.svg",
+          "made_by": "both",
           "hex": "#0052CC",
           "hex_source": "simple-icons:bitbucket"
         }
@@ -12023,24 +12014,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/codeberg.png",
           "webp": "styles/agentic-matte/webp/{size}/codeberg.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/codeberg.svg",
+          "made_by": "both",
           "hex": "#2185D0",
           "hex_source": "simple-icons:codeberg"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/codeberg.png",
           "webp": "styles/agentic-machined/webp/{size}/codeberg.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/codeberg.svg",
+          "made_by": "both",
           "hex": "#2185D0",
           "hex_source": "simple-icons:codeberg"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/codeberg.png",
           "webp": "styles/agentic-emissive/webp/{size}/codeberg.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/codeberg.svg",
+          "made_by": "both",
           "hex": "#2185D0",
           "hex_source": "simple-icons:codeberg"
         }
@@ -12084,24 +12072,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/gitea.png",
           "webp": "styles/agentic-matte/webp/{size}/gitea.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/gitea.svg",
+          "made_by": "both",
           "hex": "#609926",
           "hex_source": "simple-icons:gitea"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/gitea.png",
           "webp": "styles/agentic-machined/webp/{size}/gitea.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/gitea.svg",
+          "made_by": "both",
           "hex": "#609926",
           "hex_source": "simple-icons:gitea"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/gitea.png",
           "webp": "styles/agentic-emissive/webp/{size}/gitea.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/gitea.svg",
+          "made_by": "both",
           "hex": "#609926",
           "hex_source": "simple-icons:gitea"
         }
@@ -12142,24 +12127,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/sourcehut.png",
           "webp": "styles/agentic-matte/webp/{size}/sourcehut.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/sourcehut.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "simple-icons:sourcehut"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/sourcehut.png",
           "webp": "styles/agentic-machined/webp/{size}/sourcehut.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/sourcehut.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "simple-icons:sourcehut"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/sourcehut.png",
           "webp": "styles/agentic-emissive/webp/{size}/sourcehut.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/sourcehut.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "simple-icons:sourcehut"
         }
@@ -12203,24 +12185,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/npm.png",
           "webp": "styles/agentic-matte/webp/{size}/npm.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/npm.svg",
+          "made_by": "both",
           "hex": "#CB3837",
           "hex_source": "simple-icons:npm"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/npm.png",
           "webp": "styles/agentic-machined/webp/{size}/npm.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/npm.svg",
+          "made_by": "both",
           "hex": "#CB3837",
           "hex_source": "simple-icons:npm"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/npm.png",
           "webp": "styles/agentic-emissive/webp/{size}/npm.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/npm.svg",
+          "made_by": "both",
           "hex": "#CB3837",
           "hex_source": "simple-icons:npm"
         }
@@ -12264,24 +12243,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/docker.png",
           "webp": "styles/agentic-matte/webp/{size}/docker.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/docker.svg",
+          "made_by": "both",
           "hex": "#2496ED",
           "hex_source": "simple-icons:docker"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/docker.png",
           "webp": "styles/agentic-machined/webp/{size}/docker.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/docker.svg",
+          "made_by": "both",
           "hex": "#2496ED",
           "hex_source": "simple-icons:docker"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/docker.png",
           "webp": "styles/agentic-emissive/webp/{size}/docker.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/docker.svg",
+          "made_by": "both",
           "hex": "#2496ED",
           "hex_source": "simple-icons:docker"
         }
@@ -12325,24 +12301,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/kubernetes.png",
           "webp": "styles/agentic-matte/webp/{size}/kubernetes.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/kubernetes.svg",
+          "made_by": "both",
           "hex": "#326CE5",
           "hex_source": "simple-icons:kubernetes"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/kubernetes.png",
           "webp": "styles/agentic-machined/webp/{size}/kubernetes.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/kubernetes.svg",
+          "made_by": "both",
           "hex": "#326CE5",
           "hex_source": "simple-icons:kubernetes"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/kubernetes.png",
           "webp": "styles/agentic-emissive/webp/{size}/kubernetes.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/kubernetes.svg",
+          "made_by": "both",
           "hex": "#326CE5",
           "hex_source": "simple-icons:kubernetes"
         }
@@ -12389,24 +12362,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/nodejs.png",
           "webp": "styles/agentic-matte/webp/{size}/nodejs.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/nodejs.svg",
+          "made_by": "both",
           "hex": "#5FA04E",
           "hex_source": "simple-icons:nodedotjs"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/nodejs.png",
           "webp": "styles/agentic-machined/webp/{size}/nodejs.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/nodejs.svg",
+          "made_by": "both",
           "hex": "#5FA04E",
           "hex_source": "simple-icons:nodedotjs"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/nodejs.png",
           "webp": "styles/agentic-emissive/webp/{size}/nodejs.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/nodejs.svg",
+          "made_by": "both",
           "hex": "#5FA04E",
           "hex_source": "simple-icons:nodedotjs"
         }
@@ -12450,24 +12420,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/deno.png",
           "webp": "styles/agentic-matte/webp/{size}/deno.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/deno.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "simple-icons:deno"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/deno.png",
           "webp": "styles/agentic-machined/webp/{size}/deno.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/deno.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "simple-icons:deno"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/deno.png",
           "webp": "styles/agentic-emissive/webp/{size}/deno.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/deno.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "simple-icons:deno"
         }
@@ -12511,24 +12478,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/bun.png",
           "webp": "styles/agentic-matte/webp/{size}/bun.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/bun.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "simple-icons:bun"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/bun.png",
           "webp": "styles/agentic-machined/webp/{size}/bun.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/bun.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "simple-icons:bun"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/bun.png",
           "webp": "styles/agentic-emissive/webp/{size}/bun.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/bun.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "simple-icons:bun"
         }
@@ -12572,24 +12536,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/typescript.png",
           "webp": "styles/agentic-matte/webp/{size}/typescript.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/typescript.svg",
+          "made_by": "both",
           "hex": "#3178C6",
           "hex_source": "simple-icons:typescript"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/typescript.png",
           "webp": "styles/agentic-machined/webp/{size}/typescript.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/typescript.svg",
+          "made_by": "both",
           "hex": "#3178C6",
           "hex_source": "simple-icons:typescript"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/typescript.png",
           "webp": "styles/agentic-emissive/webp/{size}/typescript.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/typescript.svg",
+          "made_by": "both",
           "hex": "#3178C6",
           "hex_source": "simple-icons:typescript"
         }
@@ -12633,24 +12594,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/javascript.png",
           "webp": "styles/agentic-matte/webp/{size}/javascript.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/javascript.svg",
+          "made_by": "both",
           "hex": "#F7DF1E",
           "hex_source": "simple-icons:javascript"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/javascript.png",
           "webp": "styles/agentic-machined/webp/{size}/javascript.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/javascript.svg",
+          "made_by": "both",
           "hex": "#F7DF1E",
           "hex_source": "simple-icons:javascript"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/javascript.png",
           "webp": "styles/agentic-emissive/webp/{size}/javascript.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/javascript.svg",
+          "made_by": "both",
           "hex": "#F7DF1E",
           "hex_source": "simple-icons:javascript"
         }
@@ -12694,24 +12652,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/python.png",
           "webp": "styles/agentic-matte/webp/{size}/python.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/python.svg",
+          "made_by": "both",
           "hex": "#3776AB",
           "hex_source": "simple-icons:python"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/python.png",
           "webp": "styles/agentic-machined/webp/{size}/python.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/python.svg",
+          "made_by": "both",
           "hex": "#3776AB",
           "hex_source": "simple-icons:python"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/python.png",
           "webp": "styles/agentic-emissive/webp/{size}/python.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/python.svg",
+          "made_by": "both",
           "hex": "#3776AB",
           "hex_source": "simple-icons:python"
         }
@@ -12755,24 +12710,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/rust.png",
           "webp": "styles/agentic-matte/webp/{size}/rust.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/rust.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "simple-icons:rust"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/rust.png",
           "webp": "styles/agentic-machined/webp/{size}/rust.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/rust.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "simple-icons:rust"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/rust.png",
           "webp": "styles/agentic-emissive/webp/{size}/rust.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/rust.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "simple-icons:rust"
         }
@@ -12819,24 +12771,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/go.png",
           "webp": "styles/agentic-matte/webp/{size}/go.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/go.svg",
+          "made_by": "both",
           "hex": "#00ADD8",
           "hex_source": "simple-icons:go"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/go.png",
           "webp": "styles/agentic-machined/webp/{size}/go.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/go.svg",
+          "made_by": "both",
           "hex": "#00ADD8",
           "hex_source": "simple-icons:go"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/go.png",
           "webp": "styles/agentic-emissive/webp/{size}/go.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/go.svg",
+          "made_by": "both",
           "hex": "#00ADD8",
           "hex_source": "simple-icons:go"
         }
@@ -12880,24 +12829,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/stack-overflow.png",
           "webp": "styles/agentic-matte/webp/{size}/stack-overflow.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/stack-overflow.svg",
+          "made_by": "both",
           "hex": "#F58025",
           "hex_source": "simple-icons:stackoverflow"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/stack-overflow.png",
           "webp": "styles/agentic-machined/webp/{size}/stack-overflow.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/stack-overflow.svg",
+          "made_by": "both",
           "hex": "#F58025",
           "hex_source": "simple-icons:stackoverflow"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/stack-overflow.png",
           "webp": "styles/agentic-emissive/webp/{size}/stack-overflow.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/stack-overflow.svg",
+          "made_by": "both",
           "hex": "#F58025",
           "hex_source": "simple-icons:stackoverflow"
         }
@@ -12941,24 +12887,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/vercel.png",
           "webp": "styles/agentic-matte/webp/{size}/vercel.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/vercel.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "simple-icons:vercel"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/vercel.png",
           "webp": "styles/agentic-machined/webp/{size}/vercel.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/vercel.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "simple-icons:vercel"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/vercel.png",
           "webp": "styles/agentic-emissive/webp/{size}/vercel.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/vercel.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "simple-icons:vercel"
         }
@@ -13002,24 +12945,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/netlify.png",
           "webp": "styles/agentic-matte/webp/{size}/netlify.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/netlify.svg",
+          "made_by": "both",
           "hex": "#00C7B7",
           "hex_source": "simple-icons:netlify"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/netlify.png",
           "webp": "styles/agentic-machined/webp/{size}/netlify.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/netlify.svg",
+          "made_by": "both",
           "hex": "#00C7B7",
           "hex_source": "simple-icons:netlify"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/netlify.png",
           "webp": "styles/agentic-emissive/webp/{size}/netlify.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/netlify.svg",
+          "made_by": "both",
           "hex": "#00C7B7",
           "hex_source": "simple-icons:netlify"
         }
@@ -13063,24 +13003,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/cloudflare.png",
           "webp": "styles/agentic-matte/webp/{size}/cloudflare.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/cloudflare.svg",
+          "made_by": "both",
           "hex": "#F38020",
           "hex_source": "simple-icons:cloudflare"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/cloudflare.png",
           "webp": "styles/agentic-machined/webp/{size}/cloudflare.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/cloudflare.svg",
+          "made_by": "both",
           "hex": "#F38020",
           "hex_source": "simple-icons:cloudflare"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/cloudflare.png",
           "webp": "styles/agentic-emissive/webp/{size}/cloudflare.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/cloudflare.svg",
+          "made_by": "both",
           "hex": "#F38020",
           "hex_source": "simple-icons:cloudflare"
         }
@@ -13124,24 +13061,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/railway.png",
           "webp": "styles/agentic-matte/webp/{size}/railway.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/railway.svg",
+          "made_by": "both",
           "hex": "#0B0D0E",
           "hex_source": "simple-icons:railway"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/railway.png",
           "webp": "styles/agentic-machined/webp/{size}/railway.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/railway.svg",
+          "made_by": "both",
           "hex": "#0B0D0E",
           "hex_source": "simple-icons:railway"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/railway.png",
           "webp": "styles/agentic-emissive/webp/{size}/railway.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/railway.svg",
+          "made_by": "both",
           "hex": "#0B0D0E",
           "hex_source": "simple-icons:railway"
         }
@@ -13185,24 +13119,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/supabase.png",
           "webp": "styles/agentic-matte/webp/{size}/supabase.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/supabase.svg",
+          "made_by": "both",
           "hex": "#3FCF8E",
           "hex_source": "simple-icons:supabase"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/supabase.png",
           "webp": "styles/agentic-machined/webp/{size}/supabase.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/supabase.svg",
+          "made_by": "both",
           "hex": "#3FCF8E",
           "hex_source": "simple-icons:supabase"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/supabase.png",
           "webp": "styles/agentic-emissive/webp/{size}/supabase.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/supabase.svg",
+          "made_by": "both",
           "hex": "#3FCF8E",
           "hex_source": "simple-icons:supabase"
         }
@@ -13243,24 +13174,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/anthropic.png",
           "webp": "styles/agentic-matte/webp/{size}/anthropic.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/anthropic.svg",
+          "made_by": "both",
           "hex": "#191919",
           "hex_source": "simple-icons:anthropic"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/anthropic.png",
           "webp": "styles/agentic-machined/webp/{size}/anthropic.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/anthropic.svg",
+          "made_by": "both",
           "hex": "#191919",
           "hex_source": "simple-icons:anthropic"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/anthropic.png",
           "webp": "styles/agentic-emissive/webp/{size}/anthropic.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/anthropic.svg",
+          "made_by": "both",
           "hex": "#191919",
           "hex_source": "simple-icons:anthropic"
         }
@@ -13301,24 +13229,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/claude.png",
           "webp": "styles/agentic-matte/webp/{size}/claude.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/claude.svg",
+          "made_by": "both",
           "hex": "#D97757",
           "hex_source": "simple-icons:claude"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/claude.png",
           "webp": "styles/agentic-machined/webp/{size}/claude.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/claude.svg",
+          "made_by": "both",
           "hex": "#D97757",
           "hex_source": "simple-icons:claude"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/claude.png",
           "webp": "styles/agentic-emissive/webp/{size}/claude.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/claude.svg",
+          "made_by": "both",
           "hex": "#D97757",
           "hex_source": "simple-icons:claude"
         }
@@ -13362,24 +13287,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/figma.png",
           "webp": "styles/agentic-matte/webp/{size}/figma.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/figma.svg",
+          "made_by": "both",
           "hex": "#F24E1E",
           "hex_source": "simple-icons:figma"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/figma.png",
           "webp": "styles/agentic-machined/webp/{size}/figma.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/figma.svg",
+          "made_by": "both",
           "hex": "#F24E1E",
           "hex_source": "simple-icons:figma"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/figma.png",
           "webp": "styles/agentic-emissive/webp/{size}/figma.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/figma.svg",
+          "made_by": "both",
           "hex": "#F24E1E",
           "hex_source": "simple-icons:figma"
         }
@@ -13423,24 +13345,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/notion.png",
           "webp": "styles/agentic-matte/webp/{size}/notion.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/notion.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "simple-icons:notion"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/notion.png",
           "webp": "styles/agentic-machined/webp/{size}/notion.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/notion.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "simple-icons:notion"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/notion.png",
           "webp": "styles/agentic-emissive/webp/{size}/notion.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/notion.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "simple-icons:notion"
         }
@@ -13484,24 +13403,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/trello.png",
           "webp": "styles/agentic-matte/webp/{size}/trello.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/trello.svg",
+          "made_by": "both",
           "hex": "#0052CC",
           "hex_source": "simple-icons:trello"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/trello.png",
           "webp": "styles/agentic-machined/webp/{size}/trello.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/trello.svg",
+          "made_by": "both",
           "hex": "#0052CC",
           "hex_source": "simple-icons:trello"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/trello.png",
           "webp": "styles/agentic-emissive/webp/{size}/trello.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/trello.svg",
+          "made_by": "both",
           "hex": "#0052CC",
           "hex_source": "simple-icons:trello"
         }
@@ -13545,24 +13461,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/jira.png",
           "webp": "styles/agentic-matte/webp/{size}/jira.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/jira.svg",
+          "made_by": "both",
           "hex": "#0052CC",
           "hex_source": "simple-icons:jira"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/jira.png",
           "webp": "styles/agentic-machined/webp/{size}/jira.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/jira.svg",
+          "made_by": "both",
           "hex": "#0052CC",
           "hex_source": "simple-icons:jira"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/jira.png",
           "webp": "styles/agentic-emissive/webp/{size}/jira.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/jira.svg",
+          "made_by": "both",
           "hex": "#0052CC",
           "hex_source": "simple-icons:jira"
         }
@@ -13606,24 +13519,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/keybase.png",
           "webp": "styles/agentic-matte/webp/{size}/keybase.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/keybase.svg",
+          "made_by": "both",
           "hex": "#33A0FF",
           "hex_source": "simple-icons:keybase"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/keybase.png",
           "webp": "styles/agentic-machined/webp/{size}/keybase.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/keybase.svg",
+          "made_by": "both",
           "hex": "#33A0FF",
           "hex_source": "simple-icons:keybase"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/keybase.png",
           "webp": "styles/agentic-emissive/webp/{size}/keybase.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/keybase.svg",
+          "made_by": "both",
           "hex": "#33A0FF",
           "hex_source": "simple-icons:keybase"
         }
@@ -13670,24 +13580,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/x.png",
           "webp": "styles/agentic-matte/webp/{size}/x.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/x.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "simple-icons:x"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/x.png",
           "webp": "styles/agentic-machined/webp/{size}/x.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/x.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "simple-icons:x"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/x.png",
           "webp": "styles/agentic-emissive/webp/{size}/x.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/x.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "simple-icons:x"
         }
@@ -13731,24 +13638,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/bluesky.png",
           "webp": "styles/agentic-matte/webp/{size}/bluesky.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/bluesky.svg",
+          "made_by": "both",
           "hex": "#1185FE",
           "hex_source": "simple-icons:bluesky"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/bluesky.png",
           "webp": "styles/agentic-machined/webp/{size}/bluesky.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/bluesky.svg",
+          "made_by": "both",
           "hex": "#1185FE",
           "hex_source": "simple-icons:bluesky"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/bluesky.png",
           "webp": "styles/agentic-emissive/webp/{size}/bluesky.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/bluesky.svg",
+          "made_by": "both",
           "hex": "#1185FE",
           "hex_source": "simple-icons:bluesky"
         }
@@ -13792,24 +13696,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/mastodon.png",
           "webp": "styles/agentic-matte/webp/{size}/mastodon.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/mastodon.svg",
+          "made_by": "both",
           "hex": "#6364FF",
           "hex_source": "simple-icons:mastodon"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/mastodon.png",
           "webp": "styles/agentic-machined/webp/{size}/mastodon.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/mastodon.svg",
+          "made_by": "both",
           "hex": "#6364FF",
           "hex_source": "simple-icons:mastodon"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/mastodon.png",
           "webp": "styles/agentic-emissive/webp/{size}/mastodon.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/mastodon.svg",
+          "made_by": "both",
           "hex": "#6364FF",
           "hex_source": "simple-icons:mastodon"
         }
@@ -13853,24 +13754,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/threads.png",
           "webp": "styles/agentic-matte/webp/{size}/threads.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/threads.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "simple-icons:threads"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/threads.png",
           "webp": "styles/agentic-machined/webp/{size}/threads.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/threads.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "simple-icons:threads"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/threads.png",
           "webp": "styles/agentic-emissive/webp/{size}/threads.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/threads.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "simple-icons:threads"
         }
@@ -13914,24 +13812,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/instagram.png",
           "webp": "styles/agentic-matte/webp/{size}/instagram.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/instagram.svg",
+          "made_by": "both",
           "hex": "#FF0069",
           "hex_source": "simple-icons:instagram"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/instagram.png",
           "webp": "styles/agentic-machined/webp/{size}/instagram.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/instagram.svg",
+          "made_by": "both",
           "hex": "#FF0069",
           "hex_source": "simple-icons:instagram"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/instagram.png",
           "webp": "styles/agentic-emissive/webp/{size}/instagram.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/instagram.svg",
+          "made_by": "both",
           "hex": "#FF0069",
           "hex_source": "simple-icons:instagram"
         }
@@ -13975,24 +13870,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/facebook.png",
           "webp": "styles/agentic-matte/webp/{size}/facebook.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/facebook.svg",
+          "made_by": "both",
           "hex": "#0866FF",
           "hex_source": "simple-icons:facebook"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/facebook.png",
           "webp": "styles/agentic-machined/webp/{size}/facebook.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/facebook.svg",
+          "made_by": "both",
           "hex": "#0866FF",
           "hex_source": "simple-icons:facebook"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/facebook.png",
           "webp": "styles/agentic-emissive/webp/{size}/facebook.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/facebook.svg",
+          "made_by": "both",
           "hex": "#0866FF",
           "hex_source": "simple-icons:facebook"
         }
@@ -14036,24 +13928,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/tiktok.png",
           "webp": "styles/agentic-matte/webp/{size}/tiktok.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/tiktok.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "simple-icons:tiktok"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/tiktok.png",
           "webp": "styles/agentic-machined/webp/{size}/tiktok.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/tiktok.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "simple-icons:tiktok"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/tiktok.png",
           "webp": "styles/agentic-emissive/webp/{size}/tiktok.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/tiktok.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "simple-icons:tiktok"
         }
@@ -14097,24 +13986,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/youtube.png",
           "webp": "styles/agentic-matte/webp/{size}/youtube.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/youtube.svg",
+          "made_by": "both",
           "hex": "#FF0000",
           "hex_source": "simple-icons:youtube"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/youtube.png",
           "webp": "styles/agentic-machined/webp/{size}/youtube.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/youtube.svg",
+          "made_by": "both",
           "hex": "#FF0000",
           "hex_source": "simple-icons:youtube"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/youtube.png",
           "webp": "styles/agentic-emissive/webp/{size}/youtube.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/youtube.svg",
+          "made_by": "both",
           "hex": "#FF0000",
           "hex_source": "simple-icons:youtube"
         }
@@ -14158,24 +14044,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/twitch.png",
           "webp": "styles/agentic-matte/webp/{size}/twitch.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/twitch.svg",
+          "made_by": "both",
           "hex": "#9146FF",
           "hex_source": "simple-icons:twitch"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/twitch.png",
           "webp": "styles/agentic-machined/webp/{size}/twitch.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/twitch.svg",
+          "made_by": "both",
           "hex": "#9146FF",
           "hex_source": "simple-icons:twitch"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/twitch.png",
           "webp": "styles/agentic-emissive/webp/{size}/twitch.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/twitch.svg",
+          "made_by": "both",
           "hex": "#9146FF",
           "hex_source": "simple-icons:twitch"
         }
@@ -14216,24 +14099,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/kick.png",
           "webp": "styles/agentic-matte/webp/{size}/kick.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/kick.svg",
+          "made_by": "both",
           "hex": "#53FC19",
           "hex_source": "simple-icons:kick"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/kick.png",
           "webp": "styles/agentic-machined/webp/{size}/kick.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/kick.svg",
+          "made_by": "both",
           "hex": "#53FC19",
           "hex_source": "simple-icons:kick"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/kick.png",
           "webp": "styles/agentic-emissive/webp/{size}/kick.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/kick.svg",
+          "made_by": "both",
           "hex": "#53FC19",
           "hex_source": "simple-icons:kick"
         }
@@ -14277,24 +14157,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/reddit.png",
           "webp": "styles/agentic-matte/webp/{size}/reddit.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/reddit.svg",
+          "made_by": "both",
           "hex": "#FF4500",
           "hex_source": "simple-icons:reddit"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/reddit.png",
           "webp": "styles/agentic-machined/webp/{size}/reddit.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/reddit.svg",
+          "made_by": "both",
           "hex": "#FF4500",
           "hex_source": "simple-icons:reddit"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/reddit.png",
           "webp": "styles/agentic-emissive/webp/{size}/reddit.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/reddit.svg",
+          "made_by": "both",
           "hex": "#FF4500",
           "hex_source": "simple-icons:reddit"
         }
@@ -14338,24 +14215,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/pinterest.png",
           "webp": "styles/agentic-matte/webp/{size}/pinterest.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/pinterest.svg",
+          "made_by": "both",
           "hex": "#BD081C",
           "hex_source": "simple-icons:pinterest"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/pinterest.png",
           "webp": "styles/agentic-machined/webp/{size}/pinterest.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/pinterest.svg",
+          "made_by": "both",
           "hex": "#BD081C",
           "hex_source": "simple-icons:pinterest"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/pinterest.png",
           "webp": "styles/agentic-emissive/webp/{size}/pinterest.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/pinterest.svg",
+          "made_by": "both",
           "hex": "#BD081C",
           "hex_source": "simple-icons:pinterest"
         }
@@ -14399,24 +14273,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/snapchat.png",
           "webp": "styles/agentic-matte/webp/{size}/snapchat.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/snapchat.svg",
+          "made_by": "both",
           "hex": "#FFFC00",
           "hex_source": "simple-icons:snapchat"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/snapchat.png",
           "webp": "styles/agentic-machined/webp/{size}/snapchat.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/snapchat.svg",
+          "made_by": "both",
           "hex": "#FFFC00",
           "hex_source": "simple-icons:snapchat"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/snapchat.png",
           "webp": "styles/agentic-emissive/webp/{size}/snapchat.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/snapchat.svg",
+          "made_by": "both",
           "hex": "#FFFC00",
           "hex_source": "simple-icons:snapchat"
         }
@@ -14460,24 +14331,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/tumblr.png",
           "webp": "styles/agentic-matte/webp/{size}/tumblr.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/tumblr.svg",
+          "made_by": "both",
           "hex": "#36465D",
           "hex_source": "simple-icons:tumblr"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/tumblr.png",
           "webp": "styles/agentic-machined/webp/{size}/tumblr.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/tumblr.svg",
+          "made_by": "both",
           "hex": "#36465D",
           "hex_source": "simple-icons:tumblr"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/tumblr.png",
           "webp": "styles/agentic-emissive/webp/{size}/tumblr.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/tumblr.svg",
+          "made_by": "both",
           "hex": "#36465D",
           "hex_source": "simple-icons:tumblr"
         }
@@ -14521,24 +14389,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/discord.png",
           "webp": "styles/agentic-matte/webp/{size}/discord.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/discord.svg",
+          "made_by": "both",
           "hex": "#5865F2",
           "hex_source": "simple-icons:discord"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/discord.png",
           "webp": "styles/agentic-machined/webp/{size}/discord.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/discord.svg",
+          "made_by": "both",
           "hex": "#5865F2",
           "hex_source": "simple-icons:discord"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/discord.png",
           "webp": "styles/agentic-emissive/webp/{size}/discord.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/discord.svg",
+          "made_by": "both",
           "hex": "#5865F2",
           "hex_source": "simple-icons:discord"
         }
@@ -14582,24 +14447,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/telegram.png",
           "webp": "styles/agentic-matte/webp/{size}/telegram.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/telegram.svg",
+          "made_by": "both",
           "hex": "#26A5E4",
           "hex_source": "simple-icons:telegram"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/telegram.png",
           "webp": "styles/agentic-machined/webp/{size}/telegram.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/telegram.svg",
+          "made_by": "both",
           "hex": "#26A5E4",
           "hex_source": "simple-icons:telegram"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/telegram.png",
           "webp": "styles/agentic-emissive/webp/{size}/telegram.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/telegram.svg",
+          "made_by": "both",
           "hex": "#26A5E4",
           "hex_source": "simple-icons:telegram"
         }
@@ -14643,24 +14505,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/signal.png",
           "webp": "styles/agentic-matte/webp/{size}/signal.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/signal.svg",
+          "made_by": "both",
           "hex": "#3B45FD",
           "hex_source": "simple-icons:signal"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/signal.png",
           "webp": "styles/agentic-machined/webp/{size}/signal.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/signal.svg",
+          "made_by": "both",
           "hex": "#3B45FD",
           "hex_source": "simple-icons:signal"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/signal.png",
           "webp": "styles/agentic-emissive/webp/{size}/signal.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/signal.svg",
+          "made_by": "both",
           "hex": "#3B45FD",
           "hex_source": "simple-icons:signal"
         }
@@ -14704,24 +14563,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/whatsapp.png",
           "webp": "styles/agentic-matte/webp/{size}/whatsapp.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/whatsapp.svg",
+          "made_by": "both",
           "hex": "#25D366",
           "hex_source": "simple-icons:whatsapp"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/whatsapp.png",
           "webp": "styles/agentic-machined/webp/{size}/whatsapp.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/whatsapp.svg",
+          "made_by": "both",
           "hex": "#25D366",
           "hex_source": "simple-icons:whatsapp"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/whatsapp.png",
           "webp": "styles/agentic-emissive/webp/{size}/whatsapp.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/whatsapp.svg",
+          "made_by": "both",
           "hex": "#25D366",
           "hex_source": "simple-icons:whatsapp"
         }
@@ -14765,24 +14621,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/messenger.png",
           "webp": "styles/agentic-matte/webp/{size}/messenger.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/messenger.svg",
+          "made_by": "both",
           "hex": "#0866FF",
           "hex_source": "simple-icons:messenger"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/messenger.png",
           "webp": "styles/agentic-machined/webp/{size}/messenger.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/messenger.svg",
+          "made_by": "both",
           "hex": "#0866FF",
           "hex_source": "simple-icons:messenger"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/messenger.png",
           "webp": "styles/agentic-emissive/webp/{size}/messenger.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/messenger.svg",
+          "made_by": "both",
           "hex": "#0866FF",
           "hex_source": "simple-icons:messenger"
         }
@@ -14826,24 +14679,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/wechat.png",
           "webp": "styles/agentic-matte/webp/{size}/wechat.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/wechat.svg",
+          "made_by": "both",
           "hex": "#07C160",
           "hex_source": "simple-icons:wechat"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/wechat.png",
           "webp": "styles/agentic-machined/webp/{size}/wechat.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/wechat.svg",
+          "made_by": "both",
           "hex": "#07C160",
           "hex_source": "simple-icons:wechat"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/wechat.png",
           "webp": "styles/agentic-emissive/webp/{size}/wechat.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/wechat.svg",
+          "made_by": "both",
           "hex": "#07C160",
           "hex_source": "simple-icons:wechat"
         }
@@ -14887,24 +14737,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/line.png",
           "webp": "styles/agentic-matte/webp/{size}/line.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/line.svg",
+          "made_by": "both",
           "hex": "#00C300",
           "hex_source": "simple-icons:line"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/line.png",
           "webp": "styles/agentic-machined/webp/{size}/line.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/line.svg",
+          "made_by": "both",
           "hex": "#00C300",
           "hex_source": "simple-icons:line"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/line.png",
           "webp": "styles/agentic-emissive/webp/{size}/line.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/line.svg",
+          "made_by": "both",
           "hex": "#00C300",
           "hex_source": "simple-icons:line"
         }
@@ -14948,24 +14795,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/matrix.png",
           "webp": "styles/agentic-matte/webp/{size}/matrix.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/matrix.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "simple-icons:matrix"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/matrix.png",
           "webp": "styles/agentic-machined/webp/{size}/matrix.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/matrix.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "simple-icons:matrix"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/matrix.png",
           "webp": "styles/agentic-emissive/webp/{size}/matrix.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/matrix.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "simple-icons:matrix"
         }
@@ -15009,24 +14853,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/element.png",
           "webp": "styles/agentic-matte/webp/{size}/element.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/element.svg",
+          "made_by": "both",
           "hex": "#0DBD8B",
           "hex_source": "simple-icons:element"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/element.png",
           "webp": "styles/agentic-machined/webp/{size}/element.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/element.svg",
+          "made_by": "both",
           "hex": "#0DBD8B",
           "hex_source": "simple-icons:element"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/element.png",
           "webp": "styles/agentic-emissive/webp/{size}/element.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/element.svg",
+          "made_by": "both",
           "hex": "#0DBD8B",
           "hex_source": "simple-icons:element"
         }
@@ -15067,24 +14908,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/zulip.png",
           "webp": "styles/agentic-matte/webp/{size}/zulip.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/zulip.svg",
+          "made_by": "both",
           "hex": "#6492FE",
           "hex_source": "simple-icons:zulip"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/zulip.png",
           "webp": "styles/agentic-machined/webp/{size}/zulip.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/zulip.svg",
+          "made_by": "both",
           "hex": "#6492FE",
           "hex_source": "simple-icons:zulip"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/zulip.png",
           "webp": "styles/agentic-emissive/webp/{size}/zulip.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/zulip.svg",
+          "made_by": "both",
           "hex": "#6492FE",
           "hex_source": "simple-icons:zulip"
         }
@@ -15125,24 +14963,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/mattermost.png",
           "webp": "styles/agentic-matte/webp/{size}/mattermost.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/mattermost.svg",
+          "made_by": "both",
           "hex": "#0058CC",
           "hex_source": "simple-icons:mattermost"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/mattermost.png",
           "webp": "styles/agentic-machined/webp/{size}/mattermost.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/mattermost.svg",
+          "made_by": "both",
           "hex": "#0058CC",
           "hex_source": "simple-icons:mattermost"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/mattermost.png",
           "webp": "styles/agentic-emissive/webp/{size}/mattermost.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/mattermost.svg",
+          "made_by": "both",
           "hex": "#0058CC",
           "hex_source": "simple-icons:mattermost"
         }
@@ -15186,24 +15021,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/rocketchat.png",
           "webp": "styles/agentic-matte/webp/{size}/rocketchat.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/rocketchat.svg",
+          "made_by": "both",
           "hex": "#F5455C",
           "hex_source": "simple-icons:rocketdotchat"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/rocketchat.png",
           "webp": "styles/agentic-machined/webp/{size}/rocketchat.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/rocketchat.svg",
+          "made_by": "both",
           "hex": "#F5455C",
           "hex_source": "simple-icons:rocketdotchat"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/rocketchat.png",
           "webp": "styles/agentic-emissive/webp/{size}/rocketchat.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/rocketchat.svg",
+          "made_by": "both",
           "hex": "#F5455C",
           "hex_source": "simple-icons:rocketdotchat"
         }
@@ -15247,24 +15079,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/xmpp.png",
           "webp": "styles/agentic-matte/webp/{size}/xmpp.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/xmpp.svg",
+          "made_by": "both",
           "hex": "#002B5C",
           "hex_source": "simple-icons:xmpp"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/xmpp.png",
           "webp": "styles/agentic-machined/webp/{size}/xmpp.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/xmpp.svg",
+          "made_by": "both",
           "hex": "#002B5C",
           "hex_source": "simple-icons:xmpp"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/xmpp.png",
           "webp": "styles/agentic-emissive/webp/{size}/xmpp.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/xmpp.svg",
+          "made_by": "both",
           "hex": "#002B5C",
           "hex_source": "simple-icons:xmpp"
         }
@@ -15305,24 +15134,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/lemmy.png",
           "webp": "styles/agentic-matte/webp/{size}/lemmy.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/lemmy.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "simple-icons:lemmy"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/lemmy.png",
           "webp": "styles/agentic-machined/webp/{size}/lemmy.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/lemmy.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "simple-icons:lemmy"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/lemmy.png",
           "webp": "styles/agentic-emissive/webp/{size}/lemmy.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/lemmy.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "simple-icons:lemmy"
         }
@@ -15363,24 +15189,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/pixelfed.png",
           "webp": "styles/agentic-matte/webp/{size}/pixelfed.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/pixelfed.svg",
+          "made_by": "both",
           "hex": "#6366F1",
           "hex_source": "simple-icons:pixelfed"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/pixelfed.png",
           "webp": "styles/agentic-machined/webp/{size}/pixelfed.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/pixelfed.svg",
+          "made_by": "both",
           "hex": "#6366F1",
           "hex_source": "simple-icons:pixelfed"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/pixelfed.png",
           "webp": "styles/agentic-emissive/webp/{size}/pixelfed.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/pixelfed.svg",
+          "made_by": "both",
           "hex": "#6366F1",
           "hex_source": "simple-icons:pixelfed"
         }
@@ -15421,24 +15244,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/peertube.png",
           "webp": "styles/agentic-matte/webp/{size}/peertube.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/peertube.svg",
+          "made_by": "both",
           "hex": "#F1680D",
           "hex_source": "simple-icons:peertube"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/peertube.png",
           "webp": "styles/agentic-machined/webp/{size}/peertube.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/peertube.svg",
+          "made_by": "both",
           "hex": "#F1680D",
           "hex_source": "simple-icons:peertube"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/peertube.png",
           "webp": "styles/agentic-emissive/webp/{size}/peertube.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/peertube.svg",
+          "made_by": "both",
           "hex": "#F1680D",
           "hex_source": "simple-icons:peertube"
         }
@@ -15479,24 +15299,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/misskey.png",
           "webp": "styles/agentic-matte/webp/{size}/misskey.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/misskey.svg",
+          "made_by": "both",
           "hex": "#A1CA03",
           "hex_source": "simple-icons:misskey"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/misskey.png",
           "webp": "styles/agentic-machined/webp/{size}/misskey.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/misskey.svg",
+          "made_by": "both",
           "hex": "#A1CA03",
           "hex_source": "simple-icons:misskey"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/misskey.png",
           "webp": "styles/agentic-emissive/webp/{size}/misskey.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/misskey.svg",
+          "made_by": "both",
           "hex": "#A1CA03",
           "hex_source": "simple-icons:misskey"
         }
@@ -15537,24 +15354,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/farcaster.png",
           "webp": "styles/agentic-matte/webp/{size}/farcaster.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/farcaster.svg",
+          "made_by": "both",
           "hex": "#855DCD",
           "hex_source": "simple-icons:farcaster"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/farcaster.png",
           "webp": "styles/agentic-machined/webp/{size}/farcaster.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/farcaster.svg",
+          "made_by": "both",
           "hex": "#855DCD",
           "hex_source": "simple-icons:farcaster"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/farcaster.png",
           "webp": "styles/agentic-emissive/webp/{size}/farcaster.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/farcaster.svg",
+          "made_by": "both",
           "hex": "#855DCD",
           "hex_source": "simple-icons:farcaster"
         }
@@ -15598,24 +15412,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/google-meet.png",
           "webp": "styles/agentic-matte/webp/{size}/google-meet.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/google-meet.svg",
+          "made_by": "both",
           "hex": "#00897B",
           "hex_source": "simple-icons:googlemeet"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/google-meet.png",
           "webp": "styles/agentic-machined/webp/{size}/google-meet.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/google-meet.svg",
+          "made_by": "both",
           "hex": "#00897B",
           "hex_source": "simple-icons:googlemeet"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/google-meet.png",
           "webp": "styles/agentic-emissive/webp/{size}/google-meet.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/google-meet.svg",
+          "made_by": "both",
           "hex": "#00897B",
           "hex_source": "simple-icons:googlemeet"
         }
@@ -15659,24 +15470,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/zoom.png",
           "webp": "styles/agentic-matte/webp/{size}/zoom.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/zoom.svg",
+          "made_by": "both",
           "hex": "#0B5CFF",
           "hex_source": "simple-icons:zoom"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/zoom.png",
           "webp": "styles/agentic-machined/webp/{size}/zoom.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/zoom.svg",
+          "made_by": "both",
           "hex": "#0B5CFF",
           "hex_source": "simple-icons:zoom"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/zoom.png",
           "webp": "styles/agentic-emissive/webp/{size}/zoom.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/zoom.svg",
+          "made_by": "both",
           "hex": "#0B5CFF",
           "hex_source": "simple-icons:zoom"
         }
@@ -15720,24 +15528,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/gmail.png",
           "webp": "styles/agentic-matte/webp/{size}/gmail.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/gmail.svg",
+          "made_by": "both",
           "hex": "#EA4335",
           "hex_source": "simple-icons:gmail"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/gmail.png",
           "webp": "styles/agentic-machined/webp/{size}/gmail.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/gmail.svg",
+          "made_by": "both",
           "hex": "#EA4335",
           "hex_source": "simple-icons:gmail"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/gmail.png",
           "webp": "styles/agentic-emissive/webp/{size}/gmail.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/gmail.svg",
+          "made_by": "both",
           "hex": "#EA4335",
           "hex_source": "simple-icons:gmail"
         }
@@ -15781,24 +15586,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/proton-mail.png",
           "webp": "styles/agentic-matte/webp/{size}/proton-mail.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/proton-mail.svg",
+          "made_by": "both",
           "hex": "#6D4AFF",
           "hex_source": "simple-icons:protonmail"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/proton-mail.png",
           "webp": "styles/agentic-machined/webp/{size}/proton-mail.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/proton-mail.svg",
+          "made_by": "both",
           "hex": "#6D4AFF",
           "hex_source": "simple-icons:protonmail"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/proton-mail.png",
           "webp": "styles/agentic-emissive/webp/{size}/proton-mail.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/proton-mail.svg",
+          "made_by": "both",
           "hex": "#6D4AFF",
           "hex_source": "simple-icons:protonmail"
         }
@@ -15842,24 +15644,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/spotify.png",
           "webp": "styles/agentic-matte/webp/{size}/spotify.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/spotify.svg",
+          "made_by": "both",
           "hex": "#1ED760",
           "hex_source": "simple-icons:spotify"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/spotify.png",
           "webp": "styles/agentic-machined/webp/{size}/spotify.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/spotify.svg",
+          "made_by": "both",
           "hex": "#1ED760",
           "hex_source": "simple-icons:spotify"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/spotify.png",
           "webp": "styles/agentic-emissive/webp/{size}/spotify.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/spotify.svg",
+          "made_by": "both",
           "hex": "#1ED760",
           "hex_source": "simple-icons:spotify"
         }
@@ -15903,24 +15702,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/apple-music.png",
           "webp": "styles/agentic-matte/webp/{size}/apple-music.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/apple-music.svg",
+          "made_by": "both",
           "hex": "#FA243C",
           "hex_source": "simple-icons:applemusic"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/apple-music.png",
           "webp": "styles/agentic-machined/webp/{size}/apple-music.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/apple-music.svg",
+          "made_by": "both",
           "hex": "#FA243C",
           "hex_source": "simple-icons:applemusic"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/apple-music.png",
           "webp": "styles/agentic-emissive/webp/{size}/apple-music.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/apple-music.svg",
+          "made_by": "both",
           "hex": "#FA243C",
           "hex_source": "simple-icons:applemusic"
         }
@@ -15964,24 +15760,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/soundcloud.png",
           "webp": "styles/agentic-matte/webp/{size}/soundcloud.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/soundcloud.svg",
+          "made_by": "both",
           "hex": "#FF5500",
           "hex_source": "simple-icons:soundcloud"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/soundcloud.png",
           "webp": "styles/agentic-machined/webp/{size}/soundcloud.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/soundcloud.svg",
+          "made_by": "both",
           "hex": "#FF5500",
           "hex_source": "simple-icons:soundcloud"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/soundcloud.png",
           "webp": "styles/agentic-emissive/webp/{size}/soundcloud.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/soundcloud.svg",
+          "made_by": "both",
           "hex": "#FF5500",
           "hex_source": "simple-icons:soundcloud"
         }
@@ -16025,24 +15818,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/bandcamp.png",
           "webp": "styles/agentic-matte/webp/{size}/bandcamp.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/bandcamp.svg",
+          "made_by": "both",
           "hex": "#408294",
           "hex_source": "simple-icons:bandcamp"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/bandcamp.png",
           "webp": "styles/agentic-machined/webp/{size}/bandcamp.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/bandcamp.svg",
+          "made_by": "both",
           "hex": "#408294",
           "hex_source": "simple-icons:bandcamp"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/bandcamp.png",
           "webp": "styles/agentic-emissive/webp/{size}/bandcamp.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/bandcamp.svg",
+          "made_by": "both",
           "hex": "#408294",
           "hex_source": "simple-icons:bandcamp"
         }
@@ -16086,24 +15876,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/vimeo.png",
           "webp": "styles/agentic-matte/webp/{size}/vimeo.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/vimeo.svg",
+          "made_by": "both",
           "hex": "#1AB7EA",
           "hex_source": "simple-icons:vimeo"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/vimeo.png",
           "webp": "styles/agentic-machined/webp/{size}/vimeo.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/vimeo.svg",
+          "made_by": "both",
           "hex": "#1AB7EA",
           "hex_source": "simple-icons:vimeo"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/vimeo.png",
           "webp": "styles/agentic-emissive/webp/{size}/vimeo.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/vimeo.svg",
+          "made_by": "both",
           "hex": "#1AB7EA",
           "hex_source": "simple-icons:vimeo"
         }
@@ -16147,24 +15934,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/medium.png",
           "webp": "styles/agentic-matte/webp/{size}/medium.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/medium.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "simple-icons:medium"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/medium.png",
           "webp": "styles/agentic-machined/webp/{size}/medium.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/medium.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "simple-icons:medium"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/medium.png",
           "webp": "styles/agentic-emissive/webp/{size}/medium.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/medium.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "simple-icons:medium"
         }
@@ -16208,24 +15992,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/substack.png",
           "webp": "styles/agentic-matte/webp/{size}/substack.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/substack.svg",
+          "made_by": "both",
           "hex": "#FF6719",
           "hex_source": "simple-icons:substack"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/substack.png",
           "webp": "styles/agentic-machined/webp/{size}/substack.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/substack.svg",
+          "made_by": "both",
           "hex": "#FF6719",
           "hex_source": "simple-icons:substack"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/substack.png",
           "webp": "styles/agentic-emissive/webp/{size}/substack.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/substack.svg",
+          "made_by": "both",
           "hex": "#FF6719",
           "hex_source": "simple-icons:substack"
         }
@@ -16269,24 +16050,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/dev-to.png",
           "webp": "styles/agentic-matte/webp/{size}/dev-to.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/dev-to.svg",
+          "made_by": "both",
           "hex": "#0A0A0A",
           "hex_source": "simple-icons:devdotto"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/dev-to.png",
           "webp": "styles/agentic-machined/webp/{size}/dev-to.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/dev-to.svg",
+          "made_by": "both",
           "hex": "#0A0A0A",
           "hex_source": "simple-icons:devdotto"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/dev-to.png",
           "webp": "styles/agentic-emissive/webp/{size}/dev-to.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/dev-to.svg",
+          "made_by": "both",
           "hex": "#0A0A0A",
           "hex_source": "simple-icons:devdotto"
         }
@@ -16327,24 +16105,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/hashnode.png",
           "webp": "styles/agentic-matte/webp/{size}/hashnode.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/hashnode.svg",
+          "made_by": "both",
           "hex": "#2962FF",
           "hex_source": "simple-icons:hashnode"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/hashnode.png",
           "webp": "styles/agentic-machined/webp/{size}/hashnode.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/hashnode.svg",
+          "made_by": "both",
           "hex": "#2962FF",
           "hex_source": "simple-icons:hashnode"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/hashnode.png",
           "webp": "styles/agentic-emissive/webp/{size}/hashnode.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/hashnode.svg",
+          "made_by": "both",
           "hex": "#2962FF",
           "hex_source": "simple-icons:hashnode"
         }
@@ -16388,24 +16163,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/ghost.png",
           "webp": "styles/agentic-matte/webp/{size}/ghost.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/ghost.svg",
+          "made_by": "both",
           "hex": "#15171A",
           "hex_source": "simple-icons:ghost"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/ghost.png",
           "webp": "styles/agentic-machined/webp/{size}/ghost.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/ghost.svg",
+          "made_by": "both",
           "hex": "#15171A",
           "hex_source": "simple-icons:ghost"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/ghost.png",
           "webp": "styles/agentic-emissive/webp/{size}/ghost.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/ghost.svg",
+          "made_by": "both",
           "hex": "#15171A",
           "hex_source": "simple-icons:ghost"
         }
@@ -16449,24 +16221,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/wordpress.png",
           "webp": "styles/agentic-matte/webp/{size}/wordpress.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/wordpress.svg",
+          "made_by": "both",
           "hex": "#21759B",
           "hex_source": "simple-icons:wordpress"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/wordpress.png",
           "webp": "styles/agentic-machined/webp/{size}/wordpress.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/wordpress.svg",
+          "made_by": "both",
           "hex": "#21759B",
           "hex_source": "simple-icons:wordpress"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/wordpress.png",
           "webp": "styles/agentic-emissive/webp/{size}/wordpress.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/wordpress.svg",
+          "made_by": "both",
           "hex": "#21759B",
           "hex_source": "simple-icons:wordpress"
         }
@@ -16510,24 +16279,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/product-hunt.png",
           "webp": "styles/agentic-matte/webp/{size}/product-hunt.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/product-hunt.svg",
+          "made_by": "both",
           "hex": "#DA552F",
           "hex_source": "simple-icons:producthunt"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/product-hunt.png",
           "webp": "styles/agentic-machined/webp/{size}/product-hunt.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/product-hunt.svg",
+          "made_by": "both",
           "hex": "#DA552F",
           "hex_source": "simple-icons:producthunt"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/product-hunt.png",
           "webp": "styles/agentic-emissive/webp/{size}/product-hunt.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/product-hunt.svg",
+          "made_by": "both",
           "hex": "#DA552F",
           "hex_source": "simple-icons:producthunt"
         }
@@ -16571,24 +16337,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/y-combinator.png",
           "webp": "styles/agentic-matte/webp/{size}/y-combinator.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/y-combinator.svg",
+          "made_by": "both",
           "hex": "#F0652F",
           "hex_source": "simple-icons:ycombinator"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/y-combinator.png",
           "webp": "styles/agentic-machined/webp/{size}/y-combinator.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/y-combinator.svg",
+          "made_by": "both",
           "hex": "#F0652F",
           "hex_source": "simple-icons:ycombinator"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/y-combinator.png",
           "webp": "styles/agentic-emissive/webp/{size}/y-combinator.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/y-combinator.svg",
+          "made_by": "both",
           "hex": "#F0652F",
           "hex_source": "simple-icons:ycombinator"
         }
@@ -16632,24 +16395,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/dribbble.png",
           "webp": "styles/agentic-matte/webp/{size}/dribbble.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/dribbble.svg",
+          "made_by": "both",
           "hex": "#EA4C89",
           "hex_source": "simple-icons:dribbble"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/dribbble.png",
           "webp": "styles/agentic-machined/webp/{size}/dribbble.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/dribbble.svg",
+          "made_by": "both",
           "hex": "#EA4C89",
           "hex_source": "simple-icons:dribbble"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/dribbble.png",
           "webp": "styles/agentic-emissive/webp/{size}/dribbble.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/dribbble.svg",
+          "made_by": "both",
           "hex": "#EA4C89",
           "hex_source": "simple-icons:dribbble"
         }
@@ -16693,24 +16453,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/behance.png",
           "webp": "styles/agentic-matte/webp/{size}/behance.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/behance.svg",
+          "made_by": "both",
           "hex": "#1769FF",
           "hex_source": "simple-icons:behance"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/behance.png",
           "webp": "styles/agentic-machined/webp/{size}/behance.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/behance.svg",
+          "made_by": "both",
           "hex": "#1769FF",
           "hex_source": "simple-icons:behance"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/behance.png",
           "webp": "styles/agentic-emissive/webp/{size}/behance.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/behance.svg",
+          "made_by": "both",
           "hex": "#1769FF",
           "hex_source": "simple-icons:behance"
         }
@@ -16754,24 +16511,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/patreon.png",
           "webp": "styles/agentic-matte/webp/{size}/patreon.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/patreon.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "simple-icons:patreon"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/patreon.png",
           "webp": "styles/agentic-machined/webp/{size}/patreon.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/patreon.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "simple-icons:patreon"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/patreon.png",
           "webp": "styles/agentic-emissive/webp/{size}/patreon.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/patreon.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "simple-icons:patreon"
         }
@@ -16815,24 +16569,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/ko-fi.png",
           "webp": "styles/agentic-matte/webp/{size}/ko-fi.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/ko-fi.svg",
+          "made_by": "both",
           "hex": "#FF6433",
           "hex_source": "simple-icons:kofi"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/ko-fi.png",
           "webp": "styles/agentic-machined/webp/{size}/ko-fi.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/ko-fi.svg",
+          "made_by": "both",
           "hex": "#FF6433",
           "hex_source": "simple-icons:kofi"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/ko-fi.png",
           "webp": "styles/agentic-emissive/webp/{size}/ko-fi.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/ko-fi.svg",
+          "made_by": "both",
           "hex": "#FF6433",
           "hex_source": "simple-icons:kofi"
         }
@@ -16876,24 +16627,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/buy-me-a-coffee.png",
           "webp": "styles/agentic-matte/webp/{size}/buy-me-a-coffee.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/buy-me-a-coffee.svg",
+          "made_by": "both",
           "hex": "#FFDD00",
           "hex_source": "simple-icons:buymeacoffee"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/buy-me-a-coffee.png",
           "webp": "styles/agentic-machined/webp/{size}/buy-me-a-coffee.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/buy-me-a-coffee.svg",
+          "made_by": "both",
           "hex": "#FFDD00",
           "hex_source": "simple-icons:buymeacoffee"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/buy-me-a-coffee.png",
           "webp": "styles/agentic-emissive/webp/{size}/buy-me-a-coffee.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/buy-me-a-coffee.svg",
+          "made_by": "both",
           "hex": "#FFDD00",
           "hex_source": "simple-icons:buymeacoffee"
         }
@@ -16937,24 +16685,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/paypal.png",
           "webp": "styles/agentic-matte/webp/{size}/paypal.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/paypal.svg",
+          "made_by": "both",
           "hex": "#002991",
           "hex_source": "simple-icons:paypal"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/paypal.png",
           "webp": "styles/agentic-machined/webp/{size}/paypal.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/paypal.svg",
+          "made_by": "both",
           "hex": "#002991",
           "hex_source": "simple-icons:paypal"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/paypal.png",
           "webp": "styles/agentic-emissive/webp/{size}/paypal.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/paypal.svg",
+          "made_by": "both",
           "hex": "#002991",
           "hex_source": "simple-icons:paypal"
         }
@@ -16998,24 +16743,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/stripe.png",
           "webp": "styles/agentic-matte/webp/{size}/stripe.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/stripe.svg",
+          "made_by": "both",
           "hex": "#635BFF",
           "hex_source": "simple-icons:stripe"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/stripe.png",
           "webp": "styles/agentic-machined/webp/{size}/stripe.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/stripe.svg",
+          "made_by": "both",
           "hex": "#635BFF",
           "hex_source": "simple-icons:stripe"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/stripe.png",
           "webp": "styles/agentic-emissive/webp/{size}/stripe.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/stripe.svg",
+          "made_by": "both",
           "hex": "#635BFF",
           "hex_source": "simple-icons:stripe"
         }
@@ -17059,24 +16801,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/bitcoin.png",
           "webp": "styles/agentic-matte/webp/{size}/bitcoin.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/bitcoin.svg",
+          "made_by": "both",
           "hex": "#F7931A",
           "hex_source": "simple-icons:bitcoin"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/bitcoin.png",
           "webp": "styles/agentic-machined/webp/{size}/bitcoin.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/bitcoin.svg",
+          "made_by": "both",
           "hex": "#F7931A",
           "hex_source": "simple-icons:bitcoin"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/bitcoin.png",
           "webp": "styles/agentic-emissive/webp/{size}/bitcoin.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/bitcoin.svg",
+          "made_by": "both",
           "hex": "#F7931A",
           "hex_source": "simple-icons:bitcoin"
         }
@@ -17120,24 +16859,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/ethereum.png",
           "webp": "styles/agentic-matte/webp/{size}/ethereum.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/ethereum.svg",
+          "made_by": "both",
           "hex": "#3C3C3D",
           "hex_source": "simple-icons:ethereum"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/ethereum.png",
           "webp": "styles/agentic-machined/webp/{size}/ethereum.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/ethereum.svg",
+          "made_by": "both",
           "hex": "#3C3C3D",
           "hex_source": "simple-icons:ethereum"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/ethereum.png",
           "webp": "styles/agentic-emissive/webp/{size}/ethereum.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/ethereum.svg",
+          "made_by": "both",
           "hex": "#3C3C3D",
           "hex_source": "simple-icons:ethereum"
         }
@@ -17181,24 +16917,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/etsy.png",
           "webp": "styles/agentic-matte/webp/{size}/etsy.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/etsy.svg",
+          "made_by": "both",
           "hex": "#F16521",
           "hex_source": "simple-icons:etsy"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/etsy.png",
           "webp": "styles/agentic-machined/webp/{size}/etsy.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/etsy.svg",
+          "made_by": "both",
           "hex": "#F16521",
           "hex_source": "simple-icons:etsy"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/etsy.png",
           "webp": "styles/agentic-emissive/webp/{size}/etsy.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/etsy.svg",
+          "made_by": "both",
           "hex": "#F16521",
           "hex_source": "simple-icons:etsy"
         }
@@ -17242,24 +16975,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/shopify.png",
           "webp": "styles/agentic-matte/webp/{size}/shopify.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/shopify.svg",
+          "made_by": "both",
           "hex": "#7AB55C",
           "hex_source": "simple-icons:shopify"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/shopify.png",
           "webp": "styles/agentic-machined/webp/{size}/shopify.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/shopify.svg",
+          "made_by": "both",
           "hex": "#7AB55C",
           "hex_source": "simple-icons:shopify"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/shopify.png",
           "webp": "styles/agentic-emissive/webp/{size}/shopify.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/shopify.svg",
+          "made_by": "both",
           "hex": "#7AB55C",
           "hex_source": "simple-icons:shopify"
         }
@@ -17303,24 +17033,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/ebay.png",
           "webp": "styles/agentic-matte/webp/{size}/ebay.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/ebay.svg",
+          "made_by": "both",
           "hex": "#E53238",
           "hex_source": "simple-icons:ebay"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/ebay.png",
           "webp": "styles/agentic-machined/webp/{size}/ebay.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/ebay.svg",
+          "made_by": "both",
           "hex": "#E53238",
           "hex_source": "simple-icons:ebay"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/ebay.png",
           "webp": "styles/agentic-emissive/webp/{size}/ebay.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/ebay.svg",
+          "made_by": "both",
           "hex": "#E53238",
           "hex_source": "simple-icons:ebay"
         }
@@ -17364,24 +17091,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/apple.png",
           "webp": "styles/agentic-matte/webp/{size}/apple.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/apple.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "simple-icons:apple"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/apple.png",
           "webp": "styles/agentic-machined/webp/{size}/apple.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/apple.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "simple-icons:apple"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/apple.png",
           "webp": "styles/agentic-emissive/webp/{size}/apple.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/apple.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "simple-icons:apple"
         }
@@ -17425,24 +17149,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/google.png",
           "webp": "styles/agentic-matte/webp/{size}/google.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/google.svg",
+          "made_by": "both",
           "hex": "#4285F4",
           "hex_source": "simple-icons:google"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/google.png",
           "webp": "styles/agentic-machined/webp/{size}/google.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/google.svg",
+          "made_by": "both",
           "hex": "#4285F4",
           "hex_source": "simple-icons:google"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/google.png",
           "webp": "styles/agentic-emissive/webp/{size}/google.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/google.svg",
+          "made_by": "both",
           "hex": "#4285F4",
           "hex_source": "simple-icons:google"
         }
@@ -17486,24 +17207,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/android.png",
           "webp": "styles/agentic-matte/webp/{size}/android.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/android.svg",
+          "made_by": "both",
           "hex": "#3DDC84",
           "hex_source": "simple-icons:android"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/android.png",
           "webp": "styles/agentic-machined/webp/{size}/android.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/android.svg",
+          "made_by": "both",
           "hex": "#3DDC84",
           "hex_source": "simple-icons:android"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/android.png",
           "webp": "styles/agentic-emissive/webp/{size}/android.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/android.svg",
+          "made_by": "both",
           "hex": "#3DDC84",
           "hex_source": "simple-icons:android"
         }
@@ -17547,24 +17265,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/linux.png",
           "webp": "styles/agentic-matte/webp/{size}/linux.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/linux.svg",
+          "made_by": "both",
           "hex": "#FCC624",
           "hex_source": "simple-icons:linux"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/linux.png",
           "webp": "styles/agentic-machined/webp/{size}/linux.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/linux.svg",
+          "made_by": "both",
           "hex": "#FCC624",
           "hex_source": "simple-icons:linux"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/linux.png",
           "webp": "styles/agentic-emissive/webp/{size}/linux.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/linux.svg",
+          "made_by": "both",
           "hex": "#FCC624",
           "hex_source": "simple-icons:linux"
         }
@@ -17608,24 +17323,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/ubuntu.png",
           "webp": "styles/agentic-matte/webp/{size}/ubuntu.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/ubuntu.svg",
+          "made_by": "both",
           "hex": "#E95420",
           "hex_source": "simple-icons:ubuntu"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/ubuntu.png",
           "webp": "styles/agentic-machined/webp/{size}/ubuntu.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/ubuntu.svg",
+          "made_by": "both",
           "hex": "#E95420",
           "hex_source": "simple-icons:ubuntu"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/ubuntu.png",
           "webp": "styles/agentic-emissive/webp/{size}/ubuntu.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/ubuntu.svg",
+          "made_by": "both",
           "hex": "#E95420",
           "hex_source": "simple-icons:ubuntu"
         }
@@ -17669,24 +17381,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/debian.png",
           "webp": "styles/agentic-matte/webp/{size}/debian.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/debian.svg",
+          "made_by": "both",
           "hex": "#A81D33",
           "hex_source": "simple-icons:debian"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/debian.png",
           "webp": "styles/agentic-machined/webp/{size}/debian.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/debian.svg",
+          "made_by": "both",
           "hex": "#A81D33",
           "hex_source": "simple-icons:debian"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/debian.png",
           "webp": "styles/agentic-emissive/webp/{size}/debian.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/debian.svg",
+          "made_by": "both",
           "hex": "#A81D33",
           "hex_source": "simple-icons:debian"
         }
@@ -17730,24 +17439,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/firefox.png",
           "webp": "styles/agentic-matte/webp/{size}/firefox.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/firefox.svg",
+          "made_by": "both",
           "hex": "#FF7139",
           "hex_source": "simple-icons:firefox"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/firefox.png",
           "webp": "styles/agentic-machined/webp/{size}/firefox.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/firefox.svg",
+          "made_by": "both",
           "hex": "#FF7139",
           "hex_source": "simple-icons:firefox"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/firefox.png",
           "webp": "styles/agentic-emissive/webp/{size}/firefox.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/firefox.svg",
+          "made_by": "both",
           "hex": "#FF7139",
           "hex_source": "simple-icons:firefox"
         }
@@ -17791,24 +17497,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/chrome.png",
           "webp": "styles/agentic-matte/webp/{size}/chrome.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/chrome.svg",
+          "made_by": "both",
           "hex": "#4285F4",
           "hex_source": "simple-icons:googlechrome"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/chrome.png",
           "webp": "styles/agentic-machined/webp/{size}/chrome.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/chrome.svg",
+          "made_by": "both",
           "hex": "#4285F4",
           "hex_source": "simple-icons:googlechrome"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/chrome.png",
           "webp": "styles/agentic-emissive/webp/{size}/chrome.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/chrome.svg",
+          "made_by": "both",
           "hex": "#4285F4",
           "hex_source": "simple-icons:googlechrome"
         }
@@ -17852,24 +17555,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/safari.png",
           "webp": "styles/agentic-matte/webp/{size}/safari.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/safari.svg",
+          "made_by": "both",
           "hex": "#006CFF",
           "hex_source": "simple-icons:safari"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/safari.png",
           "webp": "styles/agentic-machined/webp/{size}/safari.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/safari.svg",
+          "made_by": "both",
           "hex": "#006CFF",
           "hex_source": "simple-icons:safari"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/safari.png",
           "webp": "styles/agentic-emissive/webp/{size}/safari.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/safari.svg",
+          "made_by": "both",
           "hex": "#006CFF",
           "hex_source": "simple-icons:safari"
         }
@@ -17913,24 +17613,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/brave.png",
           "webp": "styles/agentic-matte/webp/{size}/brave.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/brave.svg",
+          "made_by": "both",
           "hex": "#FB542B",
           "hex_source": "simple-icons:brave"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/brave.png",
           "webp": "styles/agentic-machined/webp/{size}/brave.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/brave.svg",
+          "made_by": "both",
           "hex": "#FB542B",
           "hex_source": "simple-icons:brave"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/brave.png",
           "webp": "styles/agentic-emissive/webp/{size}/brave.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/brave.svg",
+          "made_by": "both",
           "hex": "#FB542B",
           "hex_source": "simple-icons:brave"
         }
@@ -17974,24 +17671,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/tor.png",
           "webp": "styles/agentic-matte/webp/{size}/tor.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/tor.svg",
+          "made_by": "both",
           "hex": "#7D4698",
           "hex_source": "simple-icons:torproject"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/tor.png",
           "webp": "styles/agentic-machined/webp/{size}/tor.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/tor.svg",
+          "made_by": "both",
           "hex": "#7D4698",
           "hex_source": "simple-icons:torproject"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/tor.png",
           "webp": "styles/agentic-emissive/webp/{size}/tor.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/tor.svg",
+          "made_by": "both",
           "hex": "#7D4698",
           "hex_source": "simple-icons:torproject"
         }
@@ -18035,24 +17729,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/slack.png",
           "webp": "styles/agentic-matte/webp/{size}/slack.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/slack.svg",
+          "made_by": "both",
           "hex": "#4A154B",
           "hex_source": "https://slack.com/media-kit (Aubergine, primary brand colour)"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/slack.png",
           "webp": "styles/agentic-machined/webp/{size}/slack.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/slack.svg",
+          "made_by": "both",
           "hex": "#4A154B",
           "hex_source": "https://slack.com/media-kit (Aubergine, primary brand colour)"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/slack.png",
           "webp": "styles/agentic-emissive/webp/{size}/slack.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/slack.svg",
+          "made_by": "both",
           "hex": "#4A154B",
           "hex_source": "https://slack.com/media-kit (Aubergine, primary brand colour)"
         }
@@ -18096,24 +17787,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/linkedin.png",
           "webp": "styles/agentic-matte/webp/{size}/linkedin.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/linkedin.svg",
+          "made_by": "both",
           "hex": "#0A66C2",
           "hex_source": "https://brand.linkedin.com/visual-identity/color-palettes (LinkedIn Blue)"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/linkedin.png",
           "webp": "styles/agentic-machined/webp/{size}/linkedin.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/linkedin.svg",
+          "made_by": "both",
           "hex": "#0A66C2",
           "hex_source": "https://brand.linkedin.com/visual-identity/color-palettes (LinkedIn Blue)"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/linkedin.png",
           "webp": "styles/agentic-emissive/webp/{size}/linkedin.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/linkedin.svg",
+          "made_by": "both",
           "hex": "#0A66C2",
           "hex_source": "https://brand.linkedin.com/visual-identity/color-palettes (LinkedIn Blue)"
         }
@@ -18157,24 +17845,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/windows.png",
           "webp": "styles/agentic-matte/webp/{size}/windows.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/windows.svg",
+          "made_by": "both",
           "hex": "#0078D4",
           "hex_source": "https://learn.microsoft.com/en-us/windows/apps/design/signature-experiences/color (Windows accent blue)"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/windows.png",
           "webp": "styles/agentic-machined/webp/{size}/windows.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/windows.svg",
+          "made_by": "both",
           "hex": "#0078D4",
           "hex_source": "https://learn.microsoft.com/en-us/windows/apps/design/signature-experiences/color (Windows accent blue)"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/windows.png",
           "webp": "styles/agentic-emissive/webp/{size}/windows.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/windows.svg",
+          "made_by": "both",
           "hex": "#0078D4",
           "hex_source": "https://learn.microsoft.com/en-us/windows/apps/design/signature-experiences/color (Windows accent blue)"
         }
@@ -18218,24 +17903,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/microsoft.png",
           "webp": "styles/agentic-matte/webp/{size}/microsoft.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/microsoft.svg",
+          "made_by": "both",
           "hex": "#737373",
           "hex_source": "https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks (wordmark grey)"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/microsoft.png",
           "webp": "styles/agentic-machined/webp/{size}/microsoft.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/microsoft.svg",
+          "made_by": "both",
           "hex": "#737373",
           "hex_source": "https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks (wordmark grey)"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/microsoft.png",
           "webp": "styles/agentic-emissive/webp/{size}/microsoft.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/microsoft.svg",
+          "made_by": "both",
           "hex": "#737373",
           "hex_source": "https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks (wordmark grey)"
         }
@@ -18279,24 +17961,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/hacker-news.png",
           "webp": "styles/agentic-matte/webp/{size}/hacker-news.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/hacker-news.svg",
+          "made_by": "both",
           "hex": "#FF6600",
           "hex_source": "https://news.ycombinator.com (the site header orange)"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/hacker-news.png",
           "webp": "styles/agentic-machined/webp/{size}/hacker-news.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/hacker-news.svg",
+          "made_by": "both",
           "hex": "#FF6600",
           "hex_source": "https://news.ycombinator.com (the site header orange)"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/hacker-news.png",
           "webp": "styles/agentic-emissive/webp/{size}/hacker-news.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/hacker-news.svg",
+          "made_by": "both",
           "hex": "#FF6600",
           "hex_source": "https://news.ycombinator.com (the site header orange)"
         }
@@ -18337,24 +18016,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/openai.png",
           "webp": "styles/agentic-matte/webp/{size}/openai.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/openai.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "https://openai.com/brand (black logomark)"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/openai.png",
           "webp": "styles/agentic-machined/webp/{size}/openai.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/openai.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "https://openai.com/brand (black logomark)"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/openai.png",
           "webp": "styles/agentic-emissive/webp/{size}/openai.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/openai.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "https://openai.com/brand (black logomark)"
         }
@@ -18398,24 +18074,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/skype.png",
           "webp": "styles/agentic-matte/webp/{size}/skype.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/skype.svg",
+          "made_by": "both",
           "hex": "#00AFF0",
           "hex_source": "https://www.skype.com (Skype blue)"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/skype.png",
           "webp": "styles/agentic-machined/webp/{size}/skype.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/skype.svg",
+          "made_by": "both",
           "hex": "#00AFF0",
           "hex_source": "https://www.skype.com (Skype blue)"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/skype.png",
           "webp": "styles/agentic-emissive/webp/{size}/skype.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/skype.svg",
+          "made_by": "both",
           "hex": "#00AFF0",
           "hex_source": "https://www.skype.com (Skype blue)"
         }
@@ -18459,24 +18132,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/codepen.png",
           "webp": "styles/agentic-matte/webp/{size}/codepen.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/codepen.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "https://blog.codepen.io/documentation/brand-assets/logos/ (black)"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/codepen.png",
           "webp": "styles/agentic-machined/webp/{size}/codepen.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/codepen.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "https://blog.codepen.io/documentation/brand-assets/logos/ (black)"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/codepen.png",
           "webp": "styles/agentic-emissive/webp/{size}/codepen.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/codepen.svg",
+          "made_by": "both",
           "hex": "#000000",
           "hex_source": "https://blog.codepen.io/documentation/brand-assets/logos/ (black)"
         }
@@ -18520,24 +18190,21 @@
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/amazon.png",
           "webp": "styles/agentic-matte/webp/{size}/amazon.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/amazon.svg",
+          "made_by": "both",
           "hex": "#FF9900",
           "hex_source": "https://www.aboutamazon.com (Amazon smile orange)"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/amazon.png",
           "webp": "styles/agentic-machined/webp/{size}/amazon.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/amazon.svg",
+          "made_by": "both",
           "hex": "#FF9900",
           "hex_source": "https://www.aboutamazon.com (Amazon smile orange)"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/amazon.png",
           "webp": "styles/agentic-emissive/webp/{size}/amazon.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/amazon.svg",
+          "made_by": "both",
           "hex": "#FF9900",
           "hex_source": "https://www.aboutamazon.com (Amazon smile orange)"
         }
@@ -18564,6 +18231,7 @@
       "dir": "hq",
       "label": "HQ",
       "material": "Glass and enamel bodies under a warm key light, drawn beside the OpenEmoji masters.",
+      "ground": "any",
       "sizes": [
         16,
         20,
@@ -18591,6 +18259,7 @@
       "dir": "styles/agentic-matte",
       "label": "Agentic Matte",
       "material": "Flat tonal planes with hard boundaries and one cool edge-light: form without gloss.",
+      "ground": "any",
       "sizes": [
         16,
         20,
@@ -18618,6 +18287,7 @@
       "dir": "styles/agentic-machined",
       "label": "Agentic Machined",
       "material": "Milled anodized aluminium: brushed texture, hairline chamfers, one anodized accent.",
+      "ground": "any",
       "sizes": [
         16,
         20,
@@ -18645,6 +18315,7 @@
       "dir": "styles/agentic-emissive",
       "label": "Agentic Emissive",
       "material": "Near-black body with the working part lit: made for dark terminals, not light pages.",
+      "ground": "dark",
       "sizes": [
         16,
         20,
@@ -18673,6 +18344,7 @@
     "dir": "hq",
     "label": "HQ",
     "material": "Glass and enamel bodies under a warm key light, drawn beside the OpenEmoji masters.",
+    "ground": "any",
     "sizes": [
       16,
       20,

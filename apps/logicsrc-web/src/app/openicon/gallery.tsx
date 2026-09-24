@@ -38,7 +38,7 @@ type Icon = {
 
 type StyleFiles = { png?: string; webp?: string; svg?: string; made_by?: string; hex?: string };
 
-type StyleInfo = { label?: string; material?: string; dir?: string };
+type StyleInfo = { label?: string; material?: string; dir?: string; ground?: "light" | "dark" | "any" };
 
 type IconSet = {
   name: string;
@@ -261,6 +261,11 @@ export function Gallery(): ReactNode {
     }))
     .filter((s) => s.count > 0);
   const terminal = filters.view !== "svg";
+  // A style may say it needs a dark ground, and emissive does: its near-black
+  // bodies and the marks that emit neutral white are invisible on a white
+  // tile. The set is the only thing that knows, so honour what it says rather
+  // than guessing from the style id.
+  const darkGround = !terminal && set.style_info?.[filters.style]?.ground === "dark";
   const active = filters.q || filters.category || filters.kind;
 
   return (
@@ -397,7 +402,10 @@ export function Gallery(): ReactNode {
       {results.length === 0 ? (
         <p className={styles.notice}>Nothing matches. Try an alias (email, trash) or fewer words.</p>
       ) : (
-        <ul className={`${styles.grid} ${terminal ? styles.gridTerminal : ""}`} style={{ ["--tile" as string]: `${filters.size}px` }}>
+        <ul
+          className={`${styles.grid} ${terminal || darkGround ? styles.gridTerminal : ""}`}
+          style={{ ["--tile" as string]: `${filters.size}px` }}
+        >
           {results.map((i) => (
             <li key={i.key}>
               <button
@@ -462,7 +470,12 @@ function Detail({ icon, set, color, onClose }: { icon: Icon; set: IconSet; color
         {colourIds.length ? (
           <div className={styles.heroStyles}>
             {colourIds.map((id) => (
-              <div className={styles.heroHq} key={id}>
+              // Each tile carries its own ground: side by side, a dark-only
+              // style next to three light ones would otherwise show nothing.
+              <div
+                className={`${styles.heroHq} ${set.style_info?.[id]?.ground === "dark" ? styles.heroHqDark : ""}`}
+                key={id}
+              >
                 <Art icon={icon} style={id} color={color} size={64} />
                 <span>{set.style_info?.[id]?.label ?? id}</span>
               </div>
