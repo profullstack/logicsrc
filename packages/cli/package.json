@@ -1,6 +1,6 @@
 {
   "name": "@logicsrc/cli",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "LogicSRC CLI: every LogicSRC standard and tool as one command.",
   "type": "module",
   "main": "./dist/index.js",
