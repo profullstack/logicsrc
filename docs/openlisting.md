@@ -2,7 +2,7 @@
 
 OpenListing is one file a seller serves about one thing it is offering: what the thing is, what it costs, on what terms, and where it is. A house for sale, an apartment to rent, a car, a piece of equipment. The seller stays the author of its own listing, and a directory reads the seller's file instead of licensing somebody else's database or scraping a marketplace that forbids it. It is maintained by Profullstack, Inc. as part of the LogicSRC open-standards surface.
 
-Status: **0.1 draft**. The parent specification; subject profiles for [OpenProperty](/docs/openproperty) and [OpenVehicle](/docs/openvehicle) bind it to the two kinds of thing it was first written for.
+Status: **0.1 draft**. The parent specification; subject profiles for [OpenProperty](/docs/openproperty) and [OpenCar](/docs/opencar) bind it to the two kinds of thing it was first written for.
 
 Slug: `openlisting`
 
@@ -22,7 +22,7 @@ What is missing is small: one file, on the seller's own origin, saying what is o
 
 - A **seller** is whoever is offering the thing: an owner, a landlord, a dealer, an agent acting for one. Its **descriptor** is the file it serves.
 - A **listing** is one thing on offer. One descriptor describes one listing.
-- The **subject** is the thing itself — a property, a vehicle.
+- The **subject** is the thing itself — a property, a car.
 - The **offer** is the deal on it — for sale, to rent, at auction.
 - A **directory** is anything that reads descriptors and lists across sellers.
 - A **reader** is anything that reads a descriptor.
@@ -34,7 +34,7 @@ A house for sale and a house to rent are the same house described the same way; 
 So OpenListing separates them:
 
 - **`offer.type`** says what the deal is: `sale`, `rent`, `lease`, `auction`, `free`, `wanted`.
-- **`subject.type`** says what the thing is: `property`, `vehicle`, and whatever later profiles add.
+- **`subject.type`** says what the thing is: `property`, `car`, and whatever later profiles add.
 
 A subject profile adds the fields that only make sense for its subject — bedrooms for a property, mileage for a vehicle — and changes nothing else. A reader that understands OpenListing but not a given profile still reads the price, the location, the offer and the dates correctly, and can say so rather than failing.
 
@@ -186,6 +186,6 @@ A directory MUST retain the seller's `id` as canonical and MUST NOT present a re
 ## Subject profiles
 
 - [OpenProperty](/docs/openproperty) — houses, apartments, rooms, land
-- [OpenVehicle](/docs/openvehicle) — cars, motorcycles, trucks, boats
+- [OpenCar](/docs/opencar) — cars, motorcycles, trucks, vans, RVs
 
 A profile adds a key under `subject` named for the subject type and nothing else. New profiles do not change this document.
