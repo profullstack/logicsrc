@@ -3,7 +3,7 @@
   "version": "0.1.1",
   "private": true,
   "type": "module",
-  "description": "LogicSRC credentials — Express + libSQL/Turso app: auth + end-to-end-encrypted team credential sharing.",
+  "description": "LogicSRC credentials — Express app on Postgres (@profullstack/libsql-pg): auth + end-to-end-encrypted team credential sharing.",
   "engines": {
     "node": ">=20"
   },
@@ -14,10 +14,13 @@
     "test": "node --test"
   },
   "dependencies": {
-    "@libsql/client": "^0.14.0",
+    "@profullstack/libsql-pg": "^0.1.2",
     "@simplewebauthn/browser": "^13.3.0",
     "@simplewebauthn/server": "^13.1.0",
     "cookie-parser": "^1.4.7",
     "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "@libsql/client": "^0.14.0"
   }
 }

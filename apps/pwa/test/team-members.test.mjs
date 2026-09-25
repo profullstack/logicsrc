@@ -1,6 +1,6 @@
 // Integration coverage for team-member CRUD, invite-key rotation, and the
 // dashboard controls that expose those operations.
-process.env.DATABASE_URL = ":memory:";
+process.env.DATABASE_URL = process.env.PWA_TEST_DATABASE_URL || ":memory:";
 
 import test from "node:test";
 import assert from "node:assert/strict";
@@ -10,13 +10,19 @@ import { dirname, join } from "node:path";
 import express from "express";
 
 const here = dirname(fileURLToPath(import.meta.url));
-const { db, run, get } = await import("../src/db.mjs");
+const { db, run, get, isPostgres } = await import("../src/db.mjs");
 const { sha256 } = await import("../src/lib/crypto.mjs");
 const { credshareRouter } = await import("../src/routes/credshare.mjs");
 const { pagesRouter } = await import("../src/routes/pages.mjs");
 
+// Against a real Postgres (PWA_TEST_DATABASE_URL) start from an empty schema;
+// run with --test-concurrency=1 then, the files share one database.
+if (isPostgres) {
+  await db.execute("DROP SCHEMA public CASCADE");
+  await db.execute("CREATE SCHEMA public");
+}
 for (const file of ["001_auth.sql", "002_credshare.sql"]) {
-  const sql = readFileSync(join(here, "..", "src", "migrations", file), "utf8");
+  const sql = readFileSync(join(here, "..", "src", isPostgres ? "migrations-pg" : "migrations", file), "utf8");
   for (const statement of sql.split(/;\s*$/m).map((s) => s.trim()).filter(Boolean)) await db.execute(statement);
 }
 
