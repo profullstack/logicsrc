@@ -90,6 +90,7 @@ export const FAMILIES: Family[] = [
       s("openfile", "OpenFile", "One file a publisher serves about the files it has published: hash, swarm and HTTP routes", { parent: "openserver" }),
       s("openobject", "OpenObject", "A bucket you can mount: keyed objects encrypted by their owner, kept on paid disks at a stated redundancy, verified, repaired and read back by path", { parent: "openserver" }),
       s("openslice", "OpenSlice", "A container whose compute is rented from one market and whose disk is mounted from another: the host descriptor, the slice file and the reservation between them", { parent: "openserver" }),
+      s("opentld", "OpenTLD", "One file a registrar serves about what a domain costs there: register, renew, transfer and restore per top-level domain, with the renewal never hidden behind the first year", { landing: undefined }),
       s("openmcp", "OpenMCP", "An open catalog of MCP relays: a relay serves /.well-known/openmcp.json and a catalog probes it"),
       s("opencoupon", "OpenCoupon", "One file a merchant serves about what is on offer right now, expired codes kept so directories learn they died"),
       s("opensaas", "OpenSaaS", "One file a subscription service serves about the way in and the way out of every plan, for a person and for an agent"),
