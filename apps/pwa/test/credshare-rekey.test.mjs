@@ -7,7 +7,7 @@
 //
 // Runs against an in-memory libSQL database, so DATABASE_URL must be set before
 // anything imports db.mjs.
-process.env.DATABASE_URL = ":memory:";
+process.env.DATABASE_URL = process.env.PWA_TEST_DATABASE_URL || ":memory:";
 
 import test from "node:test";
 import assert from "node:assert/strict";
@@ -17,13 +17,19 @@ import { dirname, join } from "node:path";
 import express from "express";
 
 const here = dirname(fileURLToPath(import.meta.url));
-const { db, run, get, all } = await import("../src/db.mjs");
+const { db, run, get, all, isPostgres } = await import("../src/db.mjs");
 const { credshareRouter } = await import("../src/routes/credshare.mjs");
 
 /** Apply the schema this router depends on. */
 async function migrate() {
+  // Against a real Postgres (PWA_TEST_DATABASE_URL) start from an empty schema;
+  // run with --test-concurrency=1 then, the files share one database.
+  if (isPostgres) {
+    await db.execute("DROP SCHEMA public CASCADE");
+    await db.execute("CREATE SCHEMA public");
+  }
   for (const file of ["001_auth.sql", "002_credshare.sql"]) {
-    const sql = readFileSync(join(here, "..", "src", "migrations", file), "utf8");
+    const sql = readFileSync(join(here, "..", "src", isPostgres ? "migrations-pg" : "migrations", file), "utf8");
     for (const statement of sql.split(/;\s*$/m).map((s) => s.trim()).filter(Boolean)) {
       await db.execute(statement);
     }

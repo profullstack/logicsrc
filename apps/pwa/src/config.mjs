@@ -36,9 +36,12 @@ export const config = {
   rpName: "LogicSRC",
   sessionSecret: process.env.SESSION_SECRET || "dev-insecure-secret-change-me",
   db: {
-    // Turso (libSQL) in prod; a local file for dev. TURSO_* takes precedence.
-    url: process.env.TURSO_DATABASE_URL || process.env.DATABASE_URL || "file:./data/local.db",
-    authToken: process.env.TURSO_AUTH_TOKEN || process.env.DATABASE_AUTH_TOKEN || undefined,
+    // Postgres (postgres://) in production, through @profullstack/libsql-pg; a
+    // local libSQL file or `:memory:` for dev and tests. DATABASE_URL wins. A
+    // leftover TURSO_DATABASE_URL is still read so that db.mjs can refuse it
+    // with a message that names it, rather than silently opening a file db.
+    url: process.env.DATABASE_URL || process.env.TURSO_DATABASE_URL || "file:./data/local.db",
+    authToken: process.env.DATABASE_AUTH_TOKEN || process.env.TURSO_AUTH_TOKEN || undefined,
   },
   resend: {
     apiKey: process.env.RESEND_API_KEY || "",
