@@ -1,22 +1,24 @@
-# OpenVehicle
+# OpenCar
 
-The vehicle profile of [OpenListing](/docs/openlisting). It adds one key, `subject.vehicle`, describing a car, motorcycle, truck, trailer or boat. Everything else — the offer, the price, the location, the media, the provenance — is the parent specification and is not restated here.
+The motor-vehicle profile of [OpenListing](/docs/openlisting). It adds one key, `subject.car`, describing a car, motorcycle, truck, van or RV. Everything else — the offer, the price, the location, the media, the provenance — is the parent specification and is not restated here.
 
 Status: **0.1 draft**, alongside the parent.
 
-Slug: `openvehicle`
+Slug: `opencar`
 
 ## When this profile applies
 
-When `subject.type` is `"vehicle"`.
+When `subject.type` is `"car"`.
 
-## `subject.vehicle`
+The name is the one people reach for, and a site that lists cars also lists the motorcycle and the pickup beside them. Boats and heavy equipment are deliberately NOT here: they share almost none of these fields, and squeezing them in would make every one of them optional and meaningless. They belong in sibling profiles, which cost nothing to add because the parent does not change.
+
+## `subject.car`
 
 ```json
 "subject": {
-  "type": "vehicle",
+  "type": "car",
   "title": "2021 Jeep Grand Cherokee Overland",
-  "vehicle": {
+  "car": {
     "kind": "car",
     "year": 2021,
     "make": "Jeep",
@@ -40,7 +42,7 @@ When `subject.type` is `"vehicle"`.
 
 ### `kind`
 
-`car`, `motorcycle`, `truck`, `van`, `bus`, `trailer`, `rv`, `boat`, `atv`, `equipment`, `other`.
+`car`, `motorcycle`, `truck`, `van`, `suv`, `bus`, `rv`, `atv`, `other`.
 
 ### Fields
 

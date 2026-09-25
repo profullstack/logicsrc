@@ -97,7 +97,7 @@ export const FAMILIES: Family[] = [
       s("openaffiliate", "OpenAffiliate", "One file a merchant serves about the commission it pays"),
       s("openlisting", "OpenListing", "One file a seller serves about one thing it is offering: what it is, what it costs, on what terms and where, with the offer and the subject as separate axes so a house to rent and a car for sale are one format", { landing: undefined }),
       s("openproperty", "OpenProperty", "The property subject: houses, apartments, rooms and land, with tenure, area and the floor-versus-floors distinction that property data usually gets wrong", { parent: "openlisting", landing: undefined }),
-      s("openvehicle", "OpenVehicle", "The vehicle subject: cars, motorcycles, trucks and boats, with the VIN as a claim rather than a proof and odometer units always stated", { parent: "openlisting", landing: undefined }),
+      s("opencar", "OpenCar", "The motor-vehicle subject: cars, motorcycles, trucks, vans and RVs, with the VIN as a claim rather than a proof and odometer units always stated", { parent: "openlisting", landing: undefined }),
       s("openrecipe", "OpenRecipe.md", "One Markdown file that is a recipe, with schema.org derived from it and never the reverse"),
       s("opensong", "OpenSong", "One plain-text file that is a song: title, style, exclusions and lyrics as the blocks a generator takes, kept beside the audio"),
       s("openemoji", "OpenEmoji", "An emoji set as a folder: one file that states coverage, licence and whether a person or a model drew it, and glyphs named by the codepoints they draw"),
