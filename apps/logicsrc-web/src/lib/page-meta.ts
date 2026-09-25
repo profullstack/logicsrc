@@ -21,7 +21,10 @@ import { allSpecs } from "./specs";
  * content), and all three always emit openGraph and twitter titles.
  */
 
-export const SITE_URL = (process.env.PUBLIC_URL ?? "https://logicsrc.com").replace(/\/$/, "");
+// `||`, not `??`: the dev2 image build declares PUBLIC_URL as an ARG, so a service
+// that never sets it (app.logicsrc.com builds this workspace too) sees "" and
+// `new URL("")` in layout.tsx failed the whole build.
+export const SITE_URL = (process.env.PUBLIC_URL || "https://logicsrc.com").replace(/\/$/, "");
 export const SITE_NAME = "LogicSRC";
 
 /**
