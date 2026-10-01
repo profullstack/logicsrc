@@ -201,7 +201,7 @@ POSTGRES=1
 
 On a fresh Ubuntu box, as a user `deploy` with passwordless sudo, `./bin/install.sh` does this:
 
-1. `setup`: finds `bun.lock`, so `RUNTIME=bun`. Installs bun for `deploy`. Installs `postgresql`, creates the role and database `ledger` with a random password, and appends `DATABASE_URL='postgres://ledger:...@127.0.0.1:5432/ledger'` to `~/.local/share/ledger/db.env`.
+1. `setup`: finds `bun.lock`, so `RUNTIME=bun`. Installs bun for `deploy`. Installs `postgresql`, creates the role and database `ledger` with a random password, and appends a `DATABASE_URL` for that role and database on `127.0.0.1:5432`, password included, to `~/.local/share/ledger/db.env`.
 2. `build`: runs `bun install --frozen-lockfile`, then `bun run build` with `NODE_ENV=production`, with `DATABASE_URL` and everything in `app.env` in its environment.
 3. `activate`: writes `~/.local/share/ledger/run.sh` and `/etc/systemd/system/ledger.service`, enables and restarts `ledger`, and waits for `http://127.0.0.1:3000/healthz`. Then installs nginx, writes `/etc/nginx/sites-available/ledger.conf` as a plain http proxy for both names, tests and reloads it, runs certbot for both names, rewrites the site with the certificate and an http to https redirect, and reloads again.
 
