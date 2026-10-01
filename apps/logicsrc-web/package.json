@@ -4,7 +4,7 @@
   "private": true,
   "description": "LogicSRC standards and open specification PWA (Next.js).",
   "scripts": {
-    "dev": "bun --bun next dev",
+    "dev": "bun --bun next dev -p 5174",
     "build": "bun --bun next build",
     "start": "bun --bun next start",
     "test": "vitest run contract",
