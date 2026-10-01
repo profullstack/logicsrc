@@ -43,8 +43,8 @@ scripts/
 ## Quick Start
 
 ```bash
-npm install
-npm run check
+bun install
+bun run check
 npm --workspace @logicsrc/cli run dev -- --openspec agentswarm --yolo --repo profullstack/logicsrc
 npm --workspace @logicsrc/cli run dev -- openspec import
 npm --workspace @logicsrc/cli run dev -- openspec export --out logicsrc-openspec-summary.md

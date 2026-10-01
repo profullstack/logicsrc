@@ -5,21 +5,21 @@
   "description": "LogicSRC open coordination standards and CommandBoard.run reference implementation.",
   "license": "MIT",
   "type": "module",
-  "packageManager": "npm@11.11.0",
+  "packageManager": "bun@1.4.2",
   "workspaces": [
     "packages/*",
     "plugins/*",
     "apps/*"
   ],
   "scripts": {
-    "build": "npm --workspace @logicsrc/schemas run build && npm --workspace @logicsrc/validators run build && npm --workspace @logicsrc/sdk run build && npm --workspace @logicsrc/agentad run build && npm --workspace @logicsrc/ans run build && npm --workspace @logicsrc/plugin-core run build && npm --workspace @logicsrc/agentstack run build && npm --workspace @logicsrc/agentswarm run build && npm --workspace @logicsrc/account-core run build && npm --workspace @logicsrc/plugin-coinpay run build && npm --workspace @logicsrc/plugin-ugig run build && npm --workspace @logicsrc/plugin-sh1pt run build && npm --workspace @logicsrc/plugin-c0mpute run build && npm --workspace @logicsrc/plugin-feed-discovery run build && npm --workspace @logicsrc/plugin-social-accounts run build && npm --workspace @logicsrc/plugin-email-accounts run build && npm --workspace @logicsrc/plugin-agentbbs run build && npm --workspace @logicsrc/plugin-agentgit run build && npm --workspace @logicsrc/plugin-agentmail run build && npm --workspace @logicsrc/plugin-credential-sharing run build && npm --workspace @logicsrc/openontology run build && npm --workspace @logicsrc/openprd run build && npm --workspace @logicsrc/opencontext run build && npm --workspace @logicsrc/opencreds run build && npm --workspace @logicsrc/tui run build && npm --workspace @logicsrc/openfleet run build && npm --workspace @logicsrc/cli run build && npm --workspace @profullstack/logicsrc-mcp run build && npm --workspace @logicsrc/commandboard-api run build && npm --workspace @logicsrc/commandboard-web run build && npm --workspace @logicsrc/web run build",
-    "start": "npm --workspace @logicsrc/web run start",
-    "test": "npm run test --workspaces --if-present",
-    "check": "npm run build && npm run test",
-    "schemas:validate": "npm --workspace @logicsrc/validators run validate:fixtures",
-    "test:contract": "npm --workspace @logicsrc/commandboard-api run test:contract && npm --workspace @logicsrc/web run test:contract",
-    "test:e2e": "npm --workspace @logicsrc/commandboard-web run test:e2e && npm --workspace @logicsrc/web run test:e2e",
-    "build:cli": "npm --workspace @logicsrc/schemas run build && npm --workspace @logicsrc/validators run build && npm --workspace @logicsrc/plugin-core run build && npm --workspace @logicsrc/account-core run build && npm --workspace @logicsrc/plugin-coinpay run build && npm --workspace @logicsrc/plugin-ugig run build && npm --workspace @logicsrc/plugin-feed-discovery run build && npm --workspace @logicsrc/plugin-social-accounts run build && npm --workspace @logicsrc/plugin-email-accounts run build && npm --workspace @logicsrc/plugin-agentbbs run build && npm --workspace @logicsrc/plugin-credential-sharing run build && npm --workspace @logicsrc/openontology run build && npm --workspace @logicsrc/openprd run build && npm --workspace @logicsrc/opencontext run build && npm --workspace @logicsrc/opencreds run build && npm --workspace @logicsrc/tui run build && npm --workspace @profullstack/logicsrc-mcp run build && npm --workspace @logicsrc/openfleet run build && npm --workspace @logicsrc/cli run build"
+    "build": "bun run --cwd packages/schemas build && bun run --cwd packages/validators build && bun run --cwd packages/sdk build && bun run --cwd packages/agentad build && bun run --cwd packages/ans build && bun run --cwd packages/plugin-core build && bun run --cwd packages/agentstack build && bun run --cwd packages/agentswarm build && bun run --cwd packages/account-core build && bun run --cwd plugins/coinpay build && bun run --cwd plugins/ugig build && bun run --cwd plugins/sh1pt build && bun run --cwd plugins/c0mpute build && bun run --cwd plugins/feed-discovery build && bun run --cwd plugins/social-accounts build && bun run --cwd plugins/email-accounts build && bun run --cwd plugins/agentbbs build && bun run --cwd plugins/agentgit build && bun run --cwd plugins/agentmail build && bun run --cwd plugins/credential-sharing build && bun run --cwd packages/openontology build && bun run --cwd packages/openprd build && bun run --cwd packages/opencontext build && bun run --cwd packages/opencreds build && bun run --cwd packages/tui build && bun run --cwd packages/openfleet build && bun run --cwd packages/cli build && bun run --cwd packages/logicsrc-mcp build && bun run --cwd apps/commandboard-api build && bun run --cwd apps/commandboard-web build && bun run --cwd apps/logicsrc-web build",
+    "start": "bun run --cwd apps/logicsrc-web start",
+    "test": "bun run --filter '*' test",
+    "check": "bun run build && bun run test",
+    "schemas:validate": "bun run --cwd packages/validators validate:fixtures",
+    "test:contract": "bun run --cwd apps/commandboard-api test:contract && bun run --cwd apps/logicsrc-web test:contract",
+    "test:e2e": "bun run --cwd apps/commandboard-web test:e2e && bun run --cwd apps/logicsrc-web test:e2e",
+    "build:cli": "bun run --cwd packages/schemas build && bun run --cwd packages/validators build && bun run --cwd packages/plugin-core build && bun run --cwd packages/account-core build && bun run --cwd plugins/coinpay build && bun run --cwd plugins/ugig build && bun run --cwd plugins/feed-discovery build && bun run --cwd plugins/social-accounts build && bun run --cwd plugins/email-accounts build && bun run --cwd plugins/agentbbs build && bun run --cwd plugins/credential-sharing build && bun run --cwd packages/openontology build && bun run --cwd packages/openprd build && bun run --cwd packages/opencontext build && bun run --cwd packages/opencreds build && bun run --cwd packages/tui build && bun run --cwd packages/logicsrc-mcp build && bun run --cwd packages/openfleet build && bun run --cwd packages/cli build"
   },
   "devDependencies": {
     "@types/node": "^24.10.1",

@@ -15,17 +15,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: package.json
+
+      # Node runs the test tooling (vitest, tsc, node --test), as before.
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-          cache: npm
 
-      - run: npm ci
+      - run: bun install --frozen-lockfile
 
       # Workspace packages (e.g. @logicsrc/plugin-core, @logicsrc/validators)
       # publish from dist/, so dependents can't resolve them until built.
-      - run: npm run build
+      - run: bun run build
 
-      - run: npm test
+      - run: bun run test
         env:
           CI: true

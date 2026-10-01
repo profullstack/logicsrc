@@ -20,26 +20,47 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Bun is the package manager and the production runtime; the version comes
+      # from packageManager in package.json, the same Bun the image pins.
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: package.json
+
+      # Node stays as the interpreter for the test tooling (vitest, tsc,
+      # node --test, Playwright), which ran on Node 24 before.
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 24
-          cache: npm
 
       - name: Install dependencies
-        run: npm ci
+        run: bun install --frozen-lockfile
 
       - name: Build and unit tests
-        run: npm run check
+        run: bun run check
 
       - name: Validate schema fixtures
-        run: npm run schemas:validate
+        run: bun run schemas:validate
 
       - name: API contract tests
-        run: npm run test:contract
+        run: bun run test:contract
+
+      - name: The site serves under Bun
+        # Port 3100 and stopped afterwards: Playwright's webServer below needs 3000.
+        run: |
+          cd apps/logicsrc-web
+          PORT=3100 bun --bun ../../node_modules/next/dist/bin/next start > /tmp/web.log 2>&1 &
+          pid=$!
+          for i in $(seq 1 60); do
+            code=$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:3100/ || true)
+            if [ "$code" = 200 ]; then echo "/ -> $code"; kill "$pid"; exit 0; fi
+            sleep 1
+          done
+          cat /tmp/web.log; kill "$pid" || true; exit 1
 
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
+        run: bunx playwright install --with-deps chromium
 
       - name: Playwright E2E
-        run: npm run test:e2e
+        run: bun run test:e2e
