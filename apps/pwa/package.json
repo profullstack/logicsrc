@@ -3,14 +3,11 @@
   "version": "0.1.1",
   "private": true,
   "type": "module",
-  "description": "LogicSRC credentials — Express app on Postgres (@profullstack/libsql-pg): auth + end-to-end-encrypted team credential sharing.",
-  "engines": {
-    "node": ">=20"
-  },
+  "description": "LogicSRC credentials \u2014 Express app on Postgres (@profullstack/libsql-pg): auth + end-to-end-encrypted team credential sharing.",
   "scripts": {
-    "start": "node src/server.mjs",
-    "dev": "node --watch src/server.mjs",
-    "migrate": "node src/migrate.mjs",
+    "start": "bun src/server.mjs",
+    "dev": "bun --watch src/server.mjs",
+    "migrate": "bun src/migrate.mjs",
     "test": "node --test"
   },
   "dependencies": {

@@ -1,0 +1,28 @@
+#!/bin/sh
+# npm compatibility shim for the Bun image (see .nixpacks/Dockerfile).
+#
+# dev2's compose for app.logicsrc.com starts this image with the fixed command
+# string "npm --workspace @logicsrc/pwa run start" (rendered by cli-tools
+# dev2-site from the old Railway start command). The image has no Node and no
+# npm, so this translates exactly that shape, `npm [--workspace NAME] run
+# SCRIPT [ARGS...]`, into `bun run SCRIPT` inside the workspace's directory.
+# Anything else is refused loudly rather than guessed at.
+set -eu
+ROOT=/app
+ws=""
+if [ "${1:-}" = "--workspace" ] || [ "${1:-}" = "-w" ]; then ws=$2; shift 2; fi
+if [ "${1:-}" != "run" ] || [ $# -lt 2 ]; then
+  echo "npm shim: only 'npm [--workspace NAME] run SCRIPT' is supported (got: $*)" >&2
+  exit 64
+fi
+shift
+dir=$ROOT
+if [ -n "$ws" ]; then
+  dir=""
+  for pj in "$ROOT"/apps/*/package.json "$ROOT"/packages/*/package.json "$ROOT"/plugins/*/package.json; do
+    if grep -q "\"name\": *\"$ws\"" "$pj"; then dir=$(dirname "$pj"); break; fi
+  done
+  [ -n "$dir" ] || { echo "npm shim: no workspace named $ws" >&2; exit 66; }
+fi
+cd "$dir"
+exec bun run "$@"
