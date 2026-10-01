@@ -19,7 +19,7 @@
     "@profullstack/x402-gateway": "^0.7.0",
     "@supabase/supabase-js": "^2.105.4",
     "marked": "^18.0.5",
-    "next": "16.2.6",
+    "next": "16.3.8",
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "sanitize-html": "^2.17.5"
