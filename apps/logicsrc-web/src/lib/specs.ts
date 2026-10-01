@@ -118,7 +118,7 @@ export const FAMILIES: Family[] = [
     name: "Agents and process",
     line: "How agents coordinate, settle, stream, and how the software that serves them gets built",
     blurb:
-      "The lifecycle for building software when agents work in parallel and CI is the only gate, the requirement document an agent can execute, the settlement and proof layer under a peer-to-peer swarm, a lossless byte-stream envelope, the five nouns a shared ontology needs, and the record an agent session carries about who spawned it and under what ceiling.",
+      "The lifecycle for building software when agents work in parallel and CI is the only gate, the requirement document an agent can execute, the settlement and proof layer under a peer-to-peer swarm, a lossless byte-stream envelope, the five nouns a shared ontology needs, the record an agent session carries about who spawned it and under what ceiling, and the one script that puts an application into service on the box it runs on.",
     specs: [
       s("asdlc", "ASDLC", "The Agentic Software Development Lifecycle: nine phases, four conformance levels and the ratchet rule"),
       s("openabtest", "OpenABTest", "Portable experiments with sticky assignments, distinct exposure and conversion events, and reconciled profit accounting", { landing: undefined, status: "draft" }),
@@ -127,6 +127,7 @@ export const FAMILIES: Family[] = [
       s("openstream", "OpenStream", "A lossless byte-stream relay envelope, with benchmark reports per release", { landing: undefined }),
       s("openontology", "OpenOntology", "Five nouns for a shared ontology, with governance and interoperability notes"),
       s("openfleet", "OpenFleet", "Agents under a human: the record a session carries about who spawned it, for what and under what ceiling, and the ledger its sysop reads"),
+      s("openinstall", "OpenInstall", "One idempotent bin/install.sh in every repository that puts the app into service on the box it runs on: runtime, database, build, systemd, nginx and TLS, a health check, and exit codes a deployer can roll back on"),
       s("openspec", "OpenSpec.dev comparison", "How LogicSRC compares with OpenSpec.dev, and the compatibility mode", { doc: "/docs/openspec-comparison" })
     ]
   }
