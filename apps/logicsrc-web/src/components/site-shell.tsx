@@ -62,14 +62,9 @@ export function SiteShell({
           </span>
           {/* Member of the Profullstack OpenWebring (/openwebring): the ring reads these three links. */}
           <span style={{ display: "flex", gap: "0.75rem", width: "100%" }}>
-            <a href="https://rssamplifier.com/ring/profullstack/previous?from=https://logicsrc.com/blog" style={{ color: "inherit" }}>
-              ← previous
-            </a>
-            <a href="https://rssamplifier.com/ring/profullstack" style={{ color: "inherit" }}>Profullstack ring</a>
-            <a href="https://rssamplifier.com/ring/profullstack/random" style={{ color: "inherit" }}>random</a>
-            <a href="https://rssamplifier.com/ring/profullstack/next?from=https://logicsrc.com/blog" style={{ color: "inherit" }}>
-              next →
-            </a>
+            <a href="https://rssamplifier.com/ring/profullstack/previous?from=https%3A%2F%2Flogicsrc.com%2F" rel="prev" style={{ color: "inherit" }}>{"<<"}</a>
+            <a href="https://rssamplifier.com/ring/profullstack" style={{ color: "inherit" }}>Profullstack</a>
+            <a href="https://rssamplifier.com/ring/profullstack/next?from=https%3A%2F%2Flogicsrc.com%2F" rel="next" style={{ color: "inherit" }}>{">>"}</a>
           </span>
         </footer>
       </section>
