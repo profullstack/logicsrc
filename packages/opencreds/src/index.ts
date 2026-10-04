@@ -159,6 +159,22 @@ export {
 
 export { createVaultStore, opencredsHome, type VaultStore } from "./store.js";
 
+export {
+  DivergedVaultError,
+  SyncError,
+  describeSync,
+  pullVault,
+  pushVault,
+  readSyncState,
+  syncVault,
+  type Put,
+  type RemoteItem,
+  type RemoteVault,
+  type SyncRemote,
+  type SyncReport,
+  type SyncState,
+} from "./sync.js";
+
 export { auditEvent, fingerprint, type AuditInput } from "./audit.js";
 
 export {

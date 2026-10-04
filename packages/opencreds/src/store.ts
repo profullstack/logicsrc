@@ -7,6 +7,7 @@
  *   meta.json          vault metadata — key material, all of it wrapped
  *   items/<id>.json    one envelope per item
  *   audit.jsonl        append-only audit events, values never present
+ *   sync.json          what was last exchanged with an account (see sync.ts)
  *
  * One file per item rather than one file for the vault, for the same reason
  * storage-backed implementations use one row per item: two writers editing two
@@ -48,11 +49,15 @@ export interface VaultStore {
   listEnvelopes(): Envelope[];
   readEnvelope(id: string): Envelope | undefined;
   writeEnvelope(envelope: Envelope): void;
+  /** Write an envelope exactly as given, revision included. For sync only. */
+  putEnvelope(envelope: Envelope): void;
   deleteEnvelope(id: string): void;
   readFolders(): Folder[];
   writeFolders(folders: Folder[]): void;
   appendAudit(event: AuditEvent): void;
   readAudit(): AuditEvent[];
+  readSyncState<T>(): T | undefined;
+  writeSyncState<T>(state: T): void;
 }
 
 export function createVaultStore(baseDir = opencredsHome()): VaultStore {
@@ -60,6 +65,7 @@ export function createVaultStore(baseDir = opencredsHome()): VaultStore {
   const metaPath = join(baseDir, "meta.json");
   const foldersPath = join(baseDir, "folders.json");
   const auditPath = join(baseDir, "audit.jsonl");
+  const syncPath = join(baseDir, "sync.json");
 
   function ensureDirs(): void {
     mkdirSync(itemsDir, { recursive: true, mode: 0o700 });
@@ -120,6 +126,11 @@ export function createVaultStore(baseDir = opencredsHome()): VaultStore {
       writePrivate(join(itemsDir, `${envelope.id}.json`), `${JSON.stringify(next, null, 2)}\n`);
     },
 
+    putEnvelope(envelope: Envelope): void {
+      ensureDirs();
+      writePrivate(join(itemsDir, `${envelope.id}.json`), `${JSON.stringify(envelope, null, 2)}\n`);
+    },
+
     deleteEnvelope(id: string): void {
       rmSync(join(itemsDir, `${id}.json`), { force: true });
     },
@@ -139,6 +150,15 @@ export function createVaultStore(baseDir = opencredsHome()): VaultStore {
       // event is an audit trail a crash can truncate to nothing.
       const line = `${JSON.stringify(event)}\n`;
       writeFileSync(auditPath, line, { encoding: "utf8", flag: "a", mode: 0o600 });
+    },
+
+    readSyncState<T>(): T | undefined {
+      return readJson<T>(syncPath);
+    },
+
+    writeSyncState<T>(state: T): void {
+      ensureDirs();
+      writePrivate(syncPath, `${JSON.stringify(state, null, 2)}\n`);
     },
 
     readAudit(): AuditEvent[] {
