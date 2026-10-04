@@ -16,6 +16,7 @@ import {
   resolveApiUrl,
   createCredentialEngine,
   identityPath,
+  verifyIdentityIntegrity,
   unwrapVaultKey,
   wrapVaultKey,
   decryptValue,
@@ -299,6 +300,43 @@ export async function whoamiAction(format: OutputFormat): Promise<void> {
   const { client } = authedClient();
   const me = await client.me();
   print({ loggedIn: true, email: me.user.email, apiUrl: resolveApiUrl(identity), publicKey: me.user.publicKey, teams: me.teams.map((t) => t.slug) }, format);
+}
+
+/**
+ * `logicsrc teams key` — print this machine's identity secret key, for pasting
+ * into the web app's vault page, which decrypts in the browser with it.
+ *
+ * The key goes to stdout alone (so `| pbcopy` works); everything else goes to
+ * stderr. When logged in it also checks the server holds the matching public
+ * key, because the web app refuses any other key and the reason is otherwise
+ * invisible from the browser.
+ */
+export async function teamsKeyAction(): Promise<void> {
+  const identity = readIdentity();
+  if (!identity?.keys?.secretKey) {
+    throw new Error(`No identity key on this machine (${identityPath()}). Run "logicsrc login" first.`);
+  }
+  if (!(await verifyIdentityIntegrity(identity))) {
+    throw new Error(`${identityPath()} is damaged: its public key does not match its secret key.`);
+  }
+  let origin = resolveApiUrl(identity);
+  if (identity.apiToken) {
+    const { client } = authedClient();
+    const me = await client.me();
+    if (me.user.publicKey && me.user.publicKey !== identity.keys.publicKey) {
+      console.error(
+        `Warning: ${me.user.email} has a different key registered (from another machine's login). ` +
+          "The web app will reject this one; use the key from that machine."
+      );
+    }
+  } else {
+    origin = defaultApiUrl();
+  }
+  process.stdout.write(`${identity.keys.secretKey}\n`);
+  console.error(
+    `Your identity secret key. Paste it on a vault page at ${origin}/dashboard to read values in the browser. ` +
+      "Anyone holding it can read every vault you can: keep it in a password manager, never in chat or a ticket."
+  );
 }
 
 export async function teamsCreateAction(slug: string, options: { name?: string; format: OutputFormat }): Promise<void> {

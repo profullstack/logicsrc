@@ -1,6 +1,7 @@
-// Teams dashboard (/) + accept-invite (/teams/accept) + settings (/settings).
-// The browser holds no private key, so it never decrypts — it manages teams,
-// members, vaults (ciphertext metadata), invites, and CLI API keys.
+// Teams dashboard (/) + one vault (/teams/:slug/vaults/:id) + accept-invite
+// (/teams/accept) + settings (/settings). The server never decrypts. The vault
+// page can, in the browser, once the member pastes their identity key
+// (public/vault.js); everything else here is ciphertext metadata.
 import { Router } from "express";
 import { get, all, run } from "../db.mjs";
 import { id, sha256 } from "../lib/crypto.mjs";
@@ -9,6 +10,7 @@ import { requireAuth, csrfInput } from "../lib/session.mjs";
 import { createApiKey, listApiKeys, revokeApiKey } from "../lib/apikey.mjs";
 import { requestOrigin } from "../lib/origin.mjs";
 import { CLI_HINT } from "../lib/cli-hint.mjs";
+import { vaultPageBody } from "../lib/vault-page.mjs";
 import { config } from "../config.mjs";
 import {
   TeamMemberError,
@@ -49,7 +51,7 @@ async function teamCard(team, uid) {
   for (const v of vaults) {
     const count = await get(`SELECT COUNT(*) AS n FROM credshare_secrets WHERE vault_id = ?`, [v.id]);
     const mine = await get(`SELECT 1 FROM credshare_vault_grants WHERE vault_id = ? AND user_id = ?`, [v.id, uid]);
-    vaultRows.push(`<tr><td><code>${esc(v.name)}</code></td><td>${Number(count?.n || 0)}</td><td>${mine ? "✓ you have access" : "— ask a member to grant you"}</td></tr>`);
+    vaultRows.push(`<tr><td><a href="/teams/${esc(team.slug)}/vaults/${esc(v.id)}"><code>${esc(v.name)}</code></a></td><td>${Number(count?.n || 0)}</td><td>${mine ? "✓ you have access" : "— ask a member to grant you"}</td></tr>`);
   }
 
   return `<div class="card" style="margin-bottom:22px">
@@ -106,6 +108,26 @@ export async function dashboardHandler(req, res) {
 }
 
 pagesRouter.get("/dashboard", requireAuth, dashboardHandler);
+
+// ---- one vault: secret names, values decrypted in the browser ----
+pagesRouter.get("/teams/:slug/vaults/:vaultId", requireAuth, async (req, res, next) => {
+  const ctx = await teamMemberContext(req);
+  const vault = ctx && await get(`SELECT * FROM credshare_vaults WHERE id = ? AND team_id = ?`, [req.params.vaultId, ctx.team.id]);
+  if (!vault) return next(); // 404, whether the vault is missing or not yours
+  const secrets = await all(`SELECT name, version, updated_at FROM credshare_secrets WHERE vault_id = ? ORDER BY name`, [vault.id]);
+  const grant = await get(`SELECT 1 FROM credshare_vault_grants WHERE vault_id = ? AND user_id = ?`, [vault.id, req.user.id]);
+  const key = await get(`SELECT public_key FROM credshare_keys WHERE user_id = ?`, [req.user.id]);
+  const body = `${appBar(req)}${vaultPageBody({
+    team: ctx.team,
+    vault,
+    secrets,
+    hasGrant: Boolean(grant),
+    publicKey: key?.public_key || "",
+    email: req.user.email
+  })}${footer}`;
+  res.set("Cache-Control", "no-store");
+  res.type("html").send(page({ title: `LogicSRC ▸ ${vault.name}`, body }));
+});
 
 // ---- team + invite form actions (session + CSRF) ----
 pagesRouter.post("/teams", requireAuth, async (req, res) => {

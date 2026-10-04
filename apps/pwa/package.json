@@ -15,7 +15,8 @@
     "@simplewebauthn/browser": "^13.3.0",
     "@simplewebauthn/server": "^13.1.0",
     "cookie-parser": "^1.4.7",
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "libsodium-wrappers": "^0.7.15"
   },
   "devDependencies": {
     "@libsql/client": "^0.14.0"

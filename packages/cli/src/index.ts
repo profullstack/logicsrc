@@ -23,6 +23,7 @@ import {
   teamsCategoriesAction,
   teamsSecretsAction,
   teamsExportAction,
+  teamsKeyAction,
   teamsGrantAction,
   teamsTuiAction,
   teamsPushAction,
@@ -734,6 +735,7 @@ Quick start (<team> is e.g. profullstack; see yours with "logicsrc teams list"):
   logicsrc teams pull <team> <project> <env>               vault -> ./.env
   logicsrc teams push <team> <project> <env>               ./.env -> vault
   logicsrc teams grant <team> <project> <env> dev@example.com
+  logicsrc teams key                                       your key, to read values in the web app
 
 Categories: logicsrc teams categories. Help for one command: logicsrc teams <command> --help
 `
@@ -859,6 +861,23 @@ Vaults you have no access to are skipped and listed at the end.
   .action((slug, project, env, options) =>
     teamsExportAction(slug, { project, env, category: options.category, search: options.search }, { out: options.out, yes: options.yes })
   );
+
+teams
+  .command("key")
+  .description("Print this machine's identity secret key, to read vault values in the web app.")
+  .addHelpText(
+    "after",
+    `
+The web app lists secret names but decrypts values only in your browser, with
+this key. Open a vault from the dashboard, paste the key, and the values open
+there; the key is checked against your registered public key and never sent.
+
+Examples:
+  logicsrc teams key               print it
+  logicsrc teams key | pbcopy      straight to the clipboard (macOS; wl-copy / xclip on Linux)
+`
+  )
+  .action(() => teamsKeyAction());
 
 teams
   .command("tui")

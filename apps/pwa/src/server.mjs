@@ -2,6 +2,7 @@
 import express from "express";
 import cookieParser from "cookie-parser";
 import path from "node:path";
+import { createRequire } from "node:module";
 import { config } from "./config.mjs";
 import { migrate } from "./migrate.mjs";
 import { sessionMiddleware, csrfGuard } from "./lib/session.mjs";
@@ -26,6 +27,14 @@ app.use(express.static(path.join(config.root, "public"), { maxAge: "1h" }));
 // the @simplewebauthn/browser UMD bundle, served from node_modules (no CDN)
 app.get("/vendor/simplewebauthn-browser.umd.js", (_req, res) =>
   res.sendFile(path.join(config.root, "node_modules/@simplewebauthn/browser/dist/bundle/index.umd.min.js")));
+// libsodium for in-browser vault decryption (public/vault.js). Same two files
+// the CLI loads; resolved, not path-joined, so a hoisted workspace install works.
+// Load order on the page: libsodium.js (window.libsodium) then the wrappers (window.sodium).
+const requireHere = createRequire(import.meta.url);
+const sodiumWrappers = requireHere.resolve("libsodium-wrappers");
+const sodiumCore = createRequire(sodiumWrappers).resolve("libsodium");
+app.get("/vendor/libsodium.js", (_req, res) => res.sendFile(sodiumCore));
+app.get("/vendor/libsodium-wrappers.js", (_req, res) => res.sendFile(sodiumWrappers));
 
 app.get("/healthz", (_req, res) => res.json({ ok: true, env: config.env }));
 
