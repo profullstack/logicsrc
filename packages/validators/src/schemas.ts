@@ -11,6 +11,8 @@ import openabtestEventSchema from "@logicsrc/schemas/openabtest-event" with { ty
  */
 import agentSchema from "@logicsrc/schemas/agent" with { type: "json" };
 import openrentalSchema from "@logicsrc/schemas/openrental" with { type: "json" };
+import openerrandSchema from "@logicsrc/schemas/openerrand" with { type: "json" };
+import openerrandIndexSchema from "@logicsrc/schemas/openerrand-index" with { type: "json" };
 import accountAuditEventSchema from "@logicsrc/schemas/account-audit-event" with { type: "json" };
 import accountGrantSchema from "@logicsrc/schemas/account-grant" with { type: "json" };
 import accountProviderSchema from "@logicsrc/schemas/account-provider" with { type: "json" };
@@ -81,6 +83,8 @@ export const schemas = {
   "openwall-receipt": openwallReceiptSchema,
   agent: agentSchema,
   openrental: openrentalSchema,
+  openerrand: openerrandSchema,
+  "openerrand-index": openerrandIndexSchema,
   "account-audit-event": accountAuditEventSchema,
   "account-grant": accountGrantSchema,
   "account-provider": accountProviderSchema,

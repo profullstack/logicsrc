@@ -18,6 +18,11 @@ Schema families include:
 - **OpenRental draft** — the `openrental` export describes listings of OpenAgent
   profiles and OpenSwarm file-key references, with metadata and CoinPay rental
   offers. `@logicsrc/validators` also checks membership and rental references.
+- **OpenErrand** - the `openerrand` and `openerrand-index` exports describe an
+  errand a runner performs on a website with no API, and a publisher's list of
+  them. Fixtures are in `fixtures/openerrand`. `@logicsrc/validators` also checks
+  references, templates, and that no hand-off card names a personal or secret
+  input. See `docs/openerrand.md`.
 
 ## Install
 
