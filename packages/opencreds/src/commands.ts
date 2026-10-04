@@ -8,7 +8,7 @@
  * contracts.
  */
 
-import { mkdirSync, readFileSync, writeFileSync, chmodSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync, chmodSync, existsSync, renameSync } from "node:fs";
 import { dirname, join } from "node:path";
 import type { Command } from "commander";
 
@@ -56,6 +56,8 @@ import {
 } from "./types.js";
 import { createVault, resetRecoveryKey, rewrapUserKey, unlockVault, unlockWithRecoveryKey } from "./vault-key.js";
 import { formatDiagnostics, hasErrors, validateDocument } from "./validate.js";
+import { DivergedVaultError, describeSync, pullVault, pushVault, readSyncState, syncVault, type SyncRemote } from "./sync.js";
+import type { VaultStore } from "./store.js";
 
 /** Exit codes are part of the contract; see docs/opencreds/cli.md. */
 export const EXIT = {
@@ -117,13 +119,20 @@ function requireMeta(store: ReturnType<typeof createVaultStore>) {
  * A live session is used when there is one; otherwise the master password is
  * asked for. Nothing else unlocks a vault.
  */
+/**
+ * The user key this process unlocked, if any. Sync reads it after a command
+ * runs, to encrypt the folder list and to split a conflicting edit; it is
+ * never written anywhere by this module.
+ */
+let unlockedKey: Uint8Array | undefined;
+
 async function unlock(store: ReturnType<typeof createVaultStore>): Promise<Uint8Array> {
   const meta = requireMeta(store);
   const session = readSession(store.baseDir);
-  if (session) return session;
+  if (session) return (unlockedKey = session);
   const password = await promptSecret("Master password: ");
   try {
-    return await unlockVault(meta, password);
+    return (unlockedKey = await unlockVault(meta, password));
   } catch (err) {
     store.appendAudit(
       auditEvent({ action: "vault.unlock_failed", namespace: meta.namespace, profile: meta.profile, outcome: "failed" }),
@@ -286,12 +295,26 @@ function printItemLine(item: Item): string {
 }
 
 /** Register every OpenCreds command onto `parent`. */
-export function registerCredsCommands(parent: Command): void {
+export interface RegisterOptions {
+  /**
+   * Where this vault syncs to, if anywhere. Called per command with the store
+   * the command will use; return undefined to stay local. The standalone
+   * `opencreds` binary passes nothing, so it never syncs.
+   */
+  remote?: (store: VaultStore) => SyncRemote | undefined;
+}
+
+// Commands that never touch a vault on disk, plus `sync`, which syncs itself.
+const NO_AUTOSYNC = new Set(["validate", "conformance", "manifest", "sync"]);
+
+export function registerCredsCommands(parent: Command, options: RegisterOptions = {}): void {
   const names: string[] = [];
   for (let c: Command | null = parent; c; c = c.parent) names.unshift(c.name());
   cli = names.join(" ");
   const examples = (lines: string) => `\nExamples:\n${lines.replace(/^\n/, "").replace(/\$CLI/g, cli)}\n`;
   parent.option("--home <dir>", "vault directory (default $OPENCREDS_HOME)");
+
+  if (options.remote) registerSync(parent, options.remote, examples);
 
   // ---------------------------------------------------------------- vault ---
 
@@ -312,6 +335,13 @@ export function registerCredsCommands(parent: Command): void {
       await run(async () => {
         const store = storeFor(this);
         if (store.exists() && !opts.force) {
+          if (readSyncState(store).vaultCreatedAt === store.readMeta()?.createdAt) {
+            fail(
+              `This machine already has your vault, synced from your account. Unlock it with your master password: \`${cli} unlock\`. ` +
+                "(--force would start a separate, empty vault.)",
+              EXIT.REFUSED,
+            );
+          }
           fail(`A vault already exists at ${store.baseDir}; pass --force to replace it`, EXIT.REFUSED);
         }
         // Scripted provisioning reads one line and skips the confirmation; a
@@ -1041,6 +1071,125 @@ export function registerCredsCommands(parent: Command): void {
         if (db.protected) fail("Only a plaintext database can be re-manifested here", EXIT.USAGE);
         const manifest = await buildManifest({ folders: db.folders ?? [], items: db.items ?? [] });
         process.stdout.write(`${JSON.stringify(manifest, null, 2)}\n`);
+      });
+    });
+}
+
+// ----------------------------------------------------------------- sync ---
+
+/**
+ * Autosync plus an explicit `sync` command, registered only when the host CLI
+ * provides a remote.
+ *
+ * Every vault command pulls first, so `list` on a second machine shows what
+ * the first one added, and pushes after, so a write is on the account before
+ * the prompt comes back. Sync never fails a command: offline, the vault works
+ * as before and the change goes up next time. Only `sync` itself reports
+ * failure as an exit code.
+ */
+function registerSync(
+  parent: Command,
+  remoteFor: (store: VaultStore) => SyncRemote | undefined,
+  examples: (lines: string) => string,
+): void {
+  const say = (text: string) => {
+    if (text) process.stderr.write(`${text}\n`);
+  };
+  const warn = (err: unknown) => {
+    const message = (err as Error).message;
+    say(
+      err instanceof DivergedVaultError
+        ? `vault sync: ${message}`
+        : `vault sync: skipped (${message}); changes stay on this machine and go up next time.`,
+    );
+  };
+  const autosync = (command: Command) => !NO_AUTOSYNC.has(command.name()) && process.env.OPENCREDS_SYNC !== "off";
+
+  parent.hook("preAction", async (_self, command) => {
+    if (!autosync(command)) return;
+    const store = storeFor(command);
+    const remote = remoteFor(store);
+    if (!remote) return;
+    try {
+      say(describeSync(await pullVault(store, remote), remote.label));
+    } catch (err) {
+      warn(err);
+    }
+  });
+
+  parent.hook("postAction", async (_self, command) => {
+    if (!autosync(command) || process.exitCode) return;
+    const store = storeFor(command);
+    const remote = remoteFor(store);
+    if (!remote || !store.exists()) return;
+    try {
+      say(describeSync(await pushVault(store, remote, unlockedKey), remote.label));
+    } catch (err) {
+      warn(err);
+    }
+  });
+
+  parent
+    .command("sync")
+    .description("sync this vault with your account now (it also happens around every command)")
+    .addHelpText("after", examples(`
+  $CLI sync                     pull then push, now
+  $CLI sync --status            what is synced, what is waiting
+  $CLI sync --use-remote        two different vaults: keep the account's (this machine's is backed up first)
+  $CLI sync --use-local         two different vaults: replace the account's with this machine's
+  OPENCREDS_SYNC=off $CLI list  one command without syncing`))
+    .option("--status", "show sync state and change nothing")
+    .option("--use-remote", "replace this machine's vault with the account's (backed up first)")
+    .option("--use-local", "replace the account's vault with this machine's")
+    .action(async function (this: Command, opts: { status?: boolean; useRemote?: boolean; useLocal?: boolean }) {
+      await run(async () => {
+        let store = storeFor(this);
+        const remote = remoteFor(store);
+        if (!remote) fail("This vault is not linked to an account. Log in first (logicsrc login).", EXIT.USAGE);
+        if (opts.useRemote && opts.useLocal) fail("Pick one of --use-remote and --use-local", EXIT.USAGE);
+
+        if (opts.status) {
+          const state = readSyncState(store);
+          const envelopes = store.listEnvelopes();
+          const here = new Set(envelopes.map((e) => e.id));
+          const waiting =
+            envelopes.filter((e) => e.revision !== state.items[e.id]).length +
+            Object.keys(state.items).filter((id) => !here.has(id)).length;
+          const rv = await remote.getVault();
+          process.stdout.write(
+            `Account   ${remote.label}${rv ? "" : " (no vault there yet)"}\n` +
+              `Local     ${store.exists() ? `${envelopes.length} item(s) at ${store.baseDir}` : `no vault at ${store.baseDir}`}\n` +
+              `Synced    ${Object.keys(state.items).length} item(s)${state.lastSyncAt ? `, last ${state.lastSyncAt}` : ", never"}\n` +
+              `Waiting   ${waiting} change(s) to push\n`,
+          );
+          return;
+        }
+
+        if (opts.useRemote) {
+          if (!(await remote.getVault())) fail(`There is no vault on ${remote.label} to use.`, EXIT.USAGE);
+          if (store.exists()) {
+            let n = 1;
+            const backup = () => `${store.baseDir}.bak-${String(n).padStart(3, "0")}`;
+            while (existsSync(backup())) n++;
+            clearSession(store.baseDir);
+            renameSync(store.baseDir, backup());
+            process.stderr.write(`Moved this machine's vault to ${backup()}\n`);
+          }
+          store = createVaultStore(store.baseDir);
+        } else if (opts.useLocal) {
+          if (!store.exists()) fail(`No vault at ${store.baseDir} to upload.`, EXIT.USAGE);
+          const ok = await confirm(`Replace the vault on ${remote.label} with this machine's? Its items there are deleted.`);
+          if (!ok) fail("Nothing changed.", EXIT.REFUSED);
+          await remote.reset();
+          store.writeSyncState({});
+        }
+
+        const key = store.exists() ? (readSession(store.baseDir) ?? undefined) : undefined;
+        const report = await syncVault(store, remote, key);
+        process.stdout.write(`${describeSync(report, remote.label) || `vault sync (${remote.label}): up to date`}\n`);
+        if (!key && store.exists()) {
+          process.stderr.write(`Folders sync on the next unlocked command (or \`${cli} unlock --persist\` first).\n`);
+        }
       });
     });
 }

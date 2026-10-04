@@ -1,5 +1,6 @@
 import type { Command } from "commander";
 import { registerCredsCommands } from "@logicsrc/opencreds/commands";
+import { accountRemoteFor } from "./vault-sync.js";
 
 /**
  * `logicsrc vault …`
@@ -45,6 +46,12 @@ Personal vault:
   logicsrc vault export --format csv --category db --out db.csv --yes
   logicsrc vault import bitwarden.csv
 
+Your personal vault syncs to your account (after logicsrc login), end to end
+encrypted: every vault command pulls first and pushes after. A new machine
+gets it with: logicsrc login, then logicsrc vault sync.
+  logicsrc vault sync --status                             what is synced, what is waiting
+  LOGICSRC_VAULT_SYNC=off                                  turn it off (a --home vault never syncs)
+
 Help for any command: logicsrc vault <command> --help   (or: logicsrc vault help <command>)
 `;
 
@@ -59,5 +66,6 @@ export function registerOpenCredsCommands(program: Command): void {
     // under `teams`. Say so first, with commands they can paste.
     .addHelpText("after", VAULT_GUIDE);
 
-  registerCredsCommands(vault);
+  // Logged in: the vault syncs to the account around every command.
+  registerCredsCommands(vault, { remote: accountRemoteFor });
 }

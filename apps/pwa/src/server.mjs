@@ -10,6 +10,7 @@ import { authRouter } from "./routes/auth.mjs";
 import { passkeyRouter } from "./routes/passkey.mjs";
 import { coinpayRouter } from "./routes/coinpay.mjs";
 import { credshareRouter } from "./routes/credshare.mjs";
+import { opencredsRouter } from "./routes/opencreds.mjs";
 import { cliRouter } from "./routes/cli.mjs";
 import { pagesRouter } from "./routes/pages.mjs";
 
@@ -18,6 +19,9 @@ app.disable("x-powered-by");
 if (config.secure) app.set("trust proxy", 1); // Railway terminates TLS
 
 // body parsing — keep the raw body for HMAC signature verification
+// A vault push carries hundreds of encrypted items; parse it under a larger cap
+// first. The global parser below skips a body that is already parsed.
+app.use("/api/opencreds", express.json({ limit: "10mb" }));
 app.use(express.json({ verify: (req, _res, buf) => { req.rawBody = buf.toString("utf8"); } }));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -46,6 +50,7 @@ app.use(authRouter);      // GET / (+ /auth/login|register|logout)
 app.use(passkeyRouter);
 app.use(coinpayRouter);
 app.use(credshareRouter); // /api/credshare/* (session or lsk_ Bearer)
+app.use(opencredsRouter); // /api/opencreds/* — personal vault sync (session or lsk_ Bearer)
 app.use(cliRouter);       // /cli/authorize, /cli/token, /api/me
 app.use(pagesRouter);     // /dashboard, /teams/*, /settings
 
