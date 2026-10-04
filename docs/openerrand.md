@@ -641,7 +641,23 @@ npx @logicsrc/validators openerrand ftb-register-business.json
 
 ## Reference runner
 
-In progress: a generic runner, the `@logicsrc/openerrand` package in the LogicSRC repository, run as `logicsrc errand run <file>`, reads an errand file and drives headless Chrome through it under the rules above. Until it ships, `ftb` in cli-tools is the runner the worked example was taken from; it has the same rule table compiled in rather than reading the file.
+`logicsrc errand run <file>`, from the [`@logicsrc/openerrand`](https://github.com/profullstack/logicsrc/tree/master/packages/openerrand) package, reads an errand file, validates it with `@logicsrc/validators`, and drives headless Chrome through it under the rules above. `logicsrc errand validate <file>` shows what a file will ask of you; `logicsrc errand status` shows the last run of each errand, its hand-off card and any lockout.
+
+```
+logicsrc errand run ftb-register-business.json --extractor "python3 extract.py ~/taxes" --dry-run
+logicsrc errand run ftb-register-business.json --extractor "python3 extract.py ~/taxes" --declare --vault teams:profullstack/ftb/prod
+```
+
+What the runner adds that the file does not say:
+
+- **Documents** come from an extractor the principal names with `--extractor`: a local command that reads the requested forms and fields as JSON on stdin and prints records (`form`, `field`, `value`, `year`, `label`, `file`, `page`). The runner ships no extractor of its own.
+- **The vault** is `--vault`, or a string in the file's `metadata.vault`: `teams:<team>/<project>/<env>` (read with `logicsrc teams pull`, written by pull, merge, push), `opencreds` (read-only), or `file:<path>`. With none, credentials go to a 0600 file under `~/.local/share/logicsrc/errand/credentials/` and the runner says so.
+- **A code** is typed at the prompt, or written to `~/.local/share/logicsrc/errand/codes/<name>.code` by whoever holds the phone. A wrong code waits for the next one.
+- **The throttle**: 2 runs of an errand per account in 30 minutes, 4 a day, 2 minutes between any two runs on one site, and nothing at all during a recorded lockout. A lockout is read from `metadata.lockout.text` (a pattern) and lasts `metadata.lockout.duration`, or a default pattern and 35 minutes. `--force` lifts the caps and never a lockout.
+- **One Chrome profile per site** is kept between runs, so a bot check the browser has passed stays passed. The user agent drops `HeadlessChrome` and nothing more.
+- **A captcha solver** is an interface a program embedding the runner may pass; none is bundled, and the runner calls one only where the [captcha rules](#captcha) permit it.
+
+`ftb` in [cli-tools](https://github.com/profullstack/cli-tools/pull/125) is the runner the worked example was taken from; it has the same rule table compiled in rather than reading the file.
 
 ## Not
 

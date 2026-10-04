@@ -95,3 +95,8 @@ export function assertSchemaKind(value: string): SchemaKind {
 }
 
 export { schemas, type SchemaKind };
+
+// OpenErrand's fixed vocabularies, for runners that must apply the same rules
+// the validator does (a captcha solver only outside these sectors, nothing but
+// these names on a hand-off card).
+export { GATE_KINDS, NO_SOLVER_SECTORS, HANDOFF_BUILTINS } from "./openerrand.js";

@@ -144,7 +144,7 @@
     },
     "packages/cli": {
       "name": "@logicsrc/cli",
-      "version": "0.6.0",
+      "version": "0.7.0",
       "bin": {
         "logicsrc": "dist/index.js",
       },
@@ -153,6 +153,7 @@
         "@logicsrc/account-core": "file:../account-core",
         "@logicsrc/opencontext": "file:../opencontext",
         "@logicsrc/opencreds": "file:../opencreds",
+        "@logicsrc/openerrand": "file:../openerrand",
         "@logicsrc/openfleet": "file:../openfleet",
         "@logicsrc/openmcp": "^0.3.1",
         "@logicsrc/openontology": "file:../openontology",
@@ -222,6 +223,17 @@
         "vitest": "^4.0.8",
       },
     },
+    "packages/openerrand": {
+      "name": "@logicsrc/openerrand",
+      "version": "0.1.0",
+      "dependencies": {
+        "@logicsrc/validators": "^0.4.0",
+        "commander": "^14.0.2",
+      },
+      "devDependencies": {
+        "vitest": "^4.0.8",
+      },
+    },
     "packages/openfleet": {
       "name": "@logicsrc/openfleet",
       "version": "0.1.0",
@@ -267,7 +279,7 @@
     },
     "packages/schemas": {
       "name": "@logicsrc/schemas",
-      "version": "0.3.0",
+      "version": "0.4.0",
     },
     "packages/sdk": {
       "name": "@logicsrc/sdk",
@@ -290,12 +302,12 @@
     },
     "packages/validators": {
       "name": "@logicsrc/validators",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "bin": {
         "logicsrc-validate": "dist/cli.js",
       },
       "dependencies": {
-        "@logicsrc/schemas": "^0.3.0",
+        "@logicsrc/schemas": "^0.4.0",
         "ajv": "^8.17.1",
         "ajv-formats": "^3.0.1",
         "yaml": "^2.8.1",
@@ -674,6 +686,8 @@
     "@logicsrc/opencontext": ["@logicsrc/opencontext@workspace:packages/opencontext"],
 
     "@logicsrc/opencreds": ["@logicsrc/opencreds@workspace:packages/opencreds"],
+
+    "@logicsrc/openerrand": ["@logicsrc/openerrand@workspace:packages/openerrand"],
 
     "@logicsrc/openfleet": ["@logicsrc/openfleet@workspace:packages/openfleet"],
 
