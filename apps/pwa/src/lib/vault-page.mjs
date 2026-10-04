@@ -77,7 +77,7 @@ function keyCard({ publicKey, hasGrant, grantCommand }) {
 export function vaultPageBody({ team, vault, secrets, hasGrant, publicKey, email }) {
   const parts = splitVaultName(vault.name);
   const grantCommand = `logicsrc teams grant ${team.slug} ${parts ? `${parts.project} ${parts.env}` : "<project> <env>"} ${email || "<your email>"}`;
-  const rows = secrets.map((s) => `<tr data-secret="${esc(s.name)}">
+  const rows = secrets.map((s) => `<tr data-key-name="${esc(s.name)}">
       <td><code>${esc(s.name)}</code></td>
       <td class="secret-value"><span class="faint mono">••••••••</span></td>
       <td class="faint">${Number(s.version) || 1}</td>

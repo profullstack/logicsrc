@@ -71,8 +71,8 @@ test("a member with a grant sees names, their public key, and the unlock form", 
     const res = await app.get("/teams/acme/vaults/v1");
     assert.equal(res.status, 200);
     assert.match(res.headers.get("cache-control") || "", /no-store/);
-    assert.match(res.text, /data-secret="DATABASE_URL"/);
-    assert.match(res.text, /data-secret="STRIPE_KEY"/);
+    assert.match(res.text, /data-key-name="DATABASE_URL"/);
+    assert.match(res.text, /data-key-name="STRIPE_KEY"/);
     assert.match(res.text, /data-public-key="ANN_PUBLIC_KEY"/);
     assert.match(res.text, /data-has-grant="1"/);
     assert.match(res.text, /data-role="unlock"/);

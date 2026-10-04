@@ -107,9 +107,9 @@
 
   function render(result) {
     values = result.values;
-    var rows = main.querySelectorAll("tr[data-secret]");
+    var rows = main.querySelectorAll("tr[data-key-name]");
     Array.prototype.forEach.call(rows, function (tr) {
-      var name = tr.getAttribute("data-secret");
+      var name = tr.getAttribute("data-key-name");
       var cell = tr.querySelector(".secret-value");
       if (!cell) return;
       cell.textContent = "";
