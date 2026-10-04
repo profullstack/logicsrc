@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import "../styles.css";
 import Script from "next/script";
-import { FeedbackWidget } from "@profullstack/stack/feedback";
 import { CopyButtons } from "@/components/copy-buttons";
 import { PAGE_META, pageMetadata, SITE_URL } from "@/lib/page-meta";
 
@@ -87,7 +86,6 @@ export default function RootLayout({ children }: { children: ReactNode }): React
           src="https://crawlproof.com/stats.js"
           strategy="afterInteractive"
         />
-        <FeedbackWidget property="logicsrc.com" />
       </body>
     </html>
   );
