@@ -58,7 +58,7 @@ The top-level keys:
 | `publisher` | The publisher's [OpenProfile.md](/openprofile) URL. |
 | `updated` | When anything in the file last changed, ISO 8601. |
 | `reference` | A URL for the runner or the code the errand was taken from. |
-| `principal` | `self`: the person running it is the principal. `represented`: they act for the principal with authority to, as a corporation's officer or a preparer holding a power of attorney does. |
+| `principal` | `self`: the person running it is the principal. `represented`: they act for the principal with authority to, as a corporation's officer does for the corporation. |
 | `site` | `name`, `origins` (the https origins the runner may navigate), `start` (the URLs a run opens, in order of preference), `terms` (the site's terms of use). |
 | `limits` | `pages` (the most pages one run may submit, default 15), `page_timeout` (default `PT30S`), `same_page` (how many times the same URL may come back before the run stops as a loop, default 2). |
 | `inputs` | The values the errand needs, by name. |
@@ -181,7 +181,7 @@ The runner uses the code once and never logs it, stores it or shows it again. Wh
 
 A letter, usually with a PIN, that only the addressee can read. `what` names it, `arrives` says when, `expires` is how long it is good for from the run. `resume` names the errand that continues once it comes, and `input` the input that errand takes from the letter.
 
-A mail gate ends the run with outcome kind `waiting`. The runner posts the `handoff` card with `{{expires_on}}` set to the run date plus `expires`, and the continuing errand marks the card done when it succeeds.
+A mail gate ends the run with outcome kind `waiting`. The runner delivers the `handoff` card, on the surface described in [Hand-off cards](#hand-off-cards), with `{{expires_on}}` set to the run date plus `expires`, and the continuing errand marks the card done when it succeeds.
 
 ### `captcha`
 
@@ -214,7 +214,7 @@ A runner reports the run as a record an agent can read, with no input values in 
   "at": "2026-10-04T17:20:11Z",
   "page": "https://webapp.ftb.ca.gov/MyFTBAccess/Registration/Confirmation",
   "candidate": { "year": 2025, "form": "CA 100S", "field": "line 20" },
-  "handoff": "https://mynaposter.com/handoff/7f3k2q"
+  "handoff": "pin-letter/7f3k2q"
 }
 ```
 
@@ -228,7 +228,9 @@ Inputs never go anywhere else. A runner does not send them to a model, a telemet
 
 ## Hand-off cards
 
-A card is what a person gets when the errand needs them later: a title, numbered steps, a URL to `open`, and a `command` to run. It is meant to be posted where a person will see it, such as a [myna](https://mynaposter.com) hand-off card at `mynaposter.com/handoff/<id>`, a phone notification or a printed note.
+A card is what a person gets when the errand needs them later: a title, numbered steps, a URL to `open`, and a `command` to run. The run record names it by an opaque id (`pin-letter/7f3k2q`), never by a URL on another service.
+
+A card is delivered only on the surface that owns the errand's data. For a tax or finance errand that is the principal's finance app, through its own CLI, PWA, MCP server or API (CoinPay, for example), or the runner's own terminal. It is never delivered through a social network, a promotion or marketing tool, a posting or scheduling service, or any other third party, and never sent to anyone but the principal. A card for an errand with any personal or secret input does not leave that surface at all: no copy, link, notification text or preview of it is handed to another service.
 
 Its templates may name `{{expires_on}}`, `{{errand.title}}`, `{{site.name}}` and public inputs, and nothing else. A runner refuses to render a card that names a personal or secret input, and a validator rejects the file. No PIN, password, SSN, figure from a return or address ever goes on one.
 
@@ -295,9 +297,9 @@ Extraction runs locally. A document, or any page of one, is never uploaded, sent
 
 The page log holds selectors, types, labels, required flags and options. A value never appears in a log, an error, or the run record.
 
-### 9. It puts nothing personal or secret on a card
+### 9. It puts nothing personal or secret on a card, and keeps the card where the data lives
 
-Only built-ins and public inputs, as in [Hand-off cards](#hand-off-cards).
+Only built-ins and public inputs go on a card, and the card is delivered only on the surface that owns the errand's data (for a tax or finance errand, the principal's finance app or the runner's own terminal), never through a social, promotion or third-party posting service, as in [Hand-off cards](#hand-off-cards).
 
 ### 10. It writes credentials before it reports success
 
@@ -549,7 +551,7 @@ Registering a MyFTB account for a California S corporation at the Franchise Tax 
       "steps": [
         "Watch the mail at the address FTB has on file for the MyFTB PIN letter (5 to 10 business days).",
         "Activate before {{expires_on}}: the PIN expires 21 days after registration.",
-        "Run the command below with the PIN from the letter, or send the PIN to whoever runs it."
+        "Run the command below yourself, with the PIN from the letter."
       ],
       "command": "ftb activate business --pin <PIN from the letter>"
     }
@@ -588,12 +590,12 @@ Registering a business MyFTB account as jdoeb4k2x <jane@example.com>
 Dry run: stopped before the first Continue that sends anything to FTB.
 ```
 
-Jane checks the values, then runs it with `--declare`. FTB texts a code; she types it at the prompt (or it is written to the code file). FTB answers with its confirmation, which matches the `registered` outcome; the runner writes the login to the vault, follows `then` to the `pin-letter` mail gate, posts the card, and ends the run as waiting:
+Jane checks the values, then runs it with `--declare`. FTB texts a code; she types it at the prompt (or it is written to the code file). FTB answers with its confirmation, which matches the `registered` outcome; the runner writes the login to the vault, follows `then` to the `pin-letter` mail gate, keeps the card on the runner's own surface, and ends the run as waiting:
 
 ```
 Registered: business MyFTB account jdoeb4k2x. FTB mails a PIN to the address on file.
   login saved to the ftb vault (profullstack/prod)
-  PIN-letter card: https://mynaposter.com/handoff/7f3k2q
+  PIN-letter card: pin-letter/7f3k2q (ftb status shows it)
   When the letter comes: ftb activate business --pin <PIN>
 ```
 

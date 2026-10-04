@@ -227,7 +227,7 @@
       "steps": [
         "Watch the mail at the address FTB has on file for the MyFTB PIN letter (5 to 10 business days).",
         "Activate before {{expires_on}}: the PIN expires 21 days after registration.",
-        "Run the command below with the PIN from the letter, or send the PIN to whoever runs it."
+        "Run the command below yourself, with the PIN from the letter."
       ],
       "command": "ftb activate business --pin <PIN from the letter>"
     }
