@@ -24,7 +24,7 @@ export const KEY_HELP = `<details class="key-help" style="margin-top:12px">
   <div style="font-size:.85rem;margin-top:8px">
     <p class="dim" style="margin:0 0 8px">It is the identity secret key the <code>logicsrc</code> CLI created the first time you ran <code>logicsrc login</code>. It lives only on that machine, in <code>~/.config/logicsrc/identity.json</code>. On that machine, run:</p>
     <pre class="mono" style="margin:0 0 8px">logicsrc teams key</pre>
-    <p class="dim" style="margin:0 0 8px">With an older CLI that has no <code>key</code> command, either of these prints the same thing:</p>
+    <p class="dim" style="margin:0 0 8px">That needs CLI 0.5.0 or later (<code>curl -fsSL https://logicsrc.com/install.sh | sh -s -- update</code>). On an older CLI, either of these prints the same thing:</p>
     <pre class="mono" style="margin:0 0 8px">jq -r .keys.secretKey ~/.config/logicsrc/identity.json
 node -p 'require(require("os").homedir()+"/.config/logicsrc/identity.json").keys.secretKey'</pre>
     <p class="dim" style="margin:0">Pasting the whole <code>identity.json</code> works too; only <code>secretKey</code> is read. Installs from before the config move keep it at <code>~/.logicsrc/identity.json</code>. Anyone holding this key can read every vault you can, so treat it like a password.</p>
@@ -39,7 +39,7 @@ function keyCard({ publicKey, hasGrant, grantCommand }) {
       <div class="card-body">
         <p class="dim" style="margin-top:0;font-size:.88rem">You have no identity key yet, so no vault can be shared with you. Values are encrypted to a key only you hold. Make one in either place:</p>
         <ul class="dim" style="font-size:.88rem;padding-left:18px">
-          <li>In a terminal: <code>npm i -g @logicsrc/cli</code>, then <code>logicsrc login</code>. Then <code>logicsrc teams key</code> prints the key to paste here.</li>
+          <li>In a terminal: <code>curl -fsSL https://logicsrc.com/install.sh | sh</code>, then <code>logicsrc login</code>. Then <code>logicsrc teams key</code> prints the key to paste here.</li>
           <li>Or here in this browser:</li>
         </ul>
         <button class="btn acid" type="button" data-action="generate">Create a key in this browser</button>
