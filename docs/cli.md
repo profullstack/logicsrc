@@ -36,6 +36,7 @@ social
 email
 credentials
 fleet
+errand
 openspec
 plugins
 tui

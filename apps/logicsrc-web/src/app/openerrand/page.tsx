@@ -55,8 +55,9 @@ export default function OpenErrandPage(): ReactNode {
           values that are secret, the steps that belong to a person, and the point where it stops.
         </p>
         <p style={{ color: "#5b6b7a" }}>
-          Status: 0.1. A generic runner, <code style={mono}>logicsrc errand run</code> from{" "}
-          <code style={mono}>@logicsrc/openerrand</code>, is in progress. The worked example
+          Status: 0.1. The reference runner is <code style={mono}>logicsrc errand run</code>, from{" "}
+          <code style={mono}>@logicsrc/openerrand</code>: it reads an errand file and drives
+          headless Chrome through it under the rules below. The worked example
           transcribes the rule table of <code style={mono}>ftb</code> in cli-tools, which registers
           and activates MyFTB accounts at the California Franchise Tax Board. An excerpt:
         </p>

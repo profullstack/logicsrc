@@ -41,6 +41,7 @@ import { exportOpenSpecSummary, importOpenSpec, writeOpenSpecChange } from "./op
 import { registerOpenContextCommands } from "./context.js";
 import { registerOpenCredsCommands } from "./creds.js";
 import { registerFleetCommands } from "./fleet.js";
+import { registerErrandCommands } from "./errand.js";
 import { registerOntologyCommands } from "./ontology.js";
 import { registerPrdCommands } from "./prd.js";
 import { registerOpenMcpCommands } from "./openmcp.js";
@@ -1176,6 +1177,7 @@ registerOpenCredsCommands(program);
 registerOntologyCommands(program);
 registerPrdCommands(program);
 registerFleetCommands(program);
+registerErrandCommands(program);
 registerOpenMcpCommands(program);
 registerMcpCommands(program);
 // Every other word under `logicsrc openspec` is OpenSpec.dev's own CLI.

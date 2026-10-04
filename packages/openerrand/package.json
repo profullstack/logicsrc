@@ -1,0 +1,49 @@
+{
+  "name": "@logicsrc/openerrand",
+  "version": "0.1.0",
+  "description": "Reference runner for the OpenErrand standard: reads an errand file and drives headless Chrome through a website that has no API, stopping at every step that belongs to a person.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./commands": "./dist/commands.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/profullstack/logicsrc.git",
+    "directory": "packages/openerrand"
+  },
+  "homepage": "https://logicsrc.com/docs/openerrand",
+  "keywords": [
+    "logicsrc",
+    "openerrand",
+    "errand",
+    "browser-automation",
+    "chrome",
+    "cdp",
+    "standards",
+    "cli"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run src"
+  },
+  "dependencies": {
+    "@logicsrc/validators": "^0.4.0",
+    "commander": "^14.0.2"
+  },
+  "devDependencies": {
+    "vitest": "^4.0.8"
+  }
+}
