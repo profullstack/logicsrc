@@ -9,8 +9,9 @@ type Source = { from: string; input?: string };
 type Input = { type: string; sensitivity: "public" | "personal" | "secret"; role?: string; sources: Source[] };
 type Action = { text?: string; gate?: string; choose?: string; answer?: string };
 type Rule = { do: Action };
-type Step = { id: string; kind: string; rules?: Rule[]; handoff?: string; resume?: string };
+type Step = { id: string; kind: string; rules?: Rule[]; handoff?: string; resume?: string; solver?: string };
 type Errand = {
+  site: { sector?: string };
   inputs?: Record<string, Input>;
   rules?: Rule[];
   steps: Step[];
@@ -21,6 +22,9 @@ type Errand = {
 
 /** Step kinds a runner must hand to a person. */
 export const GATE_KINDS = ["declare", "identity-proofing", "code", "mail", "captcha"] as const;
+
+/** Sectors where a captcha solver is never allowed. */
+export const NO_SOLVER_SECTORS = ["government", "tax", "financial", "healthcare", "identity-provider"] as const;
 
 /** Names a hand-off card may use: none of them is a person's data. */
 export const HANDOFF_BUILTINS = ["expires_on", "errand.title", "site.name"] as const;
@@ -116,6 +120,21 @@ export function validateOpenErrandReferences(data: unknown): ErrorObject[] {
   errand.outputs?.downloads?.forEach((download, i) => {
     if (download.when !== undefined && !outcomes.has(download.when)) report("outcomeReference", `/outputs/downloads/${i}/when`, "must name an outcome");
     checkTemplate(download.to, `/outputs/downloads/${i}/to`);
+  });
+
+  // A captcha solver is allowed only where nothing sensitive is at stake: a
+  // stated sector outside the forbidden set, no attestation, no identity
+  // proofing and no secret input.
+  const sensitive =
+    errand.steps.some((step) => step.kind === "declare" || step.kind === "identity-proofing") ||
+    Object.values(inputs).some((input) => input.sensitivity === "secret");
+  const sector = errand.site?.sector;
+  errand.steps.forEach((step, i) => {
+    if (step.kind !== "captcha" || step.solver !== "allowed") return;
+    const path = `/steps/${i}/solver`;
+    if (!sector) report("captchaSolver", path, "an errand that allows a captcha solver states its site.sector");
+    else if ((NO_SOLVER_SECTORS as readonly string[]).includes(sector)) report("captchaSolver", path, `a captcha solver is never allowed on a ${sector} site`);
+    if (sensitive) report("captchaSolver", path, "a captcha solver is never allowed on an errand with a declare or identity-proofing step or a secret input");
   });
 
   // A hand-off card is shared on purpose: it may name built-ins and public

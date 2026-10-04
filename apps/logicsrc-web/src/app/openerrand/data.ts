@@ -9,7 +9,7 @@ export const STEPS: Array<[string, string]> = [
   ["identity-proofing", "A selfie, a video call or an ID scan at a provider such as ID.me. Never driven by the runner: the person does it in a visible window."],
   ["code", "A one-time code by text, email, call or app, relayed by the person through a terminal, a file or the runner's own page."],
   ["mail", "A letter with a PIN. The run ends as waiting and a hand-off card says what to do when it comes."],
-  ["captcha", "Shown to the principal, or the run stops. Never sent to a solving service or a model."]
+  ["captcha", "Shown to the principal, or the run stops. A solver only where the errand says so, never on a government, tax, financial, healthcare or identity-provider site, never with a declaration, identity proofing or a secret input."]
 ];
 
 /** The sensitivity classes, in the order the spec lists them. */

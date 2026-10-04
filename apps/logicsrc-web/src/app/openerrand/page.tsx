@@ -27,7 +27,7 @@ const EXCERPT = `"rules": [
 const RULES: Array<[string, string]> = [
   ["Shows the errand first", "Title, publisher, every gate with its reason, every input with its sensitivity and source. A file whose hash changed is shown again before it runs."],
   ["Never guesses", "Fields are matched by id first and label second. A required field no rule fills stops the run."],
-  ["Never performs a gate", "Declarations need the person's consent for this run. Identity proofing, captchas and letters are theirs. Codes come only through a declared relay."],
+  ["Never performs a gate", "Declarations need the person's consent for this run. Identity proofing and letters are theirs, and so are captchas on any sensitive site. Codes come only through a declared relay."],
   ["One shared secret per run", "A figure from a return is submitted once. A rejection ends the run and lists the other candidates; a person picks the next one."],
   ["Keeps documents and values in place", "Extraction is local. Values go to the site's fields and the vault; logs hold fields, never values; cards hold steps, never secrets."]
 ];
@@ -55,9 +55,10 @@ export default function OpenErrandPage(): ReactNode {
           values that are secret, the steps that belong to a person, and the point where it stops.
         </p>
         <p style={{ color: "#5b6b7a" }}>
-          Status: 0.1. The reference runner is <code style={mono}>ftb</code> in cli-tools, which
-          registers and activates MyFTB accounts at the California Franchise Tax Board; the worked
-          example in the specification transcribes its rule table. An excerpt:
+          Status: 0.1. A generic runner, <code style={mono}>logicsrc errand run</code> from{" "}
+          <code style={mono}>@logicsrc/openerrand</code>, is in progress. The worked example
+          transcribes the rule table of <code style={mono}>ftb</code> in cli-tools, which registers
+          and activates MyFTB accounts at the California Franchise Tax Board. An excerpt:
         </p>
         <pre style={pre}>{EXCERPT}</pre>
       </div>
@@ -163,7 +164,7 @@ export default function OpenErrandPage(): ReactNode {
           <h2>Not</h2>
         </div>
         <p style={{ color: "#41505d" }}>
-          Not a way around a check: there is no key for proxies, fingerprints or captcha solvers.
+          Not a way around a check: a runner may present a normal browser user agent and nothing more, with no fingerprint spoofing, no stealth plugins and no challenge solving.
           Not for someone else&apos;s account. Not an API: when a site has one, use{" "}
           <Link href="/openconnection">OpenConnection</Link>,{" "}
           <Link href="/openaccess">OpenAccess</Link> or <Link href="/opensaas">OpenSaaS</Link>. Not a

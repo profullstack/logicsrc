@@ -23,6 +23,7 @@
       "required": ["name", "origins", "start"],
       "properties": {
         "name": { "type": "string", "minLength": 1 },
+        "sector": { "enum": ["government", "tax", "financial", "healthcare", "identity-provider", "commercial", "other"] },
         "origins": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/origin" } },
         "start": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/httpsUrl" } },
         "terms": { "$ref": "#/$defs/httpsUrl" }
@@ -397,6 +398,7 @@
             "id": { "$ref": "#/$defs/slug" },
             "kind": { "const": "captcha" },
             "match": { "$ref": "#/$defs/match" },
+            "solver": { "enum": ["forbidden", "allowed"] },
             "timeout": { "$ref": "#/$defs/duration" },
             "why": { "type": "string" },
             "say": { "type": "string" }

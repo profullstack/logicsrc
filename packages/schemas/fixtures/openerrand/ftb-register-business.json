@@ -11,6 +11,7 @@
   "principal": "self",
   "site": {
     "name": "California Franchise Tax Board (MyFTB)",
+    "sector": "tax",
     "origins": ["https://webapp.ftb.ca.gov"],
     "start": ["https://webapp.ftb.ca.gov/MyFTBAccess/Registration/NewAccount"]
   },

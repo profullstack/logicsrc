@@ -65,6 +65,35 @@ describe("OpenErrand", () => {
     errorAt(f, keyword, path);
   });
 
+  const commercial = () => ({
+    ...JSON.parse(blocks[0]!),
+    site: { name: "Example", sector: "commercial", origins: ["https://example.com"], start: ["https://example.com/contact"] },
+    steps: [{ id: "form", kind: "page" }, { id: "robot-check", kind: "captcha", match: { selector: "iframe[src*=captcha]" }, solver: "allowed" }]
+  });
+
+  it("allows a declared captcha solver on a commercial errand with nothing sensitive", () => {
+    expect(validate("openerrand", commercial())).toMatchObject({ ok: true });
+  });
+
+  it.each([
+    ["a solver on a tax site", (f: any) => { f.steps.push({ id: "robot-check", kind: "captcha", match: { selector: "iframe" }, solver: "allowed" }); }, "/steps/5/solver"],
+    ["a solver on an errand that does not state its sector", (f: any) => { f.steps.push({ id: "robot-check", kind: "captcha", match: { selector: "iframe" }, solver: "allowed" }); delete f.site.sector; }, "/steps/5/solver"]
+  ])("rejects %s", (_, mutate, path) => {
+    const f = fixture();
+    mutate(f);
+    errorAt(f, "captchaSolver", path);
+  });
+
+  it.each([
+    ["a secret input", (f: any) => { f.inputs = { password: { type: "string", sensitivity: "secret", sources: [{ from: "prompt" }] } }; }],
+    ["a declare step", (f: any) => { f.steps.push({ id: "attest", kind: "declare", statement: "i declare", why: "Yours to say." }); }],
+    ["a government site", (f: any) => { f.site.sector = "government"; }]
+  ])("rejects a captcha solver on a commercial errand with %s", (_, mutate) => {
+    const f = commercial();
+    mutate(f);
+    errorAt(f, "captchaSolver", "/steps/1/solver");
+  });
+
   it("allows public inputs and built-ins on a card", () => {
     const f = fixture();
     f.handoffs["pin-letter"].steps.push("Corporation {{corp_id}} at {{site.name}}: {{errand.title}}");

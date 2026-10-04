@@ -59,7 +59,7 @@ The top-level keys:
 | `updated` | When anything in the file last changed, ISO 8601. |
 | `reference` | A URL for the runner or the code the errand was taken from. |
 | `principal` | `self`: the person running it is the principal. `represented`: they act for the principal with authority to, as a corporation's officer does for the corporation. |
-| `site` | `name`, `origins` (the https origins the runner may navigate), `start` (the URLs a run opens, in order of preference), `terms` (the site's terms of use). |
+| `site` | `name`, `sector` (`government`, `tax`, `financial`, `healthcare`, `identity-provider`, `commercial` or `other`: who runs the site, which decides whether a captcha solver may ever be allowed), `origins` (the https origins the runner may navigate), `start` (the URLs a run opens, in order of preference), `terms` (the site's terms of use). |
 | `limits` | `pages` (the most pages one run may submit, default 15), `page_timeout` (default `PT30S`), `same_page` (how many times the same URL may come back before the run stops as a loop, default 2). |
 | `inputs` | The values the errand needs, by name. |
 | `rules` | The field rules, applied on every page step. |
@@ -153,7 +153,7 @@ On each page the runner takes the first step whose `match` fits (`url`, `title`,
 | `identity-proofing` | Proving who you are to an identity provider: a selfie, a video call, a document scan. A gate. |
 | `code` | A one-time code sent to the principal. A gate. |
 | `mail` | A letter the site posts to the principal. A gate. |
-| `captcha` | A test meant to tell a person from a program. A gate. |
+| `captcha` | A test meant to tell a person from a program. A gate, unless the errand allows a solver where [the captcha rules](#captcha) permit one. |
 
 ## Human gates
 
@@ -185,7 +185,11 @@ A mail gate ends the run with outcome kind `waiting`. The runner delivers the `h
 
 ### `captcha`
 
-A runner does not send a captcha to a solving service, a model, or a person paid to solve them. It shows the page to the principal in a visible window, or stops. A `wait` step is not a captcha: a proof of work the page's own script solves asks nothing of a person, and waiting for it is all a runner does.
+By default a runner shows the page to the principal in a visible window, or stops. It does not send the captcha to a solving service, a model, or a person paid to solve them.
+
+`solver` on the step is `forbidden`, the default, or `allowed`. A solver is never allowed on a government, tax, financial, healthcare or identity-provider site, as `site.sector` states, and never on an errand with a `declare` or `identity-proofing` step or any `secret` input, whatever its sector. Elsewhere an errand may say `"solver": "allowed"` explicitly, and a runner that then uses a solver logs every use: the time, the page URL and the service, never the image or the answer. A validator rejects `allowed` on an errand in the forbidden set, and on an errand that does not state its `site.sector`.
+
+A `wait` step is not a captcha: a proof of work the page's own script solves asks nothing of a person, and waiting for it is all a runner does.
 
 ## Outcomes and retry
 
@@ -279,7 +283,7 @@ As in [Matching](#matching). A required field no rule fills stops the run, or is
 
 ### 4. It never performs a gate
 
-A `declare` box is ticked only on the principal's consent for this run. Identity proofing, captchas and letters are the person's. A code comes only through a declared relay.
+A `declare` box is ticked only on the principal's consent for this run. Identity proofing and letters are the person's, and so is a captcha unless the errand allows a solver where [the captcha rules](#captcha) permit one. A code comes only through a declared relay.
 
 ### 5. It submits one shared secret per run
 
@@ -305,9 +309,9 @@ Only built-ins and public inputs go on a card, and the card is delivered only on
 
 To the vault in `outputs.vault`, or to a 0600 state file when there is none. A login that exists only in a terminal's scrollback is a login lost.
 
-### 11. It waits out an interstitial and does not defeat it
+### 11. It may look like a browser, and never defeats a check
 
-A `wait` step is polled until it clears or times out. A runner does not solve, skip or spoof its way past a check.
+A runner may run headless and present a normal desktop browser user agent, for example by dropping `HeadlessChrome` from it. That is as far as it goes: no fingerprint spoofing beyond the user-agent string, no stealth plugins, and no solving, skipping or evading a bot challenge. A challenge the browser completes on its own, such as a proof-of-work interstitial, is a `wait` step, polled until it clears or times out. Any other challenge is a `captcha` gate.
 
 ### 12. It has a dry run
 
@@ -319,7 +323,7 @@ The same URL `limits.same_page` times, or more than `limits.pages` pages, ends t
 
 ## Worked example
 
-Registering a MyFTB account for a California S corporation at the Franchise Tax Board. FTB has no API: the account is a browser registration checked against a figure from a filed Form 100S, a code texted to the representative's phone, and a PIN mailed to the address on file. The reference runner is `ftb` in [cli-tools](https://github.com/profullstack/cli-tools/pull/125), and this file transcribes its rule table, gates and outcomes. The file holds no personal data: every value comes from the principal's own returns, vault or terminal at run time.
+Registering a MyFTB account for a California S corporation at the Franchise Tax Board. FTB has no API: the account is a browser registration checked against a figure from a filed Form 100S, a code texted to the representative's phone, and a PIN mailed to the address on file. `ftb` in [cli-tools](https://github.com/profullstack/cli-tools/pull/125) performs it today, and this file transcribes its rule table, gates and outcomes. The file holds no personal data: every value comes from the principal's own returns, vault or terminal at run time.
 
 ```json
 {
@@ -335,6 +339,7 @@ Registering a MyFTB account for a California S corporation at the Franchise Tax 
   "principal": "self",
   "site": {
     "name": "California Franchise Tax Board (MyFTB)",
+    "sector": "tax",
     "origins": ["https://webapp.ftb.ca.gov"],
     "start": ["https://webapp.ftb.ca.gov/MyFTBAccess/Registration/NewAccount"]
   },
@@ -628,15 +633,19 @@ The next errand planned is IRS.gov: sign in through ID.me and download account a
 
 ## Schema
 
-The JSON Schemas are `logicsrc-openerrand.schema.json` and `logicsrc-openerrand-index.schema.json` in [`@logicsrc/schemas`](https://github.com/profullstack/logicsrc/tree/master/packages/schemas/schemas), exported as `@logicsrc/schemas/openerrand` and `@logicsrc/schemas/openerrand-index`. `@logicsrc/validators` adds the checks a schema cannot express: step, gate, outcome and card references resolve, every `{{template}}` names an input, a shared secret is `secret`, and no card names a personal or secret input.
+The JSON Schemas are `logicsrc-openerrand.schema.json` and `logicsrc-openerrand-index.schema.json` in [`@logicsrc/schemas`](https://github.com/profullstack/logicsrc/tree/master/packages/schemas/schemas), exported as `@logicsrc/schemas/openerrand` and `@logicsrc/schemas/openerrand-index`. `@logicsrc/validators` adds the checks a schema cannot express: step, gate, outcome and card references resolve, every `{{template}}` names an input, a shared secret is `secret`, no card names a personal or secret input, and a captcha solver is allowed only outside the forbidden set.
 
 ```
 npx @logicsrc/validators openerrand ftb-register-business.json
 ```
 
+## Reference runner
+
+In progress: a generic runner, the `@logicsrc/openerrand` package in the LogicSRC repository, run as `logicsrc errand run <file>`, reads an errand file and drives headless Chrome through it under the rules above. Until it ships, `ftb` in cli-tools is the runner the worked example was taken from; it has the same rule table compiled in rather than reading the file.
+
 ## Not
 
-**Not a way around a check.** There is no key for proxies, browser fingerprints, user agents or captcha solvers, and no gate a runner may perform. A site that wants a person gets one.
+**Not a way around a check.** A runner may present an ordinary browser user agent and nothing more. There is no key for proxies or browser fingerprints, no gate a runner may perform, and a captcha solver only where [the captcha rules](#captcha) allow one. A site that wants a person gets one.
 
 **Not for someone else's account.** The principal is the person running it or someone they represent with authority. An errand run against a stranger's records is the fraud the site's checks exist to stop.
 
@@ -663,7 +672,7 @@ npx @logicsrc/validators openerrand ftb-register-business.json
 
 | Version | Date | Change |
 | --- | --- | --- |
-| 0.1 | 2026-10-04 | First publication: the errand file, inputs with three sensitivity classes and seven sources, field rules matched by id then label, page and wait steps, five human gates (`declare`, `identity-proofing`, `code`, `mail`, `captcha`), outcomes, the never-retry rule for shared secrets, vault and download outputs, hand-off cards with no personal data, the publisher index at `/.well-known/openerrand.json`, thirteen runner rules, and the MyFTB business registration as the worked example. |
+| 0.1 | 2026-10-04 | First publication: the errand file, inputs with three sensitivity classes and seven sources, field rules matched by id then label, page and wait steps, five human gates (`declare`, `identity-proofing`, `code`, `mail`, `captcha`), outcomes, the never-retry rule for shared secrets, vault and download outputs, hand-off cards with no personal data, the publisher index at `/.well-known/openerrand.json`, thirteen runner rules (among them: a normal browser user agent and nothing more), the captcha solver policy keyed on `site.sector`, and the MyFTB business registration as the worked example. |
 
 ## License
 
