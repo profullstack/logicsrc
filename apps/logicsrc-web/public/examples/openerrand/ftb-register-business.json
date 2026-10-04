@@ -1,0 +1,235 @@
+{
+  "type": "logicsrc.openerrand",
+  "version": "0.1",
+  "id": "https://logicsrc.com/examples/openerrand/ftb-register-business.json",
+  "name": "ftb-register-business",
+  "title": "Register a MyFTB business account",
+  "description": "Creates a MyFTB account for a California S corporation at the Franchise Tax Board, proving the business with a figure from a filed Form 100S. FTB then mails a PIN; activation is a second errand.",
+  "publisher": "https://logicsrc.com/.well-known/openprofile.md",
+  "updated": "2026-10-04T00:00:00Z",
+  "reference": "https://github.com/profullstack/cli-tools/pull/125",
+  "principal": "self",
+  "site": {
+    "name": "California Franchise Tax Board (MyFTB)",
+    "origins": ["https://webapp.ftb.ca.gov"],
+    "start": ["https://webapp.ftb.ca.gov/MyFTBAccess/Registration/NewAccount"]
+  },
+  "limits": { "pages": 15, "page_timeout": "PT30S", "same_page": 2 },
+  "inputs": {
+    "email": {
+      "label": "Email address FTB writes to",
+      "type": "email",
+      "sensitivity": "personal",
+      "required": true,
+      "sources": [{ "from": "prompt" }]
+    },
+    "phone": {
+      "label": "Mobile number FTB texts a verification code to",
+      "type": "string",
+      "pattern": "^[0-9]{10}$",
+      "sensitivity": "personal",
+      "required": true,
+      "sources": [{ "from": "prompt" }]
+    },
+    "first_name": {
+      "label": "Representative's first name",
+      "type": "string",
+      "max_length": 11,
+      "sensitivity": "personal",
+      "sources": [{ "from": "document", "form": "CA 540", "field": "first name", "pick": "newest" }]
+    },
+    "last_name": {
+      "label": "Representative's last name",
+      "type": "string",
+      "max_length": 13,
+      "sensitivity": "personal",
+      "sources": [{ "from": "document", "form": "CA 540", "field": "last name", "pick": "newest" }]
+    },
+    "street": {
+      "label": "Street address on the newest return",
+      "type": "string",
+      "sensitivity": "personal",
+      "sources": [{ "from": "document", "form": "CA 540", "field": "street address", "pick": "newest" }]
+    },
+    "address_numbers": {
+      "label": "The numbers in the address on file",
+      "type": "string",
+      "sensitivity": "personal",
+      "sources": [{ "from": "derive", "input": "street", "transform": "digits" }]
+    },
+    "zip": {
+      "label": "ZIP code on file",
+      "type": "string",
+      "sensitivity": "personal",
+      "sources": [{ "from": "document", "form": "CA 540", "field": "ZIP code", "pick": "newest", "transform": "first:5" }]
+    },
+    "corp_id": {
+      "label": "California corporation number",
+      "type": "string",
+      "sensitivity": "public",
+      "sources": [{ "from": "document", "form": "CA 100S", "field": "California corporation number", "pick": "newest" }]
+    },
+    "tax_year": {
+      "label": "Tax year of the return the shared secret comes from",
+      "type": "integer",
+      "sensitivity": "public",
+      "sources": [{ "from": "candidate", "input": "net_income", "part": "year" }]
+    },
+    "net_income": {
+      "label": "Net income for tax purposes, whole dollars",
+      "type": "integer",
+      "sensitivity": "secret",
+      "role": "shared-secret",
+      "sources": [
+        { "from": "document", "form": "CA 100S", "field": "line 20", "match": "net income for tax purposes", "years": { "back": 5, "current": false }, "transform": "whole" },
+        { "from": "document", "form": "CA 100S", "field": "line 15", "match": "net income \\(loss\\) for state purposes", "years": { "back": 5, "current": false }, "transform": "whole" }
+      ]
+    },
+    "username": {
+      "label": "MyFTB user name",
+      "type": "string",
+      "sensitivity": "personal",
+      "role": "credential",
+      "sources": [
+        { "from": "vault", "key": "FTB_BUSINESS_USERNAME" },
+        { "from": "generate", "length": 15, "classes": ["lower", "digit"] }
+      ]
+    },
+    "password": {
+      "label": "MyFTB password",
+      "type": "string",
+      "sensitivity": "secret",
+      "role": "credential",
+      "sources": [
+        { "from": "vault", "key": "FTB_BUSINESS_PASSWORD" },
+        { "from": "generate", "length": 24, "classes": ["lower", "upper", "digit", "special"], "special": "!#$*@" }
+      ]
+    },
+    "security": {
+      "label": "Three security questions and their answers",
+      "type": "qa-set",
+      "count": 3,
+      "sensitivity": "secret",
+      "role": "credential",
+      "sources": [
+        { "from": "vault", "key": "FTB_BUSINESS_SECURITY_ANSWERS" },
+        { "from": "generate", "length": 10, "classes": ["lower", "digit"] }
+      ]
+    }
+  },
+  "rules": [
+    { "name": "read terms", "id": "^ReadTerms$", "types": ["checkbox"], "do": { "check": true } },
+    { "name": "accept terms", "id": "^AcceptTerms$", "types": ["checkbox"], "do": { "check": true } },
+    { "name": "first name", "id": "^FstName$", "do": { "text": "{{first_name}}" } },
+    { "name": "middle initial", "id": "^MInitial$", "do": { "skip": true } },
+    { "name": "last name", "id": "^LstName$", "do": { "text": "{{last_name}}" } },
+    { "name": "suffix", "id": "^Sffx$", "do": { "skip": true } },
+    { "name": "user name again", "id": "^ReUserName$", "do": { "text": "{{username}}" } },
+    { "name": "user name", "id": "^UserName$", "do": { "text": "{{username}}" } },
+    { "name": "email again", "id": "^ReEmail$", "do": { "text": "{{email}}" } },
+    { "name": "email", "id": "^Email$", "do": { "text": "{{email}}" } },
+    { "name": "password again", "id": "^RePassword$", "do": { "text": "{{password}}" } },
+    { "name": "password", "id": "^Password$", "do": { "text": "{{password}}" } },
+    { "name": "foreign number", "id": "^Phone_Foreign$", "do": { "skip": true } },
+    { "name": "foreign address", "id": "^Address_Foreign$|^Address_No(MailAddress|PostalCode)$", "do": { "skip": true } },
+    { "name": "security question", "label": "question", "types": ["select-one"], "do": { "choose": "security" } },
+    { "name": "security answer", "label": "question|answer", "types": ["text", "password"], "do": { "answer": "security" } },
+    { "name": "role", "label": "individual|business representative", "types": ["radio"], "do": { "check": { "label": "^\\s*business representative" } } },
+    { "name": "zip", "label": "zip|postal", "types": ["text", "tel", "number"], "do": { "text": "{{zip}}" } },
+    { "name": "address numbers", "label": "numbers in (the |your )?(business )?(mailing )?address", "types": ["text", "tel", "number"], "do": { "text": "{{address_numbers}}" } },
+    { "name": "tax year", "label": "year (of|on) the tax return|tax year", "types": ["select-one"], "do": { "select": ["^\\s*{{tax_year}}\\s*$"] } },
+    { "name": "tax year", "label": "year (of|on) the tax return|tax year", "types": ["text", "tel", "number"], "do": { "text": "{{tax_year}}" } },
+    { "name": "net income", "label": "net income|income \\(loss\\)", "types": ["text", "tel", "number"], "do": { "text": "{{net_income}}" } },
+    { "name": "company type", "label": "type of company|company type|entity type", "types": ["select-one"], "do": { "select": ["^\\s*corporation\\s*$", "corporation"] } },
+    { "name": "account number", "label": "account number|entity id|corporation (id|number)", "types": ["text", "tel", "number"], "do": { "text": "{{corp_id}}" } },
+    { "name": "form type", "label": "form type|type of (tax )?(return|form)", "types": ["select-one"], "do": { "select": ["100\\s*S\\b"] } },
+    { "name": "declaration", "label": "perjury|i declare|under penalty", "types": ["checkbox"], "do": { "gate": "declaration" } },
+    { "name": "phone", "label": "phone number", "types": ["text", "tel", "number"], "do": { "text": "{{phone}}" } },
+    { "name": "send a text", "label": "send me a text|text message", "types": ["radio"], "do": { "check": true } },
+    { "name": "verification code", "label": "verification code|security code|one[- ]time|passcode|access code|enter (the )?code", "types": ["text", "tel", "number", "password"], "do": { "gate": "text-code" } }
+  ],
+  "steps": [
+    {
+      "id": "bot-check",
+      "kind": "wait",
+      "match": { "title": "^Challenge Validation$", "selector": "#sec-cpt-if" },
+      "timeout": "PT90S",
+      "poll": "PT3S",
+      "say": "FTB's bot check is a proof of work the page's own script solves; the runner waits for it."
+    },
+    {
+      "id": "form",
+      "kind": "page",
+      "unmatched": "stop",
+      "say": "Every MyFTB registration page: terms, profile, security questions, role, address, shared secret, phone."
+    },
+    {
+      "id": "declaration",
+      "kind": "declare",
+      "statement": "perjury|i declare|under penalty",
+      "why": "Ticking this box is the representative stating, under penalty of perjury, that what was entered is true. Only that person can make the statement."
+    },
+    {
+      "id": "text-code",
+      "kind": "code",
+      "channel": "sms",
+      "relay": ["terminal", "file"],
+      "pattern": "^\\w{4,10}$",
+      "timeout": "PT15M",
+      "why": "FTB texts a code to the phone number given. Whoever holds the phone reads it out."
+    },
+    {
+      "id": "pin-letter",
+      "kind": "mail",
+      "what": "MyFTB PIN letter",
+      "arrives": "5 to 10 business days, to the address FTB has on file",
+      "expires": "P21D",
+      "resume": "ftb-activate-business",
+      "input": "pin",
+      "handoff": "pin-letter",
+      "why": "FTB activates a new account with a PIN it sends by US Mail. Nobody but the addressee can read it."
+    }
+  ],
+  "submit": {
+    "labels": "^(submit|continue|next|log ?in|login|activate|send( code| me a code)?|verify|confirm)$",
+    "never": "^(back|cancel|end session|previous)$",
+    "ignore": "#timer, .modal"
+  },
+  "outcomes": [
+    {
+      "name": "rejected",
+      "kind": "rejected",
+      "text": "does not match our records|there is a problem|unable to (verify|process) your|account (is|has been) locked"
+    },
+    {
+      "name": "registered",
+      "kind": "success",
+      "text": "registration confirmation|successfully (registered|created)|we will (mail|send) you a (letter|pin)|pin .*(mail|letter)",
+      "then": "pin-letter"
+    }
+  ],
+  "retry": { "shared_secret": "never", "page_errors": "rejected" },
+  "outputs": {
+    "vault": {
+      "when": "registered",
+      "keys": {
+        "FTB_BUSINESS_USERNAME": "{{username}}",
+        "FTB_BUSINESS_PASSWORD": "{{password}}",
+        "FTB_BUSINESS_EMAIL": "{{email}}",
+        "FTB_BUSINESS_SECURITY_ANSWERS": "{{security}}"
+      }
+    }
+  },
+  "handoffs": {
+    "pin-letter": {
+      "title": "FTB PIN letter: business MyFTB account",
+      "open": "https://webapp.ftb.ca.gov/MyFTBAccess/",
+      "steps": [
+        "Watch the mail at the address FTB has on file for the MyFTB PIN letter (5 to 10 business days).",
+        "Activate before {{expires_on}}: the PIN expires 21 days after registration.",
+        "Run the command below with the PIN from the letter, or send the PIN to whoever runs it."
+      ],
+      "command": "ftb activate business --pin <PIN from the letter>"
+    }
+  }
+}

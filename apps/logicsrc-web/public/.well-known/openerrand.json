@@ -1,0 +1,16 @@
+{
+  "type": "logicsrc.openerrand-index",
+  "version": "0.1",
+  "publisher": "https://logicsrc.com/.well-known/openprofile.md",
+  "updated": "2026-10-04T00:00:00Z",
+  "errands": [
+    {
+      "url": "https://logicsrc.com/examples/openerrand/ftb-register-business.json",
+      "name": "ftb-register-business",
+      "site": "https://webapp.ftb.ca.gov",
+      "title": "Register a MyFTB business account",
+      "gates": ["declare", "code", "mail"],
+      "updated": "2026-10-04T00:00:00Z"
+    }
+  ]
+}

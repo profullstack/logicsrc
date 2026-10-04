@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.logicsrc.com/logicsrc-openerrand-index.schema.json",
+  "title": "OpenErrand index",
+  "description": "The list of errand files a publisher serves at /.well-known/openerrand.json.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["type", "version", "errands"],
+  "properties": {
+    "type": { "const": "logicsrc.openerrand-index" },
+    "version": { "const": "0.1" },
+    "publisher": { "type": "string", "format": "uri", "pattern": "^https://" },
+    "updated": { "type": "string", "format": "date-time" },
+    "errands": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["url", "site", "title"],
+        "properties": {
+          "url": { "type": "string", "format": "uri", "pattern": "^https://" },
+          "name": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,63}$" },
+          "site": { "type": "string", "pattern": "^https://[a-z0-9.-]+(:[0-9]+)?$" },
+          "title": { "type": "string", "minLength": 1 },
+          "gates": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": { "enum": ["declare", "identity-proofing", "code", "mail", "captcha"] }
+          },
+          "updated": { "type": "string", "format": "date-time" }
+        }
+      }
+    }
+  }
+}

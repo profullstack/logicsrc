@@ -1,0 +1,432 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.logicsrc.com/logicsrc-openerrand.schema.json",
+  "title": "OpenErrand",
+  "description": "A declarative description of one errand a person runs on a website that has no API: the site, the inputs and where each may come from, the field rules, the human gates a runner must never automate, the outcomes, the retry policy, the outputs and the hand-off cards.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["type", "version", "name", "title", "site", "steps", "outcomes"],
+  "properties": {
+    "type": { "const": "logicsrc.openerrand" },
+    "version": { "const": "0.1" },
+    "id": { "$ref": "#/$defs/httpsUrl" },
+    "name": { "$ref": "#/$defs/slug" },
+    "title": { "type": "string", "minLength": 1, "maxLength": 160 },
+    "description": { "type": "string" },
+    "publisher": { "$ref": "#/$defs/httpsUrl" },
+    "updated": { "type": "string", "format": "date-time" },
+    "reference": { "$ref": "#/$defs/httpsUrl" },
+    "principal": { "enum": ["self", "represented"] },
+    "site": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "origins", "start"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "origins": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/origin" } },
+        "start": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/httpsUrl" } },
+        "terms": { "$ref": "#/$defs/httpsUrl" }
+      }
+    },
+    "limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "pages": { "type": "integer", "minimum": 1, "maximum": 200 },
+        "page_timeout": { "$ref": "#/$defs/duration" },
+        "same_page": { "type": "integer", "minimum": 1, "maximum": 10 }
+      }
+    },
+    "inputs": {
+      "type": "object",
+      "propertyNames": { "$ref": "#/$defs/inputName" },
+      "additionalProperties": { "$ref": "#/$defs/input" }
+    },
+    "rules": { "type": "array", "items": { "$ref": "#/$defs/rule" } },
+    "steps": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/step" } },
+    "submit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["labels"],
+      "properties": {
+        "labels": { "$ref": "#/$defs/pattern" },
+        "never": { "$ref": "#/$defs/pattern" },
+        "ignore": { "type": "string", "minLength": 1 }
+      }
+    },
+    "outcomes": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/outcome" } },
+    "retry": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "shared_secret": { "const": "never" },
+        "page_errors": { "enum": ["rejected", "continue"] }
+      }
+    },
+    "outputs": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "vault": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["keys"],
+          "properties": {
+            "when": { "type": "string", "minLength": 1 },
+            "keys": {
+              "type": "object",
+              "minProperties": 1,
+              "propertyNames": { "pattern": "^[A-Z][A-Z0-9_]*$" },
+              "additionalProperties": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+        "downloads": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["match", "to"],
+            "properties": {
+              "match": {
+                "type": "object",
+                "additionalProperties": false,
+                "minProperties": 1,
+                "properties": {
+                  "url": { "$ref": "#/$defs/pattern" },
+                  "filename": { "$ref": "#/$defs/pattern" },
+                  "type": { "type": "string", "minLength": 1 }
+                }
+              },
+              "to": { "type": "string", "minLength": 1 },
+              "when": { "type": "string", "minLength": 1 }
+            }
+          }
+        }
+      }
+    },
+    "handoffs": {
+      "type": "object",
+      "propertyNames": { "$ref": "#/$defs/slug" },
+      "additionalProperties": { "$ref": "#/$defs/handoff" }
+    },
+    "metadata": { "type": "object" }
+  },
+  "$defs": {
+    "httpsUrl": { "type": "string", "format": "uri", "pattern": "^https://" },
+    "origin": { "type": "string", "pattern": "^https://[a-z0-9.-]+(:[0-9]+)?$" },
+    "slug": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,63}$" },
+    "inputName": { "type": "string", "pattern": "^[a-z][a-z0-9_]{0,63}$" },
+    "pattern": { "type": "string", "minLength": 1, "format": "regex" },
+    "duration": { "type": "string", "format": "duration" },
+    "transform": { "type": "string", "pattern": "^(digits|whole|upper|lower|trim|first:[0-9]+|last:[0-9]+)$" },
+    "fieldType": { "enum": ["text", "password", "email", "tel", "number", "date", "textarea", "select-one", "radio", "checkbox"] },
+    "input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "sensitivity", "sources"],
+      "properties": {
+        "label": { "type": "string", "minLength": 1 },
+        "type": { "enum": ["string", "integer", "number", "email", "date", "boolean", "qa-set"] },
+        "sensitivity": { "enum": ["public", "personal", "secret"] },
+        "role": { "enum": ["shared-secret", "credential", "identifier"] },
+        "required": { "type": "boolean" },
+        "pattern": { "$ref": "#/$defs/pattern" },
+        "max_length": { "type": "integer", "minimum": 1 },
+        "count": { "type": "integer", "minimum": 1, "maximum": 10 },
+        "sources": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/source" } }
+      }
+    },
+    "source": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["from"],
+          "properties": { "from": { "const": "prompt" }, "ask": { "type": "string", "minLength": 1 } }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["from", "key"],
+          "properties": { "from": { "const": "vault" }, "key": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]*$" } }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["from", "form", "field"],
+          "properties": {
+            "from": { "const": "document" },
+            "form": { "type": "string", "minLength": 1 },
+            "field": { "type": "string", "minLength": 1 },
+            "match": { "$ref": "#/$defs/pattern" },
+            "pick": { "enum": ["newest", "oldest", "each"] },
+            "years": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "back": { "type": "integer", "minimum": 1, "maximum": 50 },
+                "current": { "type": "boolean" }
+              }
+            },
+            "transform": { "$ref": "#/$defs/transform" }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["from", "input", "transform"],
+          "properties": {
+            "from": { "const": "derive" },
+            "input": { "$ref": "#/$defs/inputName" },
+            "transform": { "$ref": "#/$defs/transform" }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["from", "input", "part"],
+          "properties": {
+            "from": { "const": "candidate" },
+            "input": { "$ref": "#/$defs/inputName" },
+            "part": { "enum": ["year", "form", "field", "source"] }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["from", "length", "classes"],
+          "properties": {
+            "from": { "const": "generate" },
+            "length": { "type": "integer", "minimum": 1, "maximum": 256 },
+            "classes": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": { "enum": ["lower", "upper", "digit", "special"] }
+            },
+            "special": { "type": "string", "minLength": 1 }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["from", "value"],
+          "properties": { "from": { "const": "literal" }, "value": { "anyOf": [{ "type": "string" }, { "type": "number" }, { "type": "boolean" }] } }
+        }
+      ]
+    },
+    "rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "do"],
+      "anyOf": [{ "properties": { "id": true }, "required": ["id"] }, { "properties": { "label": true }, "required": ["label"] }],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "id": { "$ref": "#/$defs/pattern" },
+        "label": { "$ref": "#/$defs/pattern" },
+        "types": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/fieldType" } },
+        "do": { "$ref": "#/$defs/action" }
+      }
+    },
+    "action": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["text"],
+          "properties": {
+            "text": { "type": "string" },
+            "split": { "type": "array", "minItems": 2, "items": { "type": "integer", "minimum": 1 } }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["select"],
+          "properties": { "select": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/pattern" } } }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["check"],
+          "properties": {
+            "check": {
+              "oneOf": [
+                { "const": true },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["label"],
+                  "properties": { "label": { "$ref": "#/$defs/pattern" } }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["skip"],
+          "properties": { "skip": { "const": true } }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["gate"],
+          "properties": { "gate": { "$ref": "#/$defs/slug" } }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["choose"],
+          "properties": { "choose": { "$ref": "#/$defs/inputName" } }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["answer"],
+          "properties": { "answer": { "$ref": "#/$defs/inputName" } }
+        }
+      ]
+    },
+    "match": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "url": { "$ref": "#/$defs/pattern" },
+        "title": { "$ref": "#/$defs/pattern" },
+        "text": { "$ref": "#/$defs/pattern" },
+        "selector": { "type": "string", "minLength": 1 }
+      }
+    },
+    "step": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["id", "kind"],
+          "properties": {
+            "id": { "$ref": "#/$defs/slug" },
+            "kind": { "const": "page" },
+            "match": { "$ref": "#/$defs/match" },
+            "rules": { "type": "array", "items": { "$ref": "#/$defs/rule" } },
+            "unmatched": { "enum": ["stop", "ask"] },
+            "say": { "type": "string" }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["id", "kind", "match", "timeout"],
+          "properties": {
+            "id": { "$ref": "#/$defs/slug" },
+            "kind": { "const": "wait" },
+            "match": { "$ref": "#/$defs/match" },
+            "timeout": { "$ref": "#/$defs/duration" },
+            "poll": { "$ref": "#/$defs/duration" },
+            "say": { "type": "string" }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["id", "kind", "statement", "why"],
+          "properties": {
+            "id": { "$ref": "#/$defs/slug" },
+            "kind": { "const": "declare" },
+            "statement": { "$ref": "#/$defs/pattern" },
+            "why": { "type": "string", "minLength": 1 },
+            "say": { "type": "string" }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["id", "kind", "provider", "origins", "why"],
+          "properties": {
+            "id": { "$ref": "#/$defs/slug" },
+            "kind": { "const": "identity-proofing" },
+            "provider": { "type": "string", "minLength": 1 },
+            "origins": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/origin" } },
+            "match": { "$ref": "#/$defs/match" },
+            "timeout": { "$ref": "#/$defs/duration" },
+            "handoff": { "$ref": "#/$defs/slug" },
+            "why": { "type": "string", "minLength": 1 },
+            "say": { "type": "string" }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["id", "kind", "channel", "relay", "timeout"],
+          "properties": {
+            "id": { "$ref": "#/$defs/slug" },
+            "kind": { "const": "code" },
+            "channel": { "enum": ["sms", "email", "voice", "app"] },
+            "relay": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "enum": ["terminal", "file", "page"] } },
+            "pattern": { "$ref": "#/$defs/pattern" },
+            "timeout": { "$ref": "#/$defs/duration" },
+            "why": { "type": "string" },
+            "say": { "type": "string" }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["id", "kind", "what"],
+          "properties": {
+            "id": { "$ref": "#/$defs/slug" },
+            "kind": { "const": "mail" },
+            "what": { "type": "string", "minLength": 1 },
+            "arrives": { "type": "string" },
+            "expires": { "$ref": "#/$defs/duration" },
+            "resume": { "$ref": "#/$defs/slug" },
+            "input": { "$ref": "#/$defs/inputName" },
+            "handoff": { "$ref": "#/$defs/slug" },
+            "why": { "type": "string" },
+            "say": { "type": "string" }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["id", "kind", "match"],
+          "properties": {
+            "id": { "$ref": "#/$defs/slug" },
+            "kind": { "const": "captcha" },
+            "match": { "$ref": "#/$defs/match" },
+            "timeout": { "$ref": "#/$defs/duration" },
+            "why": { "type": "string" },
+            "say": { "type": "string" }
+          }
+        }
+      ]
+    },
+    "outcome": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "kind"],
+      "anyOf": [{ "properties": { "text": true }, "required": ["text"] }, { "properties": { "url": true }, "required": ["url"] }],
+      "properties": {
+        "name": { "$ref": "#/$defs/slug" },
+        "kind": { "enum": ["success", "rejected", "waiting"] },
+        "text": { "$ref": "#/$defs/pattern" },
+        "url": { "$ref": "#/$defs/pattern" },
+        "then": { "$ref": "#/$defs/slug" }
+      }
+    },
+    "handoff": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["title", "steps"],
+      "properties": {
+        "title": { "type": "string", "minLength": 1 },
+        "open": { "$ref": "#/$defs/httpsUrl" },
+        "steps": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+        "command": { "type": "string" }
+      }
+    }
+  }
+}
