@@ -1,5 +1,5 @@
 /* LogicSRC PWA service worker — offline app shell (network-first for docs). */
-const CACHE = "logicsrc-v1";
+const CACHE = "logicsrc-v2";
 const SHELL = ["/", "/icon.svg", "/manifest.webmanifest", "/passkey.js"];
 
 self.addEventListener("install", (e) => {
@@ -44,7 +44,8 @@ self.addEventListener("fetch", (e) => {
   e.respondWith(
     fetch(request)
       .then((res) => {
-        if (res.ok && url.origin === location.origin) {
+        // no-store pages (a vault's secret names) stay out of the offline cache
+        if (res.ok && url.origin === location.origin && !/no-store/.test(res.headers.get("cache-control") || "")) {
           const copy = res.clone();
           caches.open(CACHE).then((c) => c.put(request, copy));
         }
