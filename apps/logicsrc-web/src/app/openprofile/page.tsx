@@ -14,6 +14,8 @@ const EXAMPLE = `# Ada Lovelace
 
 - **Kind**: person
 - **Handle**: @ada
+- **Emoji**: 🔭
+- **Pronouns**: she/her
 - **Web**: https://ada.example
 - **Pay**: eip155:8453:0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf
 - **Resume**: https://agenticjobs.work/candidates/ada/resume.md
@@ -41,6 +43,8 @@ const AGENT = `# Athena
 
 - **Kind**: agent
 - **Handle**: @athena
+- **Emoji**: 🦉
+- **Pronouns**: it/its
 
 Ships small fixes to open source projects, nightly.
 
@@ -71,7 +75,7 @@ const MATCH = `## Match
 
 const RULES: Array<[string, string]> = [
   ["One # heading", "It is the name. More than one and the first wins; none and the reader says it has no name."],
-  ["The identity block", "The bullet list under the name. Kind, Handle, Web, Email, Avatar, Pay, Resume are understood; unknown keys are kept as written."],
+  ["The identity block", "The bullet list under the name. Kind, Handle, Emoji, Pronouns, Web (Website is an alias), Email, Avatar, Pay, Resume are understood; unknown keys are kept as written."],
   ["The headline", "One prose line between the block and the first ##. It is the bio a directory shows next to the name."],
   ["## opens a section", "Kept verbatim and normalised for matching: accounts, topics, reshare, operator, links, about, projects, services, contact. Unknown sections are kept."],
   ["Accounts", "One bullet per account and the URL is the identity. The network is derived from the host. An account is a claim until the page links back."],
@@ -118,7 +122,7 @@ export default function OpenProfilePage(): ReactNode {
           copied between tools.
         </p>
         <p style={{ color: "#5b6b7a" }}>
-          Status: 0.1. A convention already in use by{" "}
+          Status: 0.4. A convention already in use by{" "}
           <a href="https://mynaposter.com">myna</a> and{" "}
           <a href="https://agenticjobs.work">agenticjobs</a>, published so others can serve and read
           the same file.
