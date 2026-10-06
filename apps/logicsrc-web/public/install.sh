@@ -10,8 +10,9 @@
 #
 # What it does:
 #   1. Detects OS (Linux/macOS — Windows: use WSL) and requires Node 18+.
+#      Installs Bun into ~/.bun when it is missing: the repo is a Bun workspace.
 #   2. Fetches the repo tarball from GitHub into a staging dir.
-#   3. `npm install` + `npm run build:cli` (builds only the CLI's workspaces)
+#   3. `bun install` + `bun run build:cli` (builds only the CLI's workspaces)
 #      there, then swaps it into $LOGICSRC_HOME/src only once it built. A failed
 #      run leaves any existing install untouched.
 #   4. Drops a `logicsrc` wrapper on $HOME/.local/bin.
@@ -55,7 +56,23 @@ check_node() {
   need node
   major="$(node -p 'process.versions.node.split(".")[0]' 2>/dev/null || echo 0)"
   [ "$major" -ge 18 ] 2>/dev/null || fail "Node 18+ required (found $(node -v 2>/dev/null || echo none)). Install from https://nodejs.org or via mise/nvm."
-  need npm
+}
+
+# The repo is a Bun workspace (packageManager bun@…, a bun.lock, and build:cli
+# runs `bun run`). It used to be installed with npm, which stopped working twice:
+# build:cli itself calls bun, and npm 11.19+ refuses to prepare the one git
+# dependency in the tree (EALLOWSCRIPTS) even under --ignore-scripts. So the
+# installer brings Bun, into ~/.bun, the way bun.sh/install does by default.
+ensure_bun() {
+  if command -v bun >/dev/null 2>&1; then return; fi
+  if [ -x "$HOME/.bun/bin/bun" ]; then PATH="$HOME/.bun/bin:$PATH"; export PATH; return; fi
+  info "installing Bun (the repo's package manager) into ~/.bun…"
+  need unzip
+  curl -fsSL https://bun.sh/install | bash >"$BUILD_LOG" 2>&1 \
+    || step_fail "Bun install failed"
+  PATH="$HOME/.bun/bin:$PATH"; export PATH
+  command -v bun >/dev/null 2>&1 || step_fail "Bun installed but is not on PATH ($HOME/.bun/bin)"
+  ok "Bun $(bun --version)"
 }
 
 # Commit the tracked ref currently points at. The .sha media type returns it as
@@ -122,6 +139,7 @@ step_fail() {
 do_install() {
   detect_os; check_node
   need curl; need tar
+  ensure_bun
   trap cleanup_stage INT TERM HUP
 
   info "fetching logicsrc@$LOGICSRC_REF from GitHub…"
@@ -134,24 +152,10 @@ do_install() {
   ok "downloaded${short_sha:+ ($short_sha)}"
 
   info "installing dependencies (this can take a minute)…"
-  # Git dependency preparation can break under a newer system npm even with
-  # --ignore-scripts. Use the repo's tested npm where its Node engine permits
-  # it, while retaining the documented older-Node CLI installation path.
-  ( cd "$STAGE" &&
-    npm_spec="" &&
-    # Older tags predate the selector; preserve their install behavior too.
-    if [ -f scripts/install-npm.cjs ]; then
-      npm_spec="$(node scripts/install-npm.cjs)" || exit 1
-    fi
-    if [ -n "$npm_spec" ]; then
-      npm exec --yes --package="$npm_spec" -- npm install --no-audit --no-fund --ignore-scripts
-    else
-      npm install --no-audit --no-fund --ignore-scripts
-    fi
-  ) >"$BUILD_LOG" 2>&1 \
-    || step_fail "npm install failed"
+  ( cd "$STAGE" && bun install --ignore-scripts ) >"$BUILD_LOG" 2>&1 \
+    || step_fail "bun install failed"
   info "building the CLI…"
-  ( cd "$STAGE" && npm run build:cli ) >>"$BUILD_LOG" 2>&1 \
+  ( cd "$STAGE" && bun run build:cli ) >>"$BUILD_LOG" 2>&1 \
     || step_fail "build failed"
 
   # The wrapper execs this exact file, so its absence is the failure the user
