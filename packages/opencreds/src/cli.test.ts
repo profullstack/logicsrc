@@ -13,7 +13,12 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
-import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
+
+// Every test here starts a fresh `npx tsx` process, which alone takes 3-5s on a
+// loaded CI runner. Vitest's 5s default turned that into random red builds
+// ("Test timed out in 5000ms" on a different case each run), so these get room.
+vi.setConfig({ testTimeout: 30_000 });
 
 const execFileAsync = promisify(execFile);
 const CLI = fileURLToPath(new URL("./cli.ts", import.meta.url));
