@@ -8,6 +8,8 @@ import type { NextRequest } from "next/server";
 const ALLOWED_APEX = process.env.PUBLIC_DOMAIN || "logicsrc.com";
 
 export async function proxy(request: NextRequest): Promise<Response | NextResponse> {
+  // The status page's health probe skips the crawl gateway and host redirect.
+  if (request.nextUrl.pathname === "/api/health") return NextResponse.next();
   // Crawl gateway first: AI training crawlers get 402 Payment Required (or the
   // sales page at /crawl) unless they present a paid pass. People, Googlebot
   // and retrieval crawlers fall through to everything below.
