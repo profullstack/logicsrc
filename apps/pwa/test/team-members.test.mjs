@@ -21,7 +21,7 @@ if (isPostgres) {
   await db.execute("DROP SCHEMA public CASCADE");
   await db.execute("CREATE SCHEMA public");
 }
-for (const file of ["001_auth.sql", "002_credshare.sql"]) {
+for (const file of ["001_auth.sql", "002_credshare.sql", "005_machine_keys.sql"]) {
   const sql = readFileSync(join(here, "..", "src", isPostgres ? "migrations-pg" : "migrations", file), "utf8");
   for (const statement of sql.split(/;\s*$/m).map((s) => s.trim()).filter(Boolean)) await db.execute(statement);
 }

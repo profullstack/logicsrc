@@ -74,7 +74,31 @@ function keyCard({ publicKey, hasGrant, grantCommand }) {
  * The page body below the app bar. `secrets` are rows of credshare_secrets
  * (name, version, updated_at only — ciphertext is fetched by vault.js).
  */
-export function vaultPageBody({ team, vault, secrets, hasGrant, publicKey, email }) {
+/**
+ * The caller's machine keys for this vault's team. Granting one seals the
+ * vault key to the machine's own public key, in the browser, after unlock --
+ * the same crypto_box_seal the CLI's `teams grant --key` does.
+ */
+function machineKeysCard({ machineKeys, team, parts }) {
+  if (!machineKeys || machineKeys.length === 0) return "";
+  const grantCmd = (name) => `logicsrc teams grant ${team.slug} ${parts ? `${parts.project} ${parts.env}` : "<project> <env>"} --key ${name}`;
+  const rows = machineKeys.map((k) => {
+    const state = k.granted
+      ? `<span class="pill on">granted</span> <button class="btn compact danger" type="button" data-action="revoke-key" data-key-id="${esc(k.id)}">Revoke</button>`
+      : k.publicKey
+        ? `<button class="btn compact" type="button" data-action="grant-key" data-key-id="${esc(k.id)}" data-key-public="${esc(k.publicKey)}" data-key-name="${esc(k.name)}" disabled title="Unlock with your key first">Grant</button>`
+        : `<span class="pill warn">not used yet</span> <span class="faint" style="font-size:.74rem">run one command with the key on the box first</span>`;
+    return `<tr><td><code>${esc(k.name)}</code> <span class="faint">${esc(k.prefix)}…</span></td><td>${k.readOnly ? "read-only" : "read-write"}</td><td><div class="member-actions">${state}</div></td></tr>`;
+  }).join("");
+  return `<div class="card" id="machine-keys" style="margin-bottom:18px"><div class="card-head"><span class="h">Machine keys</span></div>
+    <div class="card-body">
+      <p class="dim" style="margin-top:0;font-size:.85rem">Your machine API keys scoped to this vault. Unlock above, then grant: the vault key is sealed to the machine's own key in this browser. Or from a terminal: <code>${esc(grantCmd(machineKeys[0].name))}</code></p>
+      <div class="table-scroll"><table><thead><tr><th>Key</th><th>Access</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>
+      <p data-role="key-status" class="mono" style="font-size:.8rem;margin-bottom:0"></p>
+    </div></div>`;
+}
+
+export function vaultPageBody({ team, vault, secrets, hasGrant, publicKey, email, machineKeys = [] }) {
   const parts = splitVaultName(vault.name);
   const grantCommand = `logicsrc teams grant ${team.slug} ${parts ? `${parts.project} ${parts.env}` : "<project> <env>"} ${email || "<your email>"}`;
   const rows = secrets.map((s) => `<tr data-key-name="${esc(s.name)}">
@@ -89,6 +113,7 @@ export function vaultPageBody({ team, vault, secrets, hasGrant, publicKey, email
     <p class="faint mono" style="font-size:.8rem;margin:0 0 6px"><a href="/dashboard">teams</a> / ${esc(team.slug)} / vaults</p>
     <div class="section-title"><h1 style="font-size:1.5rem"><code>${esc(vault.name)}</code></h1><span class="count">${secrets.length}</span></div>
     ${keyCard({ publicKey, hasGrant, grantCommand })}
+    ${machineKeysCard({ machineKeys, team, parts })}
     <div class="card"><div class="card-body">
       ${secrets.length
         ? `<div class="table-scroll"><table><thead><tr><th>Name</th><th>Value</th><th>v</th><th>Updated (UTC)</th></tr></thead><tbody>${rows}</tbody></table></div>`

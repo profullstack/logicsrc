@@ -7,7 +7,7 @@ import { get, all, run } from "../db.mjs";
 import { id, sha256 } from "../lib/crypto.mjs";
 import { page, footer, appBar, esc } from "../lib/html.mjs";
 import { requireAuth, csrfInput } from "../lib/session.mjs";
-import { createApiKey, listApiKeys, revokeApiKey } from "../lib/apikey.mjs";
+import { ApiKeyError, createApiKey, keyCoversVault, listApiKeys, machineKeyOptions, revokeApiKey } from "../lib/apikey.mjs";
 import { requestOrigin } from "../lib/origin.mjs";
 import { CLI_HINT } from "../lib/cli-hint.mjs";
 import { vaultPageBody } from "../lib/vault-page.mjs";
@@ -117,7 +117,14 @@ pagesRouter.get("/teams/:slug/vaults/:vaultId", requireAuth, async (req, res, ne
   const secrets = await all(`SELECT name, version, updated_at FROM credshare_secrets WHERE vault_id = ? ORDER BY name`, [vault.id]);
   const grant = await get(`SELECT 1 FROM credshare_vault_grants WHERE vault_id = ? AND user_id = ?`, [vault.id, req.user.id]);
   const key = await get(`SELECT public_key FROM credshare_keys WHERE user_id = ?`, [req.user.id]);
+  // The caller's own machine keys that could hold this vault, and which already do.
+  const granted = new Set((await all(`SELECT api_key_id FROM credshare_key_grants WHERE vault_id = ?`, [vault.id])).map((r) => r.api_key_id));
+  const machineKeys = (await listApiKeys(req.user.id))
+    .filter((k) => k.kind === "machine" && k.team_id === vault.team_id && keyCoversVault(k, vault.name))
+    .filter((k) => k.expiresAt === null || k.expiresAt > Date.now())
+    .map((k) => ({ id: k.id, name: k.name, prefix: k.prefix, publicKey: k.public_key || "", readOnly: k.readOnly, granted: granted.has(k.id) }));
   const body = `${appBar(req)}${vaultPageBody({
+    machineKeys,
     team: ctx.team,
     vault,
     secrets,
@@ -238,32 +245,87 @@ pagesRouter.post("/teams/accept", requireAuth, async (req, res) => {
   res.redirect("/dashboard");
 });
 
-// ---- settings: CLI API keys ----
+// ---- settings: API keys (person keys for the CLI, machine keys for boxes) ----
+const KEY_ERRORS = {
+  "no-name": "Give the key a name.",
+};
+
+function keyRow(req, k) {
+  const when = (ms) => (ms ? new Date(Number(ms)).toISOString().slice(0, 10) : "never");
+  const facts = k.kind === "machine"
+    ? [
+        `<span class="pill">machine</span>`,
+        `<span class="pill">${esc(k.team_slug || "?")}</span>`,
+        `<span class="pill ${k.readOnly ? "" : "warn"}">${k.readOnly ? "read-only" : "read-write"}</span>`,
+        k.vaultScope ? `<span class="faint">vaults: ${k.vaultScope.map(esc).join(", ")}</span>` : `<span class="faint">every vault in the team</span>`,
+        `<span class="faint">expires ${esc(when(k.expiresAt))}${k.expiresAt && k.expiresAt <= Date.now() ? " (expired)" : ""}</span>`,
+        k.public_key ? `<span class="pill on">identity registered</span>` : `<span class="pill warn">not used yet</span>`
+      ].join(" ")
+    : `<span class="pill">person</span> <span class="faint">acts as you</span>`;
+  return `
+    <div style="display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)" class="mono">
+      <div style="flex:1;min-width:0"><div>${esc(k.name)} <span class="faint">${esc(k.prefix)}…</span></div>
+        <div style="font-size:.74rem;margin-top:4px;display:flex;gap:6px;flex-wrap:wrap;align-items:center">${facts}<span class="faint">last used ${esc(when(k.last_used_at))}</span></div></div>
+      <form method="post" action="/settings/apikeys/${esc(k.id)}/delete" style="margin:0">${csrfInput(req)}<button class="btn danger" style="padding:5px 10px;font-size:.72rem">revoke</button></form>
+    </div>`;
+}
+
 pagesRouter.get("/settings", requireAuth, async (req, res) => {
   const keys = await listApiKeys(req.user.id);
+  const teams = await all(`SELECT t.slug FROM credshare_teams t JOIN credshare_members m ON m.team_id = t.id WHERE m.user_id = ? AND m.status = 'active' ORDER BY t.slug`, [req.user.id]);
   const newKey = req.query.key ? String(req.query.key) : "";
-  const keysHtml = keys.length ? keys.map((k) => `
-    <div style="display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)" class="mono">
-      <span style="flex:1">${esc(k.name)} <span class="faint">${esc(k.prefix)}…</span></span>
-      <form method="post" action="/settings/apikeys/${k.id}/delete" style="margin:0">${csrfInput(req)}<button class="btn danger" style="padding:5px 10px;font-size:.72rem">revoke</button></form>
-    </div>`).join("") : `<div class="faint mono" style="font-size:.78rem;padding:6px 0">no keys yet</div>`;
+  const err = req.query.err ? String(req.query.err).slice(0, 200) : "";
+  const keysHtml = keys.length ? keys.map((k) => keyRow(req, k)).join("") : `<div class="faint mono" style="font-size:.78rem;padding:6px 0">no keys yet</div>`;
   const body = `${appBar(req)}
-  <main class="wrap" style="max-width:640px;padding-top:30px">
+  <main class="wrap" style="max-width:720px;padding-top:30px">
     <h1 style="font-size:1.5rem;margin-bottom:20px">Settings</h1>
     ${newKey ? `<div class="notice ok">New API key (copy it now — shown once):<br><b class="mono" style="word-break:break-all">${esc(newKey)}</b></div>` : ""}
-    <div class="card"><div class="card-head"><span class="h">API keys · for the logicsrc CLI</span></div>
+    ${err ? `<div class="notice err">${esc(KEY_ERRORS[err] || err)}</div>` : ""}
+    <div class="card"><div class="card-head"><span class="h">API keys</span></div>
       <div class="card-body">
-        <p class="dim" style="font-size:.85rem;margin-top:0">Usually you don't need these — <code>logicsrc login</code> creates one automatically. Manual keys are for CI.</p>
+        <p class="dim" style="font-size:.85rem;margin-top:0">A <b>person</b> key acts as you; <code>logicsrc login</code> makes one for you. A <b>machine</b> key is for a deploy box or CI: one team, the vaults you list, read-only unless you say otherwise, its own identity key. After the box runs one command with it, grant it a vault from the vault page or with <code>logicsrc teams grant &lt;team&gt; &lt;project&gt; &lt;env&gt; --key &lt;name&gt;</code>.</p>
         ${keysHtml}
-        <form method="post" action="/settings/apikeys" style="margin-top:14px;display:flex;gap:10px">${csrfInput(req)}
-          <input name="name" placeholder="key name (e.g. ci)" style="flex:1"><button class="btn">Create key</button></form>
+        <form method="post" action="/settings/apikeys" style="margin-top:16px" data-role="new-key">${csrfInput(req)}
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <label class="field" style="flex:2;min-width:160px"><span>Name</span><input name="name" placeholder="e.g. dev2-deploy" required maxlength="40"></label>
+            <label class="field" style="flex:1;min-width:120px"><span>Kind</span><select name="kind"><option value="user">person</option><option value="machine">machine</option></select></label>
+          </div>
+          <fieldset data-role="machine-fields" style="border:1px solid var(--line);border-radius:9px;padding:12px 14px 0;margin:0 0 14px">
+            <legend class="faint mono" style="font-size:.7rem;padding:0 6px">machine keys only</legend>
+            <div style="display:flex;gap:10px;flex-wrap:wrap">
+              <label class="field" style="flex:1;min-width:140px"><span>Team</span><select name="team">${teams.length ? teams.map((t) => `<option value="${esc(t.slug)}">${esc(t.slug)}</option>`).join("") : `<option value="">(no teams)</option>`}</select></label>
+              <label class="field" style="flex:2;min-width:200px"><span>Vaults (blank = all in the team)</span><input name="vaults" placeholder="web--prod, api--prod"></label>
+            </div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+              <label class="field" style="flex:1;min-width:140px"><span>Expires</span><select name="expires"><option value="">never</option><option value="30d">in 30 days</option><option value="90d" selected>in 90 days</option><option value="365d">in a year</option></select></label>
+              <label class="dim" style="flex:1;min-width:160px;display:flex;gap:8px;align-items:center;font-size:.85rem;margin-bottom:14px"><input type="checkbox" name="readOnly" value="1" checked style="width:auto"> Read-only (pull, never push)</label>
+            </div>
+          </fieldset>
+          <button class="btn">Create key</button>
+        </form>
       </div></div>
   </main>${footer}`;
   res.type("html").send(page({ title: "LogicSRC ▸ settings", body }));
 });
 
 pagesRouter.post("/settings/apikeys", requireAuth, async (req, res) => {
-  const { plaintext } = await createApiKey(req.user.id, String(req.body.name || "cli").slice(0, 40));
+  const name = String(req.body.name || "").trim().slice(0, 40);
+  if (!name) return res.redirect("/settings?err=no-name");
+  let opts = {};
+  if (req.body.kind === "machine") {
+    try {
+      opts = await machineKeyOptions(req.user.id, {
+        team: req.body.team,
+        vaults: req.body.vaults,
+        readOnly: req.body.readOnly === "1",
+        expires: req.body.expires || null
+      });
+    } catch (error) {
+      if (error instanceof ApiKeyError) return res.redirect("/settings?err=" + encodeURIComponent(error.message));
+      throw error;
+    }
+  }
+  const { plaintext } = await createApiKey(req.user.id, name, opts);
   res.redirect("/settings?key=" + encodeURIComponent(plaintext));
 });
 pagesRouter.post("/settings/apikeys/:id/delete", requireAuth, async (req, res) => {

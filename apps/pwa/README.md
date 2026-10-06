@@ -38,3 +38,12 @@ Postgres (it drops and recreates the `public` schema of that database).
 
 The CLI connects with `LOGICSRC_API=<origin> logicsrc login` (browser OAuth-PKCE
 loopback → an `lsk_` key). See `docs/credential-sharing.md` in the repo root.
+
+Deploy boxes and CI use a **machine key** instead (`logicsrc keys create`, or
+Settings ▸ API keys): one team, optional vault list, read-only by default,
+optional expiry, and its own identity public key on the `api_keys` row. Vault
+keys reach it through `credshare_key_grants`. Routes: `GET|POST /api/keys`,
+`DELETE /api/keys/:id` (session or a person's key only) and
+`GET|POST /api/credshare/vaults/:id/key-grants`,
+`DELETE /api/credshare/vaults/:id/key-grants/:keyId`. Migration
+`005_machine_keys.sql`; tests in `test/machine-keys.test.mjs`.

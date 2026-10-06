@@ -30,8 +30,10 @@ import {
   teamsPullAction,
   secretsTeamsLinkAction,
   secretsUpAction,
-  secretsDownAction
+  secretsDownAction,
+  prepareApiKeyAuth
 } from "./teams.js";
+import { registerKeysCommands } from "./keys.js";
 import { sshAgentAction, sshListAction, sshPullAction, sshPushAction } from "./ssh.js";
 import { credentialsRotateAction } from "./rotate.js";
 import { boards, tasks } from "./fixtures.js";
@@ -111,11 +113,13 @@ program
   .command("login")
   .option("--api-url <url>", "LogicSRC credentials app URL (default: $LOGICSRC_API, else the hosted app)")
   .option("--token <lsk_key>", "Use an existing API key instead of the browser flow (CI)")
+  .option("--api-key <lsk_key>", "Log this box in with a machine API key; it gets its own identity key (never yours)")
+  .option("--reregister", "With --api-key: move a machine key that registered on another box here (drops its grants)")
   .option("--device", "Force the device-code flow (approve from a browser on another machine)")
   .option("--web", "Force the loopback browser flow (needs a browser on THIS machine)")
   .description("Log in via your browser for team credential sharing; registers your device identity key.")
   .action(async (options) => {
-    await loginAction({ apiUrl: options.apiUrl, token: options.token, device: options.device, web: options.web });
+    await loginAction({ apiUrl: options.apiUrl, token: options.token, apiKey: options.apiKey, reregister: options.reregister, device: options.device, web: options.web });
   });
 
 program.command("logout").description("Clear local auth token (keeps your identity key).").action(async () => {
@@ -738,6 +742,12 @@ Quick start (<team> is e.g. profullstack; see yours with "logicsrc teams list"):
   logicsrc teams grant <team> <project> <env> dev@example.com
   logicsrc teams key                                       your key, to read values in the web app
 
+Deploy boxes and CI (a machine API key: one team, scoped vaults, read-only, its own identity):
+  logicsrc keys create <name> --team <team> --vault <project>--<env> --out deploy.key
+  LOGICSRC_API_KEY=$(cat deploy.key) logicsrc whoami       on the box, once
+  logicsrc teams grant <team> <project> <env> --key <name> from your machine
+  LOGICSRC_API_KEY=$(cat deploy.key) logicsrc teams pull <team> <project> <env> --env .env
+
 Categories: logicsrc teams categories. Help for one command: logicsrc teams <command> --help
 `
   );
@@ -892,10 +902,11 @@ teams
   .argument("<slug>", "Team slug")
   .argument("<project>", "Project name")
   .argument("<env>", "Environment name (prod, staging, …)")
-  .argument("<email>", "Teammate email to grant vault access")
+  .argument("[email]", "Teammate email to grant vault access")
+  .option("--key <name>", "Grant one of your machine API keys instead of a person (name, id, or prefix)")
   .option("--format <format>", "table, json, or markdown", "table")
-  .description("Grant a member decryption access to a vault (re-wraps the vault key to their key).")
-  .action((slug, project, env, email, options) => teamsGrantAction(slug, project, env, email, options.format as OutputFormat));
+  .description("Grant a member, or a machine API key, decryption access to a vault (re-seals the vault key to their key).")
+  .action((slug, project, env, email, options) => teamsGrantAction(slug, project, env, email, options.format as OutputFormat, { key: options.key }));
 
 teams
   .command("push")
@@ -1171,6 +1182,17 @@ async function runYoloArcade(game: string, repo?: string) {
     logs: ["AgentSwarm master session started.", "Task continues while Waiting Arcade is active."]
   });
 }
+
+registerKeysCommands(program);
+
+// LOGICSRC_API_KEY: prepare the key's identity (first use registers a machine
+// key's own public key) before any command that talks to the credentials app.
+const API_KEY_COMMANDS = new Set(["teams", "secrets", "credentials", "whoami", "keys"]);
+program.hook("preAction", async (_root, actionCommand) => {
+  let top: Command = actionCommand;
+  while (top.parent && top.parent !== program) top = top.parent;
+  if (API_KEY_COMMANDS.has(top.name())) await prepareApiKeyAuth();
+});
 
 registerOpenContextCommands(program);
 registerOpenCredsCommands(program);

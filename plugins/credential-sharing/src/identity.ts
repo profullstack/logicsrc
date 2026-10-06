@@ -23,6 +23,18 @@ export interface LocalIdentity {
   keys: IdentityKeyPair;
   createdAt: string;
   updatedAt: string;
+  /**
+   * Set on an API-key identity (keys/<prefix>.json): what kind of key it is.
+   * A "machine" identity holds the machine's OWN keypair, registered on the
+   * key; a "user" one holds no keypair and borrows this machine's identity.json.
+   */
+  keyKind?: "user" | "machine";
+  keyId?: string;
+  keyName?: string;
+  /** Machine keys: the one team the key is scoped to. */
+  team?: string;
+  /** The public key is on the server, so no command needs to register it again. */
+  registered?: boolean;
 }
 
 /**
@@ -178,8 +190,84 @@ export async function updateIdentity(
   return next;
 }
 
-/** Require a logged-in identity (token present), or throw with guidance. */
+/** `LOGICSRC_API_KEY`, the headless credential for deploy boxes and CI. */
+export function envApiKey(): string | undefined {
+  const value = process.env.LOGICSRC_API_KEY?.trim();
+  return value ? value : undefined;
+}
+
+/** The display prefix the server stores for a key (and names its identity file after). */
+export function apiKeyPrefix(token: string): string {
+  return token.slice(0, 12);
+}
+
+/** Where an API key's own identity lives: `<home>/keys/<prefix>.json`, mode 0600. */
+export function keyIdentityPath(token: string): string {
+  const prefix = apiKeyPrefix(token).replace(/[^A-Za-z0-9_-]/g, "_");
+  return join(logicsrcHome(), "keys", `${prefix}.json`);
+}
+
+/** Set by `logicsrc login --api-key`: which key identity commands use when no env key is set. */
+export function activeKeyPath(): string {
+  return join(logicsrcHome(), "active-key.json");
+}
+
+export function readActiveKeyIdentity(): LocalIdentity | undefined {
+  const pointer = activeKeyPath();
+  if (!existsSync(pointer)) return undefined;
+  try {
+    const { file } = JSON.parse(readFileSync(pointer, "utf8")) as { file?: string };
+    return file ? readIdentity(file) : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+export function writeKeyIdentity(identity: LocalIdentity, file: string): void {
+  writeSecure(file, { ...identity, updatedAt: new Date().toISOString() });
+}
+
+export function setActiveKey(file: string): void {
+  writeSecure(activeKeyPath(), { file });
+}
+
+/**
+ * Turn an API-key identity file into what commands authenticate with.
+ * A user key borrows this machine's identity.json keypair (it acts as the
+ * person); a machine key carries its own.
+ */
+function fromKeyIdentity(stored: LocalIdentity, token: string): LocalIdentity & { apiToken: string; email: string } {
+  if (stored.keyKind === "user") {
+    const own = readIdentity();
+    if (!own?.keys?.secretKey) {
+      throw new Error("This API key acts as a person, and this machine has no identity key. Run: logicsrc login");
+    }
+    return { ...own, apiUrl: stored.apiUrl, apiToken: token, email: stored.email ?? own.email ?? "" };
+  }
+  return { ...stored, apiToken: token, email: stored.email ?? "" };
+}
+
+/**
+ * Require a logged-in identity (token present), or throw with guidance.
+ *
+ * Precedence: `LOGICSRC_API_KEY` (headless), then a key chosen with
+ * `logicsrc login --api-key`, then the person's own `logicsrc login`. The CLI
+ * prepares an API-key identity before any command runs (ensureApiKeyIdentity),
+ * so reading it here stays synchronous.
+ */
 export function requireAuth(file = identityPath()): LocalIdentity & { apiToken: string; email: string } {
+  const token = file === identityPath() ? envApiKey() : undefined;
+  if (token) {
+    const stored = readIdentity(keyIdentityPath(token));
+    if (!stored) {
+      throw new Error("LOGICSRC_API_KEY is set but its identity is not prepared yet. Run any logicsrc command with it once (e.g. logicsrc whoami).");
+    }
+    return fromKeyIdentity(stored, token);
+  }
+  if (file === identityPath()) {
+    const active = readActiveKeyIdentity();
+    if (active?.apiToken) return fromKeyIdentity(active, active.apiToken);
+  }
   const identity = readIdentity(file);
   if (!identity?.apiToken || !identity.email) {
     throw new Error('Not logged in. Run "logicsrc login" first.');

@@ -362,6 +362,54 @@ Safety properties, all enforced rather than documented:
 - A rotation that would leave the caller ungranted, grant nobody, or cover the
   wrong number of secrets is rejected before anything is written.
 
+A machine API key holding the vault (see below) is re-sealed to the new key too,
+unless its owner is revoked in the same rotation; a key that is not re-sealed
+loses access, never keeps a stale grant.
+
+### Machine API keys (deploy boxes and CI)
+
+A person's key (what `logicsrc login` stores) acts as that person, with their
+identity key. Logging a fresh box in with one used to upload the box's new
+keypair as the person's identity, replacing the real one. A **machine key** is
+the credential for a box instead:
+
+- scoped to **one team**, and optionally to named vaults (`<project>--<env>`);
+- **read-only** unless created with `--read-write` (then it may write only
+  vaults it was granted), and never able to manage teams, members or grants;
+- optionally **expiring**; revoked or expired keys get a 401;
+- unable to mint, list or revoke keys, to read `/api/me`, or to touch the
+  personal vault;
+- holding its **own identity key**, generated on the box the first time a
+  command runs with it and registered on the key, never on the person. The
+  vault key reaches it as a grant sealed to that public key
+  (`credshare_key_grants`), and every read is in the vault's audit trail
+  with the key's id.
+
+```bash
+# On your machine: make the key (the secret is shown once; --out writes it 0600)
+logicsrc keys create dev2-deploy --team acme --vault web--prod --expires 90d --out deploy.key
+
+# On the box, once: creates ~/.config/logicsrc/keys/<prefix>.json (0600) and registers its public key
+LOGICSRC_API_KEY=$(cat deploy.key) logicsrc whoami
+
+# On your machine: seal the vault key to the box's key
+logicsrc teams grant acme web prod --key dev2-deploy
+
+# On the box, from then on (or store the key with: logicsrc login --api-key <key>)
+LOGICSRC_API_KEY=$(cat deploy.key) logicsrc teams pull acme web prod --env .env
+
+logicsrc keys list                 # scope, expiry, whether the box registered yet
+logicsrc keys revoke dev2-deploy   # 401 from now on; its grants are deleted
+```
+
+The same keys are in the web app (**Settings ▸ API keys**: kind, team, vaults,
+read-only, expiry; a vault page grants a machine key in the browser after
+unlock), in the API (`GET|POST /api/keys`, `DELETE /api/keys/:id`,
+`GET|POST /api/credshare/vaults/:id/key-grants`,
+`DELETE /api/credshare/vaults/:id/key-grants/:keyId`), and in the MCP server
+(`list_api_keys`, `create_api_key`, `revoke_api_key`, authenticated with
+`LOGICSRC_API_KEY`, which must be a person's key).
+
 `logicsrc login` picks its flow from the machine it runs on:
 
 - **Has its own browser** → loopback OAuth-PKCE: a `127.0.0.1` listener catches
@@ -370,7 +418,9 @@ Safety properties, all enforced rather than documented:
   prints a short code, you approve it from a browser on any other machine.
   Force it with `--device`. A loopback redirect would be useless here — the
   browser's `127.0.0.1` is not the CLI's machine.
-- **Unattended** → `--token lsk_…` from **Settings ▸ API keys**.
+- **Unattended** → `--api-key lsk_…` with a machine key (its own identity; see
+  above), or `--token lsk_…` with a person's key from **Settings ▸ API keys**.
+  `--token` given a machine key takes the `--api-key` path.
 
 It talks to the hosted credentials app by default. Point it elsewhere (local dev,
 self-hosted) with `LOGICSRC_API=http://localhost:8080 logicsrc login` or

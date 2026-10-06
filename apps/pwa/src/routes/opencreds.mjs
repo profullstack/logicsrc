@@ -13,7 +13,7 @@
 // Auth: browser session or `Bearer lsk_…` (the logicsrc CLI). Mounted at /api/opencreds.
 import { Router } from "express";
 import { get, all, run } from "../db.mjs";
-import { bearer, userForApiKey } from "../lib/apikey.mjs";
+import { bearer, keyForBearer } from "../lib/apikey.mjs";
 
 export const opencredsRouter = Router();
 
@@ -22,8 +22,14 @@ export const MAX_ITEMS_PER_PUSH = 500;
 
 function api(handler) {
   return async (req, res) => {
-    const user = req.user || (await userForApiKey(bearer(req)));
-    if (!user) return res.status(401).json({ error: "Not authenticated. Run: logicsrc login" });
+    let user = req.user;
+    if (!user) {
+      const found = await keyForBearer(bearer(req));
+      if (!found) return res.status(401).json({ error: "Not authenticated. Run: logicsrc login" });
+      // The personal vault is the person's alone; a machine key never reaches it.
+      if (found.key.kind === "machine") return res.status(403).json({ error: "A machine API key cannot read the personal vault.", code: "machine_key_forbidden" });
+      user = found.user;
+    }
     try {
       await handler(req, res, user);
     } catch (e) {
