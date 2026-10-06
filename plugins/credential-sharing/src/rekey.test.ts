@@ -167,4 +167,28 @@ describe("planVaultRekey", () => {
     expect(plan.secrets).toEqual([]);
     expect(plan.grants).toHaveLength(1);
   });
+  it("re-seals machine keys to the new key, dropping ones whose owner is revoked or that have no key", async () => {
+    const me = await generateIdentityKeyPair();
+    const box = await generateIdentityKeyPair();
+    const gone = await generateIdentityKeyPair();
+    const { secrets, wrapped } = await makeVault({ TOKEN: "hunter2" }, [me]);
+
+    const plan = await planVaultRekey({
+      myWrappedDek: wrapped[0],
+      identity: me,
+      secrets,
+      members: [member("me@example.com", me), member("left@example.com", gone, { status: "invited" })],
+      machineKeys: [
+        { keyId: "k_box", name: "dev2-deploy", owner: "me@example.com", publicKey: box.publicKey },
+        { keyId: "k_left", name: "their-ci", owner: "left@example.com", publicKey: gone.publicKey },
+        { keyId: "k_new", name: "never-used", owner: "me@example.com", publicKey: null }
+      ]
+    });
+
+    expect(plan.keyGrants.map((g) => g.keyId)).toEqual(["k_box"]);
+    expect(plan.keysDropped.sort()).toEqual(["never-used", "their-ci"]);
+    // The box opens the NEW key, which decrypts the rotated ciphertext.
+    const boxDek = await unwrapVaultKey(plan.keyGrants[0].wrappedDek, box);
+    expect(await decryptValue({ nonce: plan.secrets[0].nonce, ciphertext: plan.secrets[0].ciphertext }, boxDek)).toBe("hunter2");
+  });
 });

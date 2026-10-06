@@ -57,6 +57,16 @@ async function acquireDek(ctx: TeamContext, slug: string, vault: string, vaultId
     return unwrapVaultKey(wrappedDek, ctx.identity.keys);
   } catch (error) {
     if (!(error instanceof TeamApiError) || error.status !== 403) throw error;
+    if (ctx.identity.keyKind === "machine") {
+      // A machine key opens vaults only through a grant sealed to its own key,
+      // and never mints a vault key: a person grants it, from their machine.
+      const at = vault.indexOf("--");
+      const where = at > 0 ? `${vault.slice(0, at)} ${vault.slice(at + 2)}` : `<project> <env>`;
+      throw new Error(
+        `This machine key${ctx.identity.keyName ? ` (${ctx.identity.keyName})` : ""} has no grant for team:${slug}/${vault}. ` +
+          `A member with access runs:\n  logicsrc teams grant ${slug} ${where} --key ${ctx.identity.keyName ?? "<key name>"}`
+      );
+    }
     // No grant yet. If nobody holds the DEK, this is a fresh vault we can own.
     const { grants } = await ctx.client.listGrants(vaultId);
     const someoneHasAccess = grants.some((g) => g.hasAccess);
@@ -77,7 +87,10 @@ export const teamProvider: CredentialProvider = {
   name: "LogicSRC Team Vault",
   description: "End-to-end-encrypted team credential vault. Share secrets with teammates by email — the server never sees plaintext.",
   status: "available",
-  authRequirements: ["logicsrc login (identity at ~/.config/logicsrc/identity.json)"],
+  authRequirements: [
+    "logicsrc login (identity at ~/.config/logicsrc/identity.json)",
+    "or LOGICSRC_API_KEY=<machine key> (identity at ~/.config/logicsrc/keys/<prefix>.json)"
+  ],
   capabilities: { readValues: true, readNames: true, write: true, delete: true, rollback: true, audit: true },
 
   async inspect(endpoint: CredentialEndpoint): Promise<CredentialSnapshot> {

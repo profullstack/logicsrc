@@ -3,7 +3,7 @@ import { createHash, randomBytes } from "node:crypto";
 import { hostname } from "node:os";
 import { spawn } from "node:child_process";
 import { createInterface } from "node:readline/promises";
-import { chmodSync, writeFileSync } from "node:fs";
+import { chmodSync, rmSync, writeFileSync } from "node:fs";
 import { OTHER_CATEGORY, SECRET_CATEGORIES, categorizeSecret, csvLine, parseCategories } from "@logicsrc/opencreds";
 import {
   TeamClient,
@@ -20,9 +20,15 @@ import {
   unwrapVaultKey,
   wrapVaultKey,
   decryptValue,
+  ensureApiKeyIdentity,
+  envApiKey,
+  setActiveKey,
+  activeKeyPath,
+  readActiveKeyIdentity,
   type CredentialEndpoint,
   type RemoteVault
 } from "@logicsrc/plugin-credential-sharing";
+import { findKey } from "./keys.js";
 import { print, printColumns, type OutputFormat } from "./format.js";
 import { linkedDirectory, requireSecretsLink, writeSecretsLink } from "./secrets-link.js";
 
@@ -244,7 +250,46 @@ async function resolveVaultId(client: TeamClient, slug: string, vault: string): 
   throw new Error(`Vault "${vault}" not found in team "${slug}". Create it by pushing to it.${hint}`);
 }
 
-export async function loginAction(options: { apiUrl?: string; token?: string; device?: boolean; web?: boolean }): Promise<void> {
+/**
+ * Before a command that talks to the credentials app: when LOGICSRC_API_KEY is
+ * set, make sure that key's identity exists (and, for a machine key, that its
+ * own public key is registered). After the first run this is a file read.
+ */
+export async function prepareApiKeyAuth(): Promise<void> {
+  const token = envApiKey();
+  if (!token) return;
+  const result = await ensureApiKeyIdentity(token, { apiUrl: resolveApiUrl() });
+  if (result.registeredNow) {
+    const { identity } = result;
+    console.error(
+      `Registered this machine's identity for API key "${identity.keyName}" (${result.file}). ` +
+        `A member can now grant it a vault: logicsrc teams grant ${identity.team ?? "<team>"} <project> <env> --key ${identity.keyName}`
+    );
+  }
+}
+
+/** `logicsrc login --api-key` (or --token with a machine key): store the key and its own identity on this box. */
+async function apiKeyLogin(token: string, apiUrl: string, reregister?: boolean): Promise<void> {
+  const result = await ensureApiKeyIdentity(token, { apiUrl, persistToken: true, reregister });
+  setActiveKey(result.file);
+  const { identity } = result;
+  if (identity.keyKind === "machine") {
+    console.error(
+      `Logged in with machine key "${identity.keyName}" (team ${identity.team}). Its own identity is in ${result.file}; ` +
+        "your personal identity was not touched."
+    );
+    console.error(`Grant it a vault from a member's machine: logicsrc teams grant ${identity.team} <project> <env> --key ${identity.keyName}`);
+  } else {
+    console.error(`Logged in with a person's API key${identity.email ? ` (${identity.email})` : ""}. It uses this machine's identity.json.`);
+  }
+  print({ email: identity.email ?? null, key: identity.keyName ?? null, kind: identity.keyKind, team: identity.team ?? null, apiUrl }, "table");
+}
+
+export async function loginAction(options: { apiUrl?: string; token?: string; apiKey?: string; reregister?: boolean; device?: boolean; web?: boolean }): Promise<void> {
+  if (options.apiKey) {
+    await apiKeyLogin(options.apiKey.trim(), resolveApiUrl(undefined, options.apiUrl), options.reregister);
+    return;
+  }
   const identity = await loadOrCreateIdentity();
   const apiUrl = resolveApiUrl(identity, options.apiUrl);
 
@@ -256,6 +301,12 @@ export async function loginAction(options: { apiUrl?: string; token?: string; de
   if (token) {
     const client = new TeamClient({ apiUrl, token });
     const me = await client.me();
+    // A machine key must never upload this box's keypair as the person's
+    // identity (that silently replaced the real one). It gets its own instead.
+    if (me.key?.kind === "machine") {
+      await apiKeyLogin(token, apiUrl, options.reregister);
+      return;
+    }
     email = me.user.email;
     userId = me.user.id;
   } else {
@@ -281,17 +332,43 @@ export async function loginAction(options: { apiUrl?: string; token?: string; de
   const client = new TeamClient({ apiUrl, token: token! });
   await client.uploadPublicKey(identity.keys.publicKey);
   await updateIdentity({ email: email ?? undefined, userId, apiToken: token, apiUrl });
+  // A person login takes over from any key chosen with --api-key.
+  rmSync(activeKeyPath(), { force: true });
 
   console.error(`Logged in${email ? ` as ${email}` : ""}. Identity key registered on ${apiUrl}.`);
   print({ email, apiUrl }, "table");
 }
 
 export async function logoutAction(): Promise<void> {
+  const active = readActiveKeyIdentity();
+  if (active) {
+    rmSync(activeKeyPath(), { force: true });
+    console.error(`Stopped using API key "${active.keyName ?? "?"}" on this machine. Revoke it with: logicsrc keys revoke ${active.keyName ?? "<name>"}`);
+    return;
+  }
   await updateIdentity({ apiToken: undefined, email: undefined, userId: undefined });
   console.error(`Logged out (local token cleared; revoke the key at /settings). Identity key retained — delete ${identityPath()} to remove it.`);
 }
 
 export async function whoamiAction(format: OutputFormat): Promise<void> {
+  if (envApiKey() || readActiveKeyIdentity()) {
+    const { client, identity } = authedClient();
+    const me = await client.me();
+    print({
+      loggedIn: true,
+      via: envApiKey() ? "LOGICSRC_API_KEY" : "logicsrc login --api-key",
+      email: me.user.email,
+      key: me.key?.name ?? null,
+      kind: me.key?.kind ?? "user",
+      teams: me.teams.map((t) => t.slug),
+      vaults: me.key?.kind === "machine" ? (me.key.vaults?.join(",") || "all in team") : undefined,
+      readOnly: me.key?.kind === "machine" ? me.key.readOnly : undefined,
+      expires: me.key?.expiresAt ? new Date(me.key.expiresAt).toISOString() : "never",
+      publicKey: me.user.publicKey,
+      apiUrl: resolveApiUrl(identity)
+    }, format);
+    return;
+  }
   const identity = readIdentity();
   if (!identity?.apiToken) {
     print({ loggedIn: false, apiUrl: defaultApiUrl(), hint: "Run: logicsrc login" }, format);
@@ -402,9 +479,35 @@ export async function teamsVaultsAction(slug: string, format: OutputFormat): Pro
   );
 }
 
-export async function teamsGrantAction(slug: string, project: string, env: string, email: string, format: OutputFormat): Promise<void> {
+export async function teamsGrantAction(
+  slug: string,
+  project: string,
+  env: string,
+  email: string | undefined,
+  format: OutputFormat,
+  options: { key?: string } = {}
+): Promise<void> {
+  if (!email && !options.key) throw new Error("Grant whom? Give a teammate's email, or --key <name> for a machine API key.");
+  if (email && options.key) throw new Error("Give an email or --key, not both.");
   const { client, identity } = authedClient();
   const vault = vaultName(project, env);
+
+  // Resolve the machine key before touching the vault, so a typo fails fast.
+  let machineKey: Awaited<ReturnType<TeamClient["listApiKeys"]>>["keys"][number] | undefined;
+  if (options.key) {
+    machineKey = findKey((await client.listApiKeys()).keys, options.key);
+    if (machineKey.kind !== "machine") {
+      throw new Error(`"${machineKey.name}" is a person's key; it reads through that person's own grant. Grant the person by email instead.`);
+    }
+    if (machineKey.expired) throw new Error(`"${machineKey.name}" has expired. Make a new one: logicsrc keys create …`);
+    if (!machineKey.publicKey) {
+      throw new Error(
+        `The key "${machineKey.name}" has not registered its public key yet, so there is nothing to seal the vault key to. ` +
+          `Run any command with the key once first, on the box: LOGICSRC_API_KEY=<key> logicsrc whoami`
+      );
+    }
+  }
+
   const vaultId = await resolveVaultId(client, slug, vault);
 
   // Unwrap the vault DEK with our own key, then re-wrap it to the target member.
@@ -418,6 +521,17 @@ export async function teamsGrantAction(slug: string, project: string, env: strin
     throw error;
   }
   const dek = await unwrapVaultKey(myWrapped, identity.keys);
+
+  if (machineKey) {
+    await client.putKeyGrant(vaultId, machineKey.id, await wrapVaultKey(dek, machineKey.publicKey!));
+    console.error(
+      `Granted machine key "${machineKey.name}" ${machineKey.readOnly ? "read-only " : ""}access to ${slug}/${vault}. ` +
+        `On the box: LOGICSRC_API_KEY=<key> logicsrc teams pull ${slug} ${project} ${env} --env .env`
+    );
+    print({ granted: machineKey.name, key: `${machineKey.prefix}…`, team: slug, project, env, vault }, format);
+    return;
+  }
+  if (!email) throw new Error("unreachable: no grant target");
 
   const target = await client.lookupUser(email);
   if (!target.userId) throw new Error(`${email} has not logged in yet. Ask them to run: logicsrc login --email ${email}`);

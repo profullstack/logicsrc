@@ -16,6 +16,8 @@
   var STORE = "logicsrc.identityKey";
   var status = card.querySelector("[data-role=status]");
   var values = null; // name -> plaintext, once unlocked
+  var vaultDek = null; // the vault key (bytes), once unlocked -- only ever used to seal it to a machine key
+  var keysCard = document.getElementById("machine-keys");
 
   function say(msg) { if (status) status.textContent = msg || ""; }
 
@@ -90,7 +92,7 @@
               out[s.name] = na.to_string(na.crypto_secretbox_open_easy(na.from_base64(s.ciphertext, V), na.from_base64(s.nonce, V), dek));
             } catch (_) { failed.push(s.name); }
           });
-          return { values: out, failed: failed };
+          return { values: out, failed: failed, dek: dek };
         });
       });
     });
@@ -107,6 +109,13 @@
 
   function render(result) {
     values = result.values;
+    vaultDek = result.dek || null;
+    if (keysCard && vaultDek) {
+      Array.prototype.forEach.call(keysCard.querySelectorAll("[data-action=grant-key]"), function (b) {
+        b.disabled = false;
+        b.removeAttribute("title");
+      });
+    }
     var rows = main.querySelectorAll("tr[data-key-name]");
     Array.prototype.forEach.call(rows, function (tr) {
       var name = tr.getAttribute("data-key-name");
@@ -193,6 +202,61 @@
     if (saved && registered && hasGrant) {
       unlock(saved).then(render, function (err) { forget(); say(err.message); });
     }
+  }
+
+  function csrfHeader() {
+    var m = document.cookie.match(/(?:^|; )mc_csrf=([^;]+)/);
+    return m ? decodeURIComponent(m[1]) : "";
+  }
+
+  function keySay(msg, bad) {
+    var el = keysCard && keysCard.querySelector("[data-role=key-status]");
+    if (!el) return;
+    el.textContent = msg || "";
+    el.style.color = bad ? "var(--danger,#c23a3a)" : "";
+  }
+
+  // Machine keys: seal the vault key to the machine's own public key, here.
+  if (keysCard) {
+    keysCard.addEventListener("click", function (e) {
+      var btn = e.target && e.target.closest ? e.target.closest("[data-action]") : null;
+      if (!btn) return;
+      var action = btn.getAttribute("data-action");
+      var keyId = btn.getAttribute("data-key-id");
+      var url = "/api/credshare/vaults/" + encodeURIComponent(vaultId) + "/key-grants";
+      if (action === "grant-key") {
+        if (!vaultDek) { keySay("Unlock the vault with your key first.", true); return; }
+        btn.disabled = true;
+        sodium().then(function (na) {
+          var V = na.base64_variants.ORIGINAL;
+          var sealed = na.to_base64(na.crypto_box_seal(vaultDek, na.from_base64(btn.getAttribute("data-key-public"), V)), V);
+          return fetch(url, {
+            method: "POST",
+            credentials: "same-origin",
+            headers: { "content-type": "application/json", "x-csrf-token": csrfHeader() },
+            body: JSON.stringify({ keyId: keyId, wrappedDek: sealed })
+          });
+        }).then(function (res) {
+          return res.json().catch(function () { return {}; }).then(function (body) {
+            if (!res.ok) throw new Error(body.error || ("HTTP " + res.status));
+            keySay("Granted " + btn.getAttribute("data-key-name") + ". Reload to see it listed.");
+            btn.textContent = "Granted";
+          });
+        }).catch(function (err) { btn.disabled = false; keySay(err.message, true); });
+      } else if (action === "revoke-key") {
+        btn.disabled = true;
+        fetch(url + "/" + encodeURIComponent(keyId), {
+          method: "DELETE",
+          credentials: "same-origin",
+          headers: { "x-csrf-token": csrfHeader() }
+        }).then(function (res) {
+          return res.json().catch(function () { return {}; }).then(function (body) {
+            if (!res.ok) throw new Error(body.error || ("HTTP " + res.status));
+            location.reload();
+          });
+        }).catch(function (err) { btn.disabled = false; keySay(err.message, true); });
+      }
+    });
   }
 
   // No identity registered yet: make one here and register only its public half.

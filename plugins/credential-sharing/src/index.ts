@@ -78,8 +78,18 @@ export {
   type RemoteMember,
   type RemoteVault,
   type RemoteSecret,
-  type RemoteGrantRow
+  type RemoteGrantRow,
+  type RemoteKeyInfo,
+  type RemoteApiKey,
+  type RemoteKeyGrant,
+  type CreateApiKeyInput
 } from "./client.js";
+export {
+  ensureApiKeyIdentity,
+  ApiKeyAuthError,
+  type EnsureApiKeyOptions,
+  type EnsuredApiKey
+} from "./machine-key.js";
 export {
   generateIdentityKeyPair,
   generateVaultKey,
@@ -103,6 +113,12 @@ export {
   defaultApiUrl,
   envApiUrl,
   resolveApiUrl,
+  envApiKey,
+  apiKeyPrefix,
+  keyIdentityPath,
+  activeKeyPath,
+  readActiveKeyIdentity,
+  setActiveKey,
   DEFAULT_API_URL,
   type LocalIdentity
 } from "./identity.js";

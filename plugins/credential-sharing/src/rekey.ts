@@ -59,6 +59,12 @@ export interface RekeyPlanInput {
    *   crypto hygiene -- re-key without revoking anyone.
    */
   scope?: "active" | "all";
+  /**
+   * Machine API keys holding this vault today. Each is re-sealed to the new DEK
+   * unless its owner loses access in this same rotation; the server drops any
+   * key grant a re-key does not re-seal, so leaving one out revokes it.
+   */
+  machineKeys?: Array<{ keyId: string; name: string; owner: string | null; publicKey: string | null }>;
 }
 
 export interface RekeyPlan {
@@ -70,6 +76,10 @@ export interface RekeyPlan {
   revoked: string[];
   /** Members skipped because they have no public key to seal to. */
   skipped: Array<{ email: string; reason: string }>;
+  /** New sealed DEKs for the machine keys that keep access. */
+  keyGrants: Array<{ keyId: string; wrappedDek: string }>;
+  /** Machine keys this rotation drops (owner revoked, or no public key). */
+  keysDropped: string[];
 }
 
 /** Members who have no key yet cannot be sealed to, whatever the scope. */
@@ -151,5 +161,16 @@ export async function planVaultRekey(input: RekeyPlanInput): Promise<RekeyPlan> 
     );
   }
 
-  return { secrets, grants, revoked, skipped };
+  const keyGrants: Array<{ keyId: string; wrappedDek: string }> = [];
+  const keysDropped: string[] = [];
+  const revokedOwners = new Set(revoked.map((e) => e.toLowerCase()));
+  for (const key of input.machineKeys ?? []) {
+    if (!key.publicKey || (key.owner && revokedOwners.has(key.owner.toLowerCase()))) {
+      keysDropped.push(key.name);
+      continue;
+    }
+    keyGrants.push({ keyId: key.keyId, wrappedDek: await wrapVaultKey(newDek, key.publicKey) });
+  }
+
+  return { secrets, grants, revoked, skipped, keyGrants, keysDropped };
 }

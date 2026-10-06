@@ -16,7 +16,7 @@ import { get, run } from "../db.mjs";
 import { token, sha256 } from "../lib/crypto.mjs";
 import { page, footer, appBar, esc } from "../lib/html.mjs";
 import { requireAuth, csrfInput } from "../lib/session.mjs";
-import { createApiKey, bearer, userForApiKey } from "../lib/apikey.mjs";
+import { createApiKey, bearer, keyForBearer } from "../lib/apikey.mjs";
 import { requestOrigin } from "../lib/origin.mjs";
 import { config } from "../config.mjs";
 
@@ -226,7 +226,11 @@ cliRouter.post("/cli/device/token", async (req, res) => {
 });
 
 cliRouter.get("/api/me", async (req, res) => {
-  const user = await userForApiKey(bearer(req));
-  if (!user) return res.status(401).json({ error: "invalid or missing API key" });
+  const found = await keyForBearer(bearer(req));
+  if (!found) return res.status(401).json({ error: "invalid, revoked, expired or missing API key" });
+  // /api/me answers "which person is this" -- a machine key is not one. It asks
+  // /api/credshare/me, which describes the key and its scope instead.
+  if (found.key.kind === "machine") return res.status(403).json({ error: "A machine API key has no person to describe. Use /api/credshare/me.", code: "machine_key_forbidden" });
+  const { user } = found;
   res.json({ id: user.id, email: user.email || null, name: user.display_name });
 });

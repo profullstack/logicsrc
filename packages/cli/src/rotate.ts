@@ -89,7 +89,16 @@ async function rotateOne(
     throw error;
   }
 
-  const [{ secrets }, { grants }] = await Promise.all([client.listSecrets(vault.id), client.listGrants(vault.id)]);
+  const [{ secrets }, { grants }, keyGrants] = await Promise.all([
+    client.listSecrets(vault.id),
+    client.listGrants(vault.id),
+    // Machine keys holding the vault get the new DEK too. A server from before
+    // machine keys has no such route; then there are none to carry over.
+    client.listKeyGrants(vault.id).then((r) => r.keyGrants).catch((error: unknown) => {
+      if (error instanceof TeamApiError && error.status === 404) return [];
+      throw error;
+    })
+  ]);
 
   const members: RekeyMember[] = grants.map((g) => ({
     email: g.email,
@@ -103,7 +112,8 @@ async function rotateOne(
     identity: identity.keys,
     secrets: secrets.map((s) => ({ name: s.name, nonce: s.nonce, ciphertext: s.ciphertext, fingerprint: s.fingerprint })),
     members,
-    scope: options.scope
+    scope: options.scope,
+    machineKeys: keyGrants.map((k) => ({ keyId: k.keyId, name: k.name, owner: k.owner, publicKey: k.publicKey }))
   });
 
   const summary: Record<string, unknown> = {
@@ -112,6 +122,8 @@ async function rotateOne(
     keeps: plan.grants.map((g) => g.email),
     revokes: plan.revoked,
     skipped: plan.skipped,
+    machineKeys: plan.keyGrants.length,
+    machineKeysDropped: plan.keysDropped,
     applied: false
   };
 
@@ -122,7 +134,8 @@ async function rotateOne(
   const result = await client.rekeyVault(vault.id, {
     grants: plan.grants,
     secrets: plan.secrets,
-    revoke: plan.revoked
+    revoke: plan.revoked,
+    keyGrants: plan.keyGrants
   });
   summary.applied = true;
   summary.rekeyed = result.rekeyed;
