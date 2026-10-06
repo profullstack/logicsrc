@@ -2,7 +2,7 @@
 
 OpenProfile.md is one Markdown file that says who you are and where you are, for people and agents alike. It is the profile equivalent of meta tags: a small, plain document any site can serve, any platform can link to, and any reader (a person, a crawler, an agent, a job board, a resharing network) can read without being taught a schema first. It is maintained by Profullstack, Inc. as part of the LogicSRC open-standards surface.
 
-Status: **0.3**. This is a description of a convention already in use by [myna](https://mynaposter.com) and [agenticjobs](https://agenticjobs.work), published so others can serve and read the same file.
+Status: **0.4**. This is a description of a convention already in use by [myna](https://mynaposter.com) and [agenticjobs](https://agenticjobs.work), published so others can serve and read the same file.
 
 Slug: `openprofile`
 
@@ -19,6 +19,8 @@ The pieces already exist. `rel="me"` proves two pages belong to the same person.
 
 - **Kind**: person
 - **Handle**: @ada
+- **Emoji**: 🔭
+- **Pronouns**: she/her
 - **Web**: https://ada.example
 - **Email**: ada@example.com
 - **Avatar**: https://ada.example/ada.png
@@ -54,6 +56,8 @@ An agent's file adds one section:
 
 - **Kind**: agent
 - **Handle**: @athena
+- **Emoji**: 🦉
+- **Pronouns**: it/its
 - **Web**: https://athena.example
 
 Ships small fixes to open source projects, nightly.
@@ -104,8 +108,10 @@ There are nine, and every one of them degrades rather than fails.
 
 - `Kind`: `person`, `agent` or `organization`. Absent means unstated, which a reader should say rather than assume. `bot` is accepted as an alias for `agent`; `org` and `company` for `organization`.
 - `Handle`: the name you go by, with or without a leading `@`. One handle, the one you would write on a slide. Per-network handles belong in Accounts.
-- `Web`: your home page. Where the file itself lives is a separate question, answered under Discovery.
-- `Email`, `Location`, `Pronouns`, `Timezone`, `Languages`: kept as written.
+- `Emoji`: one emoji that is your mark, shown next to your name the way a chat app shows a status emoji or a directory shows a favicon. One grapheme as written (`🔭`, `🏳️‍🌈`, `👩🏽‍💻`), or an [OpenEmoji](/docs/openemoji) shortcode (`:telescope:`), which a reader resolves to the emoji and may draw as the OpenEmoji artwork. A reader shows the first grapheme and ignores the rest; it never uses it as a name or a handle.
+- `Pronouns`: how to refer to you, as written: `she/her`, `he/him`, `they/them`, `it/its`, more than one (`she/they`), or a sentence (`any`, `ask me`, `use my name`). A reader shows it next to the name, uses it when it writes about you in the third person, and never infers it from a name, a photo or `Gender`. Absent means unstated, and a reader that must refer to you uses your name or `they`.
+- `Web`: your home page. `Website`, `Homepage` and `Site` are accepted aliases and mean the same; a writer uses `Web`. Where the file itself lives is a separate question, answered under Discovery.
+- `Email`, `Location`, `Timezone`, `Languages`: kept as written.
 - `Gender`: kept as written. `woman`, `man` and `non-binary` are the words in common use, and any other word is kept too. It may sit here or under Match, and means the same in both; a reader takes whichever it finds first.
 - `Voice`: how a machine should sound when it speaks for you. `female`, `male`, or a provider's voice id kept as written (`Telnyx.KokoroTTS.am_adam`, `ElevenLabs.Premade.Rachel`). A platform that reads your words aloud (a phone room reading a chat line, a screen reader for your posts) chooses from `Voice`, then `Gender`, then `Pronouns`, and never from a name, a photo or another site. Absent all three, it picks one and keeps picking the same one for you.
 - `Avatar`: an image URL.
@@ -259,6 +265,7 @@ By hand, in any editor, in five minutes. Or:
 | 0.1.1 | 2026-09-12 | `DID` in the identity block and in Operator: did:key, did:web and AT Protocol did:plc accepted verbatim. |
 | 0.2 | 2026-09-13 | Rule 9, Match: the keys a dating site or any matching platform needs, about you and about who you seek; `Born` required for matching and 18 or over; no inference; `Photos` section. |
 | 0.3 | 2026-09-13 | `Gender` and `Voice` in the identity block: how a machine should sound when it speaks for you, and the order a reader chooses in (`Voice`, `Gender`, `Pronouns`, never a name or a photo). First reader: nixamp's party line reading trollbox lines to callers. |
+| 0.4 | 2026-10-06 | `Emoji`, `Pronouns` and `Web` are default fields, in the example and in every reader's structured view. `Emoji`: one grapheme or an OpenEmoji shortcode, your mark next to your name. `Pronouns`: shown as written, used in the third person, never inferred. `Website`, `Homepage` and `Site` are aliases of `Web`. |
 
 ## License
 
