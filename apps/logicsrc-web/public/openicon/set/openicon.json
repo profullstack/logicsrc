@@ -1,7 +1,7 @@
 {
   "openicon": "0.1",
   "name": "OpenIcon",
-  "version": "2026-09-24",
+  "version": "2026-10-10",
   "license": "MIT",
   "homepage": "https://logicsrc.com/openicon",
   "made_by": "ai",
@@ -2211,6 +2211,55 @@
       "hq": {
         "png": "hq/png/{size}/thumbs-up.png",
         "webp": "hq/webp/{size}/thumbs-up.webp",
+        "made_by": "ai"
+      }
+    },
+    {
+      "key": "vote",
+      "name": "Vote",
+      "category": "action",
+      "aliases": [
+        "upvote"
+      ],
+      "keywords": [
+        "up",
+        "rank",
+        "poll"
+      ],
+      "svg": "svg/vote.svg",
+      "png": "png/{size}/vote.png",
+      "tui": {
+        "nerd": "󰨠",
+        "nerd_code": "f0a20",
+        "nerd_name": "md-vote_outline",
+        "unicode": "▲",
+        "ascii": "^"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/vote.png",
+          "webp": "hq/webp/{size}/vote.webp",
+          "made_by": "ai"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/vote.png",
+          "webp": "styles/agentic-matte/webp/{size}/vote.webp",
+          "made_by": "ai"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/vote.png",
+          "webp": "styles/agentic-machined/webp/{size}/vote.webp",
+          "made_by": "ai"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/vote.png",
+          "webp": "styles/agentic-emissive/webp/{size}/vote.webp",
+          "made_by": "ai"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/vote.png",
+        "webp": "hq/webp/{size}/vote.webp",
         "made_by": "ai"
       }
     },
@@ -5330,6 +5379,55 @@
       "hq": {
         "png": "hq/png/{size}/shuffle.png",
         "webp": "hq/webp/{size}/shuffle.webp",
+        "made_by": "ai"
+      }
+    },
+    {
+      "key": "random",
+      "name": "Random",
+      "category": "media",
+      "aliases": [
+        "dice",
+        "die"
+      ],
+      "keywords": [
+        "chance",
+        "roll"
+      ],
+      "svg": "svg/random.svg",
+      "png": "png/{size}/random.png",
+      "tui": {
+        "nerd": "󰇎",
+        "nerd_code": "f01ce",
+        "nerd_name": "md-dice_5",
+        "unicode": "⚄",
+        "ascii": "?"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/random.png",
+          "webp": "hq/webp/{size}/random.webp",
+          "made_by": "ai"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/random.png",
+          "webp": "styles/agentic-matte/webp/{size}/random.webp",
+          "made_by": "ai"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/random.png",
+          "webp": "styles/agentic-machined/webp/{size}/random.webp",
+          "made_by": "ai"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/random.png",
+          "webp": "styles/agentic-emissive/webp/{size}/random.webp",
+          "made_by": "ai"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/random.png",
+        "webp": "hq/webp/{size}/random.webp",
         "made_by": "ai"
       }
     },
@@ -18251,8 +18349,8 @@
       "ai_provider": "OpenAI",
       "ai_prompt_url": "hq/style.txt",
       "coverage": {
-        "total": 370,
-        "done": 370
+        "total": 372,
+        "done": 372
       }
     },
     "agentic-matte": {
@@ -18279,8 +18377,8 @@
       "ai_provider": "OpenAI",
       "ai_prompt_url": "styles/agentic-matte/style.txt",
       "coverage": {
-        "total": 370,
-        "done": 370
+        "total": 372,
+        "done": 372
       }
     },
     "agentic-machined": {
@@ -18307,8 +18405,8 @@
       "ai_provider": "OpenAI",
       "ai_prompt_url": "styles/agentic-machined/style.txt",
       "coverage": {
-        "total": 370,
-        "done": 370
+        "total": 372,
+        "done": 372
       }
     },
     "agentic-emissive": {
@@ -18335,8 +18433,8 @@
       "ai_provider": "OpenAI",
       "ai_prompt_url": "styles/agentic-emissive/style.txt",
       "coverage": {
-        "total": 370,
-        "done": 370
+        "total": 372,
+        "done": 372
       }
     }
   },
@@ -18364,8 +18462,8 @@
     "ai_provider": "OpenAI",
     "ai_prompt_url": "hq/style.txt",
     "coverage": {
-      "total": 370,
-      "done": 370
+      "total": 372,
+      "done": 372
     }
   }
 }
