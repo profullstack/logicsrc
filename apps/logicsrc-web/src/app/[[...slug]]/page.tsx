@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { renderPageMarkup } from "@/lib/page-markup";
 import { pageMetadata, specMetadata } from "@/lib/page-meta";
 import { HomeInteractivity } from "@/components/home-interactivity";
+import { siteFooterHtml } from "@/lib/site-footer";
 
 // The legacy SPA served the same single page for every top-level path and just
 // scrolled to the matching section. We preserve those URLs (they are canonical
@@ -50,9 +51,10 @@ export default async function Page({
     }
   }
 
+  const footer = await siteFooterHtml();
   return (
     <>
-      <div id="app" dangerouslySetInnerHTML={{ __html: renderPageMarkup(slug?.[0] ? `/${slug[0]}` : "/") }} />
+      <div id="app" dangerouslySetInnerHTML={{ __html: renderPageMarkup(slug?.[0] ? `/${slug[0]}` : "/", footer) }} />
       <HomeInteractivity />
     </>
   );

@@ -2,6 +2,8 @@ import type { ReactNode } from "react";
 import { renderInstallCommand } from "@/lib/install-command";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { SideNav } from "@/components/side-nav";
+import { Footer } from "@profullstack/footer/react";
+import { SITE_FOOTER, SITE_FOOTER_COLOR } from "@/lib/site-footer";
 
 /**
  * The site chrome for every standalone route: the sidebar that unfolds to
@@ -37,37 +39,9 @@ export function SiteShell({
       <section className="workspace">
         <Breadcrumbs leaf={crumbTitle} />
         {children}
-        <footer
-          style={{
-            maxWidth: "72rem",
-            margin: "2rem auto 0",
-            padding: "1.25rem 0",
-            borderTop: "1px solid #d9ded4",
-            display: "flex",
-            flexWrap: "wrap",
-            gap: "0.75rem",
-            justifyContent: "space-between",
-            fontSize: "0.85rem",
-            color: "#5b6b7a",
-          }}
-        >
-          <span>© {new Date().getFullYear()} Profullstack, Inc. · LogicSRC</span>
-          <span style={{ display: "flex", gap: "0.75rem" }}>
-            <a href="/specs" style={{ color: "inherit" }}>Specs</a>
-            <a href="/docs" style={{ color: "inherit" }}>Docs</a>
-            <a href="/blog/rss.xml" style={{ color: "inherit" }}>RSS</a>
-            <a href="/llms.txt" style={{ color: "inherit" }}>llms.txt</a>
-            <a href="/terms" style={{ color: "inherit" }}>Terms</a>
-            <a href="/privacy" style={{ color: "inherit" }}>Privacy</a>
-          </span>
-          {/* Member of the Profullstack OpenWebring (/openwebring): the ring reads these links. */}
-          <span style={{ display: "flex", gap: "0.75rem", width: "100%" }}>
-            <a href="https://rssamplifier.com/ring/profullstack/previous?from=https%3A%2F%2Flogicsrc.com%2F" rel="prev" title="Previous site" style={{ color: "inherit" }}>{"<<"}</a>
-            <a href="https://rssamplifier.com/ring/profullstack" style={{ color: "inherit" }}>Profullstack</a>
-            <a href="https://rssamplifier.com/ring/profullstack/next?from=https%3A%2F%2Flogicsrc.com%2F" rel="next" title="Next site" style={{ color: "inherit" }}>{">>"}</a>
-            <a href="https://rssamplifier.com/ring/profullstack/random?from=https%3A%2F%2Flogicsrc.com%2F" title="Random site" aria-label="Random site" style={{ color: "inherit" }}>{"⚄"}</a>
-          </span>
-        </footer>
+        <div style={{ color: SITE_FOOTER_COLOR, marginTop: "2rem" }}>
+          <Footer {...SITE_FOOTER} />
+        </div>
       </section>
     </main>
   );
