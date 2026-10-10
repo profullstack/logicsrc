@@ -90,6 +90,14 @@ describe("server-rendered page markup", () => {
     expect(markup).toContain("/api/oauth/coinpay/start");
     expect(markup).toContain('id="project-request-form"');
   });
+
+  it("carries the Profullstack webring links (the ring verifier reads the homepage)", () => {
+    const markup = renderPageMarkup();
+    const from = "from=https%3A%2F%2Flogicsrc.com%2F";
+    for (const hop of ["previous", "next", "random"]) {
+      expect(markup).toContain(`https://rssamplifier.com/ring/profullstack/${hop}?${from}`);
+    }
+  });
 });
 
 describe("payment rail selection", () => {

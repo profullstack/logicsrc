@@ -60,11 +60,12 @@ export function SiteShell({
             <a href="/terms" style={{ color: "inherit" }}>Terms</a>
             <a href="/privacy" style={{ color: "inherit" }}>Privacy</a>
           </span>
-          {/* Member of the Profullstack OpenWebring (/openwebring): the ring reads these three links. */}
+          {/* Member of the Profullstack OpenWebring (/openwebring): the ring reads these links. */}
           <span style={{ display: "flex", gap: "0.75rem", width: "100%" }}>
-            <a href="https://rssamplifier.com/ring/profullstack/previous?from=https%3A%2F%2Flogicsrc.com%2F" rel="prev" style={{ color: "inherit" }}>{"<<"}</a>
+            <a href="https://rssamplifier.com/ring/profullstack/previous?from=https%3A%2F%2Flogicsrc.com%2F" rel="prev" title="Previous site" style={{ color: "inherit" }}>{"<<"}</a>
             <a href="https://rssamplifier.com/ring/profullstack" style={{ color: "inherit" }}>Profullstack</a>
-            <a href="https://rssamplifier.com/ring/profullstack/next?from=https%3A%2F%2Flogicsrc.com%2F" rel="next" style={{ color: "inherit" }}>{">>"}</a>
+            <a href="https://rssamplifier.com/ring/profullstack/next?from=https%3A%2F%2Flogicsrc.com%2F" rel="next" title="Next site" style={{ color: "inherit" }}>{">>"}</a>
+            <a href="https://rssamplifier.com/ring/profullstack/random?from=https%3A%2F%2Flogicsrc.com%2F" title="Random site" aria-label="Random site" style={{ color: "inherit" }}>{"⚄"}</a>
           </span>
         </footer>
       </section>
