@@ -431,6 +431,17 @@ COINPAY_STATUS=pending_acceptance</code></pre>
           `).join("")}
         </div>
       </section>
+      <!-- Member of the Profullstack OpenWebring (/openwebring). The homepage is this
+           markup, not SiteShell, so it carries its own copy of the shell's ring footer:
+           the ring's verifier reads these links from the server-rendered homepage. -->
+      <footer style="max-width:72rem;margin:2rem auto 0;padding:1.25rem 0;border-top:1px solid #d9ded4;font-size:0.85rem;color:#5b6b7a">
+        <nav class="webring" aria-label="Profullstack webring" style="display:flex;gap:0.75rem;justify-content:center">
+          <a href="https://rssamplifier.com/ring/profullstack/previous?from=https%3A%2F%2Flogicsrc.com%2F" rel="prev" title="Previous site" style="color:inherit">&lt;&lt;</a>
+          <a href="https://rssamplifier.com/ring/profullstack" style="color:inherit">Profullstack</a>
+          <a href="https://rssamplifier.com/ring/profullstack/next?from=https%3A%2F%2Flogicsrc.com%2F" rel="next" title="Next site" style="color:inherit">&gt;&gt;</a>
+          <a href="https://rssamplifier.com/ring/profullstack/random?from=https%3A%2F%2Flogicsrc.com%2F" title="Random site" aria-label="Random site" style="color:inherit">&#x2684;</a>
+        </nav>
+      </footer>
     </section>
   </main>
 `;
