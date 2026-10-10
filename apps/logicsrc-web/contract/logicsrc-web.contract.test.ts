@@ -4,6 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { proxy } from "../src/proxy";
 import { renderPageMarkup } from "@/lib/page-markup";
+import { siteFooterHtml } from "@/lib/site-footer";
 import { choosePaymentRail, signSession, verifyCoinPayWebhook, verifySession } from "@/lib/coinpay";
 import { POST as coinpayCheckout } from "@/app/api/hire-us/coinpay-checkout/route";
 import { POST as projectRequest } from "@/app/api/hire-us/project-request/route";
@@ -91,8 +92,10 @@ describe("server-rendered page markup", () => {
     expect(markup).toContain('id="project-request-form"');
   });
 
-  it("carries the Profullstack webring links (the ring verifier reads the homepage)", () => {
-    const markup = renderPageMarkup();
+  it("carries the Profullstack webring links (the ring verifier reads the homepage)", async () => {
+    process.env.PROFULLSTACK_FOOTER_OFFLINE = "1";
+    const markup = renderPageMarkup("/", await siteFooterHtml());
+    expect(markup).toContain("data-pfs-footer");
     const from = "from=https%3A%2F%2Flogicsrc.com%2F";
     for (const hop of ["previous", "next", "random"]) {
       expect(markup).toContain(`https://rssamplifier.com/ring/profullstack/${hop}?${from}`);
