@@ -90,9 +90,9 @@ export default function OpenIconPage(): ReactNode {
 
       <div className="band" id="gallery">
         <div style={{ maxWidth: "52rem", marginBottom: "0.4rem" }}>
-          <h2 style={{ margin: "0 0 0.4rem" }}>The reference set: all 370</h2>
+          <h2 style={{ margin: "0 0 0.4rem" }}>The reference set: all 372</h2>
           <p style={{ color: "#41505d", margin: 0, lineHeight: 1.6 }}>
-            259 icons drawn on a 24x24 grid with 2px strokes, and 111 brand logos from Simple Icons and Font Awesome
+            261 icons drawn on a 24x24 grid with 2px strokes, and 111 brand logos from Simple Icons and Font Awesome
             Free. Search by name, alias or keyword, filter by category or brand, and switch between the SVG and the
             glyph a terminal gets (Nerd Font, Unicode, ASCII). Click one for its glyphs, SVG and downloads. The files
             are in <a href={OPENICON_REPO}>profullstack/openicon</a>.
