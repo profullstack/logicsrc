@@ -1,7 +1,9 @@
 # CLI reference
 
 ```bash
-npx @logicsrc/opencontext <command>       # standalone
+curl -fsSL https://logicsrc.com/opencontext/install.sh | sh   # install the `opencontext` command
+opencontext <command>                     # standalone
+npx @logicsrc/opencontext <command>       # standalone, without installing
 logicsrc context <command>      # inside the LogicSRC CLI
 ```
 

@@ -125,6 +125,15 @@ replaceable workers without losing institutional state.
 
 > An agent should be replaceable without losing organizational knowledge.
 
+Install the `opencontext` command (brings its own Node if yours is older than 20; remove with
+`sh ~/.local/share/opencontext/uninstall.sh`):
+
+```bash
+curl -fsSL https://logicsrc.com/opencontext/install.sh | sh
+```
+
+Or run it without installing:
+
 ```bash
 npx @logicsrc/opencontext init my-context
 npx @logicsrc/opencontext validate --strict
