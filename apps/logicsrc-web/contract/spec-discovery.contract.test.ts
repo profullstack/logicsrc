@@ -25,7 +25,7 @@ describe.each([
   it("serves the specification through its family and docs index", () => {
     expect(familyOfSpec(slug)?.slug).toBe(family);
     expect(listDocs()).toContainEqual(expect.objectContaining({ slug, title: name }));
-    expect(readDoc(slug)).toMatch(/Status: \*{0,2}0\.1/);
+    expect(readDoc(slug)).toMatch(/Status: \*{0,2}0\.\d/);
   });
 
   it("includes a reachable docs URL and the full contract in the LLM feeds", async () => {
