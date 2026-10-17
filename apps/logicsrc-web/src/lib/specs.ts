@@ -109,8 +109,8 @@ export const FAMILIES: Family[] = [
       s("openstack", "OpenStack.md", "One Markdown file a project serves about what it is built on: every interface and its layers, the rules, what it must never depend on, inherited by the next project through Extends"),
       s("openwebring", "OpenWebring", "A webring that says who made it: one file a ring serves about its members, one a member serves about itself, and made_by on every member"),
       s("openwiki", "OpenWiki", "A wiki that is a folder of Markdown files: [[Page]] links, a small front matter, a descriptor and a page index, every page and revision readable as Markdown, and made_by on every revision"),
-      s("openl10n", "OpenL10n", "The record of what a file says, in any language: one transcript per media per language, kept once, translations beside the original", { parent: "openfile" }),
-      s("openi18n", "OpenI18n", "One file a service serves about the languages it speaks, which it can turn into which, how to ask for one, and where texts are translated")
+      s("openl10n", "OpenL10n", "The record of what a file says, in any language: one transcript per media per language, kept once, translations beside the original", { parent: "openfile", landing: undefined }),
+      s("openi18n", "OpenI18n", "One file a service serves about the languages it speaks, which it can turn into which, how to ask for one, and where texts are translated", { landing: undefined })
     ]
   },
   {
