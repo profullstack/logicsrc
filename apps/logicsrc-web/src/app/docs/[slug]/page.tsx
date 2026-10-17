@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
 import { marked } from "marked";
-import { DOC_SLUGS, docExcerpt, docSubtitle, docTitle, readDoc } from "@/lib/docs";
+import { DOC_SLUGS, docExcerpt, docSubtitle, docTitle, readDoc, resolveDocLinks } from "@/lib/docs";
 import { composeTitle, contentMetadata, notFoundMetadata } from "@/lib/page-meta";
 import { SiteShell } from "@/components/site-shell";
 import { sanitizeRenderedHtml } from "@/lib/html";
@@ -46,7 +46,7 @@ export default async function DocPage({
   if (!md) notFound();
 
   const rawHtml = await marked.parse(md);
-  const html = sanitizeRenderedHtml(rawHtml);
+  const html = resolveDocLinks(sanitizeRenderedHtml(rawHtml));
 
   return (
     <SiteShell active="Docs" crumbTitle={docTitle(md, slug)}>

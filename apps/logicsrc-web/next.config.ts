@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { docSlugs } from "./src/lib/specs";
 
 // The CommandBoard API (boards, tasks, plugins, /health) runs as its own
 // service. In the old custom server.js it was mounted in-process; here we proxy
@@ -82,10 +83,22 @@ export function buildRewrites(
  * the home page; the spec it promised is OpenFleet, which has its own landing
  * page. Permanent, so the old URL in the sitemap and in links keeps working.
  */
+const REPO_DOCS = "https://github.com/profullstack/logicsrc/blob/master/docs";
+
 export function buildRedirects() {
   return [
     { source: "/agent-swarm", destination: "/openfleet", permanent: true },
-    { source: "/openprofile/skills", destination: "/openskill", permanent: true }
+    { source: "/openprofile/skills", destination: "/openskill", permanent: true },
+    // OpenI18n and OpenL10n have a specification text and no landing page.
+    { source: "/openi18n", destination: "/docs/openi18n", permanent: true },
+    { source: "/openl10n", destination: "/docs/openl10n", permanent: true },
+    // The docs link each other as Markdown files (`./credential-sharing.md`,
+    // `./opencreds/spec.md`), which resolved under /docs/ and 404ed. The pages
+    // now rewrite those links; these keep the URLs already crawled working.
+    // A doc the site serves goes to its page, anything else to the file in
+    // the public repository.
+    { source: `/docs/:slug(${docSlugs().join("|")})\\.md`, destination: "/docs/:slug", permanent: true },
+    { source: "/docs/:path([a-z0-9][a-z0-9/-]*)\\.md", destination: `${REPO_DOCS}/:path.md`, permanent: true }
   ];
 }
 

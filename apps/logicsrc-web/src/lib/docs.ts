@@ -123,3 +123,34 @@ export function listDocs(): DocSummary[] {
   }
   return out;
 }
+
+const REPO_BLOB = "https://github.com/profullstack/logicsrc/blob/master";
+
+/**
+ * Point a doc's relative Markdown links somewhere that exists.
+ *
+ * The docs link each other the way they read on GitHub: `./opencreds/spec.md`,
+ * `credential-sharing.md`, `../prd/0001-....md`. Rendered at /docs/<slug> those
+ * resolve to /docs/credential-sharing.md and /docs/opencreds/spec.md, which the
+ * site never serves, so every one was a 404. A link to a doc the site serves
+ * becomes /docs/<slug>; anything else (sub-documents, PRDs) goes to the file in
+ * the public repository, which is where it is published.
+ */
+export function resolveDocLinks(html: string): string {
+  return html.replace(/href="([^"]+)"/g, (whole, href: string) => {
+    if (/^[a-z][a-z0-9+.-]*:/i.test(href) || href.startsWith("/") || href.startsWith("#")) return whole;
+    const [path, fragment] = href.split("#", 2);
+    if (!path.endsWith(".md")) return whole;
+    const parts: string[] = ["docs"];
+    for (const seg of path.split("/")) {
+      if (seg === "" || seg === ".") continue;
+      if (seg === "..") parts.pop();
+      else parts.push(seg);
+    }
+    const hash = fragment ? `#${fragment}` : "";
+    const repoPath = parts.join("/");
+    const served = /^docs\/([^/]+)\.md$/.exec(repoPath);
+    if (served && isDocSlug(served[1])) return `href="/docs/${served[1]}${hash}"`;
+    return `href="${REPO_BLOB}/${repoPath}${hash}"`;
+  });
+}
