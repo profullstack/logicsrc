@@ -29,13 +29,20 @@ app.use(cookieParser());
 
 // static
 app.use(express.static(path.join(config.root, "public"), { maxAge: "1h" }));
-// the @simplewebauthn/browser UMD bundle, served from node_modules (no CDN)
-app.get("/vendor/simplewebauthn-browser.umd.js", (_req, res) =>
-  res.sendFile(path.join(config.root, "node_modules/@simplewebauthn/browser/dist/bundle/index.umd.min.js")));
+const requireHere = createRequire(import.meta.url);
+// the @simplewebauthn/browser UMD bundle, served from node_modules (no CDN).
+// Resolved, not joined onto apps/pwa/node_modules: the workspace install hoists
+// it to the repo root, and the joined path 500ed (ENOENT) on every sign-in page.
+// The package exports only ".", so find its root from the resolved entry
+// (script/index.js) rather than resolving the bundle subpath.
+const webauthnBundle = path.join(
+  path.dirname(path.dirname(requireHere.resolve("@simplewebauthn/browser"))),
+  "dist/bundle/index.umd.min.js",
+);
+app.get("/vendor/simplewebauthn-browser.umd.js", (_req, res) => res.sendFile(webauthnBundle));
 // libsodium for in-browser vault decryption (public/vault.js). Same two files
 // the CLI loads; resolved, not path-joined, so a hoisted workspace install works.
 // Load order on the page: libsodium.js (window.libsodium) then the wrappers (window.sodium).
-const requireHere = createRequire(import.meta.url);
 const sodiumWrappers = requireHere.resolve("libsodium-wrappers");
 const sodiumCore = createRequire(sodiumWrappers).resolve("libsodium");
 app.get("/vendor/libsodium.js", (_req, res) => res.sendFile(sodiumCore));
