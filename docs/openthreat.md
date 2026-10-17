@@ -142,7 +142,7 @@ The first directory reading OpenThreat is the threats collection at [nichedb.dev
 
 - [SARIF](https://sarifweb.azurewebsites.net/) is what a scanner emits per run: `rule` here is SARIF's `ruleId`, and `location` its physical location. OpenThreat is the standing list across runs, with a subject and a status, and the disclosure rules SARIF does not have.
 - [STIX 2.1](https://oasis-open.github.io/cti-documentation/) describes threat intelligence exhaustively. An `indicator` here maps onto a STIX Indicator, an `attack` onto a Sighting. OpenThreat is the small file a tool can serve in an afternoon; a directory that speaks STIX can translate.
-- [CSAF](https://oasis-open.github.io/csaf/) is the vendor advisory format. An `advisory` here carries the CSAF document in `refs`.
+- [CSAF](https://docs.oasis-open.org/csaf/csaf/v2.0/csaf-v2.0.html) is the vendor advisory format. An `advisory` here carries the CSAF document in `refs`.
 
 ## What is deliberately absent
 
