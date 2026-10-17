@@ -1,6 +1,6 @@
 # OpenI18n
 
-OpenI18n is one file a service serves about the languages it speaks: which ones, which it can turn into which, how a reader asks for anything in one of them, and where texts are sent to be translated. A reader learns what a site or an API can say in Swedish before asking, a directory lists services by the languages they serve, and a program that has a line to translate finds a translator the way it finds anything else on the web, by a well-known address rather than a vendor's SDK. It is the languages half of [OpenL10n](/openl10n): OpenL10n keeps what was said in a language, OpenI18n says which languages there are. It is maintained by Profullstack, Inc. as part of the LogicSRC open-standards surface, with a reference implementation in [nixamp](https://nixamp.com).
+OpenI18n is one file a service serves about the languages it speaks: which ones, which it can turn into which, how a reader asks for anything in one of them, and where texts are sent to be translated. A reader learns what a site or an API can say in Swedish before asking, a directory lists services by the languages they serve, and a program that has a line to translate finds a translator the way it finds anything else on the web, by a well-known address rather than a vendor's SDK. It is the languages half of [OpenL10n](/docs/openl10n): OpenL10n keeps what was said in a language, OpenI18n says which languages there are. It is maintained by Profullstack, Inc. as part of the LogicSRC open-standards surface, with a reference implementation in [nixamp](https://nixamp.com).
 
 Status: **0.1**. A description of a document already served, published so any service can serve one and any reader can read it.
 
@@ -75,7 +75,7 @@ A reader that wants a resource in a language:
 1. Reads the descriptor and checks the language is listed, or is a target of the resource's own language.
 2. Asks with `ask.query` (or `?language=`), falling back to `Accept-Language`.
 3. Reads `Content-Language` on the answer. A service that could not answer in the language asked for answers in the resource's own language and says so; it never answers a different language silently.
-4. When the resource is a transcript, expects `202` with progress while a translation is being made for the first time ([OpenL10n](/openl10n) rule 9), and asks again.
+4. When the resource is a transcript, expects `202` with progress while a translation is being made for the first time ([OpenL10n](/docs/openl10n) rule 9), and asks again.
 
 ## Translating
 
@@ -100,7 +100,7 @@ A directory reading descriptors lists services by language and by pair, and says
 
 ## Related standards
 
-- [OpenL10n](/openl10n): the transcript of a file in a language, and its translations.
+- [OpenL10n](/docs/openl10n): the transcript of a file in a language, and its translations.
 - [OpenFile](/openfile): the media a transcript belongs to.
 - [OpenMCP](/openmcp): the `auth` block, and how a directory probes a service.
 - [OpenProfile.md](/openprofile): the `operator` behind a service.
