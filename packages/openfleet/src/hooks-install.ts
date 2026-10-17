@@ -15,7 +15,7 @@
  *   command is marker enough.
  */
 
-import { mkdirSync, readFileSync, renameSync, statSync, writeFileSync } from "node:fs";
+import { chmodSync, mkdirSync, readFileSync, renameSync, statSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
 import type { Env } from "./store.js";
@@ -117,6 +117,9 @@ export function writeSettings(file: string, data: Json, mode: number): void {
   // would otherwise leave it truncated.
   const tmp = `${file}.logicsrc-${process.pid}`;
   writeFileSync(tmp, `${JSON.stringify(data, null, 2)}\n`, { mode });
+  // The create mode is filtered through the umask; set it outright so the
+  // file keeps exactly the mode it had.
+  chmodSync(tmp, mode);
   renameSync(tmp, file);
 }
 
