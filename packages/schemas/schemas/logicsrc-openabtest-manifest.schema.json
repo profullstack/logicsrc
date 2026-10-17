@@ -19,7 +19,10 @@
   ],
   "properties": {
     "openabtest": {
-      "const": "0.1-draft"
+      "enum": [
+        "0.1-draft",
+        "0.2-draft"
+      ]
     },
     "id": {
       "type": "string",
@@ -198,10 +201,16 @@
           "const": "unique-eligible-participants"
         },
         "conversion": {
-          "const": "unique-participants-with-confirmed-purchase"
+          "enum": [
+            "unique-participants-with-confirmed-purchase",
+            "unique-participants-with-goal"
+          ]
         },
         "profit": {
-          "const": "reconciled-net-retained-profit"
+          "enum": [
+            "reconciled-net-retained-profit",
+            "none"
+          ]
         },
         "minimumEligiblePerVariant": {
           "type": "integer",
@@ -215,6 +224,10 @@
         },
         "winnerPolicy": {
           "const": "manual-review"
+        },
+        "goal": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
         }
       }
     },

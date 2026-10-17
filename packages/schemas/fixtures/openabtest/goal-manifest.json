@@ -1,0 +1,55 @@
+{
+  "openabtest": "0.2-draft",
+  "id": "signup-cta-v1",
+  "revision": 1,
+  "name": "Sign-up button copy",
+  "state": "draft",
+  "cohort": {
+    "id": "landing-visitors",
+    "eligibilityRule": "Signed-out visitors who load the landing page; staff and bots excluded.",
+    "purchaseScope": "custom"
+  },
+  "assignment": {
+    "unit": "device",
+    "authority": "server",
+    "keyVersion": "1",
+    "algorithm": "hmac-sha256-persisted-v1",
+    "persistence": "sticky"
+  },
+  "variants": [
+    {
+      "id": "control",
+      "weight": 1,
+      "parameters": {
+        "cta": "Sign up"
+      }
+    },
+    {
+      "id": "free",
+      "weight": 1,
+      "parameters": {
+        "cta": "Start free"
+      }
+    }
+  ],
+  "window": {
+    "startsAt": "2026-09-14T00:00:00Z",
+    "endsAt": "2026-10-14T00:00:00Z"
+  },
+  "metrics": {
+    "primary": "conversion-rate",
+    "denominator": "unique-eligible-participants",
+    "conversion": "unique-participants-with-goal",
+    "profit": "none",
+    "minimumEligiblePerVariant": 100,
+    "minimumObservationSeconds": 604800,
+    "winnerPolicy": "manual-review",
+    "goal": "signup-completed"
+  },
+  "guardrails": {
+    "preserveAcceptedOffers": true,
+    "preserveAccruedCommissions": true,
+    "requireReconciledCostsForPayout": true,
+    "onBreach": "pause-new-assignments"
+  }
+}

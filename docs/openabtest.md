@@ -2,7 +2,7 @@
 
 OpenABTest is a portable experiment manifest and private event contract for comparing product offers across services without confusing assignment, exposure, purchases, or profit.
 
-Status: **0.1 draft proposal**, September 13, 2026. This release supplies JSON Schemas, semantic validators, SDK document constructors and examples. It does not ship an assignment service, analytics warehouse, statistical decision engine, payment executor, or registered AT Protocol extension. No external standards body has accepted this draft.
+Status: **0.2 draft proposal**, October 17, 2026 (0.1: September 13, 2026). 0.2 adds goal conversions and is backward compatible: every valid 0.1 document stays valid. This release supplies JSON Schemas, semantic validators, SDK document constructors and examples. It does not ship an assignment service of its own (a hosted reference implementation runs at [w3bs.org/ab-testing](https://w3bs.org/ab-testing)), analytics warehouse, statistical decision engine, payment executor, or registered AT Protocol extension. No external standards body has accepted this draft.
 
 Slug: `openabtest`
 
@@ -12,15 +12,15 @@ A manifest names one experiment, its versioned variants, eligibility rule, rando
 
 - Manifest schema: `@logicsrc/schemas/openabtest-manifest`.
 - Event schema: `@logicsrc/schemas/openabtest-event`.
-- Validation: `validate("openabtest-manifest", document)` and `validate("openabtest-event", document)` from `@logicsrc/validators` 0.3.0 or newer.
-- SDK: `OpenABTestManifest`, `OpenABTestEvent`, `createOpenABTestManifest` and `createOpenABTestEvent` from `@logicsrc/sdk` 0.3.0 or newer. Constructors add the draft discriminator; they do not validate, assign people, authenticate events or initiate payment.
+- Validation: `validate("openabtest-manifest", document)` and `validate("openabtest-event", document)` from `@logicsrc/validators` 0.3.0 or newer (0.5.0 or newer for 0.2 goal conversions).
+- SDK: `OpenABTestManifest`, `OpenABTestEvent`, `createOpenABTestManifest` and `createOpenABTestEvent` from `@logicsrc/sdk` 0.3.0 or newer (0.4.0 or newer for 0.2). Constructors add the draft discriminator; they do not validate, assign people, authenticate events or initiate payment.
 - Complete examples: [manifest](https://github.com/profullstack/logicsrc/blob/master/packages/schemas/fixtures/openabtest/chovy-manifest.json) and [event fixtures](https://github.com/profullstack/logicsrc/tree/master/packages/schemas/fixtures/openabtest).
 
 Schema `$id` values name the contracts; they do not imply that a schema-hosting endpoint or universal discovery API has been deployed. A service may link a public, redacted manifest from its documentation. Participant events and settlement evidence MUST remain private.
 
 ## Manifest and versioned assignment
 
-Required fields are `openabtest: "0.1-draft"`, `id`, positive integer `revision`, `name`, `state`, `cohort`, `assignment`, `variants`, `window`, `metrics`, and `guardrails`. `economics` is optional for experiments that do not change prices. IDs are issuer-scoped opaque strings, at most 128 characters. Variant IDs must be unique within the manifest; weights are positive safe integers with a safe-integer sum. The share of newly assigned eligible participants is `weight / sum(weights)`, not a promise of an exact observed sample split.
+Required fields are `openabtest` (`"0.1-draft"`, or `"0.2-draft"` for a document that uses goal conversions), `id`, positive integer `revision`, `name`, `state`, `cohort`, `assignment`, `variants`, `window`, `metrics`, and `guardrails`. `economics` is optional for experiments that do not change prices. IDs are issuer-scoped opaque strings, at most 128 characters. Variant IDs must be unique within the manifest; weights are positive safe integers with a safe-integer sum. The share of newly assigned eligible participants is `weight / sum(weights)`, not a promise of an exact observed sample split.
 
 `cohort` contains a stable `id`, an explicit `eligibilityRule`, and `purchaseScope`. Rules must state the product, tenant, referral validity, exclusions, geography or other restrictions when applicable. They are prose for the implementing service, not executable expressions. The Chovy scope is **all-referred-purchases**. Other products may select `all-eligible-purchases`, `first-eligible-purchase`, or `custom` with a complete rule. Overlapping experiments must declare their interaction policy in the eligibility rule; do not silently stack price discounts.
 
@@ -80,7 +80,7 @@ Every event has `openabtest`, unique `id`, `producerId`, `manifestId`, `manifest
 | eligibility | `cohortId`, `eligible: true`; the server verified entry into the cohort. Repeated visits do not add people to the denominator |
 | assignment | `cohortId`, `assignmentId`, `variantId`; a durable choice exists. This does not assert that the customer saw it |
 | exposure | `assignmentId`, `variantId`, `offerId`, `surface`; the offer was actually shown on the named surface. Rendering failure is not an exposure |
-| conversion | `assignmentId`, `variantId`, unique `conversionId`, immutable `price`; an authenticated purchase confirmation, not a checkout click or a client success redirect |
+| conversion | `assignmentId`, `variantId`, unique `conversionId`, and exactly one of an immutable `price` (an authenticated purchase confirmation, not a checkout click or a client success redirect) or, in 0.2, a `goal` (see Goal conversions) |
 | adjustment | Assignment and conversion IDs, unique `adjustmentId`, currency, signed `amountMinor`, reason and evidence references; a refund, chargeback or accounting correction |
 | reconciliation | Assignment and conversion IDs, increasing `accountingRevision`, currency, recognized revenue/refunds, actual costs/fees, affiliate allocation, retained profit, floor, state, payout status and evidence references |
 
@@ -91,6 +91,43 @@ Authorize all event ingestion. Authenticate producers with deployment-managed sc
 Deduplicate events by `(producerId, id)` and immutable payload binding. An identical retry is a no-op; the same key with changed content is a conflict. Deduplicate assignment by its ledger key, purchases by the merchant's immutable conversion ID, and adjustments by the adjustment ID even when a different callback event ID is used. A conversion belongs to one participant, assignment, offer and original referral attribution; retries or a subsequent referral link cannot steal it. Keep external order/provider IDs in the private mapping if they are not safe opaque identifiers.
 
 Consumers verify manifest revision and variant existence, participant/assignment ownership, currency, original conversion attribution, event order and accounting revision against the private ledger. Out-of-order events can be buffered and reconciled; never invent missing eligibility or exposure. An authenticated conversion can exist without an observed exposure due to instrumentation loss; report that discrepancy. Standalone schema validation cannot establish these cross-record facts or event authority.
+
+## Goal conversions (0.2)
+
+Most experiments are not about price. A button label, an onboarding step or a landing page is judged by whether people sign up, finish a task or come back. In 0.1 a conversion is a purchase with a price, so those experiments had nothing conformant to report. 0.2 adds a goal conversion.
+
+A goal experiment declares `openabtest: "0.2-draft"`, `metrics.conversion: "unique-participants-with-goal"` and `metrics.goal`, an opaque goal id such as `signup-completed`. The primary metric must be `conversion-rate`. If there is no money in the experiment, `metrics.profit` is `"none"`; `economics` is then omitted.
+
+```json
+{
+  "openabtest": "0.2-draft",
+  "id": "signup-cta-v1",
+  "variants": [
+    { "id": "control", "weight": 1, "parameters": { "cta": "Sign up" } },
+    { "id": "free", "weight": 1, "parameters": { "cta": "Start free" } }
+  ],
+  "metrics": {
+    "primary": "conversion-rate",
+    "conversion": "unique-participants-with-goal",
+    "goal": "signup-completed",
+    "profit": "none"
+  }
+}
+```
+
+This is an excerpt; use the [full fixture](https://github.com/profullstack/logicsrc/blob/master/packages/schemas/fixtures/openabtest/goal-manifest.json) for validation.
+
+A goal conversion event carries `goal` instead of `price`, with an optional observed `value` of `{ currency, amountMinor }` (a non-negative integer). A conversion carries exactly one of `price` or `goal`; a document using `goal` must say `0.2-draft`. The same rules as purchases apply. The goal must be confirmed by the server that owns it (an account actually created, not a button clicked). Deduplicate by `conversionId`. A conversion without an observed exposure is reported as such, never dropped.
+
+```json
+{
+  "openabtest": "0.2-draft",
+  "kind": "conversion",
+  "payload": { "assignmentId": "assignment-42", "variantId": "free", "conversionId": "signup-42", "goal": "signup-completed" }
+}
+```
+
+For a goal experiment, the conversion rate counts unique assigned participants with at least one confirmed goal conversion, over the same eligible-participant denominator. `value` totals may be reported per currency beside it. They are observed amounts, not reconciled profit, and must not be labelled as profit.
 
 ## Reconciliation, refunds and payment references
 

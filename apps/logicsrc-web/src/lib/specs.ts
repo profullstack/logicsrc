@@ -121,7 +121,7 @@ export const FAMILIES: Family[] = [
       "The lifecycle for building software when agents work in parallel and CI is the only gate, the requirement document an agent can execute, the settlement and proof layer under a peer-to-peer swarm, a lossless byte-stream envelope, the five nouns a shared ontology needs, the record an agent session carries about who spawned it and under what ceiling, the one script that puts an application into service on the box it runs on, the signed package format a command-line tool is installed and updated from, and the errand file an agent runs on a website with no API while handing every legal, identity and mail step to a person.",
     specs: [
       s("asdlc", "ASDLC", "The Agentic Software Development Lifecycle: nine phases, four conformance levels and the ratchet rule"),
-      s("openabtest", "OpenABTest", "Portable experiments with sticky assignments, distinct exposure and conversion events, and reconciled profit accounting", { landing: undefined, status: "draft" }),
+      s("openabtest", "OpenABTest", "Portable experiments with sticky assignments, distinct exposure and conversion events, goal or purchase conversions, and reconciled profit accounting", { landing: undefined, status: "draft" }),
       s("openprd", "OpenPRD", "A product requirement document an agent can execute and a person can read"),
       s("openswarm", "OpenSwarm", "Settlement and proof of work done under a peer-to-peer swarm"),
       s("openstream", "OpenStream", "A lossless byte-stream relay envelope, with benchmark reports per release", { landing: undefined }),

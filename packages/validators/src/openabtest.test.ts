@@ -93,6 +93,46 @@ describe("OpenABTest draft contracts", () => {
     Object.assign(event.payload, { affiliateMinor: 0, actualCostMinor: 36000, retainedProfitMinor: -1000, payoutStatus: "withheld" });
     expect(validate("openabtest-event", event).ok).toBe(true);
   });
+  it("accepts 0.2 goal experiments and goal conversions", () => {
+    expect(validate("openabtest-manifest", fixture("goal-manifest")).ok).toBe(true);
+    expect(validate("openabtest-event", fixture("goal-conversion")).ok).toBe(true);
+    const valued = fixture("goal-conversion");
+    valued.payload.value = { currency: "USD", amountMinor: 4900 };
+    expect(validate("openabtest-event", valued).ok).toBe(true);
+    valued.payload.value.amountMinor = -1;
+    expect(validate("openabtest-event", valued).ok).toBe(false);
+  });
+  it("keeps 0.1 documents valid and gates goal forms behind 0.2-draft", () => {
+    const old = fixture("chovy-manifest");
+    old.openabtest = "0.2-draft";
+    expect(validate("openabtest-manifest", old).ok).toBe(true);
+    const manifest = fixture("goal-manifest");
+    manifest.openabtest = "0.1-draft";
+    expect(validate("openabtest-manifest", manifest).ok).toBe(false);
+    const event = fixture("goal-conversion");
+    event.openabtest = "0.1-draft";
+    expect(validate("openabtest-event", event).ok).toBe(false);
+  });
+  it("requires a named goal and a conversion-rate primary for goal experiments", () => {
+    const manifest = fixture("goal-manifest");
+    delete manifest.metrics.goal;
+    expect(validate("openabtest-manifest", manifest).ok).toBe(false);
+    const profit = fixture("goal-manifest");
+    profit.metrics.primary = "retained-profit-per-eligible-visitor";
+    expect(validate("openabtest-manifest", profit).ok).toBe(false);
+    const stray = fixture("chovy-manifest");
+    stray.metrics.goal = "signup-completed";
+    expect(validate("openabtest-manifest", stray).ok).toBe(false);
+  });
+  it("takes exactly one of price or goal on a conversion", () => {
+    const both = fixture("conversion");
+    both.openabtest = "0.2-draft";
+    both.payload.goal = "signup-completed";
+    expect(validate("openabtest-event", both).ok).toBe(false);
+    const neither = fixture("goal-conversion");
+    delete neither.payload.goal;
+    expect(validate("openabtest-event", neither).ok).toBe(false);
+  });
   it("requires reconciliation evidence without bearer URLs", () => {
     const event = fixture("reconciliation");
     event.payload.proofRefs = [];
