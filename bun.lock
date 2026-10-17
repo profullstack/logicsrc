@@ -280,11 +280,11 @@
     },
     "packages/schemas": {
       "name": "@logicsrc/schemas",
-      "version": "0.4.0",
+      "version": "0.5.0",
     },
     "packages/sdk": {
       "name": "@logicsrc/sdk",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "devDependencies": {
         "vitest": "^4.0.8",
       },
@@ -303,7 +303,7 @@
     },
     "packages/validators": {
       "name": "@logicsrc/validators",
-      "version": "0.4.0",
+      "version": "0.5.0",
       "bin": {
         "logicsrc-validate": "dist/cli.js",
       },

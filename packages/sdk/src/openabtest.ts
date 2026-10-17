@@ -1,6 +1,7 @@
 /** Draft private contracts; constructors do not assign users, authorize events or pay money. */
+export type OpenABTestVersion = "0.1-draft" | "0.2-draft";
 export interface OpenABTestManifest {
-  openabtest: "0.1-draft";
+  openabtest: OpenABTestVersion;
   id: string;
   revision: number;
   name: string;
@@ -12,8 +13,10 @@ export interface OpenABTestManifest {
   metrics: {
     primary: "conversion-rate" | "retained-profit-per-eligible-visitor";
     denominator: "unique-eligible-participants";
-    conversion: "unique-participants-with-confirmed-purchase";
-    profit: "reconciled-net-retained-profit";
+    /** 0.2: unique-participants-with-goal counts participants who reached metrics.goal. */
+    conversion: "unique-participants-with-confirmed-purchase" | "unique-participants-with-goal";
+    profit: "reconciled-net-retained-profit" | "none";
+    goal?: string;
     minimumEligiblePerVariant: number;
     minimumObservationSeconds: number;
     winnerPolicy: "manual-review";
@@ -55,12 +58,12 @@ type EventDetail =
   | { kind: "eligibility"; payload: { cohortId: string; eligible: true } }
   | { kind: "assignment"; payload: Assigned & { cohortId: string } }
   | { kind: "exposure"; payload: Assigned & { offerId: string; surface: string } }
-  | { kind: "conversion"; payload: Converted & { price: OpenABTestPrice } }
+  | { kind: "conversion"; payload: Converted & ({ price: OpenABTestPrice; goal?: never } | { goal: string; price?: never; value?: { currency: string; amountMinor: number } }) }
   | { kind: "adjustment"; payload: Converted & { adjustmentId: string; currency: string; amountMinor: number; reason: "refund" | "chargeback" | "correction"; proofRefs: string[] } }
   | { kind: "reconciliation"; payload: OpenABTestReconciliation };
 
 export type OpenABTestEvent = {
-  openabtest: "0.1-draft";
+  openabtest: OpenABTestVersion;
   id: string;
   producerId: string;
   manifestId: string;
@@ -71,11 +74,13 @@ export type OpenABTestEvent = {
 
 /** Validate with @logicsrc/validators before storing or using the document. */
 export function createOpenABTestManifest(input: Omit<OpenABTestManifest, "openabtest">): OpenABTestManifest {
-  return { ...input, openabtest: "0.1-draft" };
+  const goal = input.metrics.conversion === "unique-participants-with-goal" || input.metrics.profit === "none";
+  return { ...input, openabtest: goal ? "0.2-draft" : "0.1-draft" };
 }
 
 type EventInput = Omit<OpenABTestEvent, "openabtest" | "kind" | "payload"> & EventDetail;
 /** The caller supplies authenticated context and durable IDs; this helper creates neither. */
 export function createOpenABTestEvent(input: EventInput): OpenABTestEvent {
-  return { ...input, openabtest: "0.1-draft" };
+  const goal = input.kind === "conversion" && "goal" in input.payload && input.payload.goal !== undefined;
+  return { ...input, openabtest: goal ? "0.2-draft" : "0.1-draft" } as OpenABTestEvent;
 }

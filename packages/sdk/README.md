@@ -37,7 +37,7 @@ MIT © Profullstack, Inc.
 
 Version 0.3.0 adds `OpenABTestManifest`, `OpenABTestEvent`,
 `createOpenABTestManifest` and `createOpenABTestEvent`. The constructors set
-`openabtest: "0.1-draft"`; validate their result with `@logicsrc/validators`
+`openabtest: "0.1-draft"`, or `"0.2-draft"` when the document uses a goal conversion; validate their result with `@logicsrc/validators`
 using `openabtest-manifest` or `openabtest-event` before storing it. They do not
 assign participants, authenticate events or initiate payments. See the
 [OpenABTest specification](https://logicsrc.com/docs/openabtest) and its complete

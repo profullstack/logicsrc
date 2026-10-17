@@ -1,7 +1,7 @@
 import type { ErrorObject } from "ajv";
 
 type AccountingEvent =
-  | { kind: "conversion"; at: string; payload: { price: { listUnitPriceMinor: number; discountBps: number; quantityMilliUnits: number; chargedUnitPriceMinor: number; totalMinor: number; acceptedAt: string } } }
+  | { openabtest: string; kind: "conversion"; at: string; payload: { goal?: string; price?: { listUnitPriceMinor: number; discountBps: number; quantityMilliUnits: number; chargedUnitPriceMinor: number; totalMinor: number; acceptedAt: string } } }
   | { kind: "adjustment"; payload: { reason: string; amountMinor: number } }
   | { kind: "reconciliation"; payload: { revenueMinor: number; refundsMinor: number; actualCostMinor: number | null; feesMinor: number | null; affiliateMinor: number | null; retainedProfitMinor: number | null; minimumRetainedProfitMinor: number; state: string; payoutStatus: string; proofRefs: string[] } };
 
@@ -14,9 +14,21 @@ export function validateOpenABTest(kind: string, data: unknown): ErrorObject[] {
   }
   if (kind === "openabtest-manifest") {
     const manifest = data as {
+      openabtest: string;
       variants: Array<{ id: string; weight: number; parameters: Record<string, unknown> }>;
       window: { startsAt: string; endsAt: string };
+      metrics: { primary: string; conversion: string; profit: string; goal?: string };
     };
+    // 0.2 goal conversions: a named goal instead of a purchase, and no profit metric.
+    const goalConversion = manifest.metrics.conversion === "unique-participants-with-goal";
+    if ((goalConversion || manifest.metrics.profit === "none") && manifest.openabtest !== "0.2-draft") {
+      report("/openabtest", "goal conversions and profit \"none\" require 0.2-draft");
+    }
+    if (goalConversion && manifest.metrics.goal === undefined) report("/metrics/goal", "is required for goal conversions");
+    if (!goalConversion && manifest.metrics.goal !== undefined) report("/metrics/goal", "applies only to unique-participants-with-goal");
+    if (manifest.metrics.profit === "none" && manifest.metrics.primary !== "conversion-rate") {
+      report("/metrics/profit", "\"none\" requires the conversion-rate primary metric");
+    }
     const seen = new Set<string>();
     let total = 0n;
     manifest.variants.forEach((variant, index) => {
@@ -34,7 +46,10 @@ export function validateOpenABTest(kind: string, data: unknown): ErrorObject[] {
     }
   } else {
     const event = data as AccountingEvent;
-    if (event.kind === "conversion") {
+    if (event.kind === "conversion" && event.payload.goal !== undefined && event.openabtest !== "0.2-draft") {
+      report("/payload/goal", "goal conversions require 0.2-draft");
+    }
+    if (event.kind === "conversion" && event.payload.price) {
       const price = event.payload.price;
       const unit = (BigInt(price.listUnitPriceMinor) * BigInt(10000 - price.discountBps) + 5000n) / 10000n;
       const total = (unit * BigInt(price.quantityMilliUnits) + 500n) / 1000n;

@@ -17,7 +17,10 @@
   ],
   "properties": {
     "openabtest": {
-      "const": "0.1-draft"
+      "enum": [
+        "0.1-draft",
+        "0.2-draft"
+      ]
     },
     "id": {
       "type": "string",
@@ -182,8 +185,7 @@
             "required": [
               "assignmentId",
               "variantId",
-              "conversionId",
-              "price"
+              "conversionId"
             ],
             "properties": {
               "assignmentId": {
@@ -254,8 +256,49 @@
                     "maximum": 9007199254740991
                   }
                 }
+              },
+              "goal": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+              },
+              "value": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "currency",
+                  "amountMinor"
+                ],
+                "properties": {
+                  "currency": {
+                    "type": "string",
+                    "pattern": "^[A-Z]{3}$"
+                  },
+                  "amountMinor": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  }
+                }
               }
-            }
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "price"
+                ],
+                "properties": {
+                  "price": true
+                }
+              },
+              {
+                "required": [
+                  "goal"
+                ],
+                "properties": {
+                  "goal": true
+                }
+              }
+            ]
           }
         }
       }

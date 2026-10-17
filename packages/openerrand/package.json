@@ -40,7 +40,7 @@
     "test": "vitest run src"
   },
   "dependencies": {
-    "@logicsrc/validators": "^0.4.0",
+    "@logicsrc/validators": "^0.5.0",
     "commander": "^14.0.2"
   },
   "devDependencies": {
