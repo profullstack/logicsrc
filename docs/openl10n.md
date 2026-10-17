@@ -105,7 +105,7 @@ A broadcast is heard as it happens, a few seconds at a time, and a reader watchi
 ## Related standards
 
 - [OpenFile](/openfile): the media's identity and its record, which lists these transcripts.
-- [OpenI18n](/openi18n): how a keeper says which languages it can translate between, and how a reader asks for one.
+- [OpenI18n](/docs/openi18n): how a keeper says which languages it can translate between, and how a reader asks for one.
 - [OpenSite](/opensite): the card a page draws for the media, which may quote the transcript.
 
 ## Version history
