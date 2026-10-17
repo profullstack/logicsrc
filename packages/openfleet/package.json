@@ -1,6 +1,6 @@
 {
   "name": "@logicsrc/openfleet",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Reference implementation of the OpenFleet standard: the record an agent session carries about who spawned it, for what and under what ceiling, the ledger its sysop reads, and the `logicsrc fleet` sysop verbs.",
   "license": "MIT",
   "type": "module",
