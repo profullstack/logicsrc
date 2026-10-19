@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import "../styles.css";
 import Script from "next/script";
 import { CopyButtons } from "@/components/copy-buttons";
+import { PitFooter } from "@/components/pit-footer";
 import { PAGE_META, pageMetadata, SITE_URL } from "@/lib/page-meta";
 
 const DESCRIPTION = PAGE_META["/"].description;
@@ -86,6 +87,7 @@ export default function RootLayout({ children }: { children: ReactNode }): React
           src="https://crawlproof.com/stats.js"
           strategy="afterInteractive"
         />
+        <PitFooter />
       </body>
     </html>
   );
