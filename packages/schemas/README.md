@@ -23,6 +23,13 @@ Schema families include:
   them. Fixtures are in `fixtures/openerrand`. `@logicsrc/validators` also checks
   references, templates, and that no hand-off card names a personal or secret
   input. See `docs/openerrand.md`.
+- **OpenTask and OpenWorkflow** - the `opentask` export describes one task a
+  person does on a computer, as meaning rather than coordinates, so an agent can
+  do it again; `openworkflow` collects tasks inline or by URL and digest, and
+  `openworkflow-index` is a publisher's list. Fixtures are in `fixtures/opentask`
+  and `fixtures/openworkflow`. `@logicsrc/validators` also checks step numbering,
+  placeholders, app names, examples on sensitive parameters, and `after`
+  references. See `docs/opentask.md` and `docs/openworkflow.md`.
 
 ## Install
 

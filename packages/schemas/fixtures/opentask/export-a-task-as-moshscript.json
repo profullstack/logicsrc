@@ -1,0 +1,98 @@
+{
+  "type": "logicsrc.opentask",
+  "version": "0.1",
+  "id": "export-a-task-as-moshscript",
+  "title": "Export a reviewed task as a moshscript",
+  "goal": "Export a reviewed W3BS Training task as a moshscript file.",
+  "explanation": "Open the training app, pick the reviewed task, and use the button under its title.",
+  "apps": [
+    {
+      "name": "TronBrowser",
+      "kind": "browser"
+    },
+    {
+      "name": "W3BS Training",
+      "kind": "web",
+      "url": "http://127.0.0.1/"
+    }
+  ],
+  "parameters": [
+    {
+      "name": "task_title",
+      "description": "The title of the reviewed task to export",
+      "sensitivity": "public",
+      "example": "Empty the trash"
+    }
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "action": "focus",
+      "app": "TronBrowser",
+      "evidence": "observed",
+      "recorded": "1-2"
+    },
+    {
+      "n": 2,
+      "action": "click",
+      "app": "TronBrowser",
+      "target": {
+        "role": "link",
+        "name": "{{task_title}}"
+      },
+      "evidence": "inferred"
+    },
+    {
+      "n": 3,
+      "action": "click",
+      "app": "TronBrowser",
+      "target": {
+        "role": "button",
+        "name": "Export as moshscript"
+      },
+      "evidence": "inferred"
+    },
+    {
+      "n": 4,
+      "action": "observe",
+      "app": "TronBrowser",
+      "note": "A confirmation code appears; the person types it.",
+      "evidence": "inferred"
+    }
+  ],
+  "capture": {
+    "profile": "visual-review",
+    "window_titles": "removed",
+    "gaps": []
+  },
+  "stop_conditions": [
+    "a target cannot be found on the current screen",
+    "an unexpected dialog appears",
+    "a credential or payment prompt appears"
+  ],
+  "approvals": [
+    "before typing a confirmation code"
+  ],
+  "success": {
+    "check": "A .mosh file named after the task is in Downloads.",
+    "evidence": "artifact"
+  },
+  "source": {
+    "kind": "demonstration",
+    "recorder": "w3bs-training 0.2.5",
+    "episode": "ep_0f3a9c2b7d114e58",
+    "recorded": "2026-10-17T18:04:00Z",
+    "reviewed": true,
+    "outcome": "success"
+  },
+  "status": "untested",
+  "runners": [
+    {
+      "kind": "moshscript",
+      "url": "https://w3bs.org/workflows/wf_example/export-a-task-as-moshscript.mosh",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "command": "moshcode run export-a-task-as-moshscript.mosh"
+    }
+  ],
+  "license": "CC0-1.0"
+}
