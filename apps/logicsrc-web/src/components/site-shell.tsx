@@ -2,7 +2,8 @@ import type { ReactNode } from "react";
 import { renderInstallCommand } from "@/lib/install-command";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { SideNav } from "@/components/side-nav";
-import { SITE_FOOTER_COLOR, SITE_FOOTER_HTML } from "@/lib/site-footer";
+import { Footer } from "@profullstack/footer/react";
+import { SITE_FOOTER, SITE_FOOTER_COLOR } from "@/lib/site-footer";
 
 /**
  * The site chrome for every standalone route: the sidebar that unfolds to
@@ -38,10 +39,9 @@ export function SiteShell({
       <section className="workspace">
         <Breadcrumbs leaf={crumbTitle} />
         {children}
-        <div
-          style={{ color: SITE_FOOTER_COLOR, marginTop: "2rem" }}
-          dangerouslySetInnerHTML={{ __html: SITE_FOOTER_HTML }}
-        />
+        <div style={{ color: SITE_FOOTER_COLOR, marginTop: "2rem" }}>
+          <Footer {...SITE_FOOTER} />
+        </div>
       </section>
     </main>
   );
