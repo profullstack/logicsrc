@@ -118,7 +118,7 @@ export const FAMILIES: Family[] = [
     name: "Agents and process",
     line: "How agents coordinate, settle, stream, and how the software that serves them gets built",
     blurb:
-      "The lifecycle for building software when agents work in parallel and CI is the only gate, the requirement document an agent can execute, the settlement and proof layer under a peer-to-peer swarm, a lossless byte-stream envelope, the five nouns a shared ontology needs, the record an agent session carries about who spawned it and under what ceiling, the one script that puts an application into service on the box it runs on, the signed package format a command-line tool is installed and updated from, and the errand file an agent runs on a website with no API while handing every legal, identity and mail step to a person.",
+      "The lifecycle for building software when agents work in parallel and CI is the only gate, the requirement document an agent can execute, the settlement and proof layer under a peer-to-peer swarm, a lossless byte-stream envelope, the five nouns a shared ontology needs, the record an agent session carries about who spawned it and under what ceiling, the one script that puts an application into service on the box it runs on, the signed package format a command-line tool is installed and updated from, the errand file an agent runs on a website with no API while handing every legal, identity and mail step to a person, and the task and workflow files that write down a demonstrated desktop task as meaning, not coordinates, so any agent can do it again.",
     specs: [
       s("asdlc", "ASDLC", "The Agentic Software Development Lifecycle: nine phases, four conformance levels and the ratchet rule"),
       s("openabtest", "OpenABTest", "Portable experiments with sticky assignments, distinct exposure and conversion events, goal or purchase conversions, and reconciled profit accounting", { landing: undefined, status: "draft" }),
@@ -130,6 +130,8 @@ export const FAMILIES: Family[] = [
       s("openinstall", "OpenInstall", "One idempotent bin/install.sh in every repository that puts the app into service on the box it runs on: runtime, database, build, systemd, nginx and TLS, a health check, and exit codes a deployer can roll back on"),
       s("openpkg", "OpenPkg", "The open format behind W3BS Package Manager: publisher-qualified package names, a TUF repository profile, signed manifests, channels and a curl catalog, and what a client owes the machine it installs to", { status: "draft" }),
       s("openerrand", "OpenErrand", "One JSON file for an errand on a website with no API: inputs and where each comes from, field rules matched by id then label, human gates a runner never automates, outcomes, a never-retried shared secret, and a hand-off card with no secrets"),
+      s("opentask", "OpenTask", "One JSON file for a task a person does on a computer: goal, apps, parameters by sensitivity, steps as meaning rather than coordinates, stop conditions, approvals, a success check and where it came from", { status: "0.1" }),
+      s("openworkflow", "OpenWorkflow", "One JSON file that collects OpenTasks, inline or by URL and digest, in sequence or with dependencies, listed at /.well-known/openworkflow.json", { status: "0.1" }),
       s("openspec", "OpenSpec.dev comparison", "How LogicSRC compares with OpenSpec.dev, and the compatibility mode", { doc: "/docs/openspec-comparison" })
     ]
   }

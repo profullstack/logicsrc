@@ -1,0 +1,14 @@
+{
+  "type": "logicsrc.openworkflow-index",
+  "version": "0.1",
+  "publisher": "https://logicsrc.com",
+  "updated": "2026-10-19T12:00:00Z",
+  "workflows": [
+    {
+      "url": "https://logicsrc.com/examples/openworkflow/release-a-package.json",
+      "id": "release-a-package",
+      "title": "Release a package",
+      "tasks": 2
+    }
+  ]
+}
