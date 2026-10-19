@@ -1,30 +1,26 @@
-/**
- * The site footer: one row of links plus the copyright. The network links
- * (pit.world, search, ring) come from the pit.world global footer, which the
- * root layout appends to every page (components/pit-footer.tsx).
- * SiteShell and the homepage markup string (lib/page-markup.ts) share this HTML.
- */
-const LINKS: Array<[string, string]> = [
-  ["Specs", "/specs"],
-  ["Docs", "/docs"],
-  ["Blog", "/blog"],
-  ["RSS", "/blog/rss.xml"],
-  ["llms.txt", "/llms.txt"],
-  ["Code", "https://github.com/profullstack/logicsrc"],
-  ["Terms", "/terms"],
-  ["Privacy", "/privacy"],
-];
+import { footerHtml, type FooterOptions } from "@profullstack/footer";
 
-/** Muted text, as the old footer had. */
+/**
+ * The site footer: @profullstack/footer (links, copyright and the Profullstack
+ * webring). SiteShell renders it as the package's React server component; the
+ * homepage, which is the legacy markup string (lib/page-markup.ts), gets the same
+ * footer as HTML. Both render on the server, which is what the ring's verifier reads.
+ */
+export const SITE_FOOTER: FooterOptions = {
+  site: "https://logicsrc.com/",
+  links: [
+    { label: "Specs", href: "/specs" },
+    { label: "Docs", href: "/docs" },
+    { label: "RSS", href: "/blog/rss.xml" },
+    { label: "llms.txt", href: "/llms.txt" },
+    { label: "Terms", href: "/terms" },
+    { label: "Privacy", href: "/privacy" },
+  ],
+};
+
+/** Muted text, as the old footer had; the package inherits `color`. */
 export const SITE_FOOTER_COLOR = "#5b6b7a";
 
-export const SITE_FOOTER_HTML =
-  `<footer class="site-footer" style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:.5rem 1.25rem;border-top:1px solid rgba(91,107,122,.25);padding:1.25rem 0;font-size:.875rem">` +
-  `<span>&copy; ${new Date().getFullYear()} LogicSRC</span>` +
-  `<nav aria-label="Footer" style="display:flex;flex-wrap:wrap;gap:.5rem 1.25rem">` +
-  LINKS.map(([label, href]) => `<a href="${href}" style="color:inherit">${label}</a>`).join("") +
-  `</nav></footer>`;
-
-export async function siteFooterHtml(): Promise<string> {
-  return SITE_FOOTER_HTML;
+export function siteFooterHtml(): Promise<string> {
+  return footerHtml(SITE_FOOTER);
 }
