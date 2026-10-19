@@ -5,6 +5,8 @@ import { renderPageMarkup } from "@/lib/page-markup";
 import { pageMetadata, specMetadata } from "@/lib/page-meta";
 import { HomeInteractivity } from "@/components/home-interactivity";
 import { siteFooterHtml } from "@/lib/site-footer";
+import Script from "next/script";
+import { AD_NETWORK_CODE } from "@/lib/ad-network";
 
 // The legacy SPA served the same single page for every top-level path and just
 // scrolled to the matching section. We preserve those URLs (they are canonical
@@ -36,7 +38,8 @@ export async function generateMetadata({
   const key = slug?.[0];
   if (key && SPEC_SECTIONS.has(key)) return specMetadata(`/${key}`);
   if (key && SITE_SECTIONS.has(key)) return pageMetadata(`/${key}`);
-  return pageMetadata("/");
+  if (key) return pageMetadata("/");
+  return { ...pageMetadata("/"), other: { "ad.network": AD_NETWORK_CODE } };
 }
 
 export default async function Page({
@@ -56,6 +59,7 @@ export default async function Page({
     <>
       <div id="app" dangerouslySetInnerHTML={{ __html: renderPageMarkup(slug?.[0] ? `/${slug[0]}` : "/", footer) }} />
       <HomeInteractivity />
+      {!slug?.length && <Script src="https://crawlproof.com/ad.js" strategy="afterInteractive" />}
     </>
   );
 }
