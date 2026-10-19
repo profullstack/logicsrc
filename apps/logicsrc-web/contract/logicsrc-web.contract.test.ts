@@ -92,14 +92,12 @@ describe("server-rendered page markup", () => {
     expect(markup).toContain('id="project-request-form"');
   });
 
-  it("carries the Profullstack webring links (the ring verifier reads the homepage)", async () => {
-    process.env.PROFULLSTACK_FOOTER_OFFLINE = "1";
+  it("carries the site footer (links + copyright), with no webring of its own", async () => {
     const markup = renderPageMarkup("/", await siteFooterHtml());
-    expect(markup).toContain("data-pfs-footer");
-    const from = "from=https%3A%2F%2Flogicsrc.com%2F";
-    for (const hop of ["previous", "next", "random"]) {
-      expect(markup).toContain(`https://rssamplifier.com/ring/profullstack/${hop}?${from}`);
-    }
+    expect(markup).toContain('class="site-footer"');
+    expect(markup).toContain('href="/terms"');
+    expect(markup).toContain('href="/privacy"');
+    expect(markup).not.toContain("rssamplifier.com/ring");
   });
 });
 
