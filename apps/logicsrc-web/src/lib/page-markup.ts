@@ -7,6 +7,7 @@ import { renderInstallCommand } from "./install-command";
 import { renderNavHtml } from "./nav";
 import { renderCrumbsHtml } from "./crumbs";
 import { FAMILIES, familyTree } from "./specs";
+import { renderHomeAdHtml } from "./ad-network";
 
 const schemas = [
   { name: "logicsrc-task", path: "packages/schemas/schemas/logicsrc-task.schema.json" },
@@ -148,6 +149,7 @@ export function renderPageMarkup(path = "/", footer = ""): string {
           <span><strong>3</strong>reference plugins</span>
         </div>
       </header>
+      ${path === "/" ? renderHomeAdHtml() : ""}
 
       <section class="band">
         <div class="section-head">
