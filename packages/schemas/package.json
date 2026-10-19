@@ -1,7 +1,7 @@
 {
   "name": "@logicsrc/schemas",
-  "version": "0.5.0",
-  "description": "LogicSRC JSON schemas for tasks, agents, runs, events, plugins, the AgentAd ad standard, the OpenOntology knowledge contracts, the OpenContext context plane, the OpenCreds credential vault, OpenRental membership and rental offers, and the OpenWall messaging proposal. Includes the OpenABTest draft experiment and event contracts.",
+  "version": "0.6.0",
+  "description": "LogicSRC JSON schemas for tasks, agents, runs, events, plugins, the AgentAd ad standard, the OpenOntology knowledge contracts, the OpenContext context plane, the OpenCreds credential vault, OpenRental membership and rental offers, and the OpenWall messaging proposal. Includes the OpenABTest draft experiment and event contracts Includes OpenTask and OpenWorkflow for tasks an agent does on a desktop.",
   "license": "MIT",
   "type": "module",
   "repository": {
@@ -29,7 +29,9 @@
     "password-manager",
     "standards",
     "vault",
-    "openabtest"
+    "openabtest",
+    "opentask",
+    "openworkflow"
   ],
   "publishConfig": {
     "access": "public"
@@ -71,6 +73,9 @@
     "./openrental": "./schemas/logicsrc-openrental.schema.json",
     "./openerrand": "./schemas/logicsrc-openerrand.schema.json",
     "./openerrand-index": "./schemas/logicsrc-openerrand-index.schema.json",
+    "./opentask": "./schemas/logicsrc-opentask.schema.json",
+    "./openworkflow": "./schemas/logicsrc-openworkflow.schema.json",
+    "./openworkflow-index": "./schemas/logicsrc-openworkflow-index.schema.json",
     "./openontology-action": "./schemas/logicsrc-openontology-action.schema.json",
     "./openontology-approval": "./schemas/logicsrc-openontology-approval.schema.json",
     "./openontology-changeset": "./schemas/logicsrc-openontology-changeset.schema.json",

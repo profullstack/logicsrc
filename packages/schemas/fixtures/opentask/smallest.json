@@ -1,0 +1,46 @@
+{
+  "type": "logicsrc.opentask",
+  "version": "0.1",
+  "id": "empty-the-trash",
+  "title": "Empty the trash",
+  "goal": "Empty the desktop trash.",
+  "apps": [
+    {
+      "name": "Dolphin",
+      "kind": "desktop"
+    }
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "action": "focus",
+      "app": "Dolphin",
+      "evidence": "observed"
+    },
+    {
+      "n": 2,
+      "action": "click",
+      "app": "Dolphin",
+      "target": {
+        "role": "button",
+        "name": "Empty Trash"
+      },
+      "evidence": "observed"
+    }
+  ],
+  "stop_conditions": [
+    "a target cannot be found on the current screen"
+  ],
+  "approvals": [
+    "before deleting anything"
+  ],
+  "success": {
+    "check": "The trash shows no items.",
+    "evidence": "screen"
+  },
+  "source": {
+    "kind": "authored",
+    "reviewed": true
+  },
+  "status": "untested"
+}

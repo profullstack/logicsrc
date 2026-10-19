@@ -13,6 +13,9 @@ import agentSchema from "@logicsrc/schemas/agent" with { type: "json" };
 import openrentalSchema from "@logicsrc/schemas/openrental" with { type: "json" };
 import openerrandSchema from "@logicsrc/schemas/openerrand" with { type: "json" };
 import openerrandIndexSchema from "@logicsrc/schemas/openerrand-index" with { type: "json" };
+import opentaskSchema from "@logicsrc/schemas/opentask" with { type: "json" };
+import openworkflowSchema from "@logicsrc/schemas/openworkflow" with { type: "json" };
+import openworkflowIndexSchema from "@logicsrc/schemas/openworkflow-index" with { type: "json" };
 import accountAuditEventSchema from "@logicsrc/schemas/account-audit-event" with { type: "json" };
 import accountGrantSchema from "@logicsrc/schemas/account-grant" with { type: "json" };
 import accountProviderSchema from "@logicsrc/schemas/account-provider" with { type: "json" };
@@ -85,6 +88,9 @@ export const schemas = {
   openrental: openrentalSchema,
   openerrand: openerrandSchema,
   "openerrand-index": openerrandIndexSchema,
+  opentask: opentaskSchema,
+  openworkflow: openworkflowSchema,
+  "openworkflow-index": openworkflowIndexSchema,
   "account-audit-event": accountAuditEventSchema,
   "account-grant": accountGrantSchema,
   "account-provider": accountProviderSchema,

@@ -1,0 +1,14 @@
+{
+  "type": "logicsrc.openworkflow-index",
+  "version": "0.1",
+  "publisher": "https://w3bs.org",
+  "updated": "2026-10-19T12:00:00Z",
+  "workflows": [
+    {
+      "url": "https://w3bs.org/workflows/release-a-package.json",
+      "id": "release-a-package",
+      "title": "Release a package",
+      "tasks": 2
+    }
+  ]
+}
