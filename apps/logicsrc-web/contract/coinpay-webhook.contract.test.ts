@@ -42,12 +42,34 @@ function realShaped(status = "confirmed", type = "payment.confirmed") {
 
 function memoryStore() {
   const rows = new Map<string, HireUsPaymentRow>();
+  const paidSessions: [string, string][] = [];
   return {
     rows,
+    paidSessions,
     async insertIfAbsent(row: HireUsPaymentRow) {
       if (rows.has(row.payment_id)) return false;
       rows.set(row.payment_id, row);
       return true;
+    },
+    async markCheckoutPaid(sessionId: string, paymentId: string) {
+      paidSessions.push([sessionId, paymentId]);
+    }
+  };
+}
+
+const SID = "cs_Ju1h16BXSobdRs7XWg9MUIj0";
+// A hosted checkout session payment: CoinPay adds the session fields to data.
+function sessionShaped(status = "confirmed", type = "payment.confirmed") {
+  const base = realShaped(status, type);
+  return {
+    ...base,
+    data: {
+      ...base.data,
+      checkout_session_id: SID,
+      customer_email: "guest@example.com",
+      account_id: "guest@example.com",
+      property: "logicsrc.com",
+      metadata: { ...base.data.metadata, account_id: "guest@example.com", email: "guest@example.com" }
     }
   };
 }
@@ -88,5 +110,33 @@ describe("CoinPay webhook (logicsrc Hire Us)", () => {
     foreign.data.metadata = {} as typeof foreign.data.metadata;
     expect(await settleHireUsWebhook(foreign, store)).toMatchObject({ settled: false, reason: "unknown payment" });
     expect(store.rows.size).toBe(0);
+  });
+
+  it("settles a checkout-session payment from the session fields, once", async () => {
+    const store = memoryStore();
+    const first = await settleHireUsWebhook(sessionShaped(), store);
+    expect(first).toMatchObject({
+      settled: true,
+      duplicate: false,
+      payment_id: PAYMENT_ID,
+      checkout_session_id: SID,
+      account_id: "guest@example.com",
+      email: "guest@example.com"
+    });
+    expect(store.rows.get(PAYMENT_ID)).toMatchObject({ checkout_session_id: SID, property: "logicsrc.com", hours: 10 });
+    expect(store.paidSessions).toEqual([[SID, PAYMENT_ID]]);
+
+    const forwarded = await settleHireUsWebhook(sessionShaped("forwarded", "payment.forwarded"), store);
+    const replay = await settleHireUsWebhook(sessionShaped(), store);
+    expect(forwarded).toMatchObject({ settled: true, duplicate: true });
+    expect(replay).toMatchObject({ settled: true, duplicate: true });
+    expect(store.rows.size).toBe(1);
+  });
+
+  it("does not record a pending session payment", async () => {
+    const store = memoryStore();
+    expect(await settleHireUsWebhook(sessionShaped("pending", "payment.pending"), store)).toMatchObject({ settled: false });
+    expect(store.rows.size).toBe(0);
+    expect(store.paidSessions).toEqual([]);
   });
 });

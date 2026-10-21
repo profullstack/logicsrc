@@ -7,6 +7,7 @@ import { renderPageMarkup } from "@/lib/page-markup";
 import { siteFooterHtml } from "@/lib/site-footer";
 import { choosePaymentRail, signSession, verifyCoinPayWebhook, verifySession } from "@/lib/coinpay";
 import { POST as coinpayCheckout } from "@/app/api/hire-us/coinpay-checkout/route";
+import { setHireUsCheckoutStore, type HireUsCheckoutRow } from "@/lib/hire-us-payments";
 import { POST as projectRequest } from "@/app/api/hire-us/project-request/route";
 import { GET as oauthStart } from "@/app/api/oauth/coinpay/start/route";
 import { GET as oauthCallback } from "@/app/api/oauth/coinpay/callback/route";
@@ -128,14 +129,52 @@ describe("payment rail selection", () => {
 });
 
 describe("POST /api/hire-us/coinpay-checkout", () => {
-  it("does not create checkout without server credentials", async () => {
-    const response = await coinpayCheckout(
+  const SID = "cs_Ju1h16BXSobdRs7XWg9MUIj0";
+  const recorded: HireUsCheckoutRow[] = [];
+  beforeEach(() => {
+    recorded.length = 0;
+    setHireUsCheckoutStore({ recordOpen: async (row) => void recorded.push(row) });
+  });
+  afterEach(() => setHireUsCheckoutStore(null));
+
+  function configure() {
+    process.env.COINPAY_API_KEY = "cp_test_key";
+    process.env.COINPAY_API_URL = "https://coinpayportal.example";
+    process.env.PUBLIC_URL = "https://logicsrc.test";
+  }
+
+  function mockSessions(answer: Record<string, unknown> = {}, status = 201) {
+    return vi.spyOn(globalThis, "fetch").mockImplementation(async (input) => {
+      const url = typeof input === "string" ? input : input.toString();
+      if (url.endsWith("/api/checkout/sessions")) {
+        return jsonResponse(
+          {
+            success: true,
+            id: SID,
+            url: `https://coinpayportal.example/checkout/${SID}`,
+            status: "open",
+            methods: [{ code: "USDC_POL" }, { code: "BTC" }, { code: "PAYPAL" }],
+            expires_at: "2026-10-21T14:00:00.000Z",
+            ...answer
+          },
+          status
+        );
+      }
+      throw new Error(`unexpected fetch ${url}`);
+    });
+  }
+
+  const post = (body: unknown) =>
+    coinpayCheckout(
       new NextRequest("http://localhost/api/hire-us/coinpay-checkout", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: "{}"
+        body: JSON.stringify(body)
       })
     );
+
+  it("does not create checkout without server credentials", async () => {
+    const response = await post({});
     const body = await response.json();
 
     expect(response.status).toBe(503);
@@ -143,56 +182,27 @@ describe("POST /api/hire-us/coinpay-checkout", () => {
     expect(body).toEqual({ success: false, error: "CoinPay checkout is not configured" });
   });
 
-  it("creates a checkout with card and crypto when both rails are available", async () => {
-    process.env.COINPAY_API_KEY = "cp_test_key";
-    process.env.COINPAY_API_URL = "https://coinpayportal.example";
-    process.env.COINPAY_BUSINESS_ID = "business-123";
-    process.env.COINPAY_ELIGIBILITY_MERCHANT_ID = "merchant-123";
-    process.env.COINPAY_HIRE_US_BLOCKCHAIN = "USDC_POL";
-    process.env.PUBLIC_URL = "https://logicsrc.test";
+  it("opens a hosted checkout session with email, account, property and metadata", async () => {
+    configure();
+    const fetchMock = mockSessions();
 
-    const fetchMock = vi.spyOn(globalThis, "fetch").mockImplementation(async (input) => {
-      const url = typeof input === "string" ? input : input.toString();
-      if (url.includes("/api/payments/merchant-eligibility")) {
-        return jsonResponse({ success: true, accepts_card: true, accepts_crypto: true, chains: ["USDC_POL"] });
-      }
-      if (url.includes("/api/payments/create")) {
-        return jsonResponse(
-          { success: true, payment: { id: "pay_123", stripe_checkout_url: "https://checkout.stripe.test/session" } },
-          201
-        );
-      }
-      throw new Error(`unexpected fetch ${url}`);
-    });
-
-    const response = await coinpayCheckout(
-      new NextRequest("http://localhost/api/hire-us/coinpay-checkout", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ email: "buyer@example.com" })
-      })
-    );
+    const response = await post({ email: "Buyer@Example.com" });
     const body = await response.json();
 
-    const createCall = fetchMock.mock.calls.find(([input]) =>
-      (typeof input === "string" ? input : input.toString()).includes("/api/payments/create")
-    );
-    const createBody = JSON.parse((createCall?.[1]?.body as string) ?? "{}");
+    const [url, init] = fetchMock.mock.calls[0] as unknown as [string, RequestInit];
+    const createBody = JSON.parse(String(init.body));
 
-    expect(response.status).toBe(201);
-    expect(body.payment.checkout_url).toBe("https://checkout.stripe.test/session");
-    expect(createCall?.[1]?.headers).toMatchObject({ authorization: "Bearer cp_test_key" });
+    expect(url).toBe("https://coinpayportal.example/api/checkout/sessions");
+    expect(init.headers).toMatchObject({ authorization: "Bearer cp_test_key" });
     expect(createBody).toMatchObject({
-      business_id: "business-123",
-      amount_usd: 4000,
-      payment_method: "both",
-      currency: "usdc_pol",
-      blockchain: "USDC_POL",
+      amount: 4000,
+      currency: "USD",
       description: "LogicSRC Hire Us - 10 agent-hours @ $400/agent-hour",
-      success_url: "https://logicsrc.test/hire-us?payment=success",
+      customer_email: "buyer@example.com",
+      account_id: "buyer@example.com",
+      property: "logicsrc.com",
+      success_url: "https://logicsrc.test/hire-us?payment=success&session={CHECKOUT_SESSION_ID}",
       cancel_url: "https://logicsrc.test/hire-us?payment=cancelled",
-      redirect_url: "https://logicsrc.test/hire-us?payment=coinpay",
-      webhook_url: "https://logicsrc.test/api/webhooks/coinpay",
       metadata: {
         product: "logicsrc-hire-us",
         billing: "metered_hours",
@@ -200,117 +210,72 @@ describe("POST /api/hire-us/coinpay-checkout", () => {
         rate_usd_per_hour: 400,
         source: "logicsrc.com/hire-us",
         property: "logicsrc.com",
+        account_id: "buyer@example.com",
         email: "buyer@example.com",
         buyer_email: "buyer@example.com"
       }
     });
+    expect(createBody.business_id).toBeUndefined();
+    expect(response.status).toBe(201);
+    expect(body.payment).toMatchObject({
+      id: SID,
+      session_id: SID,
+      amount_usd: 4000,
+      checkout_url: `https://coinpayportal.example/checkout/${SID}`,
+      methods: ["USDC_POL", "BTC", "PAYPAL"]
+    });
+    expect(recorded).toEqual([
+      { session_id: SID, account_id: "buyer@example.com", buyer_email: "buyer@example.com", hours: 10, rate_usd_per_hour: 400, amount_usd: 4000 }
+    ]);
   });
 
-  it("uses card-only checkout when configured crypto is not available", async () => {
-    process.env.COINPAY_API_KEY = "cp_test_key";
-    process.env.COINPAY_API_URL = "https://coinpayportal.example";
-    process.env.COINPAY_BUSINESS_ID = "business-123";
-    process.env.COINPAY_ELIGIBILITY_MERCHANT_ID = "merchant-123";
-
-    vi.spyOn(globalThis, "fetch").mockImplementation(async (input) => {
-      const url = typeof input === "string" ? input : input.toString();
-      if (url.includes("/api/payments/merchant-eligibility")) {
-        return jsonResponse({ success: true, accepts_card: true, accepts_crypto: false, chains: [] });
-      }
-      return jsonResponse(
-        { success: true, payment: { id: "pay_123", stripe_checkout_url: "https://checkout.stripe.test/card-only" } },
-        201
-      );
-    });
+  it("uses the signed-in CoinPay account as account_id", async () => {
+    configure();
+    process.env.COINPAY_OAUTH_CLIENT_SECRET = "oauth-secret-for-session-signing";
+    const fetchMock = mockSessions();
+    const cookie = signSession({ sub: "coinpay-user-9", email: "acct@example.com", exp: Math.floor(Date.now() / 1000) + 600 });
 
     const response = await coinpayCheckout(
       new NextRequest("http://localhost/api/hire-us/coinpay-checkout", {
         method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ email: "buyer@example.com" })
+        headers: { "content-type": "application/json", cookie: `logicsrc_coinpay_session=${cookie}` },
+        body: "{}"
       })
     );
-    const body = await response.json();
-
     expect(response.status).toBe(201);
-    expect(body.payment.checkout_url).toBe("https://checkout.stripe.test/card-only");
+    const createBody = JSON.parse(String((fetchMock.mock.calls[0] as unknown as [string, RequestInit])[1].body));
+    expect(createBody).toMatchObject({ account_id: "coinpay-user-9", customer_email: "acct@example.com" });
   });
 
-  it("falls back when CoinPay returns an invalid checkout amount", async () => {
-    process.env.COINPAY_API_KEY = "cp_test_key";
-    process.env.COINPAY_API_URL = "https://coinpayportal.example";
-    process.env.COINPAY_BUSINESS_ID = "business-123";
-    process.env.COINPAY_ELIGIBILITY_MERCHANT_ID = "merchant-123";
-
-    vi.spyOn(globalThis, "fetch").mockImplementation(async (input) => {
-      const url = typeof input === "string" ? input : input.toString();
-      if (url.includes("/api/payments/merchant-eligibility")) {
-        return jsonResponse({ success: true, accepts_card: true, accepts_crypto: false, chains: [] });
-      }
-      return jsonResponse({ success: true, payment: { id: "pay_123", amount_usd: "not-a-number" } }, 201);
-    });
-
-    const response = await coinpayCheckout(
-      new NextRequest("http://localhost/api/hire-us/coinpay-checkout", { method: "POST", body: "{}" })
-    );
-    const body = await response.json();
-
-    expect(response.status).toBe(201);
-    expect(body.payment.amount_usd).toBe(4000);
+  it("requires an email", async () => {
+    configure();
+    const fetchMock = vi.spyOn(globalThis, "fetch");
+    const response = await post({});
+    expect(response.status).toBe(422);
+    expect(fetchMock).not.toHaveBeenCalled();
   });
 
   it("prices the checkout from the approved hours", async () => {
-    process.env.COINPAY_API_KEY = "cp_test_key";
-    process.env.COINPAY_API_URL = "https://coinpayportal.example";
-    process.env.COINPAY_BUSINESS_ID = "business-123";
-    process.env.COINPAY_ELIGIBILITY_MERCHANT_ID = "merchant-123";
-    process.env.COINPAY_HIRE_US_BLOCKCHAIN = "USDC_POL";
+    configure();
+    const fetchMock = mockSessions();
 
-    const fetchMock = vi.spyOn(globalThis, "fetch").mockImplementation(async (input) => {
-      const url = typeof input === "string" ? input : input.toString();
-      if (url.includes("/api/payments/merchant-eligibility")) {
-        return jsonResponse({ success: true, accepts_card: true, accepts_crypto: true, chains: ["USDC_POL"] });
-      }
-      return jsonResponse({ success: true, payment: { id: "pay_123", amount_usd: 10100 } }, 201);
-    });
-
-    const response = await coinpayCheckout(
-      new NextRequest("http://localhost/api/hire-us/coinpay-checkout", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ hours: 25.25 })
-      })
-    );
+    const response = await post({ hours: 25.25, email: "buyer@example.com" });
     const body = await response.json();
-
-    const createCall = fetchMock.mock.calls.find(([input]) =>
-      (typeof input === "string" ? input : input.toString()).includes("/api/payments/create")
-    );
-    const createBody = JSON.parse((createCall?.[1]?.body as string) ?? "{}");
+    const createBody = JSON.parse(String((fetchMock.mock.calls[0] as unknown as [string, RequestInit])[1].body));
 
     expect(response.status).toBe(201);
-    expect(createBody.amount_usd).toBe(10100);
+    expect(createBody.amount).toBe(10100);
     expect(createBody.description).toBe("LogicSRC Hire Us - 25.25 agent-hours @ $400/agent-hour");
     expect(createBody.metadata).toMatchObject({ billing: "metered_hours", hours: 25.25, rate_usd_per_hour: 400 });
     expect(body.payment).toMatchObject({ amount_usd: 10100, hours: 25.25, rate_usd_per_hour: 400 });
   });
 
   it("rejects hours below the minimum engagement or off the quarter-hour", async () => {
-    process.env.COINPAY_API_KEY = "cp_test_key";
-    process.env.COINPAY_API_URL = "https://coinpayportal.example";
-    process.env.COINPAY_BUSINESS_ID = "business-123";
-    process.env.COINPAY_ELIGIBILITY_MERCHANT_ID = "merchant-123";
-
+    configure();
     const fetchMock = vi.spyOn(globalThis, "fetch");
 
     for (const hours of [9.75, 12.3, "many", -40]) {
-      const response = await coinpayCheckout(
-        new NextRequest("http://localhost/api/hire-us/coinpay-checkout", {
-          method: "POST",
-          headers: { "content-type": "application/json" },
-          body: JSON.stringify({ hours })
-        })
-      );
+      const response = await post({ hours, email: "buyer@example.com" });
       const body = await response.json();
 
       expect(response.status).toBe(422);
@@ -323,32 +288,20 @@ describe("POST /api/hire-us/coinpay-checkout", () => {
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
-  it("does not create checkout when no payment rail is available", async () => {
-    process.env.COINPAY_API_KEY = "cp_test_key";
-    process.env.COINPAY_API_URL = "https://coinpayportal.example";
-    process.env.COINPAY_BUSINESS_ID = "business-123";
-    process.env.COINPAY_ELIGIBILITY_MERCHANT_ID = "merchant-123";
+  it("passes CoinPay's refusal through and records nothing", async () => {
+    configure();
+    mockSessions({ success: false, id: undefined, url: undefined, code: "NO_PAYMENT_METHODS", error: "No payment methods" }, 400);
+    const response = await post({ email: "buyer@example.com" });
+    expect(response.status).toBe(400);
+    expect(await response.json()).toEqual({ success: false, error: "No payment methods" });
+    expect(recorded).toEqual([]);
+  });
 
-    const fetchMock = vi.spyOn(globalThis, "fetch").mockImplementation(async () =>
-      jsonResponse({ success: true, accepts_card: false, accepts_crypto: false, chains: [] })
-    );
-
-    const response = await coinpayCheckout(
-      new NextRequest("http://localhost/api/hire-us/coinpay-checkout", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ email: "buyer@example.com" })
-      })
-    );
-    const body = await response.json();
-
-    expect(response.status).toBe(503);
-    expect(body).toEqual({ success: false, error: "CoinPay checkout is not available for this merchant" });
-    expect(
-      fetchMock.mock.calls.some(([input]) =>
-        (typeof input === "string" ? input : input.toString()).includes("/api/payments/create")
-      )
-    ).toBe(false);
+  it("refuses a checkout URL on another origin", async () => {
+    configure();
+    mockSessions({ url: "https://evil.example/checkout" });
+    const response = await post({ email: "buyer@example.com" });
+    expect(response.status).toBe(502);
   });
 });
 
