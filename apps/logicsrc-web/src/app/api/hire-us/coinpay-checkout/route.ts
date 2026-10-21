@@ -1,6 +1,12 @@
 import type { NextRequest } from "next/server";
 import { json } from "@/lib/http";
-import { choosePaymentRail, fetchMerchantEligibility, parseJson } from "@/lib/coinpay";
+import {
+  COINPAY_SESSION_COOKIE,
+  choosePaymentRail,
+  fetchMerchantEligibility,
+  parseJson,
+  verifySession
+} from "@/lib/coinpay";
 
 export const dynamic = "force-dynamic";
 
@@ -37,7 +43,19 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = (await request.json().catch(() => ({}))) as Record<string, unknown>;
-    const buyerEmail = typeof body.email === "string" ? body.email.trim().slice(0, 160) : "";
+    // A signed-in CoinPay session (OAuth cookie) identifies the account; the
+    // webhook maps the settled payment back to it via metadata.account_id.
+    const sessionCookie = request.cookies.get(COINPAY_SESSION_COOKIE)?.value;
+    let session: Record<string, unknown> | null = null;
+    try {
+      session = sessionCookie ? verifySession(sessionCookie) : null;
+    } catch {
+      session = null;
+    }
+    const accountId = typeof session?.sub === "string" ? session.sub : "";
+    const sessionEmail = typeof session?.email === "string" ? session.email : "";
+    const bodyEmail = typeof body.email === "string" ? body.email.trim().slice(0, 160) : "";
+    const buyerEmail = bodyEmail || sessionEmail;
     const hours = body.hours === undefined ? MINIMUM_HOURS : parseHours(body.hours);
 
     if (hours === null) {
@@ -82,7 +100,9 @@ export async function POST(request: NextRequest) {
           hours,
           rate_usd_per_hour: RATE_USD_PER_HOUR,
           source: "logicsrc.com/hire-us",
-          ...(buyerEmail ? { buyer_email: buyerEmail } : {})
+          property: "logicsrc.com",
+          ...(accountId ? { account_id: accountId } : {}),
+          ...(buyerEmail ? { email: buyerEmail, buyer_email: buyerEmail } : {})
         }
       })
     });
