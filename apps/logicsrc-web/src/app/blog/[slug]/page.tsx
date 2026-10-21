@@ -145,9 +145,7 @@ export default async function BlogPostPage({
             </>
           ) : null}
         </div>
-        <div style={{ display: "flex", justifyContent: "center", marginBottom: "2rem" }}>
-          <AdUnit slot="709f4f1d-667a-4888-9040-90f5f65120f2" format="banner_300x250" />
-        </div>
+        <AdUnit slot="709f4f1d-667a-4888-9040-90f5f65120f2" />
         {post.featured_image?.url ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
