@@ -199,6 +199,8 @@ describe("POST /api/hire-us/coinpay-checkout", () => {
         hours: 10,
         rate_usd_per_hour: 400,
         source: "logicsrc.com/hire-us",
+        property: "logicsrc.com",
+        email: "buyer@example.com",
         buyer_email: "buyer@example.com"
       }
     });
@@ -556,6 +558,7 @@ describe("POST /api/webhooks/coinpay", () => {
     const body = await response.json();
 
     expect(response.status).toBe(200);
-    expect(body).toEqual({ received: true, complete: true, payment_id: "pay_123" });
+    // No Hire Us metadata: acknowledged as a handled no-op, nothing recorded.
+    expect(body).toEqual({ received: true, handled: true, settled: false, reason: "unknown payment", payment_id: "pay_123" });
   });
 });
