@@ -1,21 +1,23 @@
 import type { NextRequest } from "next/server";
 import { json } from "@/lib/http";
-import {
-  COINPAY_SESSION_COOKIE,
-  choosePaymentRail,
-  fetchMerchantEligibility,
-  parseJson,
-  verifySession
-} from "@/lib/coinpay";
+import { COINPAY_SESSION_COOKIE, parseJson, verifySession } from "@/lib/coinpay";
+import { HIRE_US_PRODUCT } from "@/lib/coinpay-webhook";
+import { hireUsCheckoutStore } from "@/lib/hire-us-payments";
 
 export const dynamic = "force-dynamic";
 
-// POST /api/hire-us/coinpay-checkout — create a CoinPay checkout for approved
-// Hire Us hours at $400/hour/agent, choosing card/crypto/both based on merchant
-// eligibility. Billing is metered: the caller supplies the approved hours and the
-// amount is derived from them, never a fixed recurring figure.
+// POST /api/hire-us/coinpay-checkout — open a CoinPay hosted checkout session for
+// approved Hire Us hours at $400/hour/agent. The buyer picks any coin the
+// business has a wallet for, or PayPal, on CoinPay's page. Billing is metered:
+// the caller supplies the approved hours and the amount is derived from them.
+//
+// Body: { hours?: number (default 10), email?: string }. An email is required
+// (from the body or the signed-in CoinPay session). account_id is the CoinPay
+// account when signed in, else the buyer email (guest checkout).
 const RATE_USD_PER_HOUR = 400;
 const MINIMUM_HOURS = 10;
+const PROPERTY = "logicsrc.com";
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // Hours represent total approved agent-hours, not wall-clock duration.
 // Hours are quoted in quarter-hour increments; anything finer is a rounding
@@ -30,21 +32,16 @@ function parseHours(value: unknown): number | null {
 
 export async function POST(request: NextRequest) {
   const apiKey = process.env.COINPAY_API_KEY;
-  const eligibilityApiKey = process.env.COINPAY_ELIGIBILITY_API_KEY || process.env.COINPAY_AGENT_API_KEY || apiKey;
-  const businessId = process.env.COINPAY_BUSINESS_ID || process.env.COINPAY_MERCHANT_ID;
-  const eligibilityMerchantId = process.env.COINPAY_ELIGIBILITY_MERCHANT_ID || process.env.COINPAY_MERCHANT_ID;
-  const apiUrl = process.env.COINPAY_API_URL || "https://coinpayportal.com";
-  const blockchain = process.env.COINPAY_HIRE_US_BLOCKCHAIN || "USDC_POL";
-  const publicUrl = process.env.PUBLIC_URL || "https://logicsrc.com";
+  const apiUrl = (process.env.COINPAY_API_URL || "https://coinpayportal.com").replace(/\/+$/, "").replace(/\/api$/, "");
+  const publicUrl = (process.env.PUBLIC_URL || "https://logicsrc.com").replace(/\/+$/, "");
 
-  if (!apiKey || !businessId) {
+  if (!apiKey) {
     return json({ success: false, error: "CoinPay checkout is not configured" }, 503);
   }
 
   try {
     const body = (await request.json().catch(() => ({}))) as Record<string, unknown>;
-    // A signed-in CoinPay session (OAuth cookie) identifies the account; the
-    // webhook maps the settled payment back to it via metadata.account_id.
+    // A signed-in CoinPay session (OAuth cookie) identifies the account.
     const sessionCookie = request.cookies.get(COINPAY_SESSION_COOKIE)?.value;
     let session: Record<string, unknown> | null = null;
     try {
@@ -52,10 +49,10 @@ export async function POST(request: NextRequest) {
     } catch {
       session = null;
     }
-    const accountId = typeof session?.sub === "string" ? session.sub : "";
+    const sessionAccount = typeof session?.sub === "string" ? session.sub : "";
     const sessionEmail = typeof session?.email === "string" ? session.email : "";
     const bodyEmail = typeof body.email === "string" ? body.email.trim().slice(0, 160) : "";
-    const buyerEmail = bodyEmail || sessionEmail;
+    const buyerEmail = (bodyEmail || sessionEmail).toLowerCase();
     const hours = body.hours === undefined ? MINIMUM_HOURS : parseHours(body.hours);
 
     if (hours === null) {
@@ -67,52 +64,53 @@ export async function POST(request: NextRequest) {
         422
       );
     }
-
-    const amountUsdDue = Math.round(hours * RATE_USD_PER_HOUR * 100) / 100;
-    const eligibility = await fetchMerchantEligibility(apiUrl, eligibilityApiKey, eligibilityMerchantId);
-    const paymentRail = choosePaymentRail(eligibility, blockchain);
-
-    if (!paymentRail) {
-      return json({ success: false, error: "CoinPay checkout is not available for this merchant" }, 503);
+    if (!EMAIL_RE.test(buyerEmail)) {
+      return json({ success: false, error: "An email address is required for the receipt" }, 422);
     }
 
-    const checkoutResponse = await fetch(new URL("/api/payments/create", apiUrl), {
+    const accountId = sessionAccount || buyerEmail;
+    const amountUsdDue = Math.round(hours * RATE_USD_PER_HOUR * 100) / 100;
+
+    const checkoutResponse = await fetch(`${apiUrl}/api/checkout/sessions`, {
       method: "POST",
       headers: {
         authorization: `Bearer ${apiKey}`,
         "content-type": "application/json"
       },
       body: JSON.stringify({
-        business_id: businessId,
-        amount_usd: amountUsdDue,
-        payment_method: paymentRail.method,
-        currency: paymentRail.currency,
-        ...(paymentRail.blockchain ? { blockchain: paymentRail.blockchain } : {}),
+        amount: amountUsdDue,
+        currency: "USD",
         description: `LogicSRC Hire Us - ${hours} agent-hours @ $${RATE_USD_PER_HOUR}/agent-hour`,
-        success_url: `${publicUrl}/hire-us?payment=success`,
+        customer_email: buyerEmail,
+        account_id: accountId,
+        property: PROPERTY,
+        success_url: `${publicUrl}/hire-us?payment=success&session={CHECKOUT_SESSION_ID}`,
         cancel_url: `${publicUrl}/hire-us?payment=cancelled`,
-        redirect_url: `${publicUrl}/hire-us?payment=coinpay`,
-        webhook_url: `${publicUrl}/api/webhooks/coinpay`,
+        expires_in_minutes: 60,
         metadata: {
-          product: "logicsrc-hire-us",
+          product: HIRE_US_PRODUCT,
           billing: "metered_hours",
           unit: "agent_hour",
           hours,
           rate_usd_per_hour: RATE_USD_PER_HOUR,
           source: "logicsrc.com/hire-us",
-          property: "logicsrc.com",
-          ...(accountId ? { account_id: accountId } : {}),
-          ...(buyerEmail ? { email: buyerEmail, buyer_email: buyerEmail } : {})
+          property: PROPERTY,
+          account_id: accountId,
+          email: buyerEmail,
+          buyer_email: buyerEmail
         }
       })
     });
 
     const responseText = await checkoutResponse.text();
     const payload = parseJson(responseText);
+    const sessionId = typeof payload.id === "string" ? payload.id : "";
+    const checkoutUrl = typeof payload.url === "string" ? payload.url : "";
 
-    if (!checkoutResponse.ok || payload.success !== true) {
-      console.error("[coinpay] checkout create failed", {
+    if (!checkoutResponse.ok || !/^cs_[A-Za-z0-9]{8,64}$/.test(sessionId) || !checkoutUrl) {
+      console.error("[coinpay] checkout session create failed", {
         status: checkoutResponse.status,
+        code: payload.code ?? null,
         error: (payload.error as string) || responseText.slice(0, 300)
       });
       return json(
@@ -120,25 +118,45 @@ export async function POST(request: NextRequest) {
         checkoutResponse.ok ? 502 : checkoutResponse.status
       );
     }
+    // Only ever send buyers to CoinPay's own origin.
+    if (new URL(checkoutUrl, apiUrl).origin !== new URL(apiUrl).origin) {
+      console.error("[coinpay] checkout session url on another origin");
+      return json({ success: false, error: "CoinPay checkout failed" }, 502);
+    }
 
-    const payment = (payload.payment as Record<string, unknown>) || {};
-    const amountUsd = Number(payment.amount_usd ?? payment.amount ?? amountUsdDue);
+    try {
+      await hireUsCheckoutStore().recordOpen({
+        session_id: sessionId,
+        account_id: accountId,
+        buyer_email: buyerEmail,
+        hours,
+        rate_usd_per_hour: RATE_USD_PER_HOUR,
+        amount_usd: amountUsdDue
+      });
+    } catch (error) {
+      // The session still settles from its own fields on the webhook.
+      console.error("[coinpay] could not record checkout session", error);
+    }
+
+    const methods = Array.isArray(payload.methods)
+      ? payload.methods
+          .map((m) => (typeof m === "string" ? m : String((m as { code?: unknown })?.code ?? "")))
+          .filter(Boolean)
+      : [];
     return json(
       {
         success: true,
         payment: {
-          id: payment.id,
-          amount_usd: Number.isFinite(amountUsd) ? amountUsd : amountUsdDue,
+          id: sessionId,
+          session_id: sessionId,
+          amount_usd: amountUsdDue,
           hours,
           rate_usd_per_hour: RATE_USD_PER_HOUR,
-          payment_method: payment.stripe_checkout_url ? "card" : paymentRail.method,
-          currency: payment.currency ?? payment.blockchain ?? paymentRail.blockchain ?? paymentRail.currency,
-          crypto_amount: payment.amount_crypto ?? payment.crypto_amount ?? null,
-          address: payment.payment_address ?? null,
-          qr_code: payment.qr_code ?? null,
-          expires_at: payment.expires_at ?? null,
-          status: payment.status ?? "pending",
-          checkout_url: payment.stripe_checkout_url ?? payload.checkout_url ?? payment.checkout_url ?? null
+          payment_method: "checkout",
+          methods,
+          expires_at: payload.expires_at ?? null,
+          status: payload.status ?? "open",
+          checkout_url: checkoutUrl
         }
       },
       201
