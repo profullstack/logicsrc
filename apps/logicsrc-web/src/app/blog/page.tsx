@@ -54,9 +54,7 @@ export default async function BlogIndex(): Promise<ReactNode> {
           </p>
         </div>
 
-        <div style={{ display: "flex", justifyContent: "center", marginBottom: "2rem" }}>
-          <AdUnit slot="709f4f1d-667a-4888-9040-90f5f65120f2" format="banner_300x250" />
-        </div>
+        <AdUnit slot="709f4f1d-667a-4888-9040-90f5f65120f2" />
 
         {posts.length === 0 ? (
           <p style={{ color: "#5b6b7a" }}>No posts yet.</p>

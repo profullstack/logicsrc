@@ -115,22 +115,5 @@ export function HomeInteractivity(): null {
     };
   }, []);
 
-  // The home page ad.network unit lives in the server-rendered markup, and
-  // crawlproof's ad.js scans once at DOMContentLoaded. A client-side visit to
-  // "/" (from /blog, say) re-renders the markup after that scan, so ask the
-  // loader to scan again, retrying briefly while the script is still loading.
-  useEffect(() => {
-    if (!document.querySelector("[data-ad-network]")) return;
-    let tries = 0;
-    const timer = window.setInterval(() => {
-      const ads = (window as { crawlproofAds?: { scan?: () => void } }).crawlproofAds;
-      if (ads?.scan || ++tries >= 20) {
-        window.clearInterval(timer);
-        ads?.scan?.();
-      }
-    }, 250);
-    return () => window.clearInterval(timer);
-  }, []);
-
   return null;
 }

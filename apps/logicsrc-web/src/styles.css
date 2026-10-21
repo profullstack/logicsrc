@@ -1004,16 +1004,3 @@ pre {
   color: #101418;
   font-weight: 600;
 }
-
-/* Home page ad.network unit: collapsed until crawlproof's ad.js fills it. */
-.home-ad {
-  display: flex;
-  justify-content: center;
-  height: 0;
-  overflow: hidden;
-}
-.home-ad[data-cp-filled] {
-  height: auto;
-  min-height: 266px;
-  margin: 8px 0 24px;
-}
