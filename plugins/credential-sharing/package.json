@@ -12,10 +12,10 @@
   "dependencies": {
     "@logicsrc/account-core": "file:../../packages/account-core",
     "@logicsrc/plugin-core": "file:../../packages/plugin-core",
-    "libsodium-wrappers": "^0.7.15"
+    "libsodium-wrappers": "^0.8.4"
   },
   "devDependencies": {
-    "@types/libsodium-wrappers": "^0.7.14",
-    "vitest": "^4.0.8"
+    "@types/libsodium-wrappers": "^0.8.2",
+    "vitest": "^5.0.5"
   }
 }

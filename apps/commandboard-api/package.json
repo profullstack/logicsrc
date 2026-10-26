@@ -23,15 +23,15 @@
     "@logicsrc/plugin-social-accounts": "file:../../plugins/social-accounts",
     "@logicsrc/plugin-ugig": "file:../../plugins/ugig",
     "@logicsrc/validators": "file:../../packages/validators",
-    "@supabase/supabase-js": "^2.105.4",
-    "imapflow": "^1.4.3",
-    "mailparser": "^3.9.12",
-    "nodemailer": "^9.0.1"
+    "@supabase/supabase-js": "^2.118.0",
+    "imapflow": "^2.9.1",
+    "mailparser": "^3.12.4",
+    "nodemailer": "^10.2.1"
   },
   "devDependencies": {
-    "@types/mailparser": "^3.4.6",
-    "@types/nodemailer": "^8.0.1",
-    "tsx": "^4.21.0",
-    "vitest": "^4.0.8"
+    "@types/mailparser": "^3.9.0",
+    "@types/nodemailer": "^8.0.2",
+    "tsx": "^4.23.15",
+    "vitest": "^5.0.5"
   }
 }

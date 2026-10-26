@@ -15,12 +15,12 @@
   },
   "dependencies": {
     "@logicsrc/schemas": "^0.6.0",
-    "ajv": "^8.17.1",
+    "ajv": "^8.20.0",
     "ajv-formats": "^3.0.1",
-    "yaml": "^2.8.1"
+    "yaml": "^2.9.1"
   },
   "devDependencies": {
-    "vitest": "^4.0.8"
+    "vitest": "^5.0.5"
   },
   "files": [
     "dist"

@@ -34,10 +34,10 @@
     "test": "vitest run src"
   },
   "dependencies": {
-    "@logicsrc/validators": "^0.1.0",
-    "yaml": "^2.8.1"
+    "@logicsrc/validators": "^0.6.0",
+    "yaml": "^2.9.1"
   },
   "devDependencies": {
-    "vitest": "^4.0.8"
+    "vitest": "^5.0.5"
   }
 }

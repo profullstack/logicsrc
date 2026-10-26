@@ -36,9 +36,9 @@
     "test": "vitest run src"
   },
   "dependencies": {
-    "commander": "^14.0.2"
+    "commander": "^15.0.0"
   },
   "devDependencies": {
-    "vitest": "^4.0.8"
+    "vitest": "^5.0.5"
   }
 }
