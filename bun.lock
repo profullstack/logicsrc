@@ -84,6 +84,7 @@
       "dependencies": {
         "@profullstack/footer": "latest",
         "@profullstack/libsql-pg": "^0.1.2",
+        "@profullstack/profile": "0.1.6",
         "@simplewebauthn/browser": "^13.3.0",
         "@simplewebauthn/server": "^13.1.0",
         "cookie-parser": "^1.4.7",
@@ -812,6 +813,8 @@
     "@profullstack/libsql-pg": ["@profullstack/libsql-pg@0.1.2", "", { "dependencies": { "@profullstack/libsql-pg": "^0.1.1", "pg": "^8.13.0" }, "optionalDependencies": { "@libsql/client": "^0.15.0" }, "bin": { "libsql-pg": "bin/libsql-pg.js" } }, "sha512-6YrQujssWhkyWInB0G4CWOhH6Pj6kydeK4RKrXOosxQ12flpO4VjUEGTabtSh9zZ7FzCRch0hwFNKApJl/7b4w=="],
 
     "@profullstack/logicsrc-mcp": ["@profullstack/logicsrc-mcp@workspace:packages/logicsrc-mcp"],
+
+    "@profullstack/profile": ["@profullstack/profile@0.1.6", "", { "peerDependencies": { "@libsql/client": ">=0.6.0", "postgres": "^3.4.0", "react": ">=18" }, "optionalPeers": ["@libsql/client", "postgres", "react"], "bin": { "profile": "src/cli.js" } }, "sha512-xkn0P3ANz151QJdlBwcBXkHk813qW9qAmuTZKcuvpEZYkyHDC9J9KfvpVSRepfjECzz4ONGHWO5Zwc4BHpfK8g=="],
 
     "@profullstack/referrals": ["@profullstack/referrals@0.1.0", "", { "peerDependencies": { "react": ">=18" }, "optionalPeers": ["react"] }, "sha512-u66SdBVpsv3kc0N+NWISPoYD5vjCERyv5wfD07iSkZwQeC2IA+ihX5jNA4e7Xr+Y4AUvxLycG+3b4VaROqzgRg=="],
 

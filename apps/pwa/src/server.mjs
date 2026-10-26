@@ -14,6 +14,7 @@ import { apiKeysRouter } from "./routes/apikeys.mjs";
 import { opencredsRouter } from "./routes/opencreds.mjs";
 import { cliRouter } from "./routes/cli.mjs";
 import { pagesRouter } from "./routes/pages.mjs";
+import { profileRouter } from "./lib/profile.mjs";
 import { descriptor } from "@profullstack/footer";
 import { RING_FOOTER_OPTIONS, startRingFooterRefresh } from "./lib/ring-footer.mjs";
 
@@ -67,6 +68,7 @@ app.use(credshareRouter); // /api/credshare/* (session or lsk_ Bearer)
 app.use(apiKeysRouter);   // /api/keys (session or a person's lsk_ key; never a machine key)
 app.use(opencredsRouter); // /api/opencreds/* — personal vault sync (session or lsk_ Bearer)
 app.use(cliRouter);       // /cli/authorize, /cli/token, /api/me
+app.use(profileRouter);   // /api/v1/me/profile (session cookie)
 app.use(pagesRouter);     // /dashboard, /teams/*, /settings
 
 app.use((req, res) => res.status(404).type("html").send(

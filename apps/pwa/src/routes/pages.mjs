@@ -12,6 +12,8 @@ import { requestOrigin } from "../lib/origin.mjs";
 import { CLI_HINT } from "../lib/cli-hint.mjs";
 import { vaultPageBody } from "../lib/vault-page.mjs";
 import { config } from "../config.mjs";
+import { COLUMNS, renderProfileFields, validateProfile } from "@profullstack/profile";
+import { profiles } from "../lib/profile.mjs";
 import {
   TeamMemberError,
   canManageMember,
@@ -272,6 +274,9 @@ function keyRow(req, k) {
 
 pagesRouter.get("/settings", requireAuth, async (req, res) => {
   const keys = await listApiKeys(req.user.id);
+  const mine = (await profiles.get(req.user.id)) ?? {};
+  const profileValues = Object.fromEntries(COLUMNS.map((c) => [c, mine[c] ?? null]));
+  profileValues.email ??= req.user.email || null;
   const teams = await all(`SELECT t.slug FROM credshare_teams t JOIN credshare_members m ON m.team_id = t.id WHERE m.user_id = ? AND m.status = 'active' ORDER BY t.slug`, [req.user.id]);
   const newKey = req.query.key ? String(req.query.key) : "";
   const err = req.query.err ? String(req.query.err).slice(0, 200) : "";
@@ -281,6 +286,14 @@ pagesRouter.get("/settings", requireAuth, async (req, res) => {
     <h1 style="font-size:1.5rem;margin-bottom:20px">Settings</h1>
     ${newKey ? `<div class="notice ok">New API key (copy it now — shown once):<br><b class="mono" style="word-break:break-all">${esc(newKey)}</b></div>` : ""}
     ${err ? `<div class="notice err">${esc(KEY_ERRORS[err] || err)}</div>` : ""}
+    ${req.query.saved === "profile" ? `<div class="notice ok">Your details are saved.</div>` : ""}
+    <div class="card" style="margin-bottom:20px"><div class="card-head"><span class="h">Your details</span></div>
+      <div class="card-body">
+        <form method="post" action="/settings/profile">${csrfInput(req)}
+          ${renderProfileFields({ values: profileValues, required: ["first_name", "last_name"], idPrefix: "account-" })}
+          <button class="btn">Save details</button>
+        </form>
+      </div></div>
     <div class="card"><div class="card-head"><span class="h">API keys</span></div>
       <div class="card-body">
         <p class="dim" style="font-size:.85rem;margin-top:0">A <b>person</b> key acts as you; <code>logicsrc login</code> makes one for you. A <b>machine</b> key is for a deploy box or CI: one team, the vaults you list, read-only unless you say otherwise, its own identity key. After the box runs one command with it, grant it a vault from the vault page or with <code>logicsrc teams grant &lt;team&gt; &lt;project&gt; &lt;env&gt; --key &lt;name&gt;</code>.</p>
@@ -306,6 +319,15 @@ pagesRouter.get("/settings", requireAuth, async (req, res) => {
       </div></div>
   </main>${footer}`;
   res.type("html").send(page({ title: "LogicSRC ▸ settings", body }));
+});
+
+// The signup profile, editable. Names are required; the email falls back to the account's.
+pagesRouter.post("/settings/profile", requireAuth, async (req, res) => {
+  const input = { ...req.body, email: String(req.body.email || "").trim() || req.user.email || "" };
+  const check = validateProfile(input, { required: ["first_name", "last_name"] });
+  if (!check.ok) return res.redirect(`/settings?err=${encodeURIComponent(`Check your details: ${Object.values(check.errors).join(" ")}`)}`);
+  await profiles.save(req.user.id, check.profile);
+  res.redirect("/settings?saved=profile");
 });
 
 pagesRouter.post("/settings/apikeys", requireAuth, async (req, res) => {
