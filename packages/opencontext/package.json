@@ -42,12 +42,12 @@
     "bench": "node dist/bench.js"
   },
   "dependencies": {
-    "@libsql/client": "^0.17.4",
-    "@logicsrc/validators": "^0.1.0",
-    "commander": "^14.0.2",
-    "yaml": "^2.8.1"
+    "@libsql/client": "^0.18.0",
+    "@logicsrc/validators": "^0.6.0",
+    "commander": "^15.0.0",
+    "yaml": "^2.9.1"
   },
   "devDependencies": {
-    "vitest": "^4.0.8"
+    "vitest": "^5.0.5"
   }
 }

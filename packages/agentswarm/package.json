@@ -27,10 +27,14 @@
     "deepagents": "^1.10.0"
   },
   "peerDependenciesMeta": {
-    "@langchain/langgraph": { "optional": true },
-    "deepagents": { "optional": true }
+    "@langchain/langgraph": {
+      "optional": true
+    },
+    "deepagents": {
+      "optional": true
+    }
   },
   "devDependencies": {
-    "vitest": "^4.0.8"
+    "vitest": "^5.0.5"
   }
 }

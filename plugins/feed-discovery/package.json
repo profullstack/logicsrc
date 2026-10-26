@@ -11,14 +11,14 @@
   },
   "dependencies": {
     "@logicsrc/plugin-core": "file:../../packages/plugin-core",
-    "cheerio": "^1.0.0",
-    "fast-xml-parser": "^5.2.5",
+    "cheerio": "^1.2.0",
+    "fast-xml-parser": "^5.11.2",
     "rss": "^1.2.2",
-    "slugify": "^1.6.6",
-    "zod": "^4.1.13"
+    "slugify": "^1.6.9",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@types/rss": "^0.0.32",
-    "vitest": "^4.0.8"
+    "vitest": "^5.0.5"
   }
 }

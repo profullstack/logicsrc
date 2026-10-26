@@ -107,8 +107,9 @@ function createImapflowDriver(config: MailuConfig): ImapDriver {
           out.push({
             name: box.name,
             path: box.path,
-            unseen: status.unseen ?? 0,
-            total: status.messages ?? 0
+            // imapflow 2 returns false when STATUS fails for a mailbox.
+            unseen: status ? status.unseen ?? 0 : 0,
+            total: status ? status.messages ?? 0 : 0
           });
         }
         return out;
@@ -120,7 +121,7 @@ function createImapflowDriver(config: MailuConfig): ImapDriver {
         const lock = await c.getMailboxLock(mailbox);
         try {
           const status = await c.status(mailbox, { messages: true });
-          const total = status.messages ?? 0;
+          const total = status ? status.messages ?? 0 : 0;
           if (total === 0) return [];
           const start = Math.max(1, total - limit + 1);
           const rows: MessageSummary[] = [];

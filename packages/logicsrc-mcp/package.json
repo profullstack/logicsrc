@@ -16,10 +16,10 @@
     "@logicsrc/openontology": "file:../openontology",
     "@logicsrc/openprd": "file:../openprd",
     "@logicsrc/validators": "file:../validators",
-    "@modelcontextprotocol/sdk": "^1.29.0",
-    "zod": "^4.1.13"
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
-    "vitest": "^4.0.8"
+    "vitest": "^5.0.5"
   }
 }

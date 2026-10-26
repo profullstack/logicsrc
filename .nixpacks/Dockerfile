@@ -22,7 +22,7 @@
 # `file:` cross-references differently on every install, so its own lockfile
 # never passes --frozen-lockfile. 1.4.2 is stable on it.
 
-FROM oven/bun:1.4.2-slim AS build
+FROM oven/bun:1.4.4-slim AS build
 WORKDIR /app
 ARG PUBLIC_URL
 ENV PUBLIC_URL=$PUBLIC_URL \
@@ -32,7 +32,7 @@ RUN bun install --frozen-lockfile
 # Every workspace build (tsc, vite, `bun --bun next build`), in dependency order.
 RUN bun run build
 
-FROM oven/bun:1.4.2-slim AS runtime
+FROM oven/bun:1.4.4-slim AS runtime
 WORKDIR /app
 ENV NODE_ENV=production \
     NEXT_TELEMETRY_DISABLED=1 \

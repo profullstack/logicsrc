@@ -14,13 +14,13 @@
     "test": "vitest run src"
   },
   "dependencies": {
-    "@fission-ai/openspec": "^1.13.0",
+    "@fission-ai/openspec": "^1.15.0",
     "@logicsrc/account-core": "file:../account-core",
     "@logicsrc/opencontext": "file:../opencontext",
     "@logicsrc/opencreds": "file:../opencreds",
     "@logicsrc/openerrand": "file:../openerrand",
     "@logicsrc/openfleet": "file:../openfleet",
-    "@logicsrc/openmcp": "^0.3.1",
+    "@logicsrc/openmcp": "^0.4.1",
     "@logicsrc/openontology": "file:../openontology",
     "@logicsrc/openprd": "file:../openprd",
     "@logicsrc/plugin-agentbbs": "file:../../plugins/agentbbs",
@@ -33,12 +33,12 @@
     "@logicsrc/plugin-ugig": "file:../../plugins/ugig",
     "@logicsrc/tui": "file:../tui",
     "@logicsrc/validators": "file:../validators",
-    "@profullstack/hqtui": "^0.5.0",
+    "@profullstack/hqtui": "^0.11.1",
     "@profullstack/logicsrc-mcp": "file:../logicsrc-mcp",
-    "commander": "^14.0.2"
+    "commander": "^15.0.0"
   },
   "devDependencies": {
-    "tsx": "^4.21.0",
-    "vitest": "^4.0.8"
+    "tsx": "^4.23.15",
+    "vitest": "^5.0.5"
   }
 }

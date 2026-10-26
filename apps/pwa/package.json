@@ -3,7 +3,7 @@
   "version": "0.1.1",
   "private": true,
   "type": "module",
-  "description": "LogicSRC credentials \u2014 Express app on Postgres (@profullstack/libsql-pg): auth + end-to-end-encrypted team credential sharing.",
+  "description": "LogicSRC credentials — Express app on Postgres (@profullstack/libsql-pg): auth + end-to-end-encrypted team credential sharing.",
   "scripts": {
     "start": "bun src/server.mjs",
     "dev": "bun --watch src/server.mjs",
@@ -12,15 +12,15 @@
   },
   "dependencies": {
     "@profullstack/footer": "latest",
-    "@profullstack/libsql-pg": "^0.1.2",
+    "@profullstack/libsql-pg": "^0.1.4",
     "@profullstack/profile": "0.1.6",
-    "@simplewebauthn/browser": "^13.3.0",
-    "@simplewebauthn/server": "^13.1.0",
+    "@simplewebauthn/browser": "^14.0.0",
+    "@simplewebauthn/server": "^14.0.3",
     "cookie-parser": "^1.4.7",
-    "express": "^4.21.2",
-    "libsodium-wrappers": "^0.7.15"
+    "express": "^5.3.0",
+    "libsodium-wrappers": "^0.8.4"
   },
   "devDependencies": {
-    "@libsql/client": "^0.14.0"
+    "@libsql/client": "^0.18.0"
   }
 }
