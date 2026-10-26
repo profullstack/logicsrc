@@ -1,7 +1,7 @@
 {
   "name": "LogicSRC Credentials",
   "short_name": "LogicSRC",
-  "description": "Human-in-the-loop approvals for your moshscript loops.",
+  "description": "Share secrets with your team, end-to-end encrypted. The server never sees them.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

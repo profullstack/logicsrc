@@ -106,6 +106,7 @@ export function page({ title = "LogicSRC ▸ credentials", body = "", head = "" 
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#101418">
 <title>${esc(title)}</title>
+<meta name="description" content="LogicSRC credentials: share secrets with your team, end-to-end encrypted. The server never sees them.">
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="icon" href="/icon.svg" type="image/svg+xml">
 <style>${BRAND_CSS}</style>
