@@ -49,6 +49,13 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--green)}
 input::placeholder,textarea::placeholder{color:var(--faint)}
 label.field{display:block;margin-bottom:14px}
 label.field span{display:block;font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:6px}
+/* the signup profile (@profullstack/profile): same look as label.field */
+.pfs-profile{border:0;padding:0;margin:0;min-width:0}
+.pfs-profile__row{margin-bottom:14px}
+.pfs-profile__row label{display:block;font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:6px}
+.pfs-profile__optional{text-transform:none;letter-spacing:0}
+.pfs-profile input[aria-invalid="true"]{border-color:var(--danger)}
+.pfs-profile__error{margin:6px 0 0;font-size:.78rem;color:var(--danger)}
 .card{border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
 .card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 16px;border-bottom:1px solid var(--line)}
 .card-head .h{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}

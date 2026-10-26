@@ -7,10 +7,15 @@ import { createUserWithPassword, userByEmail } from "../lib/users.mjs";
 import { dashboardHandler } from "./pages.mjs";
 import { config } from "../config.mjs";
 import { ringFooter } from "../lib/ring-footer.mjs";
+import { renderProfileFields, PROFILE_ENHANCE_SCRIPT, saveSignupProfile, validateProfile } from "@profullstack/profile";
+import { profiles } from "../lib/profile.mjs";
+
+// Asked for when creating an account, beside the email box; never on sign-in.
+const SIGNUP_FIELDS = ["first_name", "last_name", "company_domain", "job_title", "linkedin_url"];
 
 export const authRouter = Router();
 
-function authPage(req, { error = "", mode = "in" } = {}) {
+function authPage(req, { error = "", mode = "in", values = {}, errors = {} } = {}) {
   const body = `
   <main class="wrap" style="max-width:440px;padding-top:8vh">
     <a class="brand" href="/" style="justify-content:center;font-size:1.5rem;margin-bottom:6px"><span class="mark">LS</span>LogicSRC<span class="app">credentials</span></a>
@@ -20,7 +25,8 @@ function authPage(req, { error = "", mode = "in" } = {}) {
       <form method="post" action="/auth/${mode === "up" ? "register" : "login"}">
         ${csrfInput(req)}
         <label class="field"><span>Email</span>
-          <input type="email" name="email" autocomplete="username" required placeholder="you@example.com" value="${esc(req.query.email || "")}"></label>
+          <input type="email" name="email" autocomplete="username" required placeholder="you@example.com" value="${esc(values.email ?? req.query.email ?? "")}"></label>
+        ${mode === "up" ? renderProfileFields({ fields: SIGNUP_FIELDS, values, errors, idPrefix: "signup-" }) : ""}
         <label class="field"><span>Password</span>
           <input type="password" name="password" autocomplete="${mode === "up" ? "new-password" : "current-password"}" required minlength="8" placeholder="8+ characters"></label>
         <button class="btn acid block" type="submit">${mode === "up" ? "Create account" : "Sign in"}</button>
@@ -41,7 +47,7 @@ function authPage(req, { error = "", mode = "in" } = {}) {
     </div></div>
   </main>${footer}${ringFooter()}
   <script src="/vendor/simplewebauthn-browser.umd.js"></script>
-  <script src="/passkey.js"></script>`;
+  <script src="/passkey.js"></script>${mode === "up" ? `<script>${PROFILE_ENHANCE_SCRIPT}</script>` : ""}`;
   return page({ title: "LogicSRC ▸ sign in", body });
 }
 
@@ -57,10 +63,22 @@ authRouter.get("/", (req, res) => {
 authRouter.post("/auth/register", async (req, res) => {
   const email = String(req.body.email || "").trim().toLowerCase();
   const password = String(req.body.password || "");
-  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return res.type("html").send(authPage(req, { mode: "up", error: "Enter a valid email." }));
-  if (password.length < 8) return res.type("html").send(authPage(req, { mode: "up", error: "Password must be at least 8 characters." }));
-  if (await userByEmail(email)) return res.type("html").send(authPage(req, { mode: "up", error: "That email already has an account — sign in." }));
+  // What was typed comes back on a refused form (never the password).
+  const values = Object.fromEntries(["email", ...SIGNUP_FIELDS].map((f) => [f, String(req.body[f] ?? "")]));
+  const refuse = (error, errors = {}) => res.type("html").send(authPage(req, { mode: "up", error, values, errors }));
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return refuse("Enter a valid email.");
+  // The profile is checked before the account exists, so a refused form leaves nothing half-made.
+  const check = validateProfile(req.body);
+  if (!check.ok) return refuse("A few of those fields need another look.", check.errors);
+  if (password.length < 8) return refuse("Password must be at least 8 characters.");
+  if (await userByEmail(email)) return refuse("That email already has an account — sign in.");
   const user = await createUserWithPassword(email, hashPassword(password));
+  // A failed profile write never fails the signup; Settings can fill it in.
+  try {
+    await saveSignupProfile(profiles, user.id, req.body, { email });
+  } catch (e) {
+    console.error("signup profile save failed:", e);
+  }
   await createSession(res, user.id);
   res.redirect(takeNext(req, res) || "/");
 });
