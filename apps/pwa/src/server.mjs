@@ -14,6 +14,8 @@ import { apiKeysRouter } from "./routes/apikeys.mjs";
 import { opencredsRouter } from "./routes/opencreds.mjs";
 import { cliRouter } from "./routes/cli.mjs";
 import { pagesRouter } from "./routes/pages.mjs";
+import { descriptor } from "@profullstack/footer";
+import { RING_FOOTER_OPTIONS, startRingFooterRefresh } from "./lib/ring-footer.mjs";
 
 const app = express();
 app.disable("x-powered-by");
@@ -48,6 +50,10 @@ const sodiumCore = createRequire(sodiumWrappers).resolve("libsodium");
 app.get("/vendor/libsodium.js", (_req, res) => res.sendFile(sodiumCore));
 app.get("/vendor/libsodium-wrappers.js", (_req, res) => res.sendFile(sodiumWrappers));
 
+// The Profullstack webring descriptor (the ring footer is on the sign-in page, /).
+app.get("/.well-known/openwebring.json", (_req, res) =>
+  res.json(descriptor({ site: RING_FOOTER_OPTIONS.site, name: "LogicSRC credentials" })));
+
 app.get("/healthz", (_req, res) => res.json({ ok: true, env: config.env }));
 
 app.use(sessionMiddleware);
@@ -74,6 +80,7 @@ app.use((err, _req, res, _next) => {
 
 async function main() {
   await migrate();
+  startRingFooterRefresh();
   app.listen(config.port, () => console.log(`🔐 logicsrc credentials on :${config.port} (${config.env}) — ${config.origin}`));
 }
 main().catch((e) => { console.error("boot failed:", e); process.exit(1); });
