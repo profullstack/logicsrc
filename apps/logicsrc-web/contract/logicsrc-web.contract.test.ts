@@ -98,7 +98,8 @@ describe("server-rendered page markup", () => {
     const markup = renderPageMarkup("/", await siteFooterHtml());
     expect(markup).toContain("data-pfs-footer");
     const from = "from=https%3A%2F%2Flogicsrc.com%2F";
-    for (const hop of ["previous", "next", "random"]) {
+    // @profullstack/footer 0.2.2 dropped the random and vote links from the ring nav.
+    for (const hop of ["previous", "next"]) {
       expect(markup).toContain(`https://rssamplifier.com/ring/profullstack/${hop}?${from}`);
     }
   });
