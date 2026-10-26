@@ -6,6 +6,7 @@ import { hashPassword, verifyPassword } from "../lib/crypto.mjs";
 import { createUserWithPassword, userByEmail } from "../lib/users.mjs";
 import { dashboardHandler } from "./pages.mjs";
 import { config } from "../config.mjs";
+import { ringFooter } from "../lib/ring-footer.mjs";
 
 export const authRouter = Router();
 
@@ -38,7 +39,7 @@ function authPage(req, { error = "", mode = "in" } = {}) {
         : `<button class="btn block" type="button" disabled title="Set COINPAY_OAUTH_* to enable">◆ Continue with CoinPay</button>`}
       <p id="passkey-msg" class="mono faint" style="font-size:.72rem;text-align:center;margin:12px 0 0"></p>
     </div></div>
-  </main>${footer}
+  </main>${footer}${ringFooter()}
   <script src="/vendor/simplewebauthn-browser.umd.js"></script>
   <script src="/passkey.js"></script>`;
   return page({ title: "LogicSRC ▸ sign in", body });
