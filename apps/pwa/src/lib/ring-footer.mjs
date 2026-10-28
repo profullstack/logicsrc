@@ -3,31 +3,16 @@
 // sign-in page. It is rendered into the HTML on the server because rssamplifier's
 // ring verifier reads the page and never runs script.
 //
-// Pages render synchronously, so the footer is kept as a string: the bundled
-// template at boot, then the @latest template from the CDN, refreshed every 15
-// minutes (a footer release reaches us with no redeploy). A failed refresh keeps
-// the last good copy. No CSP on this app, so the footer brings its own styles.
-import { footerHtml, footerHtmlSync } from "@profullstack/footer";
+// This origin holds vault identity keys in browser storage, so the footer is the
+// template BUNDLED in the pinned package version only. It used to be refreshed
+// from jsdelivr @latest every 15 minutes, which made whoever could publish the
+// footer package able to put HTML on this origin, past a bypassable sanitizer.
+// A footer change now reaches this app by bumping the pinned dependency.
+import { footerHtmlSync } from "@profullstack/footer";
 
 export const RING_FOOTER_OPTIONS = { site: "https://app.logicsrc.com/" };
 
-let html = footerHtmlSync(RING_FOOTER_OPTIONS);
+const html = footerHtmlSync(RING_FOOTER_OPTIONS);
 
 /** The footer markup; never empty. */
 export const ringFooter = () => html;
-
-/** Accept a rendered footer only when it still links the ring. */
-export function setRingFooter(next) {
-  if (typeof next !== "string" || !next.includes("/ring/profullstack") || next.length > 64_000) return false;
-  html = next;
-  return true;
-}
-
-export function startRingFooterRefresh(everyMs = 15 * 60_000) {
-  if (process.env.PROFULLSTACK_FOOTER_OFFLINE === "1") return () => {};
-  const run = () => footerHtml(RING_FOOTER_OPTIONS).then(setRingFooter, () => {});
-  run();
-  const timer = setInterval(run, everyMs);
-  timer.unref?.();
-  return () => clearInterval(timer);
-}

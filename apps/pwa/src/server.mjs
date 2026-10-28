@@ -16,11 +16,17 @@ import { cliRouter } from "./routes/cli.mjs";
 import { pagesRouter } from "./routes/pages.mjs";
 import { profileRouter } from "./lib/profile.mjs";
 import { descriptor } from "@profullstack/footer";
-import { RING_FOOTER_OPTIONS, startRingFooterRefresh } from "./lib/ring-footer.mjs";
+import { RING_FOOTER_OPTIONS } from "./lib/ring-footer.mjs";
+import { securityHeaders } from "./lib/security-headers.mjs";
+import { PROFILE_ENHANCE_SCRIPT } from "@profullstack/profile";
 
 const app = express();
 app.disable("x-powered-by");
 if (config.secure) app.set("trust proxy", 1); // Railway terminates TLS
+
+// Security headers on every response (CSP with no inline or third-party script,
+// HSTS, no framing, no referrer). See lib/security-headers.mjs.
+app.use(securityHeaders);
 
 // body parsing — keep the raw body for HMAC signature verification
 // A vault push carries hundreds of encrypted items; parse it under a larger cap
@@ -50,6 +56,8 @@ const sodiumWrappers = requireHere.resolve("libsodium-wrappers");
 const sodiumCore = createRequire(sodiumWrappers).resolve("libsodium");
 app.get("/vendor/libsodium.js", (_req, res) => res.sendFile(sodiumCore));
 app.get("/vendor/libsodium-wrappers.js", (_req, res) => res.sendFile(sodiumWrappers));
+// The signup profile's progressive enhancement, as a file: the CSP allows no inline script.
+app.get("/vendor/profile-enhance.js", (_req, res) => res.type("application/javascript").set("Cache-Control", "public, max-age=3600").send(PROFILE_ENHANCE_SCRIPT));
 
 // The Profullstack webring descriptor (the ring footer is on the sign-in page, /).
 app.get("/.well-known/openwebring.json", (_req, res) =>
@@ -82,7 +90,6 @@ app.use((err, _req, res, _next) => {
 
 async function main() {
   await migrate();
-  startRingFooterRefresh();
   app.listen(config.port, () => console.log(`🔐 logicsrc credentials on :${config.port} (${config.env}) — ${config.origin}`));
 }
 main().catch((e) => { console.error("boot failed:", e); process.exit(1); });

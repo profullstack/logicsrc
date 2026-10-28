@@ -30,7 +30,24 @@ export interface RemoteMember {
   role: "owner" | "admin" | "member";
   status: "active" | "invited";
   hasPublicKey: boolean;
+  /** The member's identity public key and its fingerprint (servers before 2026-10-28 omit these). */
+  publicKey?: string | null;
+  fingerprint?: string | null;
   joinedAt: string | null;
+}
+
+/** One audit row, as GET /teams/:slug/audit returns it. */
+export interface RemoteAuditRow {
+  at: number;
+  action: string;
+  actor: string | null;
+  vault: string | null;
+  target: string | null;
+  fingerprint: string | null;
+  apiKey: string | null;
+  apiKeyKind: string | null;
+  ip: string | null;
+  userAgent: string | null;
 }
 
 export interface RemoteVault {
@@ -66,6 +83,8 @@ export interface RekeyResult {
   /** Machine keys re-sealed to the new DEK, and the ones dropped (servers before machine keys omit these). */
   keysResealed?: string[];
   keysDropped?: string[];
+  /** The vault's key version after this re-key. */
+  keyVersion?: number;
 }
 
 /** The credential a request was made with, as /api/credshare/me describes it. Null for a browser session. */
@@ -228,7 +247,24 @@ export class TeamClient {
     return this.request<{ vault: { id: string; name: string } }>("POST", `/teams/${encodeURIComponent(slug)}/vaults`, { name });
   }
   getMyGrant(vaultId: string) {
-    return this.request<{ wrappedDek: string }>("GET", `/vaults/${encodeURIComponent(vaultId)}/grant`);
+    return this.request<{ wrappedDek: string; keyVersion?: number }>("GET", `/vaults/${encodeURIComponent(vaultId)}/grant`);
+  }
+  /** Every vault grant the caller holds, for re-sealing them during an identity rotation. */
+  myGrants() {
+    return this.request<{ grants: Array<{ vaultId: string; vault: string; team: string; wrappedDek: string }> }>("GET", "/me/grants");
+  }
+  /** A random answer sealed to the caller's CURRENT identity key: opening it proves possession. */
+  identityChallenge() {
+    return this.request<{ challengeId: string; sealed: string; publicKey: string; fingerprint: string; expiresAt: number }>("POST", "/keys/challenge", {});
+  }
+  rotateIdentity(body: { publicKey: string; challengeId: string; answer: string; grants: Array<{ vaultId: string; wrappedDek: string }> }) {
+    return this.request<{ ok: boolean; publicKey: string; fingerprint: string; previousFingerprint: string; regranted: number }>("POST", "/keys/rotate", body);
+  }
+  teamAudit(slug: string, query: { vault?: string; actor?: string; action?: string; since?: number; limit?: number } = {}) {
+    const qs = new URLSearchParams();
+    for (const [k, v] of Object.entries(query)) if (v !== undefined && v !== null && v !== "") qs.set(k, String(v));
+    const suffix = qs.toString() ? `?${qs}` : "";
+    return this.request<{ audit: RemoteAuditRow[] }>("GET", `/teams/${encodeURIComponent(slug)}/audit${suffix}`);
   }
   listGrants(vaultId: string) {
     return this.request<{ grants: RemoteGrantRow[] }>("GET", `/vaults/${encodeURIComponent(vaultId)}/grants`);
@@ -237,10 +273,15 @@ export class TeamClient {
     return this.request<{ ok: boolean }>("POST", `/vaults/${encodeURIComponent(vaultId)}/grants`, { email, wrappedDek });
   }
   listSecrets(vaultId: string) {
-    return this.request<{ vaultId: string; secrets: RemoteSecret[] }>("GET", `/vaults/${encodeURIComponent(vaultId)}/secrets`);
+    return this.request<{ vaultId: string; keyVersion?: number; secrets: RemoteSecret[] }>("GET", `/vaults/${encodeURIComponent(vaultId)}/secrets`);
   }
-  putSecrets(vaultId: string, upserts: Array<{ name: string; nonce: string; ciphertext: string; fingerprint: string }>, deletes: string[]) {
-    return this.request<{ ok: boolean; applied: string[] }>("PUT", `/vaults/${encodeURIComponent(vaultId)}/secrets`, { upserts, deletes });
+  /**
+   * `keyVersion` is the vault key version the ciphertext was made under (from
+   * getMyGrant). The server refuses the write if the vault was re-keyed since,
+   * so nothing lands under a retired key.
+   */
+  putSecrets(vaultId: string, upserts: Array<{ name: string; nonce: string; ciphertext: string; fingerprint: string }>, deletes: string[], keyVersion?: number) {
+    return this.request<{ ok: boolean; applied: string[] }>("PUT", `/vaults/${encodeURIComponent(vaultId)}/secrets`, { upserts, deletes, ...(keyVersion !== undefined ? { keyVersion } : {}) });
   }
   /**
    * Swap the vault to a fresh DEK. The whole next state goes over in one call

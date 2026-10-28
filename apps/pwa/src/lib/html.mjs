@@ -120,7 +120,7 @@ export function page({ title = "LogicSRC ▸ credentials", body = "", head = "" 
 ${head}
 </head>
 <body>${body}
-<script>if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js').catch(()=>{})}</script>
+<script src="/app.js" defer></script>
 </body>
 </html>`;
 }

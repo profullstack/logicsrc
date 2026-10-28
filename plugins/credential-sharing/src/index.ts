@@ -83,6 +83,7 @@ export {
   type RemoteKeyInfo,
   type RemoteApiKey,
   type RemoteKeyGrant,
+  type RemoteAuditRow,
   type CreateApiKeyInput
 } from "./client.js";
 export {
@@ -130,6 +131,16 @@ export {
   type CredentialStore
 } from "./store.js";
 export { fingerprintValue, fingerprintsEqual } from "./fingerprint.js";
+export {
+  keyFingerprint,
+  knownKeysPath,
+  pinStatus,
+  checkAndPinKey,
+  repinKey,
+  KeyChangedError,
+  type KnownKey,
+  type PinStatus
+} from "./known-keys.js";
 export {
   planVaultRekey,
   type RekeyPlan,

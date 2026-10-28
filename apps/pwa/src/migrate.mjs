@@ -9,7 +9,17 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
-import { db, run, all, isPostgres } from "./db.mjs";
+import { db, run as appRun, all as appAll, isPostgres, isPostgresUrl } from "./db.mjs";
+import { createClient as createPgClient } from "@profullstack/libsql-pg";
+
+// The app connects as a least-privilege role (DML only, append-only audit). DDL
+// needs the schema owner, so migrations run on MIGRATE_DATABASE_URL when it is
+// set (the owner role), and fall back to the app's own connection otherwise
+// (local dev, tests, a single-role setup).
+const MIGRATE_URL = process.env.MIGRATE_DATABASE_URL || "";
+const migrator = MIGRATE_URL && isPostgresUrl(MIGRATE_URL) ? createPgClient({ url: MIGRATE_URL, dialect: "sqlite" }) : null;
+const run = migrator ? (sql, args = []) => migrator.execute({ sql, args }) : appRun;
+const all = migrator ? async (sql, args = []) => (await migrator.execute({ sql, args })).rows : appAll;
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 export const MIGRATIONS_DIR = path.join(HERE, isPostgres ? "migrations-pg" : "migrations");
@@ -31,6 +41,7 @@ export async function migrate() {
     console.log(`✓ ${file}`);
   }
   console.log("migrations up to date");
+  await migrator?.close?.();
 }
 
 // Run directly (npm run migrate) — not when imported by the server.

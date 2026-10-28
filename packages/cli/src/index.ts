@@ -37,6 +37,7 @@ import { registerKeysCommands } from "./keys.js";
 import { sshAgentAction, sshListAction, sshPullAction, sshPushAction } from "./ssh.js";
 import { credentialsRotateAction } from "./rotate.js";
 import { teamsRotateKeysAction, teamsRotationAction, teamsRotationSetAction } from "./rotate-keys.js";
+import { teamsAuditAction, teamsKeyImportAction, teamsRekeyAction, teamsRotateIdentityAction } from "./hardening.js";
 import { boards, tasks } from "./fixtures.js";
 import { print, type OutputFormat } from "./format.js";
 import { parsePositiveInteger } from "./numeric-options.js";
@@ -742,6 +743,10 @@ Quick start (<team> is e.g. profullstack; see yours with "logicsrc teams list"):
   logicsrc teams push <team> <project> <env>               ./.env -> vault
   logicsrc teams grant <team> <project> <env> dev@example.com
   logicsrc teams key                                       your key, to read values in the web app
+  logicsrc teams members <team>                            members + key fingerprints (pinned on first use)
+  logicsrc teams audit <team> [project] [env]              who read what, from where
+  logicsrc teams rotate-identity                           new identity key, grants re-sealed
+  logicsrc teams rekey <team> --all                        new vault keys, values re-encrypted
   logicsrc teams rotation <team>                           how each secret is rotated (agents: --format json)
   logicsrc teams rotate-keys <team> [project] [env]        rotate values (dry run; --approve to write)
 
@@ -978,9 +983,72 @@ there; the key is checked against your registered public key and never sent.
 Examples:
   logicsrc teams key               print it
   logicsrc teams key | pbcopy      straight to the clipboard (macOS; wl-copy / xclip on Linux)
+  logicsrc teams key --import < key   use a key copied from your other machine (must be the registered one)
 `
   )
-  .action(() => teamsKeyAction());
+  .option("--import", "Read an identity secret key (or identity.json) from stdin and use it on this machine")
+  .option("--format <format>", "table, json, or markdown", "table")
+  .action((options) => (options.import ? teamsKeyImportAction({ format: options.format as OutputFormat }) : teamsKeyAction()));
+
+teams
+  .command("rotate-identity")
+  .option("--format <format>", "table, json, or markdown", "table")
+  .description("Replace your identity key: new keypair, every vault grant re-sealed to it, registered with proof of the current key.")
+  .addHelpText(
+    "after",
+    `
+Run it on the machine that holds your current key (the server seals a challenge
+to it). The vault keys are unchanged, so if the old secret key leaked, follow
+with: logicsrc teams rekey <team> --all
+Other machines then import the new key: logicsrc teams key | ssh other 'logicsrc teams key --import'`
+  )
+  .action((options) => teamsRotateIdentityAction({ format: options.format as OutputFormat }));
+
+teams
+  .command("rekey")
+  .argument("<slug>", "Team slug")
+  .argument("[project]", "Project name")
+  .argument("[env]", "Environment name")
+  .option("--all", "Every vault in the team you can open")
+  .option("--accept-key-change <email>", "Seal to this member's (or machine key's) CHANGED key; repeat or comma-separate", collectList)
+  .option("--concurrency <n>", "Vaults in flight at once (1-8)", "4")
+  .option("--dry-run", "Plan only; change nothing")
+  .option("--format <format>", "table, json, or markdown", "table")
+  .description("New vault key: re-encrypt every value here, re-seal to every current member and machine key (pinned keys only).")
+  .addHelpText(
+    "after",
+    `
+Values do not change. Everyone who holds the vault keeps it, under a fresh key;
+anyone holding only an OLD wrapped key (or the old key itself) loses it. A push
+racing the re-key is caught: the vault is re-checked afterwards and any value
+written under the retired key is re-sealed under the new one.
+
+  logicsrc teams rekey acme web prod
+  logicsrc teams rekey acme --all --dry-run
+  logicsrc teams rekey acme --all`
+  )
+  .action((slug, project, env, options) =>
+    teamsRekeyAction(slug, project, env, {
+      all: Boolean(options.all),
+      acceptKeyChange: options.acceptKeyChange,
+      concurrency: Number(options.concurrency) || 4,
+      dryRun: Boolean(options.dryRun),
+      format: options.format as OutputFormat
+    })
+  );
+
+teams
+  .command("audit")
+  .argument("<slug>", "Team slug")
+  .argument("[project]", "Project name (with env: one vault)")
+  .argument("[env]", "Environment name")
+  .option("--actor <email>", "Only this person")
+  .option("--action <prefix>", "Only actions starting with this (vault:read, secrets:fetch, identity:, vault:rekey …)")
+  .option("--since <when>", "24h, 7d, or a date")
+  .option("--limit <n>", "Rows (max 1000)", "200")
+  .option("--format <format>", "table, json, or markdown", "table")
+  .description("Who read which vault key or ciphertext, when, from which IP and user agent; plus grants, re-keys and identity changes.")
+  .action((slug, project, env, options) => teamsAuditAction(slug, project, env, { ...options, format: options.format as OutputFormat }));
 
 teams
   .command("tui")
@@ -996,9 +1064,10 @@ teams
   .argument("<env>", "Environment name (prod, staging, …)")
   .argument("[email]", "Teammate email to grant vault access")
   .option("--key <name>", "Grant one of your machine API keys instead of a person (name, id, or prefix)")
+  .option("--accept-key-change <email>", "Their key changed since you pinned it and you have confirmed the new fingerprint with them", collectList)
   .option("--format <format>", "table, json, or markdown", "table")
   .description("Grant a member, or a machine API key, decryption access to a vault (re-seals the vault key to their key).")
-  .action((slug, project, env, email, options) => teamsGrantAction(slug, project, env, email, options.format as OutputFormat, { key: options.key }));
+  .action((slug, project, env, email, options) => teamsGrantAction(slug, project, env, email, options.format as OutputFormat, { key: options.key, acceptKeyChange: options.acceptKeyChange }));
 
 teams
   .command("push")

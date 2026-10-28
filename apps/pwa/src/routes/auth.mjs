@@ -7,7 +7,7 @@ import { createUserWithPassword, userByEmail } from "../lib/users.mjs";
 import { dashboardHandler } from "./pages.mjs";
 import { config } from "../config.mjs";
 import { ringFooter } from "../lib/ring-footer.mjs";
-import { renderProfileFields, PROFILE_ENHANCE_SCRIPT, saveSignupProfile, validateProfile } from "@profullstack/profile";
+import { renderProfileFields, saveSignupProfile, validateProfile } from "@profullstack/profile";
 import { profiles } from "../lib/profile.mjs";
 
 // Asked for when creating an account, beside the email box; never on sign-in.
@@ -47,7 +47,7 @@ function authPage(req, { error = "", mode = "in", values = {}, errors = {} } = {
     </div></div>
   </main>${footer}${ringFooter()}
   <script src="/vendor/simplewebauthn-browser.umd.js"></script>
-  <script src="/passkey.js"></script>${mode === "up" ? `<script>${PROFILE_ENHANCE_SCRIPT}</script>` : ""}`;
+  <script src="/passkey.js"></script>${mode === "up" ? `<script src="/vendor/profile-enhance.js" defer></script>` : ""}`;
   return page({ title: "LogicSRC ▸ sign in", body });
 }
 

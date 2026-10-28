@@ -55,9 +55,13 @@ async function resolveVaultId(ctx: TeamContext, slug: string, vault: string, cre
 
 /** Fetch (or, for a brand-new vault, mint) the vault DEK, decrypting nothing yet. */
 async function acquireDek(ctx: TeamContext, slug: string, vault: string, vaultId: string, allowMint: boolean): Promise<string> {
+  return (await acquireDekVersioned(ctx, slug, vault, vaultId, allowMint)).dek;
+}
+
+async function acquireDekVersioned(ctx: TeamContext, slug: string, vault: string, vaultId: string, allowMint: boolean): Promise<{ dek: string; keyVersion?: number }> {
   try {
-    const { wrappedDek } = await ctx.client.getMyGrant(vaultId);
-    return unwrapVaultKey(wrappedDek, ctx.identity.keys);
+    const { wrappedDek, keyVersion } = await ctx.client.getMyGrant(vaultId);
+    return { dek: await unwrapVaultKey(wrappedDek, ctx.identity.keys), keyVersion };
   } catch (error) {
     if (!(error instanceof TeamApiError) || error.status !== 403) throw error;
     if (ctx.identity.keyKind === "machine") {
@@ -81,7 +85,7 @@ async function acquireDek(ctx: TeamContext, slug: string, vault: string, vaultId
     const dek = await generateVaultKey();
     const wrapped = await wrapVaultKey(dek, ctx.identity.keys.publicKey);
     await ctx.client.putGrant(vaultId, ctx.identity.email, wrapped);
-    return dek;
+    return { dek };
   }
 }
 
@@ -158,14 +162,18 @@ export const teamProvider: CredentialProvider = {
 
     if (upsertNames.length === 0 && input.deletes.length === 0) return results;
 
-    const dek = upsertNames.length > 0 ? await acquireDek(ctx, slug, vault, vaultId, true) : undefined;
+    const acquired = upsertNames.length > 0 ? await acquireDekVersioned(ctx, slug, vault, vaultId, true) : undefined;
+    const dek = acquired?.dek;
     const encrypted: Array<{ name: string; nonce: string; ciphertext: string; fingerprint: string }> = [];
     for (const name of upsertNames) {
       const sealed = await encryptValue(input.upserts[name], dek!);
       encrypted.push({ name, nonce: sealed.nonce, ciphertext: sealed.ciphertext, fingerprint: fingerprintValue(input.upserts[name]) });
     }
 
-    const { applied } = await ctx.client.putSecrets(vaultId, encrypted, input.deletes);
+    // The key version pins this write to the vault key it was encrypted under: a
+    // re-key landing in between makes the server refuse it rather than store
+    // ciphertext nobody can open. Re-running the push picks up the new key.
+    const { applied } = await ctx.client.putSecrets(vaultId, encrypted, input.deletes, acquired?.keyVersion);
     const appliedSet = new Set(applied);
     for (const name of upsertNames) results.push({ key: name, applied: appliedSet.has(name) });
     for (const name of input.deletes) results.push({ key: name, applied: appliedSet.has(name) });

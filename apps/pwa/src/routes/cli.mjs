@@ -63,7 +63,7 @@ cliRouter.post("/cli/authorize", requireAuth, async (req, res) => {
   const now = Date.now();
   await run(
     `INSERT INTO cli_auth_codes (code,user_id,code_challenge,redirect_uri,name,created_at,expires_at) VALUES (?,?,?,?,?,?,?)`,
-    [code, req.user.id, code_challenge, redirect_uri, String(name || "cli").slice(0, 40), now, now + 5 * 60 * 1000]
+    [sha256(code), req.user.id, code_challenge, redirect_uri, String(name || "cli").slice(0, 40), now, now + 5 * 60 * 1000]
   );
   const u = new URL(redirect_uri);
   u.searchParams.set("code", code);
@@ -74,14 +74,14 @@ cliRouter.post("/cli/authorize", requireAuth, async (req, res) => {
 cliRouter.post("/cli/token", async (req, res) => {
   const { code, code_verifier } = req.body || {};
   if (!code || !code_verifier) return res.status(400).json({ error: "code and code_verifier required" });
-  const row = await get(`SELECT * FROM cli_auth_codes WHERE code = ?`, [code]);
+  const row = await get(`SELECT * FROM cli_auth_codes WHERE code = ?`, [sha256(String(code))]);
   if (!row || row.used || row.expires_at < Date.now()) return res.status(400).json({ error: "invalid or expired code" });
 
   // PKCE: base64url(sha256(verifier)) must equal the stored challenge
   const challenge = crypto.createHash("sha256").update(String(code_verifier)).digest("base64url");
   if (challenge !== row.code_challenge) return res.status(400).json({ error: "PKCE verification failed" });
 
-  await run(`UPDATE cli_auth_codes SET used = 1 WHERE code = ?`, [code]);
+  await run(`UPDATE cli_auth_codes SET used = 1 WHERE code = ?`, [sha256(String(code))]);
   const user = await get(`SELECT * FROM users WHERE id = ?`, [row.user_id]);
   const { plaintext } = await createApiKey(user.id, row.name || "logicsrc cli");
   res.json({ access_token: plaintext, token_type: "bearer", user: { id: user.id, email: user.email || null, name: user.display_name } });

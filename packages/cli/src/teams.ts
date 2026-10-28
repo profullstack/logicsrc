@@ -25,6 +25,9 @@ import {
   setActiveKey,
   activeKeyPath,
   readActiveKeyIdentity,
+  checkAndPinKey,
+  keyFingerprint,
+  pinStatus,
   type CredentialEndpoint,
   type RemoteVault
 } from "@logicsrc/plugin-credential-sharing";
@@ -330,11 +333,22 @@ export async function loginAction(options: { apiUrl?: string; token?: string; ap
   }
 
   const client = new TeamClient({ apiUrl, token: token! });
-  await client.uploadPublicKey(identity.keys.publicKey);
+  let keyMismatch: string | null = null;
+  try {
+    await client.uploadPublicKey(identity.keys.publicKey);
+  } catch (error) {
+    // Since 2026-10-28 a registered identity key is never silently replaced by a
+    // login: that was how a stolen token could swap in an attacker's key.
+    if (!(error instanceof TeamApiError) || error.status !== 409) throw error;
+    keyMismatch = error.message;
+  }
   await updateIdentity({ email: email ?? undefined, userId, apiToken: token, apiUrl });
   // A person login takes over from any key chosen with --api-key.
   rmSync(activeKeyPath(), { force: true });
 
+  if (keyMismatch) {
+    throw new Error(`Logged in${email ? ` as ${email}` : ""}, but this machine's identity key is not the registered one, so it cannot open any vault.\n${keyMismatch}`);
+  }
   console.error(`Logged in${email ? ` as ${email}` : ""}. Identity key registered on ${apiUrl}.`);
   print({ email, apiUrl }, "table");
 }
@@ -450,11 +464,29 @@ export async function teamsAcceptAction(token: string, format: OutputFormat): Pr
   print({ joined: result.team?.slug ?? null }, format);
 }
 
+/** A member's key fingerprint and what this machine's pins say about it. */
+export function memberKeyColumns(apiUrl: string, email: string, publicKey: string | null | undefined, ownPublicKey?: string) {
+  const fp = keyFingerprint(publicKey ?? null);
+  if (!fp) return { fingerprint: "—", pin: "no key" };
+  if (ownPublicKey && publicKey === ownPublicKey) return { fingerprint: fp, pin: "you" };
+  const { status, pinned } = pinStatus(apiUrl, email, publicKey);
+  return {
+    fingerprint: fp,
+    pin: status === "pinned" ? "pinned" : status === "new" ? "not pinned yet" : `CHANGED (pinned ${pinned?.fingerprint})`
+  };
+}
+
 export async function teamsMembersAction(slug: string, format: OutputFormat): Promise<void> {
-  const { client } = authedClient();
+  const { client, identity } = authedClient();
   const { members } = await client.listMembers(slug);
+  const apiUrl = resolveApiUrl(identity);
   print(
-    members.map((m) => ({ email: m.email, role: m.role, status: m.status, hasKey: m.hasPublicKey })),
+    members.map((m) => ({
+      email: m.email,
+      role: m.role,
+      status: m.status,
+      ...memberKeyColumns(apiUrl, m.email, m.publicKey ?? null, identity.keys?.publicKey)
+    })),
     format
   );
 }
@@ -485,7 +517,7 @@ export async function teamsGrantAction(
   env: string,
   email: string | undefined,
   format: OutputFormat,
-  options: { key?: string } = {}
+  options: { key?: string; acceptKeyChange?: string[] } = {}
 ): Promise<void> {
   if (!email && !options.key) throw new Error("Grant whom? Give a teammate's email, or --key <name> for a machine API key.");
   if (email && options.key) throw new Error("Give an email or --key, not both.");
@@ -522,7 +554,11 @@ export async function teamsGrantAction(
   }
   const dek = await unwrapVaultKey(myWrapped, identity.keys);
 
+  const apiUrl = resolveApiUrl(identity);
+  const accept = options.acceptKeyChange ?? [];
   if (machineKey) {
+    const pinned = checkAndPinKey(apiUrl, `key:${machineKey.id}`, machineKey.publicKey!, accept.includes(machineKey.name) || accept.includes(machineKey.id));
+    if (pinned === "new") console.error(`Pinned machine key "${machineKey.name}" at ${keyFingerprint(machineKey.publicKey)}.`);
     await client.putKeyGrant(vaultId, machineKey.id, await wrapVaultKey(dek, machineKey.publicKey!));
     console.error(
       `Granted machine key "${machineKey.name}" ${machineKey.readOnly ? "read-only " : ""}access to ${slug}/${vault}. ` +
@@ -536,6 +572,10 @@ export async function teamsGrantAction(
   const target = await client.lookupUser(email);
   if (!target.userId) throw new Error(`${email} has not logged in yet. Ask them to run: logicsrc login --email ${email}`);
   if (!target.publicKey) throw new Error(`${email} has not registered a key yet. Ask them to run: logicsrc login --email ${email}`);
+  // Trust on first use: seal only to the key pinned for this person, or pin it now.
+  const pin = checkAndPinKey(apiUrl, email, target.publicKey, accept);
+  if (pin === "new") console.error(`Pinned ${email}'s identity key at ${keyFingerprint(target.publicKey)}. Compare it with them (logicsrc teams members ${slug}).`);
+  if (pin === "changed") console.error(`Accepted a CHANGED key for ${email}: now ${keyFingerprint(target.publicKey)}.`);
 
   await client.putGrant(vaultId, email, await wrapVaultKey(dek, target.publicKey));
   console.error(`Granted ${email} access to ${slug}/${vault}. They can now: logicsrc teams pull ${slug} ${project} ${env}`);

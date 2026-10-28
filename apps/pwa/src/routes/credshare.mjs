@@ -14,7 +14,9 @@
 // write except registering its own public key.
 import { Router } from "express";
 import { get, all, run, batch } from "../db.mjs";
-import { id, sha256 } from "../lib/crypto.mjs";
+import { id, sha256, token } from "../lib/crypto.mjs";
+import { keyFingerprint, requestOriginInfo } from "../lib/keyfp.mjs";
+import sodium from "libsodium-wrappers";
 import { bearer, keyForBearer, keyCoversVault, normalizeKey } from "../lib/apikey.mjs";
 import {
   TeamMemberError,
@@ -84,9 +86,23 @@ async function publicKeyFor(userId) {
   return r?.public_key ?? null;
 }
 
+/** The audit row for an event, as a batch statement (so it can ride in a transaction). */
+function auditStatement(ev) {
+  const { ip, userAgent } = requestOriginInfo(ev.req);
+  return {
+    sql: `INSERT INTO credshare_audit (id, team_id, vault_id, actor_user_id, action, key_name, fingerprint, created_at, actor_key_id, ip, user_agent) VALUES (?,?,?,?,?,?,?,?,?,?,?)`,
+    args: [id(), ev.teamId ?? null, ev.vaultId ?? null, ev.actorUserId, ev.action, ev.keyName ?? null, ev.fingerprint ?? null, ev.at ?? Date.now(), ev.actorKeyId ?? ev.req?.apiKey?.id ?? null, ip, userAgent]
+  };
+}
+
 async function audit(ev) {
-  await run(`INSERT INTO credshare_audit (id, team_id, vault_id, actor_user_id, action, key_name, fingerprint, created_at, actor_key_id) VALUES (?,?,?,?,?,?,?,?,?)`,
-    [id(), ev.teamId ?? null, ev.vaultId ?? null, ev.actorUserId, ev.action, ev.keyName ?? null, ev.fingerprint ?? null, Date.now(), ev.actorKeyId ?? null]);
+  const st = auditStatement(ev);
+  await run(st.sql, st.args);
+}
+
+/** Every team the user is an active member of (identity events are logged in each). */
+async function activeTeamIds(userId) {
+  return (await all(`SELECT team_id FROM credshare_members WHERE user_id = ? AND status = 'active'`, [userId])).map((r) => r.team_id);
 }
 
 /** The key facts a client needs about its own credential (null for a browser session). */
@@ -120,14 +136,123 @@ credshareRouter.post("/api/credshare/keys", api(async (req, res, user, key) => {
     }
     if (key.public_key !== publicKey) {
       await run(`UPDATE api_keys SET public_key = ? WHERE id = ?`, [publicKey, key.id]);
-      await audit({ teamId: key.team_id, actorUserId: user.id, actorKeyId: key.id, action: "key:register", keyName: key.name });
+      await audit({ req, teamId: key.team_id, actorUserId: user.id, actorKeyId: key.id, action: "key:register", keyName: key.name });
     }
     return res.json({ email: user.email, publicKey, keyId: key.id, droppedGrants: dropped });
   }
-  await run(`INSERT INTO credshare_keys (user_id, public_key, updated_at) VALUES (?,?,?) ON CONFLICT(user_id) DO UPDATE SET public_key = excluded.public_key, updated_at = excluded.updated_at`,
-    [user.id, publicKey, Date.now()]);
-  res.json({ email: user.email, publicKey });
+  // A person's identity key is registered ONCE. Replacing it used to be "last
+  // login wins", so anyone holding a stolen lsk_ token could swap in their own
+  // key and have teammates seal vaults to it. Now a different key is refused:
+  // it changes only through POST /keys/rotate, which needs proof of the current
+  // secret key, or a reset from a signed-in browser (Settings), which drops
+  // every grant sealed to the old key.
+  const current = await publicKeyFor(user.id);
+  if (current === publicKey) return res.json({ email: user.email, publicKey, fingerprint: keyFingerprint(publicKey) });
+  if (!isValidPublicKey(publicKey)) return res.status(422).json({ error: "publicKey must be a base64 X25519 public key (32 bytes)." });
+  if (current) {
+    return res.status(409).json({
+      error:
+        `${user.email} already has an identity key registered (fingerprint ${keyFingerprint(current)}), and this one (${keyFingerprint(publicKey)}) is different. ` +
+        "Copy your identity from the machine that has it (there: logicsrc teams key; here: logicsrc teams key --import), " +
+        "rotate it from that machine (logicsrc teams rotate-identity), or reset it in Settings on the web app (drops your vault grants).",
+      code: "identity_key_mismatch",
+      fingerprint: keyFingerprint(current)
+    });
+  }
+  const now = Date.now();
+  await run(`INSERT INTO credshare_keys (user_id, public_key, updated_at) VALUES (?,?,?) ON CONFLICT(user_id) DO NOTHING`, [user.id, publicKey, now]);
+  for (const teamId of await activeTeamIds(user.id)) {
+    await audit({ req, teamId, actorUserId: user.id, action: "identity:register", fingerprint: keyFingerprint(publicKey) });
+  }
+  res.json({ email: user.email, publicKey, fingerprint: keyFingerprint(publicKey) });
 }, { machine: "register" }));
+
+const CHALLENGE_TTL_MS = 5 * 60 * 1000;
+
+function isValidPublicKey(b64) {
+  try { return typeof b64 === "string" && Buffer.from(b64, "base64").length === 32 && /^[A-Za-z0-9+/]+={0,2}$/.test(b64); } catch { return false; }
+}
+
+// Proof of possession for identity rotation. X25519 cannot sign, so the server
+// seals a random answer to the CURRENT public key; only the holder of the
+// matching secret key can open it. Single use, five minutes.
+credshareRouter.post("/api/credshare/keys/challenge", api(async (req, res, user) => {
+  const current = await publicKeyFor(user.id);
+  if (!current) return res.status(409).json({ error: "No identity key is registered yet; there is nothing to rotate. Run: logicsrc login", code: "no_identity_key" });
+  await sodium.ready;
+  const answer = token(32);
+  const sealed = sodium.to_base64(
+    sodium.crypto_box_seal(sodium.from_string(answer), sodium.from_base64(current, sodium.base64_variants.ORIGINAL)),
+    sodium.base64_variants.ORIGINAL
+  );
+  const now = Date.now();
+  const challengeId = id();
+  await run(`DELETE FROM credshare_key_challenges WHERE user_id = ? AND (expires_at < ? OR used_at IS NOT NULL)`, [user.id, now]);
+  await run(`INSERT INTO credshare_key_challenges (id, user_id, public_key, answer_hash, created_at, expires_at) VALUES (?,?,?,?,?,?)`,
+    [challengeId, user.id, current, sha256(answer), now, now + CHALLENGE_TTL_MS]);
+  res.json({ challengeId, sealed, publicKey: current, fingerprint: keyFingerprint(current), expiresAt: now + CHALLENGE_TTL_MS });
+}));
+
+// Rotate a person's identity key: the new public key and EVERY vault grant
+// re-sealed to it, in one transaction, behind the challenge above. The grants
+// still carry the same vault keys (re-key the vaults afterwards if the old
+// secret key leaked: logicsrc teams rekey <team> --all).
+credshareRouter.post("/api/credshare/keys/rotate", api(async (req, res, user) => {
+  const { publicKey, challengeId, answer } = req.body || {};
+  const grantsIn = Array.isArray(req.body?.grants) ? req.body.grants : null;
+  if (!isValidPublicKey(publicKey) || typeof challengeId !== "string" || typeof answer !== "string" || !grantsIn) {
+    return res.status(422).json({ error: "Expected { publicKey, challengeId, answer, grants: [{ vaultId, wrappedDek }] }." });
+  }
+  const current = await publicKeyFor(user.id);
+  if (!current) return res.status(409).json({ error: "No identity key is registered yet.", code: "no_identity_key" });
+  const now = Date.now();
+  const ch = await get(`SELECT * FROM credshare_key_challenges WHERE id = ? AND user_id = ?`, [challengeId, user.id]);
+  const valid = ch && !ch.used_at && Number(ch.expires_at) > now && ch.public_key === current && ch.answer_hash === sha256(answer);
+  // Burn the challenge whatever the outcome: one guess per challenge.
+  if (ch) await run(`UPDATE credshare_key_challenges SET used_at = ? WHERE id = ?`, [now, ch.id]);
+  if (!valid) {
+    for (const teamId of await activeTeamIds(user.id)) {
+      await audit({ req, teamId, actorUserId: user.id, action: "identity:rotate:denied", fingerprint: keyFingerprint(publicKey) });
+    }
+    return res.status(403).json({ error: "Proof of the current identity key failed (wrong, expired or reused challenge). Run the rotation from the machine that holds the current key.", code: "bad_challenge" });
+  }
+  if (publicKey === current) return res.status(422).json({ error: "The new public key is the current one." });
+
+  const held = await all(`SELECT vault_id FROM credshare_vault_grants WHERE user_id = ?`, [user.id]);
+  const heldIds = new Set(held.map((g) => g.vault_id));
+  const byVault = new Map();
+  for (const g of grantsIn) {
+    if (!g || typeof g.vaultId !== "string" || typeof g.wrappedDek !== "string" || !g.wrappedDek) {
+      return res.status(422).json({ error: "Each grant needs { vaultId, wrappedDek }." });
+    }
+    if (!heldIds.has(g.vaultId)) return res.status(409).json({ error: `You hold no grant on vault ${g.vaultId}. Re-read your grants and retry.`, code: "grants_changed" });
+    byVault.set(g.vaultId, g.wrappedDek);
+  }
+  const missing = [...heldIds].filter((v) => !byVault.has(v));
+  if (missing.length) {
+    return res.status(409).json({ error: `The rotation re-seals ${byVault.size} grant(s) but you hold ${heldIds.size}; ${missing.length} missing. Re-read your grants and retry.`, code: "grants_changed", missing });
+  }
+
+  const statements = [];
+  for (const [vaultId, wrappedDek] of byVault) {
+    statements.push({ sql: `UPDATE credshare_vault_grants SET wrapped_dek = ? WHERE vault_id = ? AND user_id = ?`, args: [wrappedDek, vaultId, user.id] });
+  }
+  statements.push({ sql: `UPDATE credshare_keys SET public_key = ?, updated_at = ? WHERE user_id = ?`, args: [publicKey, now, user.id] });
+  for (const teamId of await activeTeamIds(user.id)) {
+    statements.push(auditStatement({ req, teamId, actorUserId: user.id, action: "identity:rotate", keyName: keyFingerprint(current), fingerprint: keyFingerprint(publicKey), at: now }));
+  }
+  await batch(statements);
+  res.json({ ok: true, publicKey, fingerprint: keyFingerprint(publicKey), previousFingerprint: keyFingerprint(current), regranted: byVault.size });
+}));
+
+/** Every vault grant the caller holds (for re-sealing them during an identity rotation). */
+credshareRouter.get("/api/credshare/me/grants", api(async (_req, res, user) => {
+  const rows = await all(
+    `SELECT g.vault_id, g.wrapped_dek, v.name, t.slug FROM credshare_vault_grants g JOIN credshare_vaults v ON v.id = g.vault_id JOIN credshare_teams t ON t.id = v.team_id WHERE g.user_id = ? ORDER BY t.slug, v.name`,
+    [user.id]
+  );
+  res.json({ grants: rows.map((r) => ({ vaultId: r.vault_id, vault: r.name, team: r.slug, wrappedDek: r.wrapped_dek })) });
+}));
 
 credshareRouter.get("/api/credshare/me", api(async (_req, res, user, key) => {
   if (isMachine(key)) {
@@ -143,7 +268,8 @@ credshareRouter.get("/api/credshare/users", api(async (req, res) => {
   const email = norm(req.query.email);
   if (!email) return res.status(422).json({ error: "Expected ?email=" });
   const u = await get(`SELECT id FROM users WHERE email = ?`, [email]);
-  res.json({ email, userId: u?.id ?? null, publicKey: u ? await publicKeyFor(u.id) : null });
+  const publicKey = u ? await publicKeyFor(u.id) : null;
+  res.json({ email, userId: u?.id ?? null, publicKey, fingerprint: keyFingerprint(publicKey) });
 }));
 
 // ---- teams / members / invites ----
@@ -155,7 +281,7 @@ credshareRouter.post("/api/credshare/teams", api(async (req, res, user) => {
   await run(`INSERT INTO credshare_teams (id, slug, name, created_by, created_at) VALUES (?,?,?,?,?)`, [team.id, team.slug, team.name, team.createdBy, team.createdAt]);
   await run(`INSERT INTO credshare_members (id, team_id, user_id, email, role, status, joined_at, created_at) VALUES (?,?,?,?,?,?,?,?)`,
     [id(), team.id, user.id, norm(user.email) || user.id, "owner", "active", Date.now(), Date.now()]);
-  await audit({ teamId: team.id, actorUserId: user.id, actorKeyId: req.apiKey?.id, action: "team:create" });
+  await audit({ req, teamId: team.id, actorUserId: user.id, actorKeyId: req.apiKey?.id, action: "team:create" });
   res.status(201).json({ team: { id: team.id, slug: team.slug, name: team.name } });
 }));
 
@@ -170,7 +296,10 @@ credshareRouter.get("/api/credshare/teams/:slug/members", api(async (req, res, u
   const ctx = await requireMember(res, req.params.slug, user.id); if (!ctx) return;
   const rows = await all(`SELECT * FROM credshare_members WHERE team_id = ? ORDER BY created_at`, [ctx.team.id]);
   const members = [];
-  for (const m of rows) members.push({ id: m.id, email: m.email, role: m.role, status: m.status, hasPublicKey: m.user_id ? Boolean(await publicKeyFor(m.user_id)) : false, joinedAt: m.joined_at });
+  for (const m of rows) {
+    const publicKey = m.user_id ? await publicKeyFor(m.user_id) : null;
+    members.push({ id: m.id, email: m.email, role: m.role, status: m.status, hasPublicKey: Boolean(publicKey), publicKey, fingerprint: keyFingerprint(publicKey), joinedAt: m.joined_at });
+  }
   res.json({ members });
 }));
 
@@ -237,7 +366,7 @@ credshareRouter.post("/api/credshare/invites/accept", api(async (req, res, user)
   if (norm(invite.email) !== norm(user.email)) return res.status(403).json({ error: `This invite is for ${invite.email}, not ${user.email}.` });
   await run(`UPDATE credshare_members SET user_id = ?, status = 'active', joined_at = ? WHERE team_id = ? AND email = ?`, [user.id, Date.now(), invite.team_id, norm(invite.email)]);
   await run(`UPDATE credshare_invites SET accepted_at = ? WHERE id = ?`, [Date.now(), invite.id]);
-  await audit({ teamId: invite.team_id, actorUserId: user.id, actorKeyId: req.apiKey?.id, action: "team:join" });
+  await audit({ req, teamId: invite.team_id, actorUserId: user.id, actorKeyId: req.apiKey?.id, action: "team:join" });
   const team = await get(`SELECT id, slug, name FROM credshare_teams WHERE id = ?`, [invite.team_id]);
   res.json({ ok: true, team });
 }));
@@ -303,7 +432,7 @@ credshareRouter.post("/api/credshare/teams/:slug/vaults", api(async (req, res, u
   if (existing) return res.json({ vault: { id: existing.id, name: existing.name } });
   const vault = { id: id(), name };
   await run(`INSERT INTO credshare_vaults (id, team_id, name, created_by, created_at) VALUES (?,?,?,?,?)`, [vault.id, ctx.team.id, name, user.id, Date.now()]);
-  await audit({ teamId: ctx.team.id, vaultId: vault.id, actorUserId: user.id, actorKeyId: req.apiKey?.id, action: "vault:create" });
+  await audit({ req, teamId: ctx.team.id, vaultId: vault.id, actorUserId: user.id, actorKeyId: req.apiKey?.id, action: "vault:create" });
   res.status(201).json({ vault });
 }));
 
@@ -325,12 +454,18 @@ credshareRouter.get("/api/credshare/vaults/:id/grant", api(async (req, res, user
     const kg = await get(`SELECT wrapped_dek FROM credshare_key_grants WHERE vault_id = ? AND api_key_id = ?`, [vault.id, key.id]);
     if (!kg) return res.status(403).json({ error: `This machine key (${key.name}) has not been granted this vault yet. A member runs: logicsrc teams grant <team> <project> <env> --key ${key.name}`, code: "no_key_grant" });
     // The one moment a machine can decrypt: worth a line in the vault's audit trail.
-    await audit({ teamId: vault.team_id, vaultId: vault.id, actorUserId: user.id, actorKeyId: key.id, action: "vault:read", keyName: key.name });
-    return res.json({ wrappedDek: kg.wrapped_dek });
+    await audit({ req, teamId: vault.team_id, vaultId: vault.id, actorUserId: user.id, actorKeyId: key.id, action: "vault:read", keyName: key.name });
+    return res.json({ wrappedDek: kg.wrapped_dek, keyVersion: Number(vault.key_version ?? 1) });
   }
   const grant = await get(`SELECT wrapped_dek FROM credshare_vault_grants WHERE vault_id = ? AND user_id = ?`, [vault.id, user.id]);
-  if (!grant) return res.status(403).json({ error: "You do not have access to this vault yet. Ask a member to grant you." });
-  res.json({ wrappedDek: grant.wrapped_dek });
+  if (!grant) {
+    await audit({ req, teamId: vault.team_id, vaultId: vault.id, actorUserId: user.id, action: "vault:read:denied", keyName: key?.name ?? null });
+    return res.status(403).json({ error: "You do not have access to this vault yet. Ask a member to grant you." });
+  }
+  // A person opening the vault key is the moment they can decrypt: always audited,
+  // with where it came from (a stolen token shows up here as a foreign IP).
+  await audit({ req, teamId: vault.team_id, vaultId: vault.id, actorUserId: user.id, action: "vault:read", keyName: key?.name ?? (req.user ? "browser session" : null) });
+  res.json({ wrappedDek: grant.wrapped_dek, keyVersion: Number(vault.key_version ?? 1) });
 }, { machine: "read" }));
 
 credshareRouter.get("/api/credshare/vaults/:id/grants", api(async (req, res, user) => {
@@ -443,8 +578,11 @@ credshareRouter.post("/api/credshare/vaults/:id/rekey", api(async (req, res, use
   const statements = [];
   for (const s of secrets) {
     statements.push({
-      sql: `UPDATE credshare_secrets SET nonce = ?, ciphertext = ?, version = version + 1, updated_by = ?, updated_at = ? WHERE vault_id = ? AND name = ?`,
-      args: [s.nonce, s.ciphertext, user.id, now, vault.id, s.name]
+      // Only while the value is still the one this re-key read: a push that lands
+      // between the check above and this commit keeps its value (the CLI's
+      // verify pass then re-seals it under the new key).
+      sql: `UPDATE credshare_secrets SET nonce = ?, ciphertext = ?, version = version + 1, updated_by = ?, updated_at = ? WHERE vault_id = ? AND name = ? AND fingerprint = ?`,
+      args: [s.nonce, s.ciphertext, user.id, now, vault.id, s.name, s.fingerprint]
     });
   }
   for (const g of resolved) {
@@ -463,20 +601,17 @@ credshareRouter.post("/api/credshare/vaults/:id/rekey", api(async (req, res, use
       args: [vault.id, g.keyId, g.wrappedDek, user.id, now]
     });
   }
-  statements.push({
-    sql: `INSERT INTO credshare_audit (id, team_id, vault_id, actor_user_id, action, key_name, fingerprint, created_at) VALUES (?,?,?,?,?,?,?,?)`,
-    args: [id(), vault.team_id, vault.id, user.id, "vault:rekey", null, null, now]
-  });
+  statements.push({ sql: `UPDATE credshare_vaults SET key_version = key_version + 1 WHERE id = ?`, args: [vault.id] });
+  statements.push(auditStatement({ req, teamId: vault.team_id, vaultId: vault.id, actorUserId: user.id, action: "vault:rekey", at: now }));
   for (const r of revokedUsers) {
-    statements.push({
-      sql: `INSERT INTO credshare_audit (id, team_id, vault_id, actor_user_id, action, key_name, fingerprint, created_at) VALUES (?,?,?,?,?,?,?,?)`,
-      args: [id(), vault.team_id, vault.id, user.id, "vault:revoke", r.email, null, now]
-    });
+    statements.push(auditStatement({ req, teamId: vault.team_id, vaultId: vault.id, actorUserId: user.id, action: "vault:revoke", keyName: r.email, at: now }));
   }
 
   await batch(statements);
+  const after = await get(`SELECT key_version FROM credshare_vaults WHERE id = ?`, [vault.id]);
   res.json({
     ok: true,
+    keyVersion: Number(after?.key_version ?? 1),
     rekeyed: secrets.length,
     granted: resolved.map((g) => g.email),
     revoked: revokedUsers.map((r) => r.email),
@@ -497,7 +632,7 @@ credshareRouter.post("/api/credshare/vaults/:id/grants", api(async (req, res, us
   if (!(await publicKeyFor(target.id))) return res.status(409).json({ error: "Target user has not uploaded a public key yet." });
   await run(`INSERT INTO credshare_vault_grants (vault_id, user_id, wrapped_dek, granted_by, created_at) VALUES (?,?,?,?,?) ON CONFLICT(vault_id, user_id) DO UPDATE SET wrapped_dek = excluded.wrapped_dek, granted_by = excluded.granted_by, created_at = excluded.created_at`,
     [vault.id, target.id, wrappedDek, user.id, Date.now()]);
-  await audit({ teamId: vault.team_id, vaultId: vault.id, actorUserId: user.id, actorKeyId: req.apiKey?.id, action: "vault:grant", keyName: email });
+  await audit({ req, teamId: vault.team_id, vaultId: vault.id, actorUserId: user.id, actorKeyId: req.apiKey?.id, action: "vault:grant", keyName: email });
   res.status(201).json({ ok: true });
 }));
 
@@ -554,7 +689,7 @@ credshareRouter.post("/api/credshare/vaults/:id/key-grants", api(async (req, res
   }
   await run(`INSERT INTO credshare_key_grants (vault_id, api_key_id, wrapped_dek, granted_by, created_at) VALUES (?,?,?,?,?) ON CONFLICT(vault_id, api_key_id) DO UPDATE SET wrapped_dek = excluded.wrapped_dek, granted_by = excluded.granted_by, created_at = excluded.created_at`,
     [vault.id, target.id, wrappedDek, user.id, Date.now()]);
-  await audit({ teamId: vault.team_id, vaultId: vault.id, actorUserId: user.id, actorKeyId: req.apiKey?.id, action: "vault:grant:key", keyName: target.name });
+  await audit({ req, teamId: vault.team_id, vaultId: vault.id, actorUserId: user.id, actorKeyId: req.apiKey?.id, action: "vault:grant:key", keyName: target.name });
   res.status(201).json({ ok: true, keyId: target.id, name: target.name });
 }));
 
@@ -568,14 +703,15 @@ credshareRouter.delete("/api/credshare/vaults/:id/key-grants/:keyId", api(async 
   const iHold = await get(`SELECT 1 FROM credshare_vault_grants WHERE vault_id = ? AND user_id = ?`, [vault.id, user.id]);
   if (!iHold && row.user_id !== user.id) return res.status(403).json({ error: "Only the key's owner or a member with vault access can revoke it." });
   await run(`DELETE FROM credshare_key_grants WHERE vault_id = ? AND api_key_id = ?`, [vault.id, row.id]);
-  await audit({ teamId: vault.team_id, vaultId: vault.id, actorUserId: user.id, actorKeyId: req.apiKey?.id, action: "vault:revoke:key", keyName: row.name });
+  await audit({ req, teamId: vault.team_id, vaultId: vault.id, actorUserId: user.id, actorKeyId: req.apiKey?.id, action: "vault:revoke:key", keyName: row.name });
   res.json({ ok: true, revoked: row.name });
 }));
 
 credshareRouter.get("/api/credshare/vaults/:id/secrets", api(async (req, res, user, key) => {
   const vault = await vaultCtx(res, req.params.id, user.id, key); if (!vault) return;
   const rows = await all(`SELECT * FROM credshare_secrets WHERE vault_id = ? ORDER BY name`, [vault.id]);
-  res.json({ vaultId: vault.id, secrets: rows.map((s) => ({ name: s.name, nonce: s.nonce, ciphertext: s.ciphertext, fingerprint: s.fingerprint, version: s.version, updatedAt: s.updated_at })) });
+  await audit({ req, teamId: vault.team_id, vaultId: vault.id, actorUserId: user.id, action: "secrets:fetch", keyName: key?.name ?? (req.user ? "browser session" : null) });
+  res.json({ vaultId: vault.id, keyVersion: Number(vault.key_version ?? 1), secrets: rows.map((s) => ({ name: s.name, nonce: s.nonce, ciphertext: s.ciphertext, fingerprint: s.fingerprint, version: s.version, updatedAt: s.updated_at })) });
 }, { machine: "read" }));
 
 credshareRouter.put("/api/credshare/vaults/:id/secrets", api(async (req, res, user, key) => {
@@ -584,6 +720,12 @@ credshareRouter.put("/api/credshare/vaults/:id/secrets", api(async (req, res, us
     return res.status(403).json({ error: "A machine key can only write a vault it has been granted.", code: "no_key_grant" });
   }
   const actorKeyId = key?.id ?? null;
+  // A client that read the vault key before a re-key must not write ciphertext
+  // under the retired key: nobody could open it afterwards.
+  const sentVersion = req.body?.keyVersion;
+  if (sentVersion !== undefined && sentVersion !== null && Number(sentVersion) !== Number(vault.key_version ?? 1)) {
+    return res.status(409).json({ error: `This vault was re-keyed (key version ${vault.key_version}, you used ${sentVersion}). Run the command again.`, code: "vault_rekeyed", keyVersion: Number(vault.key_version ?? 1) });
+  }
   const upserts = Array.isArray(req.body?.upserts) ? req.body.upserts : [];
   const deletes = Array.isArray(req.body?.deletes) ? req.body.deletes : [];
   const applied = [];
@@ -595,14 +737,14 @@ credshareRouter.put("/api/credshare/vaults/:id/secrets", api(async (req, res, us
     const version = (prev?.version ?? 0) + 1;
     await run(`INSERT INTO credshare_secrets (vault_id, name, nonce, ciphertext, fingerprint, version, updated_by, updated_at) VALUES (?,?,?,?,?,?,?,?) ON CONFLICT(vault_id, name) DO UPDATE SET nonce = excluded.nonce, ciphertext = excluded.ciphertext, fingerprint = excluded.fingerprint, version = excluded.version, updated_by = excluded.updated_by, updated_at = excluded.updated_at`,
       [vault.id, u.name, u.nonce, u.ciphertext, u.fingerprint, version, user.id, Date.now()]);
-    await audit({ teamId: vault.team_id, vaultId: vault.id, actorUserId: user.id, action: prev ? "secret:update" : "secret:add", keyName: u.name, fingerprint: u.fingerprint, actorKeyId });
+    await audit({ req, teamId: vault.team_id, vaultId: vault.id, actorUserId: user.id, action: prev ? "secret:update" : "secret:add", keyName: u.name, fingerprint: u.fingerprint, actorKeyId });
     applied.push(u.name);
   }
   for (const raw of deletes) {
     const name = typeof raw === "string" ? raw : null;
     if (!name) continue;
     await run(`DELETE FROM credshare_secrets WHERE vault_id = ? AND name = ?`, [vault.id, name]);
-    await audit({ teamId: vault.team_id, vaultId: vault.id, actorUserId: user.id, action: "secret:remove", keyName: name, actorKeyId });
+    await audit({ req, teamId: vault.team_id, vaultId: vault.id, actorUserId: user.id, action: "secret:remove", keyName: name, actorKeyId });
     applied.push(name);
   }
   res.json({ ok: true, applied });
@@ -610,6 +752,49 @@ credshareRouter.put("/api/credshare/vaults/:id/secrets", api(async (req, res, us
 
 credshareRouter.get("/api/credshare/vaults/:id/audit", api(async (req, res, user, key) => {
   const vault = await vaultCtx(res, req.params.id, user.id, key); if (!vault) return;
-  const auditRows = await all(`SELECT * FROM credshare_audit WHERE vault_id = ? ORDER BY created_at DESC`, [vault.id]);
+  const auditRows = await all(`SELECT * FROM credshare_audit WHERE vault_id = ? ORDER BY created_at DESC LIMIT 1000`, [vault.id]);
   res.json({ audit: auditRows });
 }, { machine: "read" }));
+
+/**
+ * The team's audit trail, newest first: who read which vault key or ciphertext,
+ * from which IP and user agent, plus grants, re-keys and identity changes.
+ * Filters: ?vault=<name> &actor=<email> &action=<prefix> &since=<ms> &limit (max 1000).
+ */
+credshareRouter.get("/api/credshare/teams/:slug/audit", api(async (req, res, user) => {
+  const ctx = await requireMember(res, req.params.slug, user.id); if (!ctx) return;
+  res.json({ audit: await teamAudit(ctx.team.id, req.query) });
+}));
+
+export async function teamAudit(teamId, q = {}) {
+  const where = ["a.team_id = ?"];
+  const args = [teamId];
+  if (q.vault) { where.push("v.name = ?"); args.push(String(q.vault)); }
+  if (q.actor) { where.push("u.email = ?"); args.push(norm(q.actor)); }
+  if (q.action) { where.push("a.action LIKE ?"); args.push(`${String(q.action).replace(/[%_]/g, "")}%`); }
+  if (q.since && Number.isFinite(Number(q.since))) { where.push("a.created_at >= ?"); args.push(Number(q.since)); }
+  const limit = Math.min(Math.max(Number(q.limit) || 200, 1), 1000);
+  const rows = await all(
+    `SELECT a.created_at, a.action, a.key_name, a.fingerprint, a.ip, a.user_agent, u.email AS actor, v.name AS vault, k.name AS api_key, k.kind AS api_key_kind
+       FROM credshare_audit a
+       LEFT JOIN users u ON u.id = a.actor_user_id
+       LEFT JOIN credshare_vaults v ON v.id = a.vault_id
+       LEFT JOIN api_keys k ON k.id = a.actor_key_id
+      WHERE ${where.join(" AND ")}
+      ORDER BY a.created_at DESC
+      LIMIT ${limit}`,
+    args
+  );
+  return rows.map((r) => ({
+    at: Number(r.created_at),
+    action: r.action,
+    actor: r.actor ?? null,
+    vault: r.vault ?? null,
+    target: r.key_name ?? null,
+    fingerprint: r.fingerprint ?? null,
+    apiKey: r.api_key ?? null,
+    apiKeyKind: r.api_key_kind ?? null,
+    ip: r.ip ?? null,
+    userAgent: r.user_agent ?? null
+  }));
+}

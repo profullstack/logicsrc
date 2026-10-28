@@ -3,7 +3,7 @@
 // page can, in the browser, once the member pastes their identity key
 // (public/vault.js); everything else here is ciphertext metadata.
 import { Router } from "express";
-import { get, all, run } from "../db.mjs";
+import { get, all, run, batch } from "../db.mjs";
 import { id, sha256 } from "../lib/crypto.mjs";
 import { page, footer, appBar, esc } from "../lib/html.mjs";
 import { requireAuth, csrfInput } from "../lib/session.mjs";
@@ -11,6 +11,9 @@ import { ApiKeyError, createApiKey, keyCoversVault, listApiKeys, machineKeyOptio
 import { requestOrigin } from "../lib/origin.mjs";
 import { CLI_HINT } from "../lib/cli-hint.mjs";
 import { vaultPageBody } from "../lib/vault-page.mjs";
+import { keyFingerprint } from "../lib/keyfp.mjs";
+import { teamAudit } from "./credshare.mjs";
+import { setCeremony, getCeremony, clearCeremony } from "../lib/session.mjs";
 import { config } from "../config.mjs";
 import { COLUMNS, renderProfileFields, validateProfile } from "@profullstack/profile";
 import { profiles } from "../lib/profile.mjs";
@@ -35,7 +38,8 @@ async function teamCard(team, uid) {
 
   const memberRows = [];
   for (const m of members) {
-    const key = m.user_id ? await get(`SELECT 1 FROM credshare_keys WHERE user_id = ?`, [m.user_id]) : null;
+    const key = m.user_id ? await get(`SELECT public_key FROM credshare_keys WHERE user_id = ?`, [m.user_id]) : null;
+    const fp = keyFingerprint(key?.public_key);
     const roleControl = me.role === "owner"
       ? `<form method="post" action="/teams/${esc(team.slug)}/members/${esc(m.id)}/role" class="member-role-form">${CSRF}
           <select name="role" aria-label="Permission for ${esc(m.email)}">
@@ -45,9 +49,9 @@ async function teamCard(team, uid) {
     const canResend = m.status === "invited" && (me.role === "owner" || (me.role === "admin" && m.role === "member"));
     const actions = [
       canResend ? `<form method="post" action="/teams/${esc(team.slug)}/members/${esc(m.id)}/resend" style="margin:0">${CSRF}<button class="btn compact">Resend</button></form>` : "",
-      canManageMember(me, m) ? `<form method="post" action="/teams/${esc(team.slug)}/members/${esc(m.id)}/delete" style="margin:0" onsubmit="return confirm('Remove this team member?')">${CSRF}<button class="btn compact danger">Remove</button></form>` : ""
+      canManageMember(me, m) ? `<form method="post" action="/teams/${esc(team.slug)}/members/${esc(m.id)}/delete" style="margin:0" data-confirm="Remove this team member?">${CSRF}<button class="btn compact danger">Remove</button></form>` : ""
     ].filter(Boolean).join("");
-    memberRows.push(`<tr><td>${esc(m.email)}</td><td>${roleControl}</td><td><span class="pill ${m.status === "active" ? "on" : "warn"}">${esc(m.status)}</span></td><td>${key ? "✓" : "—"}</td><td><div class="member-actions">${actions || "—"}</div></td></tr>`);
+    memberRows.push(`<tr><td>${esc(m.email)}</td><td>${roleControl}</td><td><span class="pill ${m.status === "active" ? "on" : "warn"}">${esc(m.status)}</span></td><td>${fp ? `<code class="fp" data-fp-team="${esc(team.slug)}" data-fp-email="${esc(m.email)}" data-fp="${esc(fp)}" title="Identity key fingerprint. Compare it with ${esc(m.email)} out of band.">${esc(fp)}</code>` : "—"}</td><td><div class="member-actions">${actions || "—"}</div></td></tr>`);
   }
   const vaultRows = [];
   for (const v of vaults) {
@@ -60,7 +64,7 @@ async function teamCard(team, uid) {
     <div class="card-head"><span class="h">${esc(team.name)} <span class="faint">/${esc(team.slug)}</span></span><span class="pill">${me ? esc(me.role) : "member"}</span></div>
     <div class="card-body">
       <div class="label" style="margin-bottom:6px">Members</div>
-      <div class="table-scroll"><table><thead><tr><th>Email</th><th>Permission</th><th>Status</th><th>Key</th><th>Actions</th></tr></thead><tbody>${memberRows.join("")}</tbody></table></div>
+      <div class="table-scroll"><table><thead><tr><th>Email</th><th>Permission</th><th>Status</th><th>Key fingerprint</th><th>Actions</th></tr></thead><tbody>${memberRows.join("")}</tbody></table></div>
       ${canInvite ? `<form method="post" action="/teams/${esc(team.slug)}/invite" style="display:flex;gap:8px;margin-top:12px">${CSRF}
         <input type="email" name="email" placeholder="teammate@example.com" required style="flex:1">
         ${me.role === "owner" ? `<select name="role" aria-label="Permission" style="width:auto"><option value="member">member</option><option value="admin">admin</option><option value="owner">owner</option></select>` : `<input type="hidden" name="role" value="member">`}
@@ -68,7 +72,22 @@ async function teamCard(team, uid) {
       <div class="label" style="margin:18px 0 6px">Vaults</div>
       ${vaults.length ? `<table><thead><tr><th>Vault</th><th>Secrets</th><th>Your access</th></tr></thead><tbody>${vaultRows.join("")}</tbody></table>`
         : `<p class="faint mono" style="font-size:.82rem">No vaults yet — create one from the CLI: <code>logicsrc teams push ${esc(team.slug)} &lt;project&gt; &lt;env&gt;</code></p>`}
+      <div class="label" style="margin:18px 0 6px">Recent access <span class="faint">(full trail: <code>logicsrc teams audit ${esc(team.slug)}</code>)</span></div>
+      ${auditTable(await teamAudit(team.id, { limit: 25 }))}
     </div></div>`;
+}
+
+/** Audit rows as a table: when, who, what, which vault, from where. */
+export function auditTable(rows) {
+  if (!rows.length) return `<p class="faint mono" style="font-size:.82rem">Nothing recorded yet.</p>`;
+  const when = (ms) => new Date(Number(ms)).toISOString().slice(0, 19).replace("T", " ");
+  return `<div class="table-scroll"><table class="audit"><thead><tr><th>When (UTC)</th><th>Who</th><th>What</th><th>Vault</th><th>From</th></tr></thead><tbody>${rows.map((r) => `<tr>
+    <td class="mono" style="white-space:nowrap">${esc(when(r.at))}</td>
+    <td>${esc(r.actor || "?")}${r.apiKey ? `<div class="faint mono" style="font-size:.72rem">${esc(r.apiKeyKind === "machine" ? "machine key" : "key")} ${esc(r.apiKey)}</div>` : ""}</td>
+    <td class="mono">${esc(r.action)}${r.target && !r.apiKey ? ` <span class="faint">${esc(r.target)}</span>` : ""}</td>
+    <td>${r.vault ? `<code>${esc(r.vault)}</code>` : "—"}</td>
+    <td class="mono" style="font-size:.76rem">${esc(r.ip || "—")}${r.userAgent ? `<div class="faint" style="max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${esc(r.userAgent)}">${esc(r.userAgent)}</div>` : ""}</td>
+  </tr>`).join("")}</tbody></table></div>`;
 }
 
 export async function dashboardHandler(req, res) {
@@ -106,7 +125,7 @@ export async function dashboardHandler(req, res) {
       <div class="card-body"><form method="post" action="/teams" style="display:flex;gap:8px">${csrfInput(req)}
         <input name="slug" placeholder="team-slug" required style="flex:1"><button class="btn acid">Create team</button></form></div></div>
   </main>${footer}`;
-  res.type("html").send(page({ title: "LogicSRC ▸ teams", body }));
+  res.type("html").send(page({ title: "LogicSRC ▸ teams", body, head: `<script src="/pins.js" defer></script>` }));
 }
 
 pagesRouter.get("/dashboard", requireAuth, dashboardHandler);
@@ -133,7 +152,7 @@ pagesRouter.get("/teams/:slug/vaults/:vaultId", requireAuth, async (req, res, ne
     hasGrant: Boolean(grant),
     publicKey: key?.public_key || "",
     email: req.user.email
-  })}${footer}`;
+  })}<main class="wrap" style="max-width:820px;padding:0 0 40px"><div class="card"><div class="card-head"><span class="h">Who opened this vault</span></div><div class="card-body">${auditTable(await teamAudit(ctx.team.id, { vault: vault.name, limit: 50 }))}</div></div></main>${footer}`;
   res.set("Cache-Control", "no-store");
   res.type("html").send(page({ title: `LogicSRC ▸ ${vault.name}`, body }));
 });
@@ -278,7 +297,13 @@ pagesRouter.get("/settings", requireAuth, async (req, res) => {
   const profileValues = Object.fromEntries(COLUMNS.map((c) => [c, mine[c] ?? null]));
   profileValues.email ??= req.user.email || null;
   const teams = await all(`SELECT t.slug FROM credshare_teams t JOIN credshare_members m ON m.team_id = t.id WHERE m.user_id = ? AND m.status = 'active' ORDER BY t.slug`, [req.user.id]);
-  const newKey = req.query.key ? String(req.query.key) : "";
+  // A new API key is handed over in a short-lived httpOnly cookie, never in the
+  // URL (where it would sit in history, proxy logs and Referer headers).
+  const newKey = typeof getCeremony(req, "newkey") === "string" ? getCeremony(req, "newkey") : "";
+  if (newKey) clearCeremony(res, "newkey");
+  res.set("Cache-Control", "no-store");
+  const myKey = await get(`SELECT public_key, updated_at FROM credshare_keys WHERE user_id = ?`, [req.user.id]);
+  const myGrants = await get(`SELECT COUNT(*) AS n FROM credshare_vault_grants WHERE user_id = ?`, [req.user.id]);
   const err = req.query.err ? String(req.query.err).slice(0, 200) : "";
   const keysHtml = keys.length ? keys.map((k) => keyRow(req, k)).join("") : `<div class="faint mono" style="font-size:.78rem;padding:6px 0">no keys yet</div>`;
   const body = `${appBar(req)}
@@ -287,6 +312,19 @@ pagesRouter.get("/settings", requireAuth, async (req, res) => {
     ${newKey ? `<div class="notice ok">New API key (copy it now — shown once):<br><b class="mono" style="word-break:break-all">${esc(newKey)}</b></div>` : ""}
     ${err ? `<div class="notice err">${esc(KEY_ERRORS[err] || err)}</div>` : ""}
     ${req.query.saved === "profile" ? `<div class="notice ok">Your details are saved.</div>` : ""}
+    ${req.query.saved === "identity-reset" ? `<div class="notice ok">Your identity key is reset and your vault grants are gone. Run <code>logicsrc login</code> to register a new key, then ask a teammate to grant you each vault again.</div>` : ""}
+    <div class="card" style="margin-bottom:20px"><div class="card-head"><span class="h">Identity key</span></div>
+      <div class="card-body">
+        ${myKey?.public_key
+          ? `<p style="margin-top:0">Fingerprint <code class="fp">${esc(keyFingerprint(myKey.public_key))}</code> <span class="faint mono" style="font-size:.76rem">registered ${esc(new Date(Number(myKey.updated_at)).toISOString().slice(0, 10))}, sealed into ${Number(myGrants?.n || 0)} vault grant(s)</span></p>
+        <p class="dim" style="font-size:.85rem">Teammates seal vault keys to this key. It changes only with <code>logicsrc teams rotate-identity</code>, run on the machine that holds it (it proves possession of the current key). A login with a different key is refused.</p>
+        <details><summary class="dim" style="cursor:pointer;font-size:.85rem">Lost the key, or it leaked and you cannot rotate it?</summary>
+          <form method="post" action="/settings/identity/reset" style="margin-top:12px">${csrfInput(req)}
+            <p class="dim" style="font-size:.85rem;margin-top:0">Reset removes the registered key and <b>deletes every vault grant sealed to it</b>. You then register a new key with <code>logicsrc login</code> and teammates grant you again; their CLI will show your key as changed and ask them to confirm. If the old key leaked, also ask a teammate to re-key the vaults.</p>
+            <label class="field"><span>Type RESET to confirm</span><input name="confirm" autocomplete="off" required pattern="RESET"></label>
+            <button class="btn danger">Reset my identity key</button></form></details>`
+          : `<p class="dim" style="margin-top:0;font-size:.88rem">No identity key registered yet. Run <code>logicsrc login</code>.</p>`}
+      </div></div>
     <div class="card" style="margin-bottom:20px"><div class="card-head"><span class="h">Your details</span></div>
       <div class="card-body">
         <form method="post" action="/settings/profile">${csrfInput(req)}
@@ -348,8 +386,32 @@ pagesRouter.post("/settings/apikeys", requireAuth, async (req, res) => {
     }
   }
   const { plaintext } = await createApiKey(req.user.id, name, opts);
-  res.redirect("/settings?key=" + encodeURIComponent(plaintext));
+  setCeremony(res, "newkey", plaintext, 60 * 1000);
+  res.redirect("/settings?created=1");
 });
+// Reset the identity key from a signed-in browser (never from an API key: a
+// stolen lsk_ token is exactly what this must not be able to do). Every grant
+// sealed to the old key goes too, so a reset gains nobody any access: a
+// teammate has to grant the new key, and their pinned fingerprint flags it.
+pagesRouter.post("/settings/identity/reset", requireAuth, async (req, res) => {
+  if (String(req.body.confirm || "") !== "RESET") return res.redirect("/settings?err=" + encodeURIComponent("Type RESET to confirm the identity reset."));
+  const before = await get(`SELECT public_key FROM credshare_keys WHERE user_id = ?`, [req.user.id]);
+  const teams = await all(`SELECT team_id FROM credshare_members WHERE user_id = ? AND status = 'active'`, [req.user.id]);
+  const now = Date.now();
+  const ip = (req.ip || "").replace(/^::ffff:/, "") || null;
+  const ua = String(req.get("user-agent") || "").slice(0, 300) || null;
+  const statements = [
+    { sql: `DELETE FROM credshare_vault_grants WHERE user_id = ?`, args: [req.user.id] },
+    { sql: `DELETE FROM credshare_keys WHERE user_id = ?`, args: [req.user.id] },
+    ...teams.map((t) => ({
+      sql: `INSERT INTO credshare_audit (id, team_id, vault_id, actor_user_id, action, key_name, fingerprint, created_at, actor_key_id, ip, user_agent) VALUES (?,?,?,?,?,?,?,?,?,?,?)`,
+      args: [id(), t.team_id, null, req.user.id, "identity:reset", null, keyFingerprint(before?.public_key), now, null, ip, ua]
+    }))
+  ];
+  await batch(statements);
+  res.redirect("/settings?saved=identity-reset");
+});
+
 pagesRouter.post("/settings/apikeys/:id/delete", requireAuth, async (req, res) => {
   await revokeApiKey(req.user.id, req.params.id);
   res.redirect("/settings");

@@ -50,7 +50,7 @@ beforeAll(async () => {
   process.env.LOGICSRC_IDENTITY_FILE = "";
   delete process.env.LOGICSRC_IDENTITY_FILE;
   ({ db } = (await import(pwa("db.mjs"))) as { db: Db });
-  for (const file of ["001_auth.sql", "002_credshare.sql", "005_machine_keys.sql"]) {
+  for (const file of ["001_auth.sql", "002_credshare.sql", "005_machine_keys.sql", "007_hardening.sql"]) {
     const sql = readFileSync(fileURLToPath(pwa(join("migrations", file))), "utf8");
     for (const statement of sql.split(/;\s*$/m).map((s) => s.trim()).filter(Boolean)) await db.execute(statement);
   }

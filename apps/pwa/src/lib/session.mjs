@@ -1,6 +1,6 @@
 // Cookie sessions + auth middleware + CSRF (double-submit).
 import { get, run } from "../db.mjs";
-import { id, token, sign, unsign } from "./crypto.mjs";
+import { id, token, sign, unsign, sha256 } from "./crypto.mjs";
 import { config } from "../config.mjs";
 
 const COOKIE = "mc_sess";
@@ -14,14 +14,16 @@ function cookieOpts(extra = {}) {
 export async function createSession(res, userId) {
   const t = token();
   const now = Date.now();
+  // Only sha256(token) is stored, like API keys: a database read (or dump)
+  // yields nothing that signs anyone in.
   await run(`INSERT INTO sessions (token, user_id, created_at, expires_at) VALUES (?,?,?,?)`,
-    [t, userId, now, now + TTL]);
+    [sha256(t), userId, now, now + TTL]);
   res.cookie(COOKIE, t, cookieOpts({ maxAge: TTL }));
 }
 
 export async function destroySession(req, res) {
   const t = req.cookies?.[COOKIE];
-  if (t) await run(`DELETE FROM sessions WHERE token = ?`, [t]);
+  if (t) await run(`DELETE FROM sessions WHERE token = ?`, [sha256(String(t))]);
   res.clearCookie(COOKIE, cookieOpts());
 }
 
@@ -32,7 +34,7 @@ export async function sessionMiddleware(req, res, next) {
   if (t) {
     const row = await get(
       `SELECT u.* FROM sessions s JOIN users u ON u.id = s.user_id WHERE s.token = ? AND s.expires_at > ?`,
-      [t, Date.now()]
+      [sha256(String(t)), Date.now()]
     );
     if (row) req.user = row;
     else res.clearCookie(COOKIE, cookieOpts());
