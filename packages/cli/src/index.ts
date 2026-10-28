@@ -38,6 +38,7 @@ import { sshAgentAction, sshListAction, sshPullAction, sshPushAction } from "./s
 import { credentialsRotateAction } from "./rotate.js";
 import { teamsRotateKeysAction, teamsRotationAction, teamsRotationSetAction } from "./rotate-keys.js";
 import { teamsAuditAction, teamsKeyImportAction, teamsRekeyAction, teamsRotateIdentityAction } from "./hardening.js";
+import { teamsCleanAction } from "./vault-clean.js";
 import { boards, tasks } from "./fixtures.js";
 import { print, type OutputFormat } from "./format.js";
 import { parsePositiveInteger } from "./numeric-options.js";
@@ -749,6 +750,7 @@ Quick start (<team> is e.g. profullstack; see yours with "logicsrc teams list"):
   logicsrc teams rekey <team> --all                        new vault keys, values re-encrypted
   logicsrc teams rotation <team>                           how each secret is rotated (agents: --format json)
   logicsrc teams rotate-keys <team> [project] [env]        rotate values (dry run; --approve to write)
+  logicsrc teams clean <team> <project> <env> --dead       archive dead keys to <project>--<env>-archive (dry run; --approve)
 
 Deploy boxes and CI (a machine API key: one team, scoped vaults, read-only, its own identity):
   logicsrc keys create <name> --team <team> --vault <project>--<env> --out deploy.key
@@ -966,6 +968,40 @@ After rotating: redeploy the consumers, install new SSH public keys, revoke the 
     teamsRotateKeysAction(slug, { project, env, keys: options.key }, {
       approve: Boolean(options.approve),
       setFromStdin: Boolean(options.setFromStdin),
+      format: options.format as OutputFormat
+    })
+  );
+
+teams
+  .command("clean")
+  .argument("<slug>", "Team slug")
+  .argument("<project>", "Project name")
+  .argument("<env>", "Environment name (prod, staging, …)")
+  .option("-k, --key <names>", "archive these keys (comma-separated or repeated)", collectList)
+  .option("--dead", "also archive keys whose URL host (or Supabase token's project) no longer resolves")
+  .option("--reason <text>", "why the --key ones are archived, kept beside them")
+  .option("--approve", "move them (dry run by default)")
+  .option("--format <format>", "table, json, or markdown", "table")
+  .description("Move stale keys out of a vault into <project>--<env>-archive. Never deletes: a key leaves only after its archived copy reads back.")
+  .addHelpText(
+    "after",
+    `
+Dry run first, then apply:
+  logicsrc teams clean profullstack threatcrush prod --dead
+  logicsrc teams clean profullstack threatcrush prod --dead --key SUPABASE_DB_PASSWORD --reason "old Supabase cloud project" --approve
+
+Archived keys keep their names in the archive vault; a name already holding a
+different value there gets a __<UTC stamp> suffix. Each one has an
+__ARCHIVE__<NAME> entry saying where it came from, why, when and who.
+Get them back: logicsrc teams pull profullstack threatcrush prod-archive --env archive.env
+`
+  )
+  .action((slug, project, env, options) =>
+    teamsCleanAction(slug, project, env, {
+      keys: options.key,
+      dead: Boolean(options.dead),
+      approve: Boolean(options.approve),
+      reason: options.reason,
       format: options.format as OutputFormat
     })
   );
