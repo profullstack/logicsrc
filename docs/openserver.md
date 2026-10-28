@@ -215,6 +215,7 @@ By hand, from the same table the order form reads. A provider with a database ha
 
 ## Related standards
 
+- [OpenDevice](/docs/opendevice): the other side of the sale. An operator's inventory points a server device at the offer it was bought as, by this descriptor's URL and the offer's `id`.
 - [OpenSwarm](/openswarm): the settlement and proof layer under a peer-to-peer offer; [c0mpute](https://github.com/profullstack/logicsrc/blob/master/docs/openswarm/c0mpute.md) is its compute marketplace and [OpenDisk](/docs/opendisk) its disk-for-rent peer, each listable here as an offer.
 - [OpenCPU](/docs/opencpu), [OpenMemory](/docs/openmemory), [OpenGPU](/docs/opengpu), [OpenBandwidth](/docs/openbandwidth): the resource blocks. An offer's `compute` (cpu and memory), `compute.gpu` and `network` may carry those specs' fields when the provider has them, and each can stand alone as an offer of its own.
 - [OpenProfile.md](/openprofile): the `operator` behind a provider.
