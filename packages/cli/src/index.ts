@@ -36,6 +36,7 @@ import {
 import { registerKeysCommands } from "./keys.js";
 import { sshAgentAction, sshListAction, sshPullAction, sshPushAction } from "./ssh.js";
 import { credentialsRotateAction } from "./rotate.js";
+import { teamsRotateKeysAction, teamsRotationAction, teamsRotationSetAction } from "./rotate-keys.js";
 import { boards, tasks } from "./fixtures.js";
 import { print, type OutputFormat } from "./format.js";
 import { parsePositiveInteger } from "./numeric-options.js";
@@ -741,6 +742,8 @@ Quick start (<team> is e.g. profullstack; see yours with "logicsrc teams list"):
   logicsrc teams push <team> <project> <env>               ./.env -> vault
   logicsrc teams grant <team> <project> <env> dev@example.com
   logicsrc teams key                                       your key, to read values in the web app
+  logicsrc teams rotation <team>                           how each secret is rotated (agents: --format json)
+  logicsrc teams rotate-keys <team> [project] [env]        rotate values (dry run; --approve to write)
 
 Deploy boxes and CI (a machine API key: one team, scoped vaults, read-only, its own identity):
   logicsrc keys create <name> --team <team> --vault <project>--<env> --out deploy.key
@@ -871,6 +874,95 @@ Vaults you have no access to are skipped and listed at the end.
   )
   .action((slug, project, env, options) =>
     teamsExportAction(slug, { project, env, category: options.category, search: options.search }, { out: options.out, yes: options.yes })
+  );
+
+const collectList = (value: string, previous: string[] = []): string[] => [...previous, ...value.split(",").map((v) => v.trim()).filter(Boolean)];
+const collectRepeat = (value: string, previous: string[] = []): string[] => [...previous, value];
+
+teams
+  .command("rotation")
+  .argument("<slug>", "Team slug")
+  .argument("[project]", "Only this project")
+  .argument("[env]", "Only this environment")
+  .option("-k, --key <names>", "only these keys (comma-separated or repeated)", collectList)
+  .option("--format <format>", "table, json, or markdown", "table")
+  .description("Show how each secret value is rotated: method, instructions, which vaults share it. Never shows values.")
+  .addHelpText(
+    "after",
+    `
+Methods: random (we mint it), ssh-keygen (new ed25519 keypair), command (a CLI prints
+the new value), manual (steps + url for a person or agent). Instructions come from the
+key's own __ROTATE__<KEY> entry, else a built-in catalog by key name.
+
+  logicsrc teams rotation profullstack                     every value in the team
+  logicsrc teams rotation profullstack b1dz prod --format json   steps per key, for agents
+`
+  )
+  .action((slug, project, env, options) =>
+    teamsRotationAction(slug, { project, env, keys: options.key }, { format: options.format as OutputFormat })
+  );
+
+teams
+  .command("rotation-set")
+  .argument("<slug>", "Team slug")
+  .argument("<project>", "Project name")
+  .argument("<env>", "Environment name")
+  .argument("<key>", "Secret name the instructions are for")
+  .option("--method <method>", "random, ssh-keygen, command, or manual")
+  .option("--json <spec>", "the whole spec as JSON instead of flags")
+  .option("--format <alphabet>", "random: hex, base64, base64url, alnum (default: like the old value)")
+  .option("--length <n>", "random: length in characters (default: like the old value, min 32)")
+  .option("--command <cmd>", "command: shell command that prints the new value on stdout")
+  .option("--url <url>", "where to rotate it (provider dashboard)")
+  .option("--step <text>", "one step; repeat for several", collectRepeat)
+  .option("--consumer <name>", "what reads this value and must be redeployed; repeat", collectRepeat)
+  .option("--note <text>", "why, shown in the plan")
+  .option("--output <format>", "table, json, or markdown", "table")
+  .description("Store rotation instructions with a secret (as __ROTATE__<KEY>, encrypted, never pulled into .env).")
+  .addHelpText(
+    "after",
+    `
+Examples:
+  logicsrc teams rotation-set profullstack infernet prod CRON_SECRET --method random --consumer "dev2 crontab"
+  logicsrc teams rotation-set profullstack b1dz prod RESEND_API_KEY --method manual \
+    --url https://resend.com/api-keys --step "Create a key named b1dz-prod" --step "Revoke the old key"
+  logicsrc teams rotation-set profullstack app prod CF_TOKEN --method command --command "my-cf-mint-token"
+`
+  )
+  .action((slug, project, env, key, options) =>
+    teamsRotationSetAction(slug, project, env, key, { ...options, outputFormat: options.output as OutputFormat })
+  );
+
+teams
+  .command("rotate-keys")
+  .argument("<slug>", "Team slug")
+  .argument("[project]", "Only this project")
+  .argument("[env]", "Only this environment")
+  .option("-k, --key <names>", "only these keys (comma-separated or repeated)", collectList)
+  .option("--approve", "write the new values (dry run by default)")
+  .option("--set-from-stdin", "store a value you rotated by hand (exactly one --key), everywhere the old value lives")
+  .option("--format <format>", "table, json, or markdown", "table")
+  .description("Rotate secret values: automatic ones are minted and written to every vault holding the old value; manual ones come back as steps.")
+  .addHelpText(
+    "after",
+    `
+Dry run first, then apply:
+  logicsrc teams rotate-keys profullstack                       plan for the whole team
+  logicsrc teams rotate-keys profullstack b1dz prod --approve   rotate one vault's automatic keys
+  logicsrc teams rotate-keys profullstack --key SSH_ID_ED25519 --approve
+  new-key | logicsrc teams rotate-keys profullstack b1dz prod --key RESEND_API_KEY --set-from-stdin --approve
+
+Values never print. The same value stored in other vaults (same fingerprint) is
+rotated there too. Vaults you cannot decrypt are named and keep the OLD value.
+After rotating: redeploy the consumers, install new SSH public keys, revoke the old values.
+`
+  )
+  .action((slug, project, env, options) =>
+    teamsRotateKeysAction(slug, { project, env, keys: options.key }, {
+      approve: Boolean(options.approve),
+      setFromStdin: Boolean(options.setFromStdin),
+      format: options.format as OutputFormat
+    })
   );
 
 teams

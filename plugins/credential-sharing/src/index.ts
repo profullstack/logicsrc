@@ -55,6 +55,7 @@ export {
   githubSecretsProvider,
   sshProvider,
   teamProvider,
+  ROTATION_ENTRY_PREFIX,
   parseEnv,
   applyEnv,
   classifySshFile,
