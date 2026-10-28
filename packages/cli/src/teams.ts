@@ -3,8 +3,8 @@ import { createHash, randomBytes } from "node:crypto";
 import { hostname } from "node:os";
 import { spawn } from "node:child_process";
 import { createInterface } from "node:readline/promises";
-import { chmodSync, rmSync, writeFileSync } from "node:fs";
-import { OTHER_CATEGORY, SECRET_CATEGORIES, categorizeSecret, csvLine, parseCategories } from "@logicsrc/opencreds";
+import { chmodSync, existsSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { OTHER_CATEGORY, SECRET_CATEGORIES, categorizeSecret, csvLine, isSigningKey, isSigningKeyName, parseCategories } from "@logicsrc/opencreds";
 import {
   TeamClient,
   TeamApiError,
@@ -28,6 +28,7 @@ import {
   checkAndPinKey,
   keyFingerprint,
   pinStatus,
+  parseEnv,
   type CredentialEndpoint,
   type RemoteVault
 } from "@logicsrc/plugin-credential-sharing";
@@ -588,7 +589,23 @@ export function teamEndpoint(slug: string, vault: string): CredentialEndpoint {
 
 // Note the two different "env"s: `envName` is the environment half of the vault
 // address (prod, staging), while `options.env` is the local .env file path.
-export async function teamsPushAction(slug: string, project: string, envName: string, options: { env: string; format: OutputFormat }): Promise<void> {
+const SIGNING_KEY_HELP =
+  "Signing keys (wallet keys, seed phrases, hsm secrets, SSH/deploy keys) do not go in a team vault: a deploy " +
+  "pulls a vault into app.env and keeps it there 24/7. Keep them in `logicsrc keyring` and have the service ask " +
+  "for an unlock when it signs.";
+
+/** Names in a local .env that are signing keys, by name or by what the value looks like. */
+export function signingKeysInEnvFile(path: string): string[] {
+  if (!existsSync(path)) return [];
+  const bag = parseEnv(readFileSync(path, "utf8"));
+  return Object.entries(bag).filter(([k, v]) => isSigningKey(k, String(v ?? ""))).map(([k]) => k).sort();
+}
+
+export async function teamsPushAction(slug: string, project: string, envName: string, options: { env: string; format: OutputFormat; allowSigningKeys?: boolean }): Promise<void> {
+  const signing = signingKeysInEnvFile(options.env);
+  if (signing.length && !options.allowSigningKeys) {
+    throw new Error(`${options.env} holds signing keys: ${signing.join(", ")}. ${SIGNING_KEY_HELP} Remove them from the file, or pass --allow-signing-keys if this vault is never deployed.`);
+  }
   requireAuth();
   const vault = vaultName(project, envName);
   const engine = createCredentialEngine();
@@ -606,12 +623,22 @@ export async function teamsPushAction(slug: string, project: string, envName: st
   print({ team: slug, project, env: envName, vault, applied, keys: run.results.map((r) => ({ key: r.key, op: r.op, applied: r.applied })) }, options.format);
 }
 
-export async function teamsPullAction(slug: string, project: string, envName: string, options: { env: string; format: OutputFormat }): Promise<void> {
+export async function teamsPullAction(slug: string, project: string, envName: string, options: { env: string; format: OutputFormat; includeSigningKeys?: boolean }): Promise<void> {
+  if (options.includeSigningKeys && !(process.stdin.isTTY && process.stderr.isTTY)) {
+    throw new Error("--include-signing-keys needs a person at a terminal: a script or deploy never writes signing keys to disk.");
+  }
   requireAuth();
   const vault = vaultName(project, envName);
   const engine = createCredentialEngine();
+  const from = teamEndpoint(slug, vault);
   const to: CredentialEndpoint = { provider: "env", path: options.env };
-  const plan = await engine.createCredentialSyncPlan({ from: teamEndpoint(slug, vault), to });
+  // Signing keys stay in the vault unless a person asks for them at a terminal;
+  // the server never sends them to a machine key at all.
+  const withheld = options.includeSigningKeys
+    ? []
+    : (await engine.diffCredentialEndpoints(from, to)).entries.map((e) => e.key).filter((k) => isSigningKeyName(k));
+  if (withheld.length) console.error(`Withheld ${withheld.length} signing key(s): ${withheld.join(", ")}. ${SIGNING_KEY_HELP}`);
+  const plan = await engine.createCredentialSyncPlan({ from, to, policy: withheld.length ? { denyKeys: withheld } : undefined });
   if (plan.changes.length === 0) {
     console.error(`${options.env} is already up to date with ${slug}/${vault}.`);
     print({ team: slug, project, env: envName, vault, changes: 0 }, options.format);

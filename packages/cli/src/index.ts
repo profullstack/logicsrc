@@ -1112,9 +1112,10 @@ teams
   .argument("<project>", "Project name")
   .argument("<env>", "Environment name (prod, staging, …)")
   .option("--env <path>", "Source .env file", ".env")
+  .option("--allow-signing-keys", "Push wallet keys, seed phrases or SSH keys anyway (refused by default: use `logicsrc keyring`)")
   .option("--format <format>", "table, json, or markdown", "table")
-  .description("Encrypt and push a local .env into a team vault (<project>--<env>).")
-  .action((slug, project, env, options) => teamsPushAction(slug, project, env, { env: options.env, format: options.format as OutputFormat }));
+  .description("Encrypt and push a local .env into a team vault (<project>--<env>). Signing keys are refused.")
+  .action((slug, project, env, options) => teamsPushAction(slug, project, env, { env: options.env, format: options.format as OutputFormat, allowSigningKeys: Boolean(options.allowSigningKeys) }));
 
 teams
   .command("pull")
@@ -1122,9 +1123,10 @@ teams
   .argument("<project>", "Project name")
   .argument("<env>", "Environment name (prod, staging, …)")
   .option("--env <path>", "Destination .env file", ".env")
+  .option("--include-signing-keys", "Also write wallet keys, seed phrases and SSH keys (interactive only; withheld by default)")
   .option("--format <format>", "table, json, or markdown", "table")
-  .description("Pull a team vault (<project>--<env>) and decrypt it into a local .env.")
-  .action((slug, project, env, options) => teamsPullAction(slug, project, env, { env: options.env, format: options.format as OutputFormat }));
+  .description("Pull a team vault (<project>--<env>) and decrypt it into a local .env. Signing keys are withheld.")
+  .action((slug, project, env, options) => teamsPullAction(slug, project, env, { env: options.env, format: options.format as OutputFormat, includeSigningKeys: Boolean(options.includeSigningKeys) }));
 
 const accounts = program.command("accounts").description("Manage connected social and email accounts.");
 

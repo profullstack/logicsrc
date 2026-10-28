@@ -18,6 +18,7 @@ import { id, sha256, token } from "../lib/crypto.mjs";
 import { keyFingerprint, requestOriginInfo } from "../lib/keyfp.mjs";
 import sodium from "libsodium-wrappers";
 import { bearer, keyForBearer, keyCoversVault, normalizeKey } from "../lib/apikey.mjs";
+import { isSigningKeyName } from "../lib/signing-keys.mjs";
 import {
   TeamMemberError,
   normEmail,
@@ -709,9 +710,14 @@ credshareRouter.delete("/api/credshare/vaults/:id/key-grants/:keyId", api(async 
 
 credshareRouter.get("/api/credshare/vaults/:id/secrets", api(async (req, res, user, key) => {
   const vault = await vaultCtx(res, req.params.id, user.id, key); if (!vault) return;
-  const rows = await all(`SELECT * FROM credshare_secrets WHERE vault_id = ? ORDER BY name`, [vault.id]);
+  const all_ = await all(`SELECT * FROM credshare_secrets WHERE vault_id = ? ORDER BY name`, [vault.id]);
+  // A deploy box never receives a signing key (wallet key, seed, SSH key): root
+  // on a box running 24/7 must not mean the keys that move money.
+  const withheld = isMachine(key) ? all_.filter((s) => isSigningKeyName(s.name)).map((s) => s.name) : [];
+  const rows = withheld.length ? all_.filter((s) => !withheld.includes(s.name)) : all_;
   await audit({ req, teamId: vault.team_id, vaultId: vault.id, actorUserId: user.id, action: "secrets:fetch", keyName: key?.name ?? (req.user ? "browser session" : null) });
-  res.json({ vaultId: vault.id, keyVersion: Number(vault.key_version ?? 1), secrets: rows.map((s) => ({ name: s.name, nonce: s.nonce, ciphertext: s.ciphertext, fingerprint: s.fingerprint, version: s.version, updatedAt: s.updated_at })) });
+  if (withheld.length) await audit({ req, teamId: vault.team_id, vaultId: vault.id, actorUserId: user.id, actorKeyId: key.id, action: "secrets:withheld:signing", keyName: withheld.join(",") });
+  res.json({ vaultId: vault.id, keyVersion: Number(vault.key_version ?? 1), withheld, secrets: rows.map((s) => ({ name: s.name, nonce: s.nonce, ciphertext: s.ciphertext, fingerprint: s.fingerprint, version: s.version, updatedAt: s.updated_at })) });
 }, { machine: "read" }));
 
 credshareRouter.put("/api/credshare/vaults/:id/secrets", api(async (req, res, user, key) => {
@@ -728,6 +734,10 @@ credshareRouter.put("/api/credshare/vaults/:id/secrets", api(async (req, res, us
   }
   const upserts = Array.isArray(req.body?.upserts) ? req.body.upserts : [];
   const deletes = Array.isArray(req.body?.deletes) ? req.body.deletes : [];
+  if (isMachine(key)) {
+    const signing = [...upserts.map((u) => u?.name), ...deletes].filter((n) => typeof n === "string" && isSigningKeyName(n));
+    if (signing.length) return res.status(403).json({ error: `A machine key cannot write signing keys (${signing.join(", ")}). Keep them in \`logicsrc keyring\` and unlock them where they are used.`, code: "signing_key_machine_write" });
+  }
   const applied = [];
   for (const u of upserts) {
     if (!u || typeof u.name !== "string" || typeof u.nonce !== "string" || typeof u.ciphertext !== "string" || typeof u.fingerprint !== "string") {
