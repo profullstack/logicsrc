@@ -248,3 +248,5 @@ export {
   SIMPLE_CSV_COLUMNS,
   type SecretCategory,
 } from "./categories.js";
+
+export { promptSecret, promptNewSecret, resolveSecretFlag } from "./prompt.js";

@@ -34,6 +34,7 @@ import {
   prepareApiKeyAuth
 } from "./teams.js";
 import { registerKeysCommands } from "./keys.js";
+import { registerKeyringCommands } from "./keyring-cmd.js";
 import { sshAgentAction, sshListAction, sshPullAction, sshPushAction } from "./ssh.js";
 import { credentialsRotateAction } from "./rotate.js";
 import { teamsRotateKeysAction, teamsRotationAction, teamsRotationSetAction } from "./rotate-keys.js";
@@ -1381,6 +1382,7 @@ async function runYoloArcade(game: string, repo?: string) {
 }
 
 registerKeysCommands(program);
+registerKeyringCommands(program);
 
 // LOGICSRC_API_KEY: prepare the key's identity (first use registers a machine
 // key's own public key) before any command that talks to the credentials app.

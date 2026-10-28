@@ -41,6 +41,7 @@ const GUIDE_SUBTITLES: Record<string, string> = {
   tui: "Terminal rendering for the dashboard and Waiting Arcade",
   config: "Where config lives, and what each key does",
   permissions: "Explicit, scoped, auditable permission grants",
+  keyring: "SSH keys and key pairs, end-to-end encrypted, with optional cloud sync",
   plugins: "The plugin system, and the plugins that ship with it",
   "openontology-governance": "An agent proposes, a human applies",
   "openontology-interoperability": "Mapping to RDF, SHACL and PROV-O, and where it stops",

@@ -139,6 +139,7 @@ export function appBar(req) {
     <div class="bar-right">
       ${user
         ? `<span class="mono faint" style="font-size:.78rem">${esc(user.email || user.display_name || "signed in")}</span>
+      <a class="btn" href="/keyring">Keyring</a>
       <a class="btn" href="/settings">Settings</a>
       <form method="post" action="/auth/logout" style="margin:0"><input type="hidden" name="_csrf" value="${esc(req?.csrfToken)}"><button class="btn">Sign out</button></form>`
         : `<a class="btn acid" href="/">Sign in</a>`}
@@ -148,6 +149,6 @@ export function appBar(req) {
 
 export const footer = `<footer><div class="wrap foot">
   <div class="brand" style="font-size:.9rem;color:var(--ink)"><span class="mark" style="width:20px;height:20px;font-size:.62rem">LS</span>LogicSRC</div>
-  <div style="display:flex;gap:20px;flex-wrap:wrap"><a href="https://logicsrc.com">logicsrc.com</a><a href="/">Teams</a><a href="/settings">Settings</a></div>
+  <div style="display:flex;gap:20px;flex-wrap:wrap"><a href="https://logicsrc.com">logicsrc.com</a><a href="/">Teams</a><a href="/keyring">Keyring</a><a href="/settings">Settings</a></div>
   <div class="green">end-to-end encrypted. <b>the server never sees your secrets.</b></div>
 </div></footer>`;

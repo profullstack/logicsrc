@@ -4,6 +4,7 @@ import { assertSchemaKind, parseDocument, schemas, validate, type SchemaKind } f
 import { registerOpenOntology } from "./openontology.js";
 import { registerOpenPrd } from "./openprd.js";
 import { registerApiKeys, type ApiKeyToolsOptions } from "./apikeys.js";
+import { registerKeyring } from "./keyring.js";
 
 const docs = {
   "communication-accounts": `LogicSRC Communication Accounts defines shared contracts for connecting social and email identities, granting scoped human/agent/plugin access, evaluating policy gates, brokering credentials, and auditing every account action without exposing raw secrets.`,
@@ -157,6 +158,7 @@ export function createLogicSrcMcpServer(options: { apiKeys?: ApiKeyToolsOptions 
   registerOpenOntology(server);
   registerOpenPrd(server);
   registerApiKeys(server, options.apiKeys);
+  registerKeyring(server, options.apiKeys);
 
   return server;
 }

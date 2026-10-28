@@ -12,6 +12,7 @@ import { coinpayRouter } from "./routes/coinpay.mjs";
 import { credshareRouter } from "./routes/credshare.mjs";
 import { apiKeysRouter } from "./routes/apikeys.mjs";
 import { opencredsRouter } from "./routes/opencreds.mjs";
+import { keyringRouter } from "./routes/keyring.mjs";
 import { cliRouter } from "./routes/cli.mjs";
 import { pagesRouter } from "./routes/pages.mjs";
 import { profileRouter } from "./lib/profile.mjs";
@@ -75,6 +76,7 @@ app.use(coinpayRouter);
 app.use(credshareRouter); // /api/credshare/* (session or lsk_ Bearer)
 app.use(apiKeysRouter);   // /api/keys (session or a person's lsk_ key; never a machine key)
 app.use(opencredsRouter); // /api/opencreds/* — personal vault sync (session or lsk_ Bearer)
+app.use(keyringRouter);   // /api/keyring/* + /keyring — SSH keys / key pairs, ciphertext only
 app.use(cliRouter);       // /cli/authorize, /cli/token, /api/me
 app.use(profileRouter);   // /api/v1/me/profile (session cookie)
 app.use(pagesRouter);     // /dashboard, /teams/*, /settings
