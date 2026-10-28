@@ -25,6 +25,7 @@ export function listCredentialProviderManifests(): CredentialProviderManifest[] 
 }
 
 export { envProvider, dopplerProvider, railwayProvider, githubSecretsProvider, sh1ptProvider, sshProvider, teamProvider };
+export { ROTATION_ENTRY_PREFIX } from "./team.js";
 export { parseEnv, applyEnv } from "./env.js";
 export {
   classifySshFile,

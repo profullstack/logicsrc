@@ -1,4 +1,7 @@
 import { fingerprintValue } from "../fingerprint.js";
+
+/** Vault entries holding a secret's rotation instructions: `__ROTATE__<KEY>`. */
+export const ROTATION_ENTRY_PREFIX = "__ROTATE__";
 import { TeamClient, TeamApiError, type RemoteSecret } from "../client.js";
 import { requireAuth, defaultApiUrl } from "../identity.js";
 import { generateVaultKey, wrapVaultKey, unwrapVaultKey, encryptValue, decryptValue } from "../crypto.js";
@@ -112,7 +115,10 @@ export const teamProvider: CredentialProvider = {
       provider: "team",
       endpoint,
       valuesReadable,
+      // Rotation instructions ride along in the vault but are not app config:
+      // never pulled into a .env, never deleted by a push that lacks them.
       keys: secrets
+        .filter((s: RemoteSecret) => !s.name.startsWith(ROTATION_ENTRY_PREFIX))
         .map((s: RemoteSecret) => ({ name: s.name, present: true, fingerprint: s.fingerprint, lastModifiedAt: s.updatedAt }))
         .sort((a, b) => a.name.localeCompare(b.name)),
       inspectedAt: new Date().toISOString()
