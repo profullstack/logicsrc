@@ -270,6 +270,36 @@ test("a read-only machine key is refused every write; a read-write one may write
   await run(`DELETE FROM credshare_secrets WHERE vault_id = ? AND name = 'NEW'`, ["v_web"]);
 });
 
+test("a machine key never receives or writes a signing key; a person still sees it", async () => {
+  await run(`INSERT INTO credshare_secrets (vault_id, name, nonce, ciphertext, fingerprint, version, updated_by, updated_at) VALUES (?,?,?,?,?,?,?,?)`,
+    ["v_web", "SOLANA_PRIVATE_KEY", "n", "c", "fp", 1, "u_ann", now]);
+  const m = await machineKey({ readOnly: false });
+  await http.post("/api/credshare/keys", m.token, { publicKey: "pk-signing" });
+  await http.post("/api/credshare/vaults/v_web/key-grants", annKey, { keyId: m.id, wrappedDek: "sealed-signing" });
+
+  const got = await http.get("/api/credshare/vaults/v_web/secrets", m.token);
+  assert.equal(got.status, 200);
+  assert.deepEqual(got.body.secrets.map((s) => s.name), ["API_KEY"]);
+  assert.deepEqual(got.body.withheld, ["SOLANA_PRIVATE_KEY"]);
+  const logged = await get(`SELECT * FROM credshare_audit WHERE vault_id = ? AND action = 'secrets:withheld:signing' AND actor_key_id = ?`, ["v_web", m.id]);
+  assert.equal(logged.key_name, "SOLANA_PRIVATE_KEY");
+
+  const person = await http.get("/api/credshare/vaults/v_web/secrets", annKey);
+  assert.deepEqual(person.body.secrets.map((s) => s.name).sort(), ["API_KEY", "SOLANA_PRIVATE_KEY"]);
+  assert.deepEqual(person.body.withheld, []);
+
+  for (const body of [
+    { upserts: [{ name: "EVM_PRIVATE_KEY", nonce: "n", ciphertext: "c", fingerprint: "f" }], deletes: [] },
+    { upserts: [], deletes: ["SOLANA_PRIVATE_KEY"] }
+  ]) {
+    const put = await http.put("/api/credshare/vaults/v_web/secrets", m.token, body);
+    assert.equal(put.status, 403);
+    assert.equal(put.body.code, "signing_key_machine_write");
+  }
+  assert.ok(await get(`SELECT 1 FROM credshare_secrets WHERE vault_id = ? AND name = 'SOLANA_PRIVATE_KEY'`, ["v_web"]));
+  await run(`DELETE FROM credshare_secrets WHERE vault_id = ? AND name = 'SOLANA_PRIVATE_KEY'`, ["v_web"]);
+});
+
 test("expired and revoked keys are 401, and revoking drops the key's grants", async () => {
   const expired = await machineKey({ expiresAt: Date.now() - 1000 });
   assert.equal((await http.get("/api/credshare/me", expired.token)).status, 401);

@@ -134,6 +134,8 @@ export {
 
 export { looksLikeZip, readZipEntry, zipEntryNames } from "./zip.js";
 
+export { isSigningKey, isSigningKeyName, looksLikeSigningKeyValue } from "./signing-keys.js";
+
 export {
   ALL_SOURCES,
   SOURCE_NAMES,
