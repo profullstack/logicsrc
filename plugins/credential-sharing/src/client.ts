@@ -150,6 +150,34 @@ export class TeamApiError extends Error {
   }
 }
 
+export interface RemoteRotationPlanItem {
+  key: string;
+  method: string;
+  provider?: string;
+  recipe?: string;
+  automatic: boolean;
+  owner: string | null;
+  url: string | null;
+  steps: string[];
+  vaults: string[];
+  vaultCount: number;
+  lastRotated: string;
+  hasEntry: boolean;
+  [k: string]: unknown;
+}
+
+export interface RemoteRotationRun {
+  id: string;
+  keys: string[];
+  project: string | null;
+  env: string | null;
+  approve: boolean;
+  options: { desktop?: string; propagate?: boolean; allowRoll?: boolean };
+  status: string;
+  createdAt: number;
+  summary: string | null;
+}
+
 export class TeamClient {
   private readonly apiUrl: string;
   private token?: string;
@@ -272,6 +300,24 @@ export class TeamClient {
   putGrant(vaultId: string, email: string, wrappedDek: string) {
     return this.request<{ ok: boolean }>("POST", `/vaults/${encodeURIComponent(vaultId)}/grants`, { email, wrappedDek });
   }
+  // ---- key rotation: plan + run queue (never values) ----
+  rotationPlan(slug: string, query: { project?: string; env?: string; key?: string } = {}) {
+    const qs = new URLSearchParams(Object.entries(query).filter((e): e is [string, string] => Boolean(e[1]))).toString();
+    return this.request<{ team: string; plan: RemoteRotationPlanItem[] }>("GET", `/teams/${encodeURIComponent(slug)}/rotation${qs ? `?${qs}` : ""}`);
+  }
+  listRotationRuns(slug: string, status?: string) {
+    return this.request<{ runs: RemoteRotationRun[] }>("GET", `/teams/${encodeURIComponent(slug)}/rotation/runs${status ? `?status=${encodeURIComponent(status)}` : ""}`);
+  }
+  queueRotationRun(slug: string, body: { keys: string[]; project?: string; env?: string; approve?: boolean; desktop?: string; propagate?: boolean; allowRoll?: boolean }) {
+    return this.request<{ run: RemoteRotationRun }>("POST", `/teams/${encodeURIComponent(slug)}/rotation/runs`, body);
+  }
+  claimRotationRun(slug: string, id: string) {
+    return this.request<{ run: RemoteRotationRun }>("POST", `/teams/${encodeURIComponent(slug)}/rotation/runs/${encodeURIComponent(id)}/claim`);
+  }
+  reportRotationRun(slug: string, id: string, body: { status?: "failed"; error?: string; results: unknown[] }) {
+    return this.request<{ run: RemoteRotationRun }>("POST", `/teams/${encodeURIComponent(slug)}/rotation/runs/${encodeURIComponent(id)}/result`, body);
+  }
+
   listSecrets(vaultId: string) {
     return this.request<{ vaultId: string; keyVersion?: number; secrets: RemoteSecret[] }>("GET", `/vaults/${encodeURIComponent(vaultId)}/secrets`);
   }

@@ -39,7 +39,7 @@ import { registerKeysCommands } from "./keys.js";
 import { registerKeyringCommands } from "./keyring-cmd.js";
 import { sshAgentAction, sshListAction, sshPullAction, sshPushAction } from "./ssh.js";
 import { credentialsRotateAction } from "./rotate.js";
-import { teamsRotateKeysAction, teamsRotationAction, teamsRotationSetAction } from "./rotate-keys.js";
+import { teamsRotateFromQueue, teamsRotateKeysAction, teamsRotationAction, teamsRotationSetAction } from "./rotate-keys.js";
 import { teamsAuditAction, teamsKeyImportAction, teamsRekeyAction, teamsRotateIdentityAction } from "./hardening.js";
 import { teamsCleanAction } from "./vault-clean.js";
 import { boards, tasks } from "./fixtures.js";
@@ -957,6 +957,10 @@ teams
   .option("--exclude-site <sites>", "never rewrite or restart these sites; a value they hold is skipped (comma-separated or repeated)", collectList)
   .option("--max-sites <n>", "with --scheduled: skip values read by more than n sites (default 5)")
   .option("--report <file>", "also write the JSON results (never values) to this file, mode 600")
+  .option("--desktop <ssh-host>", "W3BS Agentic Desktop Layer host for desktop keys (default: $LOGICSRC_DESKTOP_HOST)")
+  .option("--allow-roll", "let desktop roll recipes run (Cloudflare Global API Key: the old key dies at once; a capture self-test runs first)")
+  .option("--from-queue", "run the rotations queued on app.logicsrc.com (Rotation page / API / MCP) and report back; approved runs write only with --approve here too")
+  .option("--max-runs <n>", "with --from-queue: stop after n runs")
   .option("--format <format>", "table, json, or markdown", "table")
   .description("Rotate secret values: automatic ones are minted and written to every vault holding the old value; manual ones come back as steps.")
   .addHelpText(
@@ -974,6 +978,15 @@ Provider rotators (method provider): resend, cloudflare-token, coinpay-api-key,
 coinpay-webhook-secret, vapid, postgres-role. Each mints the new credential,
 writes the vaults, redeploys consumers, health-checks them, and only then
 revokes the old one; any failure restores the old value everywhere.
+
+Desktop rotators (method desktop): openai, elevenlabs, brave-search, civitai,
+cloudflare-global-api-key (roll: --allow-roll), anthropic + claude-oauth
+(report-only). An agent on a W3BS Agentic Desktop Layer host (--desktop bonita)
+creates the new key in the layer's agent browser, the CLI reads it over ssh,
+writes the vaults, propagates, and only then has the agent revoke the old key.
+A login wall comes back needs-login, a person at the desk busy: the rest go on.
+  logicsrc teams rotate-keys profullstack --key OPENAI_API_KEY --desktop bonita --propagate          (dry run)
+  logicsrc teams rotate-keys profullstack --from-queue --desktop bonita --propagate --approve
 Runbook: https://logicsrc.com/docs/rotation
 
 Values never print. The same value stored in other vaults (same fingerprint) is
@@ -982,7 +995,28 @@ After rotating: redeploy the consumers, install new SSH public keys, revoke the 
 `
   )
   .action(async (slug, project, env, options) => {
+    const common = {
+      approve: Boolean(options.approve),
+      format: options.format as OutputFormat,
+      propagate: options.propagate === undefined ? undefined : options.propagate === true ? join(homedir(), "www") : String(options.propagate),
+      scheduled: Boolean(options.scheduled),
+      max: options.max === undefined ? undefined : Number(options.max),
+      report: options.report,
+      excludeSites: options.excludeSite,
+      maxSites: options.maxSites === undefined ? undefined : Number(options.maxSites),
+      desktop: options.desktop,
+      allowRoll: Boolean(options.allowRoll)
+    };
+    if (options.fromQueue) {
+      if (project || env || options.key || options.setFromStdin) throw new Error("--from-queue takes its keys, project and env from each queued run.");
+      const reports = await teamsRotateFromQueue(slug, { ...common, maxRuns: options.maxRuns === undefined ? undefined : Number(options.maxRuns) }, {}, join(homedir(), "www"));
+      if (options.format !== "table") print(reports.map(({ results: _r, ...r }) => r), options.format as OutputFormat);
+      if (reports.some((r) => r.status === "failed")) process.exitCode = 1;
+      return;
+    }
     await teamsRotateKeysAction(slug, { project, env, keys: options.key }, {
+      desktop: options.desktop,
+      allowRoll: Boolean(options.allowRoll),
       approve: Boolean(options.approve),
       setFromStdin: Boolean(options.setFromStdin),
       format: options.format as OutputFormat,

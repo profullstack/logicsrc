@@ -10,6 +10,7 @@ import { authRouter } from "./routes/auth.mjs";
 import { passkeyRouter } from "./routes/passkey.mjs";
 import { coinpayRouter } from "./routes/coinpay.mjs";
 import { credshareRouter } from "./routes/credshare.mjs";
+import { rotationRouter } from "./routes/rotation.mjs";
 import { apiKeysRouter } from "./routes/apikeys.mjs";
 import { opencredsRouter } from "./routes/opencreds.mjs";
 import { keyringRouter } from "./routes/keyring.mjs";
@@ -79,6 +80,7 @@ app.use(authRouter);      // GET / (+ /auth/login|register|logout)
 app.use(passkeyRouter);
 app.use(coinpayRouter);
 app.use(credshareRouter); // /api/credshare/* (session or lsk_ Bearer)
+app.use(rotationRouter);  // /api/credshare/teams/:slug/rotation* + /teams/:slug/rotation (plan + run queue, never values)
 app.use(apiKeysRouter);   // /api/keys (session or a person's lsk_ key; never a machine key)
 app.use(opencredsRouter); // /api/opencreds/* — personal vault sync (session or lsk_ Bearer)
 app.use(keyringShareRouter); // /api/keyring/share: the public-keys share link (session or person key)

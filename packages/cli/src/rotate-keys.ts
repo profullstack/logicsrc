@@ -26,6 +26,8 @@ import {
   type RotationSpec
 } from "./rotation-catalog.js";
 import { ROTATORS, defaultRun, rewriteUrls, type Minted, type ProviderRotator, type RotatorContext } from "./rotators.js";
+import { DesktopError, desktopHost, desktopReport, desktopRotator, type DesktopExec, type DesktopSession } from "./desktop-rotator.js";
+import { DESKTOP_RECIPES } from "./desktop-recipes.js";
 import { dev2Ops, findConsumers, inBatches, restoreBackup, rewriteEnvFile, type SiteOps } from "./propagate.js";
 
 /**
@@ -233,6 +235,10 @@ export interface RotateKeysOptions {
   excludeSites?: string[];
   /** Unattended mode: skip values read by more sites than this (default 5). */
   maxSites?: number;
+  /** ssh host of a W3BS Agentic Desktop Layer for `method: desktop` keys (else LOGICSRC_DESKTOP_HOST). */
+  desktop?: string;
+  /** Let desktop roll recipes (old key dies on create, e.g. Cloudflare Global API Key) run. */
+  allowRoll?: boolean;
 }
 
 interface KeyPair {
@@ -317,7 +323,7 @@ export interface ConsumerReport {
 export interface RotationResult {
   key: string;
   method: string;
-  status: "rotated" | "would-rotate" | "todo" | "failed" | "rolled-back" | "skipped" | "covered";
+  status: "rotated" | "would-rotate" | "todo" | "failed" | "rolled-back" | "skipped" | "covered" | "needs-login" | "busy";
   /** Every vault:key holding the old value. */
   vaults?: string[];
   written: string[];
@@ -342,12 +348,18 @@ async function readStdin(): Promise<string> {
 }
 
 /** Why the unattended job leaves this one to a person, or null when it may rotate it. */
-export function scheduledBlock(p: PlannedRotation): string | null {
+export function scheduledBlock(p: PlannedRotation, ctx: { desktop?: string } = {}): string | null {
   const spec = p.spec;
   if (!spec || !p.automatic) return "needs a person";
   if (spec.never) return "never automated";
   if (spec.disruptive) return `disruptive: ${spec.disruptive}`;
   if (spec.method === "random") return null;
+  if (spec.method === "desktop") {
+    const r = DESKTOP_RECIPES[spec.recipe ?? ""];
+    if (!r) return `unknown desktop recipe ${spec.recipe}`;
+    if (!ctx.desktop) return "a desktop rotation: run it with --desktop <ssh-host> (or LOGICSRC_DESKTOP_HOST)";
+    return r.mode === "two-phase" ? null : `${r.title} has no overlap window`;
+  }
   if (spec.method === "provider") {
     const r = ROTATORS[spec.provider ?? ""];
     if (!r) return `unknown rotator ${spec.provider}`;
@@ -390,6 +402,8 @@ function crontabText(): string {
 
 export interface RotateDeps {
   ops?: SiteOps;
+  /** Runs commands on the desktop host (tests: a fake ssh). */
+  desktopExec?: DesktopExec;
   fetch?: typeof fetch;
   now?: Date;
   env?: Record<string, string | undefined>;
@@ -438,7 +452,7 @@ async function rotateTwoPhase(
   targets: Array<{ vault: VaultState; key: string }>,
   base: RotationResult,
   options: RotateKeysOptions,
-  deps: Required<Pick<RotateDeps, "ops" | "fetch" | "now" | "env">> & { strayText: () => string[] }
+  deps: Required<Pick<RotateDeps, "ops" | "fetch" | "now" | "env">> & { strayText: () => string[]; rotatorFor: (spec: RotationSpec) => ProviderRotator | undefined }
 ): Promise<RotationResult> {
   const spec = p.spec!;
   const first = targets[0]!;
@@ -460,9 +474,10 @@ async function rotateTwoPhase(
     if (!hits.length) return { ...base, status: "skipped", sites, error: "no consumer found on this box: rotate by hand where it is used" };
     if (strays) return { ...base, status: "skipped", sites, error: "also in the crontab or a script under ~/.local/bin or ~/scripts/bin: update those by hand" };
   }
-  if (spec.method === "provider") {
-    const r = ROTATORS[spec.provider ?? ""];
-    if (!r) return { ...base, status: "todo", sites, error: `unknown rotator ${spec.provider}` };
+  const minter = spec.method === "provider" || spec.method === "desktop";
+  if (minter) {
+    const r = deps.rotatorFor(spec);
+    if (!r) return { ...base, status: "todo", sites, error: spec.method === "desktop" ? "a desktop rotation needs --desktop <ssh-host> (or LOGICSRC_DESKTOP_HOST)" : `unknown rotator ${spec.provider}` };
     const why = await r.preflight({ key: p.key, oldValue, vaultValues: firstValues, state: spec.state ?? {}, env: deps.env, fetch: deps.fetch, run: defaultRun, now: deps.now });
     if (why) return { ...base, status: "todo", sites, error: why };
   }
@@ -475,9 +490,9 @@ async function rotateTwoPhase(
 
   let rotator: ProviderRotator | undefined;
   let minted: Minted;
-  if (spec.method === "provider") {
-    rotator = ROTATORS[spec.provider ?? ""];
-    if (!rotator) return { ...base, status: "todo", error: `unknown rotator ${spec.provider}` };
+  if (minter) {
+    rotator = deps.rotatorFor(spec);
+    if (!rotator) return { ...base, status: "todo", error: `unknown rotator ${spec.provider ?? spec.recipe}` };
     const ctx: RotatorContext = { key: p.key, oldValue, vaultValues: firstValues, state: spec.state ?? {}, env: deps.env, fetch: deps.fetch, run: defaultRun, now: deps.now };
     minted = await rotator.mint(ctx);
   } else {
@@ -558,12 +573,22 @@ async function rotateTwoPhase(
 export async function teamsRotateKeysAction(slug: string, filter: RotationFilter, options: RotateKeysOptions, depsIn: RotateDeps = {}): Promise<RotationResult[]> {
   const { team, plan, invalid } = await buildPlan(slug, filter);
   if (plan.length === 0) throw new Error("Nothing to rotate: no matching keys. See: logicsrc teams rotation " + slug);
+  const env = depsIn.env ?? process.env;
+  const host = desktopHost(options.desktop, env);
+  // One desktop status check and one capture self-test per run, shared by every desktop key.
+  const session: DesktopSession = {};
+  const rotatorFor = (spec: RotationSpec): ProviderRotator | undefined => {
+    if (spec.method === "provider") return ROTATORS[spec.provider ?? ""];
+    if (spec.method === "desktop" && host) return desktopRotator(spec.recipe ?? "", { host, exec: depsIn.desktopExec, allowRoll: options.allowRoll, session });
+    return undefined;
+  };
   const deps = {
     ops: depsIn.ops ?? dev2Ops,
     fetch: depsIn.fetch ?? fetch,
     now: depsIn.now ?? new Date(),
-    env: depsIn.env ?? process.env,
-    strayText: depsIn.strayText ?? defaultStrayText
+    env,
+    strayText: depsIn.strayText ?? defaultStrayText,
+    rotatorFor
   };
 
   let stdinValue: string | undefined;
@@ -602,18 +627,32 @@ export async function teamsRotateKeysAction(slug: string, filter: RotationFilter
     const targets = siblings(team, p.fingerprint);
     base.vaults = targets.map((t) => `${t.vault.name}:${t.key}`);
     if (stdinValue === undefined && !p.automatic) {
-      results.push({ ...base, status: "todo", steps: spec?.steps ?? ["No instructions: add some with logicsrc teams rotation-set."] });
+      const todo: RotationResult = { ...base, status: "todo", steps: spec?.steps ?? ["No instructions: add some with logicsrc teams rotation-set."] };
+      // Report-only desktop keys: with --approve and a desktop host, an agent looks the key up (changes nothing).
+      if (spec?.method === "desktop" && host && options.approve && !options.scheduled && targets.length) {
+        try {
+          todo.note = await desktopReport(spec.recipe ?? "", await readValue(team, targets[0]!.vault, targets[0]!.key), { host, exec: depsIn.desktopExec, session });
+        } catch (err) {
+          if (err instanceof DesktopError && (err.code === "needs-login" || err.code === "busy")) todo.status = err.code;
+          todo.error = (err as Error).message;
+        }
+      }
+      results.push(todo);
+      continue;
+    }
+    if (stdinValue === undefined && spec?.method === "desktop" && !host) {
+      results.push({ ...base, status: "todo", error: "a desktop rotation: pass --desktop <ssh-host> (or set LOGICSRC_DESKTOP_HOST) to let an agent drive it, or follow the steps" });
       continue;
     }
     if (options.scheduled && stdinValue === undefined) {
-      const why = scheduledBlock(p);
+      const why = scheduledBlock(p, { desktop: host });
       if (why) {
         results.push({ ...base, status: "skipped", error: why });
         continue;
       }
     }
     // A plain dry run only plans; with --propagate or --scheduled it also runs the read-only checks.
-    if (!options.approve && !options.propagate && !options.scheduled) {
+    if (!options.approve && !options.propagate && !options.scheduled && spec?.method !== "desktop") {
       results.push({ ...base, status: "would-rotate" });
       continue;
     }
@@ -622,7 +661,7 @@ export async function teamsRotateKeysAction(slug: string, filter: RotationFilter
       continue;
     }
     try {
-      if (stdinValue === undefined && (spec?.method === "random" || spec?.method === "provider")) {
+      if (stdinValue === undefined && (spec?.method === "random" || spec?.method === "provider" || spec?.method === "desktop")) {
         const r = await rotateTwoPhase(team, p, targets, base, options, deps);
         if (r.status === "rotated" || r.status === "rolled-back") live++;
         results.push(r);
@@ -665,7 +704,9 @@ export async function teamsRotateKeysAction(slug: string, filter: RotationFilter
       }
       results.push({ ...base, status: "rotated", written, publicKey: replacement.publicKey });
     } catch (err) {
-      results.push({ ...base, status: "failed", written: [], error: (err as Error).message });
+      // A login wall or a person at the desk is not a failure: that key waits, the others go on.
+      const status = err instanceof DesktopError && (err.code === "needs-login" || err.code === "busy") ? err.code : "failed";
+      results.push({ ...base, status, written: [], error: (err as Error).message });
     }
   }
 
@@ -686,6 +727,8 @@ export async function teamsRotateKeysAction(slug: string, filter: RotationFilter
     );
     for (const r of results.filter((x) => x.publicKey)) console.error(`\n${r.key} new public key (install it, remove the old one):\n${r.publicKey}`);
     const todo = results.filter((r) => r.status === "todo").length;
+    const waiting = results.filter((r) => r.status === "needs-login" || r.status === "busy");
+    if (waiting.length) console.error(`\n${waiting.length} desktop key(s) waiting: ${waiting.map((r) => `${r.key} (${r.status})`).join(", ")}. Sign in in the desktop's agent browser / wait until the desk is free, then run again.`);
     if (!options.approve) console.error(`\nDry run. Apply with --approve.${todo ? ` ${todo} key(s) need a person or agent: --format json lists the steps.` : ""}`);
     else if (!options.propagate) console.error(`\nRestart or redeploy whatever reads the rotated values (or pass --propagate ~/www), then revoke the old ones where they were issued.`);
   } else {
@@ -695,4 +738,89 @@ export async function teamsRotateKeysAction(slug: string, filter: RotationFilter
   if (team.locked.length) console.error(`Not covered (no access): ${team.locked.join(", ")}. Copies of these values there stay OLD.`);
   if (results.some((r) => r.status === "failed" || r.status === "rolled-back")) process.exitCode = 1;
   return results;
+}
+
+// ---- the run queue (app.logicsrc.com Rotation page, API, MCP) ----------------------------
+
+export interface FromQueueOptions extends RotateKeysOptions {
+  /** Stop after this many runs (default: every queued run). */
+  maxRuns?: number;
+}
+
+export interface QueueRunReport {
+  id: string;
+  keys: string[];
+  requested: "approved" | "dry run";
+  ran: "approved" | "dry run" | "not run";
+  status: "done" | "failed";
+  summary: string;
+  results: RotationResult[];
+}
+
+/**
+ * Run the rotations queued for a team, oldest first: claim one (only one runner
+ * wins it), run rotate-keys with its keys and options, report the outcomes
+ * (never values). An approved run writes only when THIS runner was also given
+ * --approve; otherwise it runs as a dry run and says so. A roll recipe needs
+ * --allow-roll from both the queue and the runner.
+ */
+export async function teamsRotateFromQueue(slug: string, options: FromQueueOptions, deps: RotateDeps = {}, defaultPropagate?: string): Promise<QueueRunReport[]> {
+  const { client } = authedClient();
+  const { runs } = await client.listRotationRuns(slug, "queued");
+  const queue = [...runs].sort((a, b) => a.createdAt - b.createdAt).slice(0, options.maxRuns ?? runs.length);
+  const reports: QueueRunReport[] = [];
+  if (!queue.length) console.error(`No queued rotation runs for ${slug}.`);
+  for (const q of queue) {
+    try {
+      await client.claimRotationRun(slug, q.id);
+    } catch (err) {
+      console.error(`Run ${q.id}: not claimed (${(err as Error).message}); another runner has it.`);
+      continue;
+    }
+    const approve = Boolean(q.approve && options.approve);
+    const propagate = options.propagate ?? (q.options.propagate ? defaultPropagate : undefined);
+    let results: RotationResult[] = [];
+    let error: string | undefined;
+    try {
+      results = await teamsRotateKeysAction(
+        slug,
+        { project: q.project ?? undefined, env: q.env ?? undefined, keys: q.keys },
+        {
+          ...options,
+          approve,
+          propagate,
+          desktop: q.options.desktop ?? options.desktop,
+          allowRoll: Boolean(q.options.allowRoll && options.allowRoll),
+          setFromStdin: false,
+          report: undefined
+        },
+        deps
+      );
+    } catch (err) {
+      error = (err as Error).message;
+    }
+    const note = q.approve && !options.approve ? "approved in the queue, but this runner had no --approve: ran as a dry run" : undefined;
+    const failed = Boolean(error) || results.some((r) => r.status === "failed" || r.status === "rolled-back");
+    const reported = await client
+      .reportRotationRun(slug, q.id, { ...(failed && error ? { status: "failed" as const } : {}), ...(error || note ? { error: [error, note].filter(Boolean).join("; ") } : {}), results })
+      .catch((e: Error) => {
+        console.error(`Run ${q.id}: could not report the result (${e.message}).`);
+        return null;
+      });
+    reports.push({
+      id: q.id,
+      keys: q.keys,
+      requested: q.approve ? "approved" : "dry run",
+      ran: error && !results.length ? "not run" : approve ? "approved" : "dry run",
+      status: failed ? "failed" : "done",
+      summary: reported?.run.summary ?? error ?? "",
+      results
+    });
+    if (note) console.error(`Run ${q.id}: ${note}.`);
+  }
+  if (options.report) {
+    writeFileSync(options.report, JSON.stringify({ team: slug, at: new Date().toISOString(), fromQueue: true, runs: reports }, null, 2), { mode: 0o600 });
+    chmodSync(options.report, 0o600);
+  }
+  return reports;
 }
