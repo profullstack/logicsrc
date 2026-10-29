@@ -85,6 +85,7 @@
         "@logicsrc/cli": "workspace:*",
         "@profullstack/coinpay-onboard": "0.3.1",
         "@profullstack/footer": "0.5.0",
+        "@profullstack/key-rotation": "0.1.0",
         "@profullstack/libsql-pg": "^0.1.4",
         "@profullstack/profile": "0.1.6",
         "@simplewebauthn/browser": "^14.0.0",
@@ -763,6 +764,8 @@
     "@profullstack/form-guard": ["@profullstack/form-guard@0.1.1", "", {}, "sha512-RGLGfQhjq40f+JqEhSmsJnS0I5sFWjYdrYx4VYtkUqz8xvioN2yyR+6uFK0mnDAStKrYytlngg3meUsrChm/OQ=="],
 
     "@profullstack/hqtui": ["@profullstack/hqtui@0.11.1", "", { "bin": { "hqtui": "bin/hqtui.mjs" } }, "sha512-c/UzTmiRDjdLZQEO/gdVinUKtx6Q0WBPdixIm90MBTvC3DqFPqpersRs0BIDPS7XVokCSr1DtELI91kj5J1kCg=="],
+
+    "@profullstack/key-rotation": ["@profullstack/key-rotation@0.1.0", "", { "dependencies": { "@profullstack/coinpay-onboard": "^0.3.1" } }, "sha512-Jo3PMaHqPXFRWREfyZMU/lINmGA4i6CyjBujVgTjjSxTLyoMyV81H/1YL7WRbZohejoJz9IAn4HNlVOxUl3nyQ=="],
 
     "@profullstack/keys": ["@profullstack/keys@0.1.0", "", {}, "sha512-Vys47LvS5ivhdZu4SYOxh9Le3DEmWhjP0+CtrU45RhXAbY0ZFG/2Dk9V1bIIUGDp8UWMJqctvUD21JrNjfh04w=="],
 

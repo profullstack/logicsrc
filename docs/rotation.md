@@ -147,6 +147,12 @@ the switch off, so due keys wait for approval again. A team switched on by hand
 (`rotation_auto_approve = 1` with `rotation_auto_paid_until` NULL) never
 expires. State: `GET /api/credshare/teams/:slug/rotation/auto`.
 
+The billing logic (checkout, webhook settle, return check, sweep) is the
+[`@profullstack/key-rotation`](https://github.com/profullstack/key-rotation)
+package; `apps/pwa/src/lib/auto-rotation.mjs` only binds it to `credshare_teams`,
+the audit log and this app's CoinPay business, so other fleet apps can sell the
+same add-on.
+
 ```sh
 logicsrc teams rotate-keys profullstack --queue-due
 logicsrc teams rotation-approve profullstack <run-id>
