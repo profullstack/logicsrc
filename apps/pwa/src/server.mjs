@@ -11,6 +11,8 @@ import { passkeyRouter } from "./routes/passkey.mjs";
 import { coinpayRouter } from "./routes/coinpay.mjs";
 import { credshareRouter } from "./routes/credshare.mjs";
 import { rotationRouter } from "./routes/rotation.mjs";
+import { autoRotationRouter } from "./routes/auto-rotation.mjs";
+import { sweepAutoRotation } from "./lib/auto-rotation.mjs";
 import { apiKeysRouter } from "./routes/apikeys.mjs";
 import { opencredsRouter } from "./routes/opencreds.mjs";
 import { keyringRouter } from "./routes/keyring.mjs";
@@ -80,6 +82,7 @@ app.use(authRouter);      // GET / (+ /auth/login|register|logout)
 app.use(passkeyRouter);
 app.use(coinpayRouter);
 app.use(credshareRouter); // /api/credshare/* (session or lsk_ Bearer)
+app.use(autoRotationRouter); // paid automatic rotation: CoinPay checkout + /api/coinpay/webhook
 app.use(rotationRouter);  // /api/credshare/teams/:slug/rotation* + /teams/:slug/rotation (plan + run queue, never values)
 app.use(apiKeysRouter);   // /api/keys (session or a person's lsk_ key; never a machine key)
 app.use(opencredsRouter); // /api/opencreds/* — personal vault sync (session or lsk_ Bearer)
@@ -101,6 +104,10 @@ app.use((err, _req, res, _next) => {
 async function main() {
   await migrate();
   app.listen(config.port, () => console.log(`🔐 logicsrc credentials on :${config.port} (${config.env}) — ${config.origin}`));
+  // Paid automatic rotation: switch off lapsed teams, email renewal notices. Hourly.
+  const sweep = () => sweepAutoRotation().then((r) => (r.expired.length || r.reminded.length) && console.log("auto-rotation sweep", JSON.stringify(r))).catch((e) => console.error("auto-rotation sweep failed:", e.message));
+  setTimeout(sweep, 60_000).unref();
+  setInterval(sweep, 60 * 60 * 1000).unref();
 }
 main().catch((e) => { console.error("boot failed:", e); process.exit(1); });
 

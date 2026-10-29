@@ -83,6 +83,7 @@
       "version": "0.1.1",
       "dependencies": {
         "@logicsrc/cli": "workspace:*",
+        "@profullstack/coinpay-onboard": "0.3.1",
         "@profullstack/footer": "0.5.0",
         "@profullstack/libsql-pg": "^0.1.4",
         "@profullstack/profile": "0.1.6",
@@ -148,7 +149,7 @@
     },
     "packages/cli": {
       "name": "@logicsrc/cli",
-      "version": "0.15.0",
+      "version": "0.16.0",
       "bin": {
         "logicsrc": "./dist/index.js",
       },
@@ -752,6 +753,8 @@
     "@playwright/test": ["@playwright/test@1.64.1", "", { "dependencies": { "playwright": "1.64.1" }, "bin": { "playwright": "cli.js" } }, "sha512-IaYGml/nSOiZWROfPtuIL7neuu9qDOZ3TNvNljUIrhDMxiGTgPjzj/g9p9RxpS2tSepPDRY+UwAaEeiKtUvIAg=="],
 
     "@profullstack/autoblog": ["@profullstack/autoblog@github:profullstack/autoblog#75e54af", {}, "profullstack-autoblog-75e54af", "sha512-f/YwwiVTzKz659+6RHgeGueSdUrWAnon5OHT1YfOI5TdLZPDrLFGE88051fzQXAlsBrkDK1jrm216OIrKygnRA=="],
+
+    "@profullstack/coinpay-onboard": ["@profullstack/coinpay-onboard@0.3.1", "", { "dependencies": { "@modelcontextprotocol/sdk": "^1.32.2", "zod": "^4.6.7" }, "bin": { "coinpay-onboard": "bin/coinpay-onboard" } }, "sha512-+K7D6uaX10y+0V5sg7To1jKwNG8iCNbN9SSW6q5ACzoiDNswMox3G7gzY/Swxd128klq7ecN2Ni4JVNr50nRIQ=="],
 
     "@profullstack/emailer": ["@profullstack/emailer@1.0.3", "", {}, "sha512-VyAtCcfnSI6LOwJvWogCr3ZNmEsaZw+iuWrqnosLsdcKsbRyCrCmXigMNZJZEjlgYlR+lK//PwNPG+xtCFvWAw=="],
 
