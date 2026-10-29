@@ -2,7 +2,7 @@
 
 OpenVuln is one record per vulnerability that says, in one place, what is affected, whether it is fixed, whether anyone is exploiting it and who said each of those things. Every OpenVuln record is a valid [OSV](https://ossf.github.io/osv-schema/) record, so every OSV tool reads it today; what OpenVuln adds rides in OSV's own extension point, `database_specific.openvuln`. It is maintained by Profullstack, Inc. as part of the LogicSRC open-standards surface.
 
-Status: **0.1**. A description of the records [nichedb.dev](https://nichedb.dev/c/vulns) assembles and serves, published so any researcher, vendor or scanner can serve them and any directory can read them.
+Status: **0.1.1**. A description of the records [nichedb.dev](https://nichedb.dev/c/vulns) assembles and serves, published so any researcher, vendor or scanner can serve them and any directory can read them.
 
 Slug: `openvuln`
 
@@ -72,17 +72,20 @@ Everything outside `database_specific.openvuln` is OSV, with OSV's meaning, and 
 ## Rules
 
 1. **`id`** is the publisher's own, with the publisher's prefix, as OSV requires (`NDB-` is nichedb.dev). A publisher that is only annotating someone else's vulnerability still mints its own id and lists the other in **`aliases`**. Two records are the same vulnerability when they share an id or an alias.
-2. **`openvuln.version`** is `"0.1"`.
+2. **`openvuln.version`** is `"0.1.1"` (a 0.1 record is read the same way; 0.1.1 only adds fields).
 3. **`subject.kind`** is one of `package`, `product`, `service`, `repository`, `model`, `agent`, `hardware`, `protocol`, `campaign`. Absent means `package` when `affected` names one, and unstated otherwise. `subject` exists for what `affected` cannot hold: an agent, a hosted service, a set of hijacked repositories.
 4. A **`campaign`** subject is one attacker's activity across many subjects. It lists them in **`subject.members`** (`[{ "kind", "name", "url" }]`) and their own records in OSV's `related`. The malicious packages of a campaign keep their own `MAL-` records; the campaign record ties them together.
 5. **`class`** is a list of short slugs for the kind of flaw: `prompt-injection`, `supply-chain`, `malicious-package`, `auth-bypass`, `rce`, `memory-corruption`, `ci-cd`, `credential-exposure` and so on. A CWE goes in OSV's `database_specific.cwe_ids` as GitHub writes it; `class` is the plain word a reader filters by.
 6. **`label`** is `critical`, `high`, `medium`, `low` or `none`. It is the publisher's own reading, from the CVSS base score where there is one (9.0 and up critical, 7.0 high, 4.0 medium, 0.1 low, 0 none). It never replaces `severity`, and a directory that computes it says so in `sources`.
 7. **`fix.status`** is `fixed`, `partial`, `mitigated`, `unfixed`, `wontfix` or `unknown`. Absent is unknown, never fixed. **`fix.versions`** are the first fixed versions; **`fix.workaround`** is what to do before patching.
-8. **`exploitation.status`** is the strongest statement any source makes: `exploited-ransomware` (KEV says known ransomware use), `exploited` (KEV, or a vendor or responder reporting attacks), `poc-public` (a working exploit is published or was demonstrated), `none-known`, or absent for unstated. `none-known` is a claim someone checked; absent is nobody said.
+8. **`exploitation.status`** is the strongest statement any source makes: `exploited-ransomware` (KEV says known ransomware use), `exploited` (KEV, CISA SSVC `active`, or a vendor or responder reporting attacks), `poc-public` (a working exploit is published or was demonstrated, or CISA SSVC says `poc`), `none-known` (CISA SSVC `none`, or another source that checked), or absent for unstated. `none-known` is a claim someone checked; absent is nobody said. A claim alone (rule 13) never sets it.
 9. **`exploitation.kev`** is `{ "added", "due", "ransomware", "action" }` from CISA's catalog when the vulnerability is in it, and `null` when a reader checked and it is not. **`exploitation.epss`** is `{ "score", "percentile", "date" }`. EPSS moves daily, so the date is part of the value.
 10. **`exploitation.ai`** lists evidence that an AI agent produced a working exploit: `[{ "benchmark", "task", "url", "result" }]`. `result` is `solved`, `unsolved` or `unstated`. A benchmark that only contains the task, with no published result, is `unstated`. That is a fact about the benchmark's corpus and is not evidence that an agent succeeded.
 11. **`sources`** names where each part came from: `name`, the source's own `id`, a `url`, the record `fields` it supplied (dotted paths), and when it was `retrieved`. A fact with no source is the publisher's own.
 12. **`deep_dive`** points at the long-form page. It carries the W3C AI Content Disclosure fields every LogicSRC spec uses: `made_by` (`human`, `ai`, `both`), `disclosure` (`none`, `ai-assisted`, `ai-generated`, `autonomous`), `ai_model`, `ai_provider`, `ai_prompt_url`. OSV's `details` is the same text, or a shorter one.
+13. **`exploitation.public`** lists exploits a curated publisher released: `[{ "source", "id", "title", "url", "date", "verified", "rank" }]` (Exploit-DB, Metasploit, a vendor's own proof of concept). Links only, never code. **`exploitation.claims`** lists unvetted claims of one, such as GitHub repositories that call themselves a proof of concept, each with `"vetted": false`. Fake proof-of-concept repositories that carry malware are a known lure, so a claim is shown as a claim and never raises `status` by itself.
+14. **`exploitation.ssvc`** is CISA's SSVC reading, as its ADP container in the CVE record states it: `{ "exploitation": "none|poc|active", "automatable": "yes|no", "technical_impact": "partial|total", "date" }`.
+15. **`exploitation.scanners`** lists detection templates that let anyone check for the vulnerability at scale: `[{ "source", "id", "url" }]` (a Nuclei template). A detection is not an exploit, and does not change `status`.
 
 ## Two rules that do not degrade
 
@@ -124,7 +127,8 @@ Records are TLP:CLEAR by definition. Anything embargoed is not served.
 - [OSV](https://ossf.github.io/osv-schema/) is the base. OpenVuln adds no top-level field. It only defines one key inside the extension point OSV reserves for databases, so `osv-scanner` and every OSV consumer keep working.
 - [CVE JSON 5](https://github.com/CVEProject/cve-schema) is the CNA record. Its id goes in `aliases`.
 - [CSAF 2.0](https://docs.oasis-open.org/csaf/csaf/v2.0/csaf-v2.0.html) and [OpenVEX](https://github.com/openvex/spec) are vendor statements about products. A CSAF advisory is a `references` entry of type `ADVISORY`; a VEX `not_affected` is a vendor's statement, not a `fix.status`.
-- [CISA KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) and [EPSS](https://www.first.org/epss/) are sources, copied into `exploitation` with their dates.
+- [CISA KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog), [CISA Vulnrichment](https://github.com/cisagov/vulnrichment) (SSVC) and [EPSS](https://www.first.org/epss/) are sources, copied into `exploitation` with their dates.
+- [Exploit-DB](https://www.exploit-db.com/), [Metasploit](https://github.com/rapid7/metasploit-framework) and [Nuclei templates](https://github.com/projectdiscovery/nuclei-templates) are linked from `exploitation.public` and `exploitation.scanners`; [PoC-in-GitHub](https://github.com/nomi-sec/PoC-in-GitHub) from `exploitation.claims`.
 - [OpenThreat](/openthreat) is what one tool found in the open: a finding, an attack, an indicator. An OpenThreat `advisory` may point at an OpenVuln record in `refs`.
 
 ## What is deliberately absent
@@ -147,6 +151,7 @@ Records are TLP:CLEAR by definition. Anything embargoed is not served.
 
 | Version | Date | Change |
 |---|---|---|
+| 0.1.1 | 2026-10-29 | `exploitation.public` (curated exploits, links only), `exploitation.claims` (unvetted, never raise `status`), `exploitation.ssvc` (CISA SSVC), `exploitation.scanners`; SSVC mapped onto `status`. |
 | 0.1 | 2026-10-29 | First publication: the `database_specific.openvuln` block, nine subject kinds, twelve rules and the two that do not degrade, the publisher index, reading rules. |
 
 ## License

@@ -19,7 +19,7 @@ const RECORD = `{
                  "ranges": [{ "type": "SEMVER", "events": [{ "introduced": "0" }, { "fixed": "0.39.1" }] }] }],
   "database_specific": {
     "openvuln": {
-      "version": "0.1",
+      "version": "0.1.1",
       "subject": { "kind": "agent", "name": "Gemini CLI", "vendor": "Google" },
       "class": ["prompt-injection", "ci-cd"],
       "label": "critical",
@@ -41,6 +41,10 @@ const FACTS: Array<[string, string]> = [
   ["fix", "fixed, partial, mitigated, unfixed, wontfix or unknown, the first fixed versions and a workaround."],
   ["exploitation.kev", "CISA's Known Exploited Vulnerabilities entry: added, due, ransomware use. null when checked and absent."],
   ["exploitation.epss", "FIRST's thirty-day exploitation probability, with the date it was read."],
+  ["exploitation.ssvc", "CISA's SSVC reading: exploitation none, proof of concept or active; automatable; technical impact."],
+  ["exploitation.public", "Exploits a curated publisher released (Exploit-DB, Metasploit), linked, never copied."],
+  ["exploitation.claims", "Unvetted proof-of-concept claims (GitHub repositories), shown as claims; they never raise the status."],
+  ["exploitation.scanners", "Detection templates (Nuclei) that let anyone check for it at internet scale."],
   ["exploitation.ai", "Benchmarks where an AI agent was set to exploit it, such as ExploitGym, and whether it succeeded."],
   ["sources", "Who supplied each field and when it was read. A fact with no source is the publisher's own."]
 ];
@@ -76,7 +80,7 @@ export default function OpenVulnPage(): ReactNode {
           can be an agent, a service or a campaign.
         </p>
         <p style={{ color: "#5b6b7a" }}>
-          Status: 0.1. The first publisher and directory is{" "}
+          Status: 0.1.1. The first publisher and directory is{" "}
           <a href="https://nichedb.dev/c/vulns">nichedb.dev/c/vulns</a>, which merges OSV, the NVD,
           KEV, EPSS and ExploitGym into one deep-dive page per vulnerability.
         </p>
@@ -145,7 +149,7 @@ export default function OpenVulnPage(): ReactNode {
         </div>
         <ul style={{ color: "#41505d", lineHeight: 1.9, paddingLeft: "1.1rem" }}>
           <li>
-            <Link href="/docs/openvuln">Specification</Link>: the block, twelve rules and the two
+            <Link href="/docs/openvuln">Specification</Link>: the block, fifteen rules and the two
             that do not degrade, the publisher index at /.well-known/openvuln.json, reading rules
           </li>
           <li>
