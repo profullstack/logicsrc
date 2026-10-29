@@ -104,7 +104,7 @@ A publisher serves an index at `/.well-known/openvuln.json` on its own origin:
     { "id": "NDB-2026-0001", "modified": "2026-10-29T00:00:00Z", "url": "https://nichedb.dev/c/vulns/NDB-2026-0001.json" }
   ],
   "record_url": "https://nichedb.dev/c/vulns/{id}.json",
-  "changes": "https://nichedb.dev/c/vulns/feed.json"
+  "changes": "https://nichedb.dev/f/openvuln-records.json"
 }
 ```
 
