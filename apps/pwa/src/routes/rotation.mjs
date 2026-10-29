@@ -28,6 +28,7 @@ import { page, footer, appBar, esc } from "../lib/html.mjs";
 import { requireAuth, csrfInput } from "../lib/session.mjs";
 import { keyCoversVault } from "../lib/apikey.mjs";
 import { api, requireMember, audit } from "./credshare.mjs";
+import { autoRotationOn, autoRotationState, reconcileReturn, AUTO_ROTATION_PRICE_USD, AUTO_ROTATION_DAYS } from "../lib/auto-rotation.mjs";
 import { rotationPlan, parseRunRequest, sanitizeResults, runRow, summarize, RotationRunError, maxAgeDays, DUE_RUN_MAX_KEYS, OPEN_RUN_STATUSES } from "../lib/rotation.mjs";
 
 export const rotationRouter = Router();
@@ -81,7 +82,7 @@ export async function queueDueRun(team, user, req, { now = Date.now(), vaultFilt
   if (open) return { run: open, created: false, due: due.length, maxAgeDays: maxAge };
   if (!due.length) return { run: null, created: false, due: 0, maxAgeDays: maxAge };
   const keys = [...new Set(due.sort((a, b) => String(a.lastRotated).localeCompare(String(b.lastRotated))).map((p) => p.key))].slice(0, DUE_RUN_MAX_KEYS);
-  const auto = Boolean(Number(team.rotation_auto_approve));
+  const auto = autoRotationOn(team, now);
   const runId = id();
   await run(
     `INSERT INTO credshare_rotation_runs (id, team_id, requested_by, keys, project, env, approve, options, status, approved_at, created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?)`,
@@ -131,7 +132,7 @@ rotationRouter.get("/api/credshare/teams/:slug/rotation", api(async (req, res, u
     vaultFilter: isMachine(key) ? (name) => keyCoversVault(key, name) : undefined,
     maxAge: maxAgeDays(ctx.team)
   });
-  res.json({ team: ctx.team.slug, maxAgeDays: maxAgeDays(ctx.team), autoApprove: Boolean(Number(ctx.team.rotation_auto_approve)), plan, source: "catalog", note: "Computed from key names and fingerprints with the built-in catalog. Encrypted __ROTATE__ entries (hasEntry) can override it: logicsrc teams rotation shows the decrypted spec." });
+  res.json({ team: ctx.team.slug, maxAgeDays: maxAgeDays(ctx.team), autoApprove: autoRotationOn(ctx.team), autoRotation: autoRotationState(ctx.team), plan, source: "catalog", note: "Computed from key names and fingerprints with the built-in catalog. Encrypted __ROTATE__ entries (hasEntry) can override it: logicsrc teams rotation shows the decrypted spec." });
 }, { machine: "read" }));
 
 rotationRouter.get("/api/credshare/teams/:slug/rotation/runs", api(async (req, res, user, key) => {
@@ -245,7 +246,19 @@ rotationRouter.get("/teams/:slug/rotation", requireAuth, async (req, res, next) 
   const project = req.query.project ? String(req.query.project) : undefined;
   const env = req.query.env ? String(req.query.env) : undefined;
   const maxAge = maxAgeDays(ctx.team);
-  const autoApprove = Boolean(Number(ctx.team.rotation_auto_approve));
+  let checkoutMsg = "";
+  if (req.query.checkout === "success" && req.query.session_id) {
+    try {
+      const status = await reconcileReturn(String(req.query.session_id), ctx.team);
+      if (status === "paid") ctx.team = await get(`SELECT * FROM credshare_teams WHERE id = ?`, [ctx.team.id]);
+      checkoutMsg = status === "paid" ? "Payment received: automatic rotation is on." : "Thanks. Automatic rotation turns on as soon as CoinPay confirms the payment (a few minutes for most coins).";
+    } catch (e) {
+      console.error("auto-rotation return check failed:", e.message);
+      checkoutMsg = "Thanks. Automatic rotation turns on as soon as CoinPay confirms the payment.";
+    }
+  }
+  const autoState = autoRotationState(ctx.team);
+  const autoApprove = autoState.on;
   const plan = await rotationPlan(ctx.team.id, { project, env, maxAge });
   const due = plan.filter((p) => p.due);
   const runs = await listRuns(ctx.team.id, { limit: 25 });
@@ -257,14 +270,16 @@ rotationRouter.get("/teams/:slug/rotation", requireAuth, async (req, res, next) 
   const body = `${appBar(req)}
   <main class="wrap" style="max-width:980px;padding:26px 0 40px">
     <div class="section-title"><h1 style="font-size:1.6rem">Rotation <span class="faint">/${esc(slug)}</span></h1><span class="count">${plan.length}</span></div>
-    ${msg ? `<div class="notice ok">${esc(msg)}</div>` : ""}${err ? `<div class="notice err">${esc(err)}</div>` : ""}
+    ${msg || checkoutMsg ? `<div class="notice ok">${esc(msg || checkoutMsg)}</div>` : ""}${err ? `<div class="notice err">${esc(err)}</div>` : ""}
     <p class="dim" style="font-size:.9rem">How each secret in this team is rotated: ${auto} automatic, ${plan.length - auto} by hand or report-only. Values never reach this server, so a queued run is executed by the CLI or an agent:
       <code>logicsrc teams rotate-keys ${esc(slug)} --from-queue [--approve] [--propagate] [--desktop &lt;ssh-host&gt;]</code>. The runner's own <code>--approve</code> is needed for approved runs to write anything. Runbook: <a href="https://logicsrc.com/docs/rotation">logicsrc.com/docs/rotation</a>.</p>
     <div class="card" style="margin:12px 0"><div class="card-body" style="font-size:.88rem">
       <b>${maxAge}-day policy.</b> ${due.length ? `${due.length} automatic secret${due.length === 1 ? " is" : "s are"} older than ${maxAge} days${due.some((p) => p.disruptive) ? ` (${due.filter((p) => p.disruptive).length} of them: ${esc("rotating signs users out")})` : ""}.` : `Every automatic secret is younger than ${maxAge} days.`}
       ${autoApprove
-        ? `Automatic rotation is on for this team: due keys rotate without a click.`
-        : `Due keys are queued as one run that waits for an owner or admin to approve it; nothing rotates before that. <span class="faint">Automatic rotation without the approval step is a paid add-on.</span>`}
+        ? `Automatic rotation is on for this team: due keys rotate without a click.${autoState.manual ? "" : ` Paid through ${esc(new Date(autoState.paidUntil).toISOString().slice(0, 10))} (${autoState.daysLeft} day${autoState.daysLeft === 1 ? "" : "s"} left).`}`
+        : `Due keys are queued as one run that waits for an owner or admin to approve it; nothing rotates before that.${autoState.expired ? " Automatic rotation for this team has ended." : ""}`}
+      ${!autoState.manual && approver ? `<form method="post" action="/teams/${esc(slug)}/rotation/auto/checkout" style="margin:8px 0 0">${csrfInput(req)}<button class="btn ${autoApprove ? "compact" : "acid compact"}">${autoApprove ? `Add ${AUTO_ROTATION_DAYS} days, $${AUTO_ROTATION_PRICE_USD}` : `Turn on automatic rotation, $${AUTO_ROTATION_PRICE_USD} / ${AUTO_ROTATION_DAYS} days`}</button> <span class="faint" style="font-size:.78rem">Crypto or PayPal through CoinPay. One payment, nothing renews by itself.</span></form>` : ""}
+      ${!autoState.manual && !approver && !autoApprove ? `<span class="faint">Automatic rotation without the approval step is a paid add-on ($${AUTO_ROTATION_PRICE_USD} / ${AUTO_ROTATION_DAYS} days) an owner or admin can turn on.</span>` : ""}
       ${due.length && approver ? `<form method="post" action="/teams/${esc(slug)}/rotation/due" style="margin:8px 0 0">${csrfInput(req)}<button class="btn compact">Queue the ${due.length} due key${due.length === 1 ? "" : "s"} now</button></form>` : ""}
     </div></div>
     <form method="get" style="display:flex;gap:8px;margin:10px 0"><input name="project" placeholder="project" value="${esc(project ?? "")}"><input name="env" placeholder="env" value="${esc(env ?? "")}"><button class="btn compact">Filter</button></form>

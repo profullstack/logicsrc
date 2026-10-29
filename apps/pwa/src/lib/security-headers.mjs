@@ -8,7 +8,8 @@
 // cannot read storage.
 //
 // form-action allows the CLI's loopback login redirect (http://127.0.0.1:<port>)
-// and the shared footer's newsletter form (pit.world).
+// the shared footer's newsletter form (pit.world), and the redirect to CoinPay's
+// hosted checkout after the "Turn on automatic rotation" form (coinpayportal.com).
 export const CSP = [
   "default-src 'self'",
   "script-src 'self' 'wasm-unsafe-eval'",
@@ -22,7 +23,7 @@ export const CSP = [
   "base-uri 'none'",
   "frame-src 'none'",
   "frame-ancestors 'none'",
-  "form-action 'self' http://127.0.0.1:* http://localhost:* https://pit.world"
+  "form-action 'self' http://127.0.0.1:* http://localhost:* https://pit.world https://coinpayportal.com"
 ].join("; ");
 
 export function securityHeaders(req, res, next) {

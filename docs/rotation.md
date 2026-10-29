@@ -129,10 +129,23 @@ its own). The plan shows each key's age and a `due` flag once it is past it.
 Only automatic keys are ever due. `never` keys (wallets, Stripe, signing) and
 manual keys stay on the manual list in the weekly mail.
 
-**Automatic rotation (paid add-on).** A team with `rotation_auto_approve` on
-skips step 2: its due runs are queued already approved and rotate on the next
-runner tick. It is off for every team by default. It is switched on per team by
-us when the add-on is bought; there is no self-serve toggle yet.
+**Automatic rotation (paid add-on, $29 per team per 30 days).** A team with
+automatic rotation on skips step 2: its due runs are queued already approved and
+rotate on the next runner tick. It is off for every team by default.
+
+An owner or admin buys it with the "Turn on automatic rotation" button on the
+Rotation page (or `POST /api/credshare/teams/:slug/rotation/auto/checkout`,
+which returns the checkout URL). Payment is a CoinPay hosted checkout, crypto or
+PayPal, one-off: nothing renews by itself. Paying again adds 30 days to the
+current end. The CoinPay webhook (`POST /api/coinpay/webhook`, business
+"app.logicsrc.com") and the page's return check both settle the payment, once
+per checkout session (`rotation_payments`).
+
+The app sweeps hourly: 3 days before the paid days end it emails the team's
+owners and admins a renewal link (once per term), and when they end it turns
+the switch off, so due keys wait for approval again. A team switched on by hand
+(`rotation_auto_approve = 1` with `rotation_auto_paid_until` NULL) never
+expires. State: `GET /api/credshare/teams/:slug/rotation/auto`.
 
 ```sh
 logicsrc teams rotate-keys profullstack --queue-due

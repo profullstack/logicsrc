@@ -250,7 +250,7 @@ test("policy: the Rotation page shows the 90-day policy, due pills and an Approv
   const { body } = await owner.call("GET", "/teams/policy/rotation");
   assert.match(body, /90-day policy/);
   assert.match(body, /pill warn">due/);
-  assert.match(body, /paid add-on/);
+  assert.match(body, /Turn on automatic rotation, \$29 \/ 30 days/);
   const { body: premium } = await owner.call("GET", "/teams/premium/rotation");
   assert.match(premium, /Automatic rotation is on/);
   const s = await owner.call("POST", "/api/credshare/teams/strict/rotation/due");
