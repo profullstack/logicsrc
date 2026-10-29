@@ -20,7 +20,7 @@ async function migrate() {
     await db.execute("DROP SCHEMA public CASCADE");
     await db.execute("CREATE SCHEMA public");
   }
-  for (const file of ["001_auth.sql", "002_credshare.sql", "005_machine_keys.sql", "007_hardening.sql", "010_rotation_runs.sql"]) {
+  for (const file of ["001_auth.sql", "002_credshare.sql", "005_machine_keys.sql", "007_hardening.sql", "010_rotation_runs.sql", "011_rotation_policy.sql"]) {
     const sql = readFileSync(join(here, "..", "src", isPostgres ? "migrations-pg" : "migrations", file), "utf8");
     for (const statement of sql.split(/;\s*$/m).map((s) => s.trim()).filter(Boolean)) await db.execute(statement);
   }
@@ -160,4 +160,100 @@ test("the Rotation page lists the plan with checkboxes, no values, and the runne
   assert.match(body, /owner\/admin only/); // a member cannot queue an approved run
   assert.ok(!body.includes("CIPHERTEXT"));
   assert.ok(!/<script>/.test(body));
+});
+
+// ---- 90-day policy ----------------------------------------------------------------------
+
+const DAY = 24 * 60 * 60 * 1000;
+async function policyTeam(teamId, slug, { auto = false, maxAge = null } = {}) {
+  await run(`INSERT INTO credshare_teams (id, slug, name, created_by, created_at, rotation_auto_approve, rotation_max_age_days) VALUES (?,?,?,?,?,?,?)`, [teamId, slug, slug, "u_owner", now, auto ? 1 : 0, maxAge]);
+  await run(`INSERT INTO credshare_members (id, team_id, user_id, email, role, status, created_at) VALUES (?,?,?,?,?,?,?)`, [`${teamId}-o`, teamId, "u_owner", "owner@example.com", "owner", "active", now]);
+  await run(`INSERT INTO credshare_members (id, team_id, user_id, email, role, status, created_at) VALUES (?,?,?,?,?,?,?)`, [`${teamId}-m`, teamId, "u_member", "member@example.com", "member", "active", now]);
+  const vault = `${slug}--prod`;
+  await run(`INSERT INTO credshare_vaults (id, team_id, name, created_by, created_at) VALUES (?,?,?,?,?)`, [vault, teamId, vault, "u_owner", now]);
+  const put = (name, fp, ageDays) =>
+    run(`INSERT INTO credshare_secrets (vault_id, name, nonce, ciphertext, fingerprint, version, updated_by, updated_at) VALUES (?,?,?,?,?,?,?,?)`, [vault, name, "n", "CIPHERTEXT", fp, 1, "u_owner", now - ageDays * DAY]);
+  await put("CRON_SECRET", `${slug}-cron`, 120); // automatic, overdue
+  await put("ADMIN_TOKEN", `${slug}-admin`, 91); // automatic, overdue
+  await put("INTERNAL_API_KEY", `${slug}-int`, 10); // automatic, fresh
+  await put("STRIPE_SECRET_KEY", `${slug}-stripe`, 400); // never automated, never due
+}
+await policyTeam("t2", "policy");
+await policyTeam("t3", "premium", { auto: true });
+await policyTeam("t4", "strict", { maxAge: 5 });
+
+test("policy: keys older than 90 days are due; never-auto keys never are", async (t) => {
+  const app = await serve("u_member");
+  t.after(app.close);
+  const { body } = await app.call("GET", "/api/credshare/teams/policy/rotation");
+  assert.equal(body.maxAgeDays, 90);
+  assert.equal(body.autoApprove, false);
+  const by = Object.fromEntries(body.plan.map((p) => [p.key, p]));
+  assert.equal(by.CRON_SECRET.due, true);
+  assert.equal(by.CRON_SECRET.ageDays, 120);
+  assert.equal(by.ADMIN_TOKEN.due, true);
+  assert.equal(by.INTERNAL_API_KEY.due, false);
+  assert.equal(by.STRIPE_SECRET_KEY.due, false);
+});
+
+test("policy: due run waits for approval, is not queued twice, and only an owner/admin approves it", async (t) => {
+  const member = await serve("u_member");
+  const owner = await serve("u_owner");
+  t.after(member.close);
+  t.after(owner.close);
+  assert.equal((await member.call("POST", "/api/credshare/teams/policy/rotation/due")).status, 403);
+  const d = await owner.call("POST", "/api/credshare/teams/policy/rotation/due");
+  assert.equal(d.status, 201);
+  assert.equal(d.body.run.status, "awaiting-approval");
+  assert.equal(d.body.run.due, true);
+  assert.deepEqual(d.body.run.keys, ["CRON_SECRET", "ADMIN_TOKEN"]); // oldest first
+  assert.deepEqual(d.body.run.options, { propagate: true, due: true, maxAgeDays: 90 });
+  // Idempotent while it is open.
+  const again = await owner.call("POST", "/api/credshare/teams/policy/rotation/due");
+  assert.equal(again.status, 200);
+  assert.equal(again.body.run.id, d.body.run.id);
+  // The runner only sees queued runs: nothing to claim before approval.
+  const queued = await owner.call("GET", "/api/credshare/teams/policy/rotation/runs?status=queued");
+  assert.equal(queued.body.runs.length, 0);
+  assert.equal((await owner.call("POST", `/api/credshare/teams/policy/rotation/runs/${d.body.run.id}/claim`)).status, 409);
+  assert.equal((await member.call("POST", `/api/credshare/teams/policy/rotation/runs/${d.body.run.id}/approve`)).status, 409);
+  const ok = await owner.call("POST", `/api/credshare/teams/policy/rotation/runs/${d.body.run.id}/approve`);
+  assert.equal(ok.status, 200);
+  assert.equal(ok.body.run.status, "queued");
+  assert.equal(ok.body.run.approve, true);
+  assert.equal(ok.body.run.approvedBy, "owner@example.com");
+  assert.equal((await owner.call("POST", `/api/credshare/teams/policy/rotation/runs/${d.body.run.id}/approve`)).status, 409);
+});
+
+test("policy: a declined due run can be cancelled", async (t) => {
+  const owner = await serve("u_owner");
+  t.after(owner.close);
+  const d = await owner.call("POST", "/api/credshare/teams/strict/rotation/due");
+  assert.equal(d.body.maxAgeDays, 5);
+  assert.deepEqual(d.body.run.keys.sort(), ["ADMIN_TOKEN", "CRON_SECRET", "INTERNAL_API_KEY"]);
+  assert.equal((await owner.call("POST", `/api/credshare/teams/strict/rotation/runs/${d.body.run.id}/cancel`)).status, 200);
+});
+
+test("policy: the paid auto-approve add-on queues due runs already approved", async (t) => {
+  const owner = await serve("u_owner");
+  t.after(owner.close);
+  const d = await owner.call("POST", "/api/credshare/teams/premium/rotation/due");
+  assert.equal(d.status, 201);
+  assert.equal(d.body.run.status, "queued");
+  assert.equal(d.body.run.approve, true);
+});
+
+test("policy: the Rotation page shows the 90-day policy, due pills and an Approve button", async (t) => {
+  const owner = await serve("u_owner");
+  t.after(owner.close);
+  await owner.call("POST", "/api/credshare/teams/policy/rotation/due"); // already approved above, so a new one is not created
+  const { body } = await owner.call("GET", "/teams/policy/rotation");
+  assert.match(body, /90-day policy/);
+  assert.match(body, /pill warn">due/);
+  assert.match(body, /paid add-on/);
+  const { body: premium } = await owner.call("GET", "/teams/premium/rotation");
+  assert.match(premium, /Automatic rotation is on/);
+  const s = await owner.call("POST", "/api/credshare/teams/strict/rotation/due");
+  const { body: strict } = await owner.call("GET", "/teams/strict/rotation");
+  assert.match(strict, new RegExp(`/rotation/runs/${s.body.run.id}/approve`));
 });

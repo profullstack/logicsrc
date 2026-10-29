@@ -824,3 +824,31 @@ export async function teamsRotateFromQueue(slug: string, options: FromQueueOptio
   }
   return reports;
 }
+
+/**
+ * The 90-day policy: ask the app to queue every automatic key older than the
+ * team's max age as one run. It waits for an owner or admin to approve it on the
+ * Rotation page (or `teams rotation-approve`), unless the team has the paid
+ * automatic rotation add-on; then `--from-queue --approve` rotates it.
+ */
+export async function teamsQueueDueAction(slug: string, options: { format?: OutputFormat } = {}) {
+  const { client } = authedClient();
+  const out = await client.queueDueRotation(slug);
+  if (options.format && options.format !== "table") return print(out, options.format), out;
+  if (!out.run) console.log(`Nothing in ${slug} is older than ${out.maxAgeDays} days.`);
+  else {
+    const verb = out.created ? "Queued" : "Already open";
+    console.log(`${verb}: run ${out.run.id}, ${out.run.keys.length} key(s) older than ${out.maxAgeDays} days, status ${out.run.status}.`);
+    if (out.run.status === "awaiting-approval") console.log(`Approve: https://app.logicsrc.com${out.approveUrl}  or  logicsrc teams rotation-approve ${slug} ${out.run.id}`);
+  }
+  return out;
+}
+
+/** An owner or admin approves a due run; the queue runner then rotates it. */
+export async function teamsRotationApproveAction(slug: string, runId: string, options: { format?: OutputFormat } = {}) {
+  const { client } = authedClient();
+  const { run } = await client.approveRotationRun(slug, runId);
+  if (options.format && options.format !== "table") return print(run, options.format), run;
+  console.log(`Approved run ${run.id} (${run.keys.length} key(s)): status ${run.status}. The queue runner rotates it next.`);
+  return run;
+}

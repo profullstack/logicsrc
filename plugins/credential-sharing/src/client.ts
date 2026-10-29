@@ -172,8 +172,10 @@ export interface RemoteRotationRun {
   project: string | null;
   env: string | null;
   approve: boolean;
-  options: { desktop?: string; propagate?: boolean; allowRoll?: boolean };
+  options: { desktop?: string; propagate?: boolean; allowRoll?: boolean; due?: boolean; maxAgeDays?: number };
   status: string;
+  due?: boolean;
+  approvedBy?: string | null;
   createdAt: number;
   summary: string | null;
 }
@@ -310,6 +312,13 @@ export class TeamClient {
   }
   queueRotationRun(slug: string, body: { keys: string[]; project?: string; env?: string; approve?: boolean; desktop?: string; propagate?: boolean; allowRoll?: boolean }) {
     return this.request<{ run: RemoteRotationRun }>("POST", `/teams/${encodeURIComponent(slug)}/rotation/runs`, body);
+  }
+  /** Queue every automatic key past the team's max age (90 days by default) as one run awaiting approval. */
+  queueDueRotation(slug: string) {
+    return this.request<{ run: RemoteRotationRun | null; created: boolean; due: number; maxAgeDays: number; approveUrl: string }>("POST", `/teams/${encodeURIComponent(slug)}/rotation/due`);
+  }
+  approveRotationRun(slug: string, id: string) {
+    return this.request<{ run: RemoteRotationRun }>("POST", `/teams/${encodeURIComponent(slug)}/rotation/runs/${encodeURIComponent(id)}/approve`);
   }
   claimRotationRun(slug: string, id: string) {
     return this.request<{ run: RemoteRotationRun }>("POST", `/teams/${encodeURIComponent(slug)}/rotation/runs/${encodeURIComponent(id)}/claim`);
