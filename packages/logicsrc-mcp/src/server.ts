@@ -5,6 +5,7 @@ import { registerOpenOntology } from "./openontology.js";
 import { registerOpenPrd } from "./openprd.js";
 import { registerApiKeys, type ApiKeyToolsOptions } from "./apikeys.js";
 import { registerKeyring } from "./keyring.js";
+import { registerRotation, type RotationToolsOptions } from "./rotation.js";
 
 const docs = {
   "communication-accounts": `LogicSRC Communication Accounts defines shared contracts for connecting social and email identities, granting scoped human/agent/plugin access, evaluating policy gates, brokering credentials, and auditing every account action without exposing raw secrets.`,
@@ -17,7 +18,7 @@ CommandBoard.run is a hosted product by Profullstack, Inc., built on LogicSRC. L
 
 const schemaKinds = Object.keys(schemas) as SchemaKind[];
 
-export function createLogicSrcMcpServer(options: { apiKeys?: ApiKeyToolsOptions } = {}) {
+export function createLogicSrcMcpServer(options: { apiKeys?: ApiKeyToolsOptions; rotation?: RotationToolsOptions } = {}) {
   const server = new McpServer(
     {
       name: "@profullstack/logicsrc-mcp",
@@ -29,7 +30,7 @@ export function createLogicSrcMcpServer(options: { apiKeys?: ApiKeyToolsOptions 
         tools: {},
         prompts: {}
       },
-      instructions: "Use this server for LogicSRC standards, schema resources, validation, draft object generation, OpenOntology knowledge (entities, claims, provenance, governed change sets), and OpenPRD product requirements documents, and LogicSRC API keys (list/create/revoke over the credentials app, with LOGICSRC_API_KEY). Treat CommandBoard.run as a reference implementation, not the standards identity. Ontology and PRD write tools propose; they never apply."
+      instructions: "Use this server for LogicSRC standards, schema resources, validation, draft object generation, OpenOntology knowledge (entities, claims, provenance, governed change sets), and OpenPRD product requirements documents, LogicSRC API keys (list/create/revoke over the credentials app, with LOGICSRC_API_KEY), and secret rotation (rotation_plan, rotation_set, rotate_keys, rotation_runs: dry run unless approve, never values). Treat CommandBoard.run as a reference implementation, not the standards identity. Ontology and PRD write tools propose; they never apply."
     }
   );
 
@@ -159,6 +160,7 @@ export function createLogicSrcMcpServer(options: { apiKeys?: ApiKeyToolsOptions 
   registerOpenPrd(server);
   registerApiKeys(server, options.apiKeys);
   registerKeyring(server, options.apiKeys);
+  registerRotation(server, { ...options.apiKeys, ...options.rotation });
 
   return server;
 }

@@ -1,5 +1,6 @@
 import { randomBytes, randomInt } from "node:crypto";
 import { ROTATION_ENTRY_PREFIX, fingerprintValue } from "@logicsrc/plugin-credential-sharing";
+import { DESKTOP_RECIPES, recipeSteps } from "./desktop-recipes.js";
 
 /** Every empty value shares this fingerprint; an empty value is nothing to rotate. */
 export const EMPTY_FINGERPRINT = fingerprintValue("");
@@ -28,13 +29,16 @@ export function isoTime(value: unknown): string {
  *   provider    a built-in rotator (rotators.ts) that creates the new
  *               credential by API, and revokes the old one only after every
  *               consumer is healthy on the new one.
+ *   desktop     an agent drives the provider's dashboard in a signed-in browser
+ *               on a W3BS Agentic Desktop Layer host (desktop-recipes.ts):
+ *               two-phase like provider; needs --desktop <ssh-host>.
  *   manual      a person or agent follows `steps` at `url`. Never automatic:
  *               provider-issued keys without a rotator, wallet seeds,
  *               encryption keys that protect stored data.
  *   not-secret  public config that happens to look like a secret (URLs,
  *               client ids, publishable keys). Dropped from the plan.
  */
-export type RotationMethod = "random" | "ssh-keygen" | "command" | "provider" | "manual" | "not-secret";
+export type RotationMethod = "random" | "ssh-keygen" | "command" | "provider" | "desktop" | "manual" | "not-secret";
 export type RandomFormat = "hex" | "base64" | "base64url" | "alnum";
 /** Who has to do a manual rotation: an agent with dashboard/CLI access, or Anthony (money, signing ceremonies, his logins). */
 export type RotationOwner = "agent" | "anthony";
@@ -49,6 +53,8 @@ export interface RotationSpec {
   command?: string;
   /** provider: the rotator id (see rotators.ts). */
   provider?: string;
+  /** desktop: the dashboard recipe id (see desktop-recipes.ts). */
+  recipe?: string;
   /** Where to do it (provider dashboard, docs). */
   url?: string;
   /** What to do, in order. For manual rotations this is the whole job. */
@@ -81,7 +87,7 @@ export function rotationEntryName(key: string): string {
   return `${ROTATE_PREFIX}${key}`;
 }
 
-const METHODS: readonly RotationMethod[] = ["random", "ssh-keygen", "command", "provider", "manual", "not-secret"];
+const METHODS: readonly RotationMethod[] = ["random", "ssh-keygen", "command", "provider", "desktop", "manual", "not-secret"];
 const FORMATS: readonly RandomFormat[] = ["hex", "base64", "base64url", "alnum"];
 
 /** Parse and validate a stored spec. Throws with a message naming the problem. */
@@ -101,6 +107,9 @@ export function parseRotationSpec(raw: string): RotationSpec {
   }
   if (v.method === "command" && (typeof v.command !== "string" || !v.command.trim())) throw new Error("method command needs a command");
   if (v.method === "provider" && (typeof v.provider !== "string" || !v.provider.trim())) throw new Error("method provider needs a provider");
+  if (v.method === "desktop" && !(typeof v.recipe === "string" && v.recipe in DESKTOP_RECIPES)) {
+    throw new Error(`method desktop needs a recipe: one of ${Object.keys(DESKTOP_RECIPES).join(", ")}`);
+  }
   if (v.owner !== undefined && v.owner !== "agent" && v.owner !== "anthony") throw new Error("owner must be agent or anthony");
   const strings = (x: unknown): string[] | undefined =>
     Array.isArray(x) ? x.filter((s): s is string => typeof s === "string" && s.trim() !== "") : undefined;
@@ -114,6 +123,7 @@ export function parseRotationSpec(raw: string): RotationSpec {
     ...(v.length ? { length: v.length as number } : {}),
     ...(typeof v.command === "string" ? { command: v.command } : {}),
     ...(typeof v.provider === "string" ? { provider: v.provider } : {}),
+    ...(typeof v.recipe === "string" ? { recipe: v.recipe } : {}),
     ...(typeof v.url === "string" ? { url: v.url } : {}),
     ...(strings(v.steps) ? { steps: strings(v.steps) } : {}),
     ...(strings(v.consumers) ? { consumers: strings(v.consumers) } : {}),
@@ -147,6 +157,21 @@ function anthony(family: string, note: string, steps: string[], url?: string): R
 
 function auto(provider: string, family: string, extra: Partial<RotationSpec> = {}): RotationSpec {
   return { method: "provider", provider, family, ...extra };
+}
+
+/** A dashboard-only key an agent rotates on a W3BS desktop (falls back to these steps by hand). */
+function desktop(recipe: string): RotationSpec {
+  const r = DESKTOP_RECIPES[recipe]!;
+  return {
+    method: "desktop",
+    recipe,
+    owner: "agent",
+    family: r.family,
+    url: r.url,
+    steps: recipeSteps(r),
+    ...(r.disruptive ? { disruptive: r.disruptive } : {}),
+    ...(r.mode === "report" ? { note: r.revokeNote } : {})
+  };
 }
 
 interface CatalogRule {
@@ -300,8 +325,14 @@ const CATALOG: CatalogRule[] = [
   // ---- provider-issued keys without a rotator (yet) ----------------------------------------
   { test: /^(GITHUB|GH)(_[A-Z0-9]+)*_(TOKEN|PAT)$/, spec: provider("GitHub (fine-grained token, same repos and permissions)", "https://github.com/settings/tokens", [], { family: "github" }) },
   { test: /^GITHUB(_[A-Z0-9]+)*_(CLIENT_SECRET|WEBHOOK_SECRET)$|^GL_WEBHOOK_SECRET$/, spec: provider("the GitHub OAuth app / webhook settings (Generate a new client secret; GitHub keeps two live)", "https://github.com/settings/developers", [], { family: "github" }) },
-  { test: /^ANTHROPIC_API_KEY$/, spec: provider("the Anthropic console", "https://console.anthropic.com/settings/keys", [], { family: "ai" }) },
-  { test: /^OPENAI_API_KEY$/, spec: provider("the OpenAI dashboard (same project)", "https://platform.openai.com/api-keys", [], { family: "ai" }) },
+  // ---- dashboard-only keys: an agent rotates them on a W3BS desktop (--desktop <host>) ------
+  { test: /^OPENAI(_[A-Z0-9]+)*_API_KEY$/, spec: desktop("openai") },
+  { test: /^(ELEVENLABS|ELEVEN_LABS|XI)(_[A-Z0-9]+)*_API_KEY$/, spec: desktop("elevenlabs") },
+  { test: /^BRAVE(_SEARCH)?(_[A-Z0-9]+)*_API_(KEY|TOKEN)$|^BRAVE_(SEARCH_)?KEY$/, spec: desktop("brave-search") },
+  { test: /^CIVITAI(_API)?_(KEY|TOKEN)$/, spec: desktop("civitai") },
+  { test: /^(CLOUDFLARE|CF)_(GLOBAL_)?API_KEY$/, spec: desktop("cloudflare-global-api-key") },
+  { test: /^ANTHROPIC(_[A-Z0-9]+)*_API_KEY$|^CLAUDE_API_KEY$/, spec: desktop("anthropic") },
+  { test: /^(CLAUDE_CODE|CLAUDE|ANTHROPIC)_OAUTH_(TOKEN|REFRESH_TOKEN)$/, spec: desktop("claude-oauth") },
   { test: /^(GEMINI|GOOGLE)_API_(KEY|SECRET)$|^EXPO_PUBLIC_GOOGLE_API_KEY$/, spec: provider("Google Cloud credentials (same API restrictions)", "https://console.cloud.google.com/apis/credentials", [], { family: "google" }) },
   { test: /^GOOGLE(_OAUTH)?_CLIENT_SECRET$|^CHROME_(CLIENT_SECRET|REFRESH_TOKEN)$/, spec: provider("Google Cloud OAuth client (Add secret, then disable the old one)", "https://console.cloud.google.com/apis/credentials", [], { family: "google" }) },
   {
@@ -334,7 +365,6 @@ const CATALOG: CatalogRule[] = [
   { test: /^TWILIO_(AUTH_TOKEN|SECRET)$/, spec: provider("Twilio (Console > Account > API keys & tokens > secondary auth token, then promote)", "https://console.twilio.com/us1/account/keys-credentials/api-keys", [], { family: "twilio" }) },
   { test: /^TELNYX_(API_KEY|.*SECRET)$/, spec: provider("Telnyx", "https://portal.telnyx.com/#/app/api-keys", [], { family: "telnyx" }) },
   { test: /^PORKBUN_(API|SECRET)(_API)?_KEY$|^PORKBUN_API_SECRET$/, spec: provider("Porkbun (create a new API key pair)", "https://porkbun.com/account/api", [], { family: "porkbun" }) },
-  { test: /^ELEVENLABS_API_KEY$/, spec: provider("ElevenLabs", "https://elevenlabs.io/app/settings/api-keys", [], { family: "ai" }) },
   { test: /^(DEEPSEEK|MOONSHOT|QWEN|DASHSCOPE|ZAI|PERPLEXITY|OLLAMA|GLAMA|FAL|HUGGINGFACE|NGC|NVIDIA_NIM|ABLITERATION|SALAD_AI_GATEWAY|EXA|LINKUP|BRAVE)(_API)?_(KEY|TOKEN)$/, spec: provider("the model/search provider's API keys page", "", [], { family: "ai" }) },
   { test: /^(COINPAY|[A-Z0-9]+_COINPAY|ADNETWORK_COINPAY)(_OAUTH)?_CLIENT_SECRET$/, spec: provider("CoinPay OAuth apps (our own: coinpayportal.com > Developer > OAuth apps > regenerate secret)", "https://coinpayportal.com/dashboard", [], { family: "coinpay" }) },
   { test: /^FIREFOX_JWT_(SECRET|ISSUER)$/, spec: provider("addons.mozilla.org API credentials (Developer Hub > Manage API Keys > Generate new credentials)", "https://addons.mozilla.org/developers/addon/api/key/", [], { family: "browser-store" }) },
@@ -440,6 +470,7 @@ export function catalogSpec(key: string): RotationSpec | null {
 /** Automatic = we can produce the new value without a person. */
 export function isAutomatic(spec: RotationSpec | null): boolean {
   if (!spec || spec.never) return false;
+  if (spec.method === "desktop") return Boolean(spec.recipe && DESKTOP_RECIPES[spec.recipe] && DESKTOP_RECIPES[spec.recipe]!.mode !== "report");
   return spec.method === "random" || spec.method === "ssh-keygen" || spec.method === "command" || spec.method === "provider";
 }
 

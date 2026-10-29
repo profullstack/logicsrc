@@ -69,7 +69,7 @@ async function teamCard(team, uid) {
         <input type="email" name="email" placeholder="teammate@example.com" required style="flex:1">
         ${me.role === "owner" ? `<select name="role" aria-label="Permission" style="width:auto"><option value="member">member</option><option value="admin">admin</option><option value="owner">owner</option></select>` : `<input type="hidden" name="role" value="member">`}
         <button class="btn">Invite</button></form>` : ""}
-      <div class="label" style="margin:18px 0 6px">Vaults</div>
+      <div class="label" style="margin:18px 0 6px">Vaults <a class="faint" style="margin-left:10px;font-weight:400" href="/teams/${esc(team.slug)}/rotation">Key rotation &rarr;</a></div>
       ${vaults.length ? `<table><thead><tr><th>Vault</th><th>Secrets</th><th>Your access</th></tr></thead><tbody>${vaultRows.join("")}</tbody></table>`
         : `<p class="faint mono" style="font-size:.82rem">No vaults yet — create one from the CLI: <code>logicsrc teams push ${esc(team.slug)} &lt;project&gt; &lt;env&gt;</code></p>`}
       <div class="label" style="margin:18px 0 6px">Recent access <span class="faint">(full trail: <code>logicsrc teams audit ${esc(team.slug)}</code>)</span></div>

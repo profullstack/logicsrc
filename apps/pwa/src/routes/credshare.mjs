@@ -50,7 +50,7 @@ async function actor(req) {
  *   "write"          allowed unless the key is read-only
  *   "register"       allowed even for a read-only key (its own public key)
  */
-function api(handler, { machine = false } = {}) {
+export function api(handler, { machine = false } = {}) {
   return async (req, res) => {
     const found = await actor(req);
     if (!found) return res.status(401).json({ error: "Not authenticated, or the API key is revoked or expired. Run: logicsrc login" });
@@ -73,7 +73,7 @@ function api(handler, { machine = false } = {}) {
   };
 }
 
-async function requireMember(res, slug, userId, key = null) {
+export async function requireMember(res, slug, userId, key = null) {
   const team = await get(`SELECT * FROM credshare_teams WHERE slug = ?`, [slug]);
   if (!team) { res.status(404).json({ error: `Unknown team: ${slug}` }); return null; }
   if (isMachine(key) && key.team_id !== team.id) { res.status(403).json({ error: "This API key is scoped to another team." }); return null; }
@@ -96,7 +96,7 @@ function auditStatement(ev) {
   };
 }
 
-async function audit(ev) {
+export async function audit(ev) {
   const st = auditStatement(ev);
   await run(st.sql, st.args);
 }

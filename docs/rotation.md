@@ -60,6 +60,7 @@ new-value-command | logicsrc teams rotate-keys <team> <project> <env> --key NAME
 | --- | --- | --- |
 | `random` | the CLI, matching the old value's alphabet and length (min 32) | yes |
 | `provider` | a built-in rotator calls the provider's API (below) | yes |
+| `desktop` | an agent drives the provider's dashboard on a W3BS desktop (below) | yes, with `--desktop <host>` |
 | `ssh-keygen` | the CLI makes an ed25519 pair; you install the public half | value yes, install no |
 | `command` | your command prints the new value on stdout | yes, with `--approve` |
 | `manual` | a person or agent follows the steps | no |
@@ -132,8 +133,8 @@ health-check, then revoke the old one.
   Reading and creating tokens needs "API Tokens Write": set
   `CLOUDFLARE_ADMIN_API_TOKEN`, or give the token that permission.
 - Revoke: `DELETE /user/tokens/<old id>`.
-- Not covered: account-owned tokens and the Global API Key. Rotate those in the
-  dashboard (dash.cloudflare.com/profile/api-tokens).
+- Not covered: account-owned tokens. The Global API Key is a desktop roll
+  (below).
 
 ### CoinPay business API keys (`coinpay-api-key`)
 
@@ -182,6 +183,125 @@ health-check, then revoke the old one.
   `supabase_auth_admin`, `supabase_functions_admin`, `supabase_storage_admin`)
   and by the stack's own `.env`. See the Supabase section.
 
+## Desktop rotators: dashboard-only keys
+
+Some providers only issue keys in their web dashboard. For those the catalog
+says `method: desktop` with a recipe, and an agent rotates them in a signed-in
+browser on a [W3BS Agentic Desktop Layer](https://w3bs.org/desktop) host:
+
+```sh
+logicsrc teams rotate-keys <team> --key OPENAI_API_KEY --desktop bonita --propagate            # dry run: checks the layer
+logicsrc teams rotate-keys <team> --key OPENAI_API_KEY --desktop bonita --propagate --approve
+```
+
+The host is `--desktop <ssh-host>` or `LOGICSRC_DESKTOP_HOST`. Without one, a
+desktop key comes back `todo` with the same steps written out for a person.
+
+| recipe | keys | mode |
+| --- | --- | --- |
+| `openai` | `OPENAI_API_KEY`, `OPENAI_*_API_KEY` | two-phase |
+| `elevenlabs` | `ELEVENLABS_API_KEY`, `XI_API_KEY` | two-phase |
+| `brave-search` | `BRAVE_API_KEY`, `BRAVE_SEARCH_API_KEY` | two-phase |
+| `civitai` | `CIVITAI_API_KEY`, `CIVITAI_TOKEN` | two-phase |
+| `cloudflare-global-api-key` | `CLOUDFLARE_GLOBAL_API_KEY`, `CLOUDFLARE_API_KEY`, `CF_API_KEY` | roll (needs `--allow-roll`) |
+| `anthropic` | `ANTHROPIC_API_KEY` | report-only |
+| `claude-oauth` | `CLAUDE_CODE_OAUTH_TOKEN` | report-only |
+
+How one rotation runs:
+
+1. `ssh <host> w3bs-desktop status`. Agent access must be on. When it is off the
+   key is left as it is and the error says to enable it from the W3BS tray. When
+   the input lease is held (a person is using the desk) the key comes back
+   `busy`.
+2. The CLI runs `claude -p` on the host, allowed only the w3bs-desktop tools,
+   `w3bs`, `jq`, `wl-paste`/`wl-copy`, `mkdir`, `chmod` and `wc`. The prompt
+   gives the provider URL and the old key's **last four characters**, never a
+   value. The agent works only in the layer's own agent browser (TronBrowser,
+   `w3bs desktop browser launch`; the everyday Firefox is not in its grants),
+   so the provider login has to exist in that browser profile.
+3. It creates the new key with the same permissions, then writes it from the
+   reveal dialog's DOM straight into `~/.cache/rot/<id>` (mode 600) through a
+   shell pipeline whose output never reaches the agent. The site's Copy button
+   plus `wl-paste` is the fallback (clipboard cleared after).
+4. The CLI reads that file over ssh into memory, checks it looks like a key of
+   that kind, writes every vault holding the old value, and runs the normal
+   `--propagate` flow: rewrite, restart three at a time, health check.
+5. Only when every consumer is healthy does a second agent job delete the old
+   key (found by its tail, and only after it has confirmed the new key's tail is
+   listed). Then the CLI shreds the remote file. On any failure before that, the
+   rollback job deletes the NEW key instead and the old value goes back
+   everywhere.
+
+Outcomes that are not failures: `needs-login` (a login page, 2FA, passkey or
+captcha: sign in in the agent browser and run it again) and `busy` (a person at
+the desk). The run carries on with the other keys either way.
+
+**Roll** (the Cloudflare Global API Key): the provider replaces the key in
+place, so the old one dies the moment the new one exists and there is nothing to
+roll back to. It runs only with `--allow-roll`, and only after a capture
+self-test in the same run: the agent saves a random value from a scratch page
+through the same capture path and the CLI checks it read back exactly. The
+weekly job never rolls.
+
+**Report-only** (Anthropic API keys, Claude OAuth tokens): these keys run the
+agents themselves. With `--approve` and a desktop host the agent only looks the
+key up and reports its name and last use; it never creates or revokes one. A
+person rotates them (`claude setup-token` for an OAuth token), stores the new
+value with `--set-from-stdin`, then revokes the old one.
+
+The weekly job leaves desktop keys alone unless it is given `--desktop`; even
+then only two-phase recipes run unattended.
+
+## Every surface
+
+Rotation works the same from the CLI, the credentials app and MCP. Values only
+ever exist on the machine that runs the CLI: the server stores ciphertext, so
+the app and MCP plan and queue, and a CLI or agent executes.
+
+### Credentials app (app.logicsrc.com)
+
+Each team has a **Rotation** page (`/teams/<team>/rotation`, linked from the
+team card). It lists every value once, with its method, recipe or provider,
+owner, steps, URL, consumers, how many vaults hold it, and when it last changed.
+The plan comes from the built-in catalog by key name; a key with its own
+encrypted `__ROTATE__` entry is flagged, and `logicsrc teams rotation` shows
+what that entry says.
+
+Tick keys and **Queue rotation run**. Any member can queue a dry run; an
+approved run takes an owner or admin. Options: propagate, desktop host, allow
+roll. A runner picks the queue up:
+
+```sh
+logicsrc teams rotate-keys <team> --from-queue                              # every queued run, as a dry run
+logicsrc teams rotate-keys <team> --from-queue --approve --propagate --desktop bonita
+```
+
+The runner claims each run (one runner wins it), runs it, and posts back the
+per-key outcome: statuses, vault and site names, errors, never values. An
+approved run writes only when the runner also has `--approve`, so a click in a
+browser alone never changes a secret. A roll needs `--allow-roll` on both the
+run and the runner.
+
+API (session or `lsk_` key; machine keys may read and run, not queue):
+
+| route | what |
+| --- | --- |
+| `GET /api/credshare/teams/:slug/rotation` | the plan (`?project=&env=&key=`) |
+| `GET /api/credshare/teams/:slug/rotation/runs` | runs (`?status=queued`) |
+| `POST /api/credshare/teams/:slug/rotation/runs` | queue `{keys, project?, env?, approve?, propagate?, desktop?, allowRoll?}` |
+| `POST .../rotation/runs/:id/claim` | a runner takes a queued run |
+| `POST .../rotation/runs/:id/result` | the runner reports `{results}` |
+| `POST .../rotation/runs/:id/cancel` | cancel a queued run |
+
+### MCP (`logicsrc mcp`)
+
+| tool | what |
+| --- | --- |
+| `rotation_plan` | the plan, from the local CLI (`source: "server"` reads the app's plan) |
+| `rotation_set` | store a key's `__ROTATE__` spec |
+| `rotate_keys` | dry run unless `approve: true`; `propagate`, `desktop`, `allowRoll`, `max`; `queue: true` queues it on the app instead |
+| `rotation_runs` | queued and finished runs |
+
 ## Manual rotations, by family
 
 Every family below is in the catalog, so every key gets steps in the plan. The
@@ -195,7 +315,7 @@ ceremony, a personal login behind 2FA).
 | turso | agent | `turso db tokens create <db>`; store; redeploy; then `turso db tokens invalidate <db>` (kills every token for that db, so only after all consumers moved) |
 | github tokens, OAuth apps | agent | github.com/settings/tokens: new fine-grained token with the same repos and permissions. OAuth app secrets: Generate a new client secret (two can be live), switch, delete the old |
 | google | agent | console.cloud.google.com/apis/credentials: new key with the same API restrictions, or Add secret on the OAuth client, then disable the old |
-| ai providers | agent | each provider's API keys page (Anthropic console, OpenAI project keys, and so on): create, store, redeploy, delete the old |
+| ai providers | agent | OpenAI, ElevenLabs, Brave and Civitai are desktop recipes (above); others: each provider's API keys page, create, store, redeploy, delete the old |
 | twilio | agent | Console > API keys & tokens: create a secondary auth token, switch, promote it |
 | telnyx, porkbun, storage, social, browser stores | agent | the provider's key page named in the plan |
 | coinpay OAuth client secrets | agent | our own CoinPay: Developer > OAuth apps > regenerate secret |

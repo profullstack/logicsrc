@@ -84,7 +84,9 @@ export {
   type RemoteApiKey,
   type RemoteKeyGrant,
   type RemoteAuditRow,
-  type CreateApiKeyInput
+  type CreateApiKeyInput,
+  type RemoteRotationPlanItem,
+  type RemoteRotationRun
 } from "./client.js";
 export {
   ensureApiKeyIdentity,
