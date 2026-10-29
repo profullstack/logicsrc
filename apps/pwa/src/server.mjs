@@ -13,6 +13,7 @@ import { credshareRouter } from "./routes/credshare.mjs";
 import { apiKeysRouter } from "./routes/apikeys.mjs";
 import { opencredsRouter } from "./routes/opencreds.mjs";
 import { keyringRouter } from "./routes/keyring.mjs";
+import { keyringShareRouter, publicKeysRouter } from "./routes/keyring-share.mjs";
 import { cliRouter } from "./routes/cli.mjs";
 import { pagesRouter } from "./routes/pages.mjs";
 import { profileRouter } from "./lib/profile.mjs";
@@ -66,6 +67,10 @@ app.get("/.well-known/openwebring.json", (_req, res) =>
 
 app.get("/healthz", (_req, res) => res.json({ ok: true, env: config.env }));
 
+// The keyring share link (/k/<token>.json|.keys): public, CORS-open, no session
+// (mounted before the session middleware so it never sets a cookie on a cacheable answer).
+app.use(publicKeysRouter);
+
 app.use(sessionMiddleware);
 app.use(csrfGuard);
 
@@ -76,6 +81,7 @@ app.use(coinpayRouter);
 app.use(credshareRouter); // /api/credshare/* (session or lsk_ Bearer)
 app.use(apiKeysRouter);   // /api/keys (session or a person's lsk_ key; never a machine key)
 app.use(opencredsRouter); // /api/opencreds/* — personal vault sync (session or lsk_ Bearer)
+app.use(keyringShareRouter); // /api/keyring/share: the public-keys share link (session or person key)
 app.use(keyringRouter);   // /api/keyring/* + /keyring — SSH keys / key pairs, ciphertext only
 app.use(cliRouter);       // /cli/authorize, /cli/token, /api/me
 app.use(profileRouter);   // /api/v1/me/profile (session cookie)

@@ -95,7 +95,8 @@ API keys cannot reach the keyring. It belongs to the person.
 ### API
 
 All endpoints take `Authorization: Bearer lsk_…` (a person's key). A signed-in
-browser session can read.
+browser session can read. (The share link below is the one exception: a session
+can create, rotate and revoke it.)
 
 | Method | Path | |
 | --- | --- | --- |
@@ -113,6 +114,43 @@ name, type, fingerprint and public key, with a copy button. **Decrypt &
 download** asks for the keyring passphrase and decrypts the key in the browser
 tab with WebCrypto, using the same derivation as the CLI. Neither the passphrase
 nor the private key is sent anywhere.
+
+### Share public keys
+
+A **share link** is a revocable, read-only URL for the **public** halves of your
+SSH keys. Other apps read it: [w3bs.org/fleet](https://w3bs.org/fleet) and
+[threatcrush.com/fleet](https://threatcrush.com/fleet) use it to set up SSH checks
+(crawlproof asks your servers whether they would accept a key, without logging in).
+The link never carries a private key, an envelope or anything but `ssh-*` entries.
+
+Create it on [app.logicsrc.com/keyring](https://app.logicsrc.com/keyring) under
+**Share public keys**, or with the API below. You get one link per account. The
+token (`lks_…`) is shown once, on create or rotate: only its SHA-256 is stored.
+**Rotate** issues a new token and the old URL stops working at once. **Revoke**
+deletes the link.
+
+| Method | Path | |
+| --- | --- | --- |
+| POST | `/api/keyring/share` | Create, or rotate if one exists. `{ url, keys_url_text, token }`. |
+| GET | `/api/keyring/share` | `{ exists, created_at, rotated_at }`. Never the token. |
+| DELETE | `/api/keyring/share` | Revoke. |
+| GET | `/k/<token>.json` | Public, no auth. `{ keys: [{ name, type, public_key, fingerprint, comment }] }` |
+| GET | `/k/<token>.keys` | Public, no auth. `authorized_keys` text, one key per line. |
+
+The three `/api/keyring/share` calls take a person's `Bearer lsk_…` key or a
+signed-in browser session (a session's `POST`/`DELETE` must send the
+`X-CSRF-Token` header). Machine keys get `403`.
+
+The public URLs answer with `Access-Control-Allow-Origin: *` and
+`Cache-Control: public, max-age=60`, so a revoked link can stay readable in a
+cache for up to a minute. An unknown or revoked token is `404`. `fingerprint` is
+what `ssh-keygen -lf` prints (`SHA256:` and unpadded base64), computed from the
+public key itself. Requests are rate limited per IP (`429`).
+
+```sh
+curl -s https://app.logicsrc.com/k/lks_….json | jq '.keys[] | {name, fingerprint}'
+curl -s https://app.logicsrc.com/k/lks_….keys >> ~/.ssh/authorized_keys
+```
 
 ### MCP
 

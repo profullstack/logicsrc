@@ -76,7 +76,58 @@
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
 
+  // "Share public keys": create / rotate / revoke the read-only link. The token
+  // comes back once, from POST; the page shows it until it is reloaded.
+  const box = document.getElementById("kr-share");
+  async function shareCall(method) {
+    const res = await fetch("/api/keyring/share", {
+      method,
+      credentials: "same-origin",
+      headers: { accept: "application/json", "x-csrf-token": box?.dataset.csrf || "" }
+    });
+    const body = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(body.error || `The server answered ${res.status}.`);
+    return body;
+  }
+  function shareView({ exists, url, keysUrl, state }) {
+    if (!box) return;
+    box.dataset.exists = exists ? "1" : "0";
+    box.querySelector("[data-kr-share=create]").hidden = exists;
+    box.querySelector("[data-kr-share=rotate]").hidden = !exists;
+    box.querySelector("[data-kr-share=revoke]").hidden = !exists;
+    box.querySelector("[data-kr-share-state]").textContent = state;
+    const wrap = box.querySelector("[data-kr-share-url]");
+    wrap.hidden = !url;
+    box.querySelector("[data-kr-share-json]").value = url || "";
+    box.querySelector("[data-kr-share-keys]").value = keysUrl || "";
+  }
+
   document.addEventListener("click", async (ev) => {
+    const shareBtn = ev.target.closest("[data-kr-share]");
+    if (shareBtn) {
+      const action = shareBtn.dataset.krShare;
+      try {
+        if (action === "revoke") {
+          if (!confirm("Revoke the share link? Apps that read it (w3bs.org/fleet, threatcrush.com/fleet) lose access to your public keys.")) return;
+          await shareCall("DELETE");
+          shareView({ exists: false, state: "Share link revoked. No share link now." });
+          return;
+        }
+        if (action === "rotate" && !confirm("Rotate the share link? The current URL stops working at once; paste the new one wherever you used the old one.")) return;
+        const out = await shareCall("POST");
+        shareView({ exists: true, url: out.url, keysUrl: out.keys_url_text, state: action === "rotate" ? "Rotated: the old URL no longer works." : "Share link created." });
+      } catch (e) {
+        shareView({ exists: box?.dataset.exists === "1", state: e.message || String(e) });
+      }
+      return;
+    }
+    const shareCopy = ev.target.closest("[data-kr-share-copy]");
+    if (shareCopy) {
+      const input = box?.querySelector(shareCopy.dataset.krShareCopy === "keys" ? "[data-kr-share-keys]" : "[data-kr-share-json]");
+      await navigator.clipboard.writeText(input ? input.value : "");
+      say("Share URL copied.");
+      return;
+    }
     const copy = ev.target.closest("[data-kr-copy]");
     if (copy) {
       const pre = document.querySelector(`[data-kr-pub="${CSS.escape(copy.dataset.krCopy)}"]`);
