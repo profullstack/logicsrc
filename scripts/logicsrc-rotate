@@ -1,0 +1,181 @@
+#!/usr/bin/env bash
+#
+# logicsrc-rotate: the weekly secret rotation job (runbook: logicsrc.com/docs/rotation).
+#
+#   logicsrc-rotate               run per the config (dry run unless LOGICSRC_ROTATE_LIVE=1)
+#   logicsrc-rotate --dry-run     plan + report only, whatever the config says
+#   logicsrc-rotate --no-mail     print the report instead of mailing it
+#
+# Rotates only what `rotate-keys --scheduled` allows unattended (non-disruptive
+# random secrets and overlapping provider rotators with known, healthy
+# consumers), rewrites + restarts + health-checks the consumers under ~/www,
+# and mails a report: rotated, rolled back, skipped (why), and the manual list
+# with steps grouped by who has to do it. No secret value is ever printed,
+# logged or mailed: the CLI's report holds key names, vaults, sites, outcomes.
+#
+# Config (optional, mode 600): ~/.config/logicsrc-rotate.env
+#   LOGICSRC_ROTATE_LIVE=1                 actually rotate (default: dry run)
+#   LOGICSRC_ROTATE_TEAM=profullstack
+#   LOGICSRC_ROTATE_MAX=10                 live rotations per run
+#   LOGICSRC_ROTATE_TO=a@x,b@y             report recipients
+#   LOGICSRC_ROTATE_ROOT=~/www             where consumer sites live
+#   LOGICSRC_ROTATE_MAX_SITES=5            skip values read by more sites than this
+#   LOGICSRC_ROTATE_EXCLUDE=a.com,b.com    never touch these sites (default: the client site)
+#   RESEND_ADMIN_API_KEY, CLOUDFLARE_ADMIN_API_TOKEN,
+#   COINPAY_ROTATE_TOKEN | COINPAY_ROTATE_EMAIL + COINPAY_ROTATE_PASSWORD
+#                                          admin creds for the provider rotators
+set -euo pipefail
+umask 077
+
+CONF="${LOGICSRC_ROTATE_CONF:-$HOME/.config/logicsrc-rotate.env}"
+if [ -f "$CONF" ]; then
+  [ "$(stat -c %a "$CONF")" = 600 ] || { echo "refusing $CONF: mode must be 600" >&2; exit 2; }
+  set -a
+  # shellcheck disable=SC1090
+  . "$CONF"
+  set +a
+fi
+
+TEAM="${LOGICSRC_ROTATE_TEAM:-profullstack}"
+MAX="${LOGICSRC_ROTATE_MAX:-10}"
+TO="${LOGICSRC_ROTATE_TO:-ettinger@gmail.com}"
+ROOT="${LOGICSRC_ROTATE_ROOT:-$HOME/www}"
+LIVE="${LOGICSRC_ROTATE_LIVE:-0}"
+MAX_SITES="${LOGICSRC_ROTATE_MAX_SITES:-5}"
+# Client sites are never part of a fleet sweep.
+EXCLUDE="${LOGICSRC_ROTATE_EXCLUDE:-tomahawkedison.com}"
+MAIL=1
+for a in "$@"; do
+  case "$a" in
+    --dry-run) LIVE=0 ;;
+    --no-mail) MAIL=0 ;;
+    -h|--help) sed -n 2,25p "$0"; exit 0 ;;
+    *) echo "unknown option $a" >&2; exit 2 ;;
+  esac
+done
+
+STATE="${XDG_STATE_HOME:-$HOME/.local/state}/logicsrc-rotate"
+mkdir -p "$STATE"
+chmod 700 "$STATE"
+STAMP="$(date -u +%Y%m%dT%H%M%SZ)"
+REPORT="$STATE/report-$STAMP.json"
+exec 9>"$STATE/lock"
+flock -n 9 || { echo "another logicsrc-rotate is running" >&2; exit 0; }
+
+# Leave room on the box: restarts rebuild nothing, but compose recreates still cost memory.
+avail_gb=$(awk '/MemAvailable/ {print int($2/1048576)}' /proc/meminfo)
+if [ "$LIVE" = 1 ] && [ "$avail_gb" -lt 6 ]; then
+  echo "only ${avail_gb} GB available: running as a dry run" >&2
+  LIVE=0
+fi
+
+args=(teams rotate-keys "$TEAM" --scheduled --propagate "$ROOT" --max "$MAX" --max-sites "$MAX_SITES" --exclude-site "$EXCLUDE" --report "$REPORT" --format json)
+[ "$LIVE" = 1 ] && args+=(--approve)
+status=0
+logicsrc "${args[@]}" >/dev/null 2>"$STATE/run-$STAMP.err" || status=$?
+# stderr holds vault names and counts only; keep it for the report.
+
+BODY="$STATE/mail-$STAMP.txt"
+node - "$REPORT" "$LIVE" "$status" "$STATE/run-$STAMP.err" >"$BODY" <<'NODE'
+const fs = require("fs");
+const [file, live, status, errFile] = process.argv.slice(2);
+let report;
+try {
+  report = JSON.parse(fs.readFileSync(file, "utf8"));
+} catch {
+  const err = fs.existsSync(errFile) ? fs.readFileSync(errFile, "utf8").slice(-1500) : "";
+  console.log(`logicsrc-rotate could not produce a report (exit ${status}).\n\n${err}`);
+  process.exit(0);
+}
+const R = report.results;
+const by = (s) => R.filter((r) => r.status === s);
+const out = [];
+const line = (s = "") => out.push(s);
+const where = (r) => `${(r.vaults || []).length} vault(s)${r.sites && r.sites.length ? `, sites: ${[...new Set(r.sites.map((s) => s.site))].join(" ")}` : ""}`;
+line(`Secret rotation ${live === "1" ? "LIVE run" : "DRY RUN (nothing changed)"} for team ${report.team}, ${report.at}`);
+line(`Runbook: https://logicsrc.com/docs/rotation`);
+line();
+const rotated = by("rotated");
+const would = by("would-rotate");
+line(`Rotated: ${rotated.length}   Would rotate: ${would.length}   Rolled back: ${by("rolled-back").length}   Failed: ${by("failed").length}   Skipped: ${by("skipped").length}   Manual: ${by("todo").length}`);
+for (const [title, list] of [["ROTATED (verified healthy, old value revoked)", rotated], ["WOULD ROTATE (set LOGICSRC_ROTATE_LIVE=1 to do it)", would], ["ROLLED BACK (old value restored everywhere)", by("rolled-back")], ["FAILED", by("failed")]]) {
+  if (!list.length) continue;
+  line();
+  line(title);
+  // Dry runs list one line per key name; live results list every value.
+  if (title.startsWith("WOULD")) {
+    const g = new Map();
+    for (const r of list) {
+      const k = `${r.key}  [${r.method}]`;
+      const e = g.get(k) || { n: 0, sites: new Set() };
+      e.n++;
+      for (const s of r.sites || []) e.sites.add(s.site);
+      g.set(k, e);
+    }
+    for (const [k, e] of g) line(`  ${k}  x${e.n}  sites: ${[...e.sites].join(" ") || "-"}`);
+    continue;
+  }
+  for (const r of list) {
+    line(`  ${r.key}  [${r.method}]  ${where(r)}`);
+    for (const s of r.sites || []) line(`      ${s.site}: ${s.restart || "-"} / ${s.health || "-"}${s.backup ? ` (backup ${s.backup.split("/").pop()})` : ""}`);
+    if (r.note) line(`      note: ${r.note}`);
+    if (r.error) line(`      ${r.error}`);
+  }
+}
+const skipped = by("skipped");
+if (skipped.length) {
+  line();
+  line("SKIPPED (left for a person, with the reason)");
+  const reasons = new Map();
+  for (const r of skipped) {
+    const why = (r.error || "").replace(/: .*/, "");
+    reasons.set(why, [...(reasons.get(why) || []), r]);
+  }
+  for (const [why, list] of reasons) {
+    const n = new Map();
+    for (const r of list) n.set(r.key, (n.get(r.key) || 0) + 1);
+    line(`  ${why} (${list.length}): ${[...n].map(([k, c]) => (c > 1 ? `${k} x${c}` : k)).join(", ")}`);
+  }
+}
+const todo = by("todo");
+if (todo.length) {
+  line();
+  line("MANUAL TO-DO (grouped by who does it, then family; steps once per family)");
+  const owners = [["anthony", "Anthony (money, signing, his logins: never automated)"], ["agent", "An agent with dashboard / CLI access"]];
+  for (const [owner, label] of owners) {
+    const mine = todo.filter((r) => (r.owner || "agent") === owner);
+    if (!mine.length) continue;
+    line();
+    line(`== ${label}: ${mine.length} value(s)`);
+    const fam = new Map();
+    for (const r of mine) fam.set(r.family || "other", [...(fam.get(r.family || "other") || []), r]);
+    for (const [f, list] of [...fam].sort((a, b) => b[1].length - a[1].length)) {
+      line();
+      line(`  -- ${f} (${list.length})${list[0].url ? `  ${list[0].url}` : ""}`);
+      if (list[0].note) line(`     ${list[0].note}`);
+      for (const s of list[0].steps || []) line(`     - ${s}`);
+      const keys = new Map();
+      for (const r of list) keys.set(r.key, (keys.get(r.key) || 0) + (r.vaults || []).length);
+      line(`     keys: ${[...keys].map(([k, n]) => `${k} (${n})`).join(", ")}`);
+      const why = [...new Set(list.map((r) => r.error).filter(Boolean))];
+      if (why.length) line(`     blocked: ${why.join("; ")}`);
+    }
+  }
+}
+if (report.locked && report.locked.length) {
+  line();
+  line(`Vaults this identity cannot decrypt (not covered): ${report.locked.length}`);
+}
+console.log(out.join("\n"));
+NODE
+
+SUBJECT="logicsrc rotation $( [ "$LIVE" = 1 ] && echo live || echo dry-run ): $(node -e 'try{const r=require(process.argv[1]).results;const c=s=>r.filter(x=>x.status===s).length;console.log(`${c("rotated")} rotated, ${c("rolled-back")+c("failed")} failed, ${c("todo")} manual`)}catch{console.log("no report")}' "$REPORT")"
+if [ "$MAIL" = 1 ]; then
+  # The shell's RESEND_API_KEY can be stale; mail's own resend account is the house path.
+  env -u RESEND_API_KEY mail send --via resend --to "$TO" --subject "$SUBJECT" --file "$BODY"
+else
+  cat "$BODY"
+fi
+# Keep 12 weeks of reports.
+find "$STATE" -maxdepth 1 -type f \( -name 'report-*.json' -o -name 'mail-*.txt' -o -name 'run-*.err' \) -mtime +84 -delete
+exit "$status"

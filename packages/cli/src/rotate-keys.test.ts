@@ -38,8 +38,8 @@ describe("catalog", () => {
     expect(catalogSpec("SSH_ID_ED25519")?.method).toBe("ssh-keygen");
     expect(catalogSpec("SSH_ID_ED25519_DEPLOY")?.method).toBe("ssh-keygen");
     expect(catalogSpec("DEPLOY_KEY")?.method).toBe("ssh-keygen");
-    expect(catalogSpec("SSH_ID_ED25519_PUB")).toBeNull();
-    expect(catalogSpec("SSH_CONFIG")).toBeNull();
+    expect(catalogSpec("SSH_ID_ED25519_PUB")?.method).toBe("not-secret");
+    expect(catalogSpec("SSH_CONFIG")?.method).toBe("not-secret");
     expect(isNotSecret("SSH_KNOWN_HOSTS")).toBe(true);
   });
 
@@ -52,7 +52,7 @@ describe("catalog", () => {
   });
 
   it("knows nothing about plain config", () => {
-    expect(catalogSpec("SOLANA_RPC_URL")).toBeNull();
+    expect(catalogSpec("SOLANA_RPC_URL")?.method).toBe("not-secret");
     expect(catalogSpec("NODE_ENV")).toBeNull();
   });
 });
