@@ -11,7 +11,8 @@
 //
 // Auth: a person's `Bearer lsk_…` key (the CLI, the MCP server) for every
 // call; a browser session may read (GET) for the /keyring page. Machine keys
-// are refused: the keyring is the person's alone. Mounted at /api/keyring, and
+// are refused: the keyring is the person's alone. (The public-keys share link
+// in keyring-share.mjs is the exception: a session may manage it.) Mounted at /api/keyring, and
 // the page at /keyring.
 import { Router } from "express";
 import { get, all, run } from "../db.mjs";
@@ -216,7 +217,32 @@ keyringRouter.delete("/api/keyring", writer(async (_req, res, user) => {
 
 const when = (ms) => (ms ? new Date(Number(ms)).toISOString().slice(0, 16).replace("T", " ") : "—");
 
-export function keyringPageBody(rows) {
+// The "Share public keys" box. The token is shown once (on create/rotate), by
+// public/keyring.js; the server-rendered state only says whether a link exists.
+export function shareBoxHtml(share = { exists: false }, csrf = "") {
+  const state = share.exists
+    ? `A share link is active (created ${esc(when(Date.parse(share.created_at)))} UTC${share.rotated_at ? `, last rotated ${esc(when(Date.parse(share.rotated_at)))} UTC` : ""}). Its URL was shown once; rotate to get a new one.`
+    : "No share link yet.";
+  return `<div class="card" id="kr-share" data-csrf="${esc(csrf)}" data-exists="${share.exists ? "1" : "0"}" style="margin-top:18px"><div class="card-body">
+      <h2 style="font-size:1.1rem;margin:0 0 6px">Share public keys</h2>
+      <p class="dim" style="font-size:.85rem;margin:0 0 10px">A read-only link to the <b>public</b> halves of your SSH keys (name, type, public key, fingerprint, comment), as JSON and as <code>authorized_keys</code> text. Private keys are never part of it. This is the link <a href="https://w3bs.org/fleet">w3bs.org/fleet</a> and <a href="https://threatcrush.com/fleet">threatcrush.com/fleet</a> read to set up SSH checks. Anyone holding the link can read your public keys; rotate or revoke it at any time.</p>
+      <p class="mono faint" data-kr-share-state style="font-size:.8rem;margin:0 0 10px">${state}</p>
+      <div data-kr-share-url hidden style="margin:0 0 10px">
+        <label class="label" style="font-size:.8rem">JSON (paste this into w3bs.org/fleet or threatcrush.com/fleet)</label>
+        <div style="display:flex;gap:8px;align-items:center"><input class="mono" readonly data-kr-share-json style="flex:1;min-width:0;font-size:.78rem"><button class="btn compact" type="button" data-kr-share-copy="json">Copy</button></div>
+        <label class="label" style="font-size:.8rem;margin-top:8px">authorized_keys text</label>
+        <div style="display:flex;gap:8px;align-items:center"><input class="mono" readonly data-kr-share-keys style="flex:1;min-width:0;font-size:.78rem"><button class="btn compact" type="button" data-kr-share-copy="keys">Copy</button></div>
+        <p class="faint" style="font-size:.78rem;margin:6px 0 0">Copy it now: it is not shown again.</p>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn acid compact" type="button" data-kr-share="create"${share.exists ? " hidden" : ""}>Create link</button>
+        <button class="btn compact" type="button" data-kr-share="rotate"${share.exists ? "" : " hidden"}>Rotate</button>
+        <button class="btn compact" type="button" data-kr-share="revoke"${share.exists ? "" : " hidden"}>Revoke</button>
+      </div>
+    </div></div>`;
+}
+
+export function keyringPageBody(rows, share = { exists: false }, csrf = "") {
   const list = rows.length
     ? `<div class="table-scroll"><table><thead><tr><th>Name</th><th>Type</th><th>Fingerprint</th><th>Comment</th><th>Updated (UTC)</th><th></th></tr></thead><tbody>${rows.map((r) => `<tr>
         <td><code>${esc(r.name)}</code><div class="faint mono" style="font-size:.72rem">restores to ~/.ssh/${esc(r.filename)}</div></td>
@@ -234,6 +260,7 @@ export function keyringPageBody(rows) {
     <div class="card"><div class="card-body">${list}
       <div id="kr-status" class="mono faint" style="font-size:.8rem;margin-top:10px" role="status"></div>
     </div></div>
+    ${shareBoxHtml(share, csrf)}
     <details style="margin-top:18px"><summary class="dim" style="cursor:pointer">Restore from a terminal</summary>
 <pre class="mono" style="font-size:.8rem">curl -fsSL https://logicsrc.com/install.sh | sh
 logicsrc login
@@ -244,10 +271,12 @@ logicsrc keyring restore id_ed25519      # writes ~/.ssh/id_ed25519 (600) + .pub
 
 keyringRouter.get("/keyring", requireAuth, async (req, res) => {
   const rows = await all(`SELECT id, name, key_type, filename, public_key, fingerprint, comment, updated_at FROM keyring_entries WHERE user_id = ? AND deleted_at IS NULL ORDER BY name`, [req.user.id]);
+  const share = await get(`SELECT created_at, rotated_at FROM keyring_shares WHERE user_id = ?`, [req.user.id]);
+  const shareState = { exists: Boolean(share), created_at: iso(share?.created_at), rotated_at: iso(share?.rotated_at) };
   res.set("Cache-Control", "no-store");
   res.type("html").send(page({
     title: "LogicSRC ▸ keyring",
-    body: `${appBar(req)}${keyringPageBody(rows)}${footer}`,
+    body: `${appBar(req)}${keyringPageBody(rows, shareState, req.csrfToken || "")}${footer}`,
     head: `<script src="/keyring.js" defer></script>`
   }));
 });
