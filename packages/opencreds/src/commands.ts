@@ -371,12 +371,14 @@ export function registerCredsCommands(parent: Command, options: RegisterOptions 
     .command("unlock")
     .description("start a session")
     .addHelpText("after", examples(`
-  eval "$($CLI unlock)"                      unlock for this shell only (nothing written to disk)
-  $CLI unlock --persist --timeout 30          unlock for scripts for 30 minutes; \`lock\` ends it`))
-    .option("--persist", "write the session to a 0600 file instead of printing a token")
+  $CLI unlock                                  unlock interactively for 15 minutes; \`lock\` ends it
+  eval "$($CLI unlock --shell)"               export a session into this shell (nothing written to disk)
+  $CLI unlock --persist --timeout 30           choose a persisted session lifetime`))
+    .option("--persist", "write the session to a 0600 file (the default in an interactive terminal)")
+    .option("--shell", "print an export command for the current shell instead of writing a session file")
     .option("--password-stdin", "read the master password from stdin")
     .option("--timeout <minutes>", "session lifetime when persisted", (v: string) => Number.parseInt(v, 10), 15)
-    .action(async function (this: Command, opts: { persist?: boolean; timeout: number; passwordStdin?: boolean }) {
+    .action(async function (this: Command, opts: { persist?: boolean; shell?: boolean; timeout: number; passwordStdin?: boolean }) {
       await run(async () => {
         const store = storeFor(this);
         const meta = requireMeta(store);
@@ -392,7 +394,11 @@ export function registerCredsCommands(parent: Command, options: RegisterOptions 
         }
         store.appendAudit(auditEvent({ action: "vault.unlock", namespace: meta.namespace, profile: meta.profile }));
 
-        if (opts.persist) {
+        // A plain interactive `unlock` should do what people expect: unlock
+        // the vault for subsequent commands. The export-only behavior remains
+        // available behind --shell and for non-interactive/scripted use.
+        const persist = Boolean(opts.persist) || (!opts.shell && Boolean(process.stdin.isTTY) && !opts.passwordStdin);
+        if (persist) {
           const path = persistSession(userKey, opts.timeout, store.baseDir);
           process.stdout.write(`Session written to ${path}, expiring in ${opts.timeout} minutes.\n`);
           process.stdout.write(

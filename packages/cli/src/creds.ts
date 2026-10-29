@@ -39,7 +39,8 @@ Team secrets, the everyday commands:
 
 Personal vault:
   logicsrc vault init                                      create it (once)
-  eval "$(logicsrc vault unlock)"                          unlock for this shell
+  logicsrc vault unlock                                  unlock interactively for 15 minutes
+  eval "$(logicsrc vault unlock --shell)"               export a session into this shell
   logicsrc vault add login --name GitHub --username me --password -
   logicsrc vault list --category social                    never shows values
   logicsrc vault get GitHub --field login.password --reveal
