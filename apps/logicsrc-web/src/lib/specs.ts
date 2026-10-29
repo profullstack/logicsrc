@@ -108,6 +108,7 @@ export const FAMILIES: Family[] = [
       s("openemoji", "OpenEmoji", "An emoji set as a folder: one file that states coverage, licence and whether a person or a model drew it, and glyphs named by the codepoints they draw"),
       s("openicon", "OpenIcon", "An icon set as a folder: every icon named, with aliases, 24x24 currentColor SVGs and a Nerd Font, Unicode and ASCII glyph each, so a terminal draws the best one it can"),
       s("openthreat", "OpenThreat", "One file a security tool serves about what it found in the open: public subjects only, secrets never located"),
+      s("openvuln", "OpenVuln", "One record per vulnerability that is also a valid OSV record: what is affected, whether it is fixed, whether it is exploited (KEV, EPSS, AI agents), and who said each, for packages, agents, services and campaigns"),
       s("openrental", "OpenRental", "One file an operator serves about the agents and file swarms it rents out: members, metadata and rates through CoinPay", { landing: undefined, status: "draft" }),
       s("opensite", "OpenSite", "One record about a page or a site: the card a reader would draw, declared by the site or read from it, kept by an index"),
       s("openstack", "OpenStack.md", "One Markdown file a project serves about what it is built on: every interface and its layers, the rules, what it must never depend on, inherited by the next project through Extends"),
