@@ -4,16 +4,15 @@
 // (public/vault.js); everything else here is ciphertext metadata.
 import { Router } from "express";
 import { get, all, run, batch } from "../db.mjs";
-import { id, sha256 } from "../lib/crypto.mjs";
+import { id, token, sha256 } from "../lib/crypto.mjs";
 import { page, footer, appBar, esc } from "../lib/html.mjs";
-import { requireAuth, csrfInput } from "../lib/session.mjs";
+import { requireAuth, csrfInput, getCeremony, setCeremony, clearCeremony } from "../lib/session.mjs";
 import { ApiKeyError, createApiKey, keyCoversVault, listApiKeys, machineKeyOptions, revokeApiKey } from "../lib/apikey.mjs";
 import { requestOrigin } from "../lib/origin.mjs";
 import { CLI_HINT } from "../lib/cli-hint.mjs";
 import { vaultPageBody } from "../lib/vault-page.mjs";
 import { keyFingerprint } from "../lib/keyfp.mjs";
 import { teamAudit } from "./credshare.mjs";
-import { setCeremony, getCeremony, clearCeremony } from "../lib/session.mjs";
 import { config } from "../config.mjs";
 import { COLUMNS, renderProfileFields, validateProfile } from "@profullstack/profile";
 import { profiles } from "../lib/profile.mjs";
@@ -304,12 +303,15 @@ pagesRouter.get("/settings", requireAuth, async (req, res) => {
   res.set("Cache-Control", "no-store");
   const myKey = await get(`SELECT public_key, updated_at FROM credshare_keys WHERE user_id = ?`, [req.user.id]);
   const myGrants = await get(`SELECT COUNT(*) AS n FROM credshare_vault_grants WHERE user_id = ?`, [req.user.id]);
+  const recoveryToken = getCeremony(req, "recovery") || "";
+  if (recoveryToken) clearCeremony(res, "recovery");
   const err = req.query.err ? String(req.query.err).slice(0, 200) : "";
   const keysHtml = keys.length ? keys.map((k) => keyRow(req, k)).join("") : `<div class="faint mono" style="font-size:.78rem;padding:6px 0">no keys yet</div>`;
   const body = `${appBar(req)}
   <main class="wrap" style="max-width:720px;padding-top:30px">
     <h1 style="font-size:1.5rem;margin-bottom:20px">Settings</h1>
     ${newKey ? `<div class="notice ok">New API key (copy it now — shown once):<br><b class="mono" style="word-break:break-all">${esc(newKey)}</b></div>` : ""}
+    ${recoveryToken ? `<div class="notice ok">Emergency recovery token — copy it into Bitwarden now; it is shown once:<br><b class="mono" style="word-break:break-all">${esc(recoveryToken)}</b><br><span class="faint">Use it at ${esc(`${config.origin}/auth/recover?token=${recoveryToken}`)} to set a new password. It is single-use.</span></div>` : ""}
     ${err ? `<div class="notice err">${esc(KEY_ERRORS[err] || err)}</div>` : ""}
     ${req.query.saved === "profile" ? `<div class="notice ok">Your details are saved.</div>` : ""}
     ${req.query.saved === "identity-reset" ? `<div class="notice ok">Your identity key is reset and your vault grants are gone. Run <code>logicsrc login</code> to register a new key, then ask a teammate to grant you each vault again.</div>` : ""}
@@ -354,6 +356,11 @@ pagesRouter.get("/settings", requireAuth, async (req, res) => {
           </fieldset>
           <button class="btn">Create key</button>
         </form>
+      </div></div>
+    <div class="card" style="margin-top:20px"><div class="card-head"><span class="h">Emergency recovery</span></div>
+      <div class="card-body">
+        <p class="dim" style="font-size:.85rem;margin-top:0">Create a single-use recovery token for your password manager. The server stores only a hash; if you lose the plaintext, it cannot be recovered. Creating a new token revokes older ones.</p>
+        <form method="post" action="/settings/recovery-token">${csrfInput(req)}<button class="btn danger">Generate recovery token</button></form>
       </div></div>
   </main>${footer}`;
   res.type("html").send(page({ title: "LogicSRC ▸ settings", body }));
@@ -414,5 +421,17 @@ pagesRouter.post("/settings/identity/reset", requireAuth, async (req, res) => {
 
 pagesRouter.post("/settings/apikeys/:id/delete", requireAuth, async (req, res) => {
   await revokeApiKey(req.user.id, req.params.id);
+  res.redirect("/settings");
+});
+
+pagesRouter.post("/settings/recovery-token", requireAuth, async (req, res) => {
+  const rawToken = token(32);
+  const now = Date.now();
+  await batch([
+    { sql: `UPDATE recovery_tokens SET revoked_at = ? WHERE user_id = ? AND used_at IS NULL AND revoked_at IS NULL`, args: [now, req.user.id] },
+    { sql: `INSERT INTO recovery_tokens (id, user_id, token_hash, created_at, expires_at) VALUES (?,?,?,?,?)`, args: [id(), req.user.id, sha256(rawToken), now, now + 1000 * 60 * 60 * 24 * 365] },
+  ]);
+  // Keep the bearer token out of the URL, browser history, referrers, and access logs.
+  setCeremony(res, "recovery", rawToken, 1000 * 60 * 5);
   res.redirect("/settings");
 });
