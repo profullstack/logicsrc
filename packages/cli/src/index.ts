@@ -39,7 +39,7 @@ import { registerKeysCommands } from "./keys.js";
 import { registerKeyringCommands } from "./keyring-cmd.js";
 import { sshAgentAction, sshListAction, sshPullAction, sshPushAction } from "./ssh.js";
 import { credentialsRotateAction } from "./rotate.js";
-import { teamsRotateFromQueue, teamsRotateKeysAction, teamsRotationAction, teamsRotationSetAction } from "./rotate-keys.js";
+import { teamsQueueDueAction, teamsRotateFromQueue, teamsRotateKeysAction, teamsRotationAction, teamsRotationApproveAction, teamsRotationSetAction } from "./rotate-keys.js";
 import { teamsAuditAction, teamsKeyImportAction, teamsRekeyAction, teamsRotateIdentityAction } from "./hardening.js";
 import { teamsCleanAction } from "./vault-clean.js";
 import { boards, tasks } from "./fixtures.js";
@@ -961,6 +961,7 @@ teams
   .option("--allow-roll", "let desktop roll recipes run (Cloudflare Global API Key: the old key dies at once; a capture self-test runs first)")
   .option("--from-queue", "run the rotations queued on app.logicsrc.com (Rotation page / API / MCP) and report back; approved runs write only with --approve here too")
   .option("--max-runs <n>", "with --from-queue: stop after n runs")
+  .option("--queue-due", "90-day policy: queue every automatic key older than the team's max age as one run awaiting approval")
   .option("--format <format>", "table, json, or markdown", "table")
   .description("Rotate secret values: automatic ones are minted and written to every vault holding the old value; manual ones come back as steps.")
   .addHelpText(
@@ -973,6 +974,11 @@ Dry run first, then apply:
   new-key | logicsrc teams rotate-keys profullstack b1dz prod --key RESEND_API_KEY --set-from-stdin --approve
   logicsrc teams rotate-keys profullstack wx93 prod --key CRON_SECRET --propagate --approve
   logicsrc teams rotate-keys profullstack --scheduled --propagate --approve --report r.json   (the weekly job)
+
+90-day policy (default max age 90 days): due keys wait for an owner/admin to approve
+  logicsrc teams rotate-keys profullstack --queue-due          queue the overdue keys as one run
+  logicsrc teams rotation-approve profullstack <run-id>        approve it (or the Rotation page)
+  logicsrc teams rotate-keys profullstack --from-queue --propagate --approve   the runner rotates it
 
 Provider rotators (method provider): resend, cloudflare-token, coinpay-api-key,
 coinpay-webhook-secret, vapid, postgres-role. Each mints the new credential,
@@ -1007,6 +1013,11 @@ After rotating: redeploy the consumers, install new SSH public keys, revoke the 
       desktop: options.desktop,
       allowRoll: Boolean(options.allowRoll)
     };
+    if (options.queueDue) {
+      if (project || env || options.key || options.fromQueue) throw new Error("--queue-due covers the whole team; run it alone.");
+      await teamsQueueDueAction(slug, { format: options.format as OutputFormat });
+      return;
+    }
     if (options.fromQueue) {
       if (project || env || options.key || options.setFromStdin) throw new Error("--from-queue takes its keys, project and env from each queued run.");
       const reports = await teamsRotateFromQueue(slug, { ...common, maxRuns: options.maxRuns === undefined ? undefined : Number(options.maxRuns) }, {}, join(homedir(), "www"));
@@ -1028,6 +1039,14 @@ After rotating: redeploy the consumers, install new SSH public keys, revoke the 
       maxSites: options.maxSites === undefined ? undefined : Number(options.maxSites)
     });
   });
+
+teams
+  .command("rotation-approve")
+  .argument("<slug>", "Team slug")
+  .argument("<run-id>", "The awaiting-approval run (rotate-keys --queue-due prints it)")
+  .option("--format <format>", "table, json, or markdown", "table")
+  .description("Approve a due rotation run (90-day policy): owner or admin only. The queue runner then rotates it.")
+  .action(async (slug, runId, options) => { await teamsRotationApproveAction(slug, runId, { format: options.format as OutputFormat }); });
 
 teams
   .command("clean")

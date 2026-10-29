@@ -11,6 +11,18 @@ import { planRotations, isoTime } from "@logicsrc/cli/dist/rotation-catalog.js";
 import { DESKTOP_RECIPES } from "@logicsrc/cli/dist/desktop-recipes.js";
 
 const ROTATE_PREFIX = "__ROTATE__";
+const DAY = 24 * 60 * 60 * 1000;
+
+/** Default rotation policy: an automatic secret is due once its value is this many days old. */
+export const DEFAULT_MAX_AGE_DAYS = 90;
+/** One due run carries at most this many keys (the oldest first); the rest wait for the next. */
+export const DUE_RUN_MAX_KEYS = 200;
+
+/** A team's max age in days: its own setting, else the default. */
+export function maxAgeDays(team) {
+  const n = Number(team?.rotation_max_age_days);
+  return Number.isInteger(n) && n > 0 ? n : DEFAULT_MAX_AGE_DAYS;
+}
 
 /** Vault names split the way the CLI does: <project>--<env>. */
 export function splitVaultName(name) {
@@ -23,7 +35,7 @@ export function splitVaultName(name) {
  * `logicsrc teams rotation`. `vaultFilter(name)` limits it to vaults the caller
  * may see (a machine key's scope).
  */
-export async function rotationPlan(teamId, { project, env, keys, vaultFilter = () => true } = {}) {
+export async function rotationPlan(teamId, { project, env, keys, vaultFilter = () => true, maxAge = DEFAULT_MAX_AGE_DAYS, now = Date.now() } = {}) {
   const rows = (await all(
     `SELECT v.name AS vault, s.name AS key, s.fingerprint, s.updated_at
        FROM credshare_secrets s JOIN credshare_vaults v ON v.id = s.vault_id
@@ -50,6 +62,8 @@ export async function rotationPlan(teamId, { project, env, keys, vaultFilter = (
     const spec = p.spec ?? {};
     const recipe = spec.method === "desktop" ? DESKTOP_RECIPES[spec.recipe] : null;
     const everywhere = byFp.get(p.fingerprint) ?? [];
+    const rotatedAt = Date.parse(isoTime(p.oldestUpdate));
+    const ageDays = Number.isFinite(rotatedAt) ? Math.floor((now - rotatedAt) / DAY) : null;
     return {
       key: p.key,
       method: p.method,
@@ -68,6 +82,9 @@ export async function rotationPlan(teamId, { project, env, keys, vaultFilter = (
       vaultCount: everywhere.length || p.vaults.length,
       alsoIn: everywhere.filter((vk) => !p.vaults.some((v) => vk === `${v}:${p.key}`)),
       lastRotated: isoTime(p.oldestUpdate),
+      ageDays,
+      // Past the team's max age: the next due run picks it up (automatic keys only).
+      due: Boolean(p.automatic && !spec.never && ageDays !== null && ageDays >= maxAge),
       // The key's own encrypted instructions override the catalog; only the CLI can read them.
       hasEntry: p.vaults.some((v) => entries.has(`${v}\u0000${p.key}`))
     };
@@ -78,6 +95,8 @@ export async function rotationPlan(teamId, { project, env, keys, vaultFilter = (
 
 const KEY_NAME = /^[A-Za-z_][A-Za-z0-9_]{0,127}$/;
 const HOST = /^[A-Za-z0-9._@-]{1,100}$/;
+/** A run still open: a due run is not queued again while one of these exists. */
+export const OPEN_RUN_STATUSES = ["awaiting-approval", "queued", "running"];
 const RESULT_STATUSES = new Set(["rotated", "would-rotate", "todo", "failed", "rolled-back", "skipped", "covered", "needs-login", "busy"]);
 
 export class RotationRunError extends Error {}
@@ -139,6 +158,9 @@ export function runRow(r) {
     approve: Boolean(Number(r.approve)),
     options: parse(r.options, {}),
     status: r.status,
+    due: Boolean(parse(r.options, {}).due),
+    approvedBy: r.approved_by_email ?? r.approved_by ?? null,
+    approvedAt: r.approved_at ? Number(r.approved_at) : null,
     requestedBy: r.requested_by_email ?? r.requested_by,
     claimedBy: r.claimed_by ?? null,
     claimedAt: r.claimed_at ? Number(r.claimed_at) : null,

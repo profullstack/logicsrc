@@ -107,6 +107,42 @@ Session signers (`SESSION_SECRET`, `AUTH_SECRET`, `NEXTAUTH_SECRET`,
 `*_JWT_SECRET`, `SECRET_KEY_BASE`) are `random` but `disruptive`: rotating one
 signs every user out, so they rotate on purpose, not weekly.
 
+## The 90-day policy: approve, then it rotates
+
+Every automatic secret has a maximum age, 90 days by default (a team can set
+its own). The plan shows each key's age and a `due` flag once it is past it.
+
+1. **Queue.** The weekly job runs `logicsrc teams rotate-keys <team> --queue-due`
+   (or an owner clicks "Queue the due keys now" on the Rotation page). Every
+   due key goes into ONE run, oldest first, at most 200 keys, in status
+   `awaiting-approval`. While that run is open, asking again returns the same run.
+2. **Approve.** Nothing rotates until an owner or admin approves it: the
+   Approve button on `app.logicsrc.com/teams/<team>/rotation`, or
+   `logicsrc teams rotation-approve <team> <run-id>`. A machine key can queue
+   the due run but can never approve it. Decline cancels it.
+3. **Rotate.** `logicsrc-rotate --queue` runs every 5 minutes on the box. It
+   picks up approved runs with `--from-queue --propagate --approve`: mint,
+   write every vault, rewrite and restart consumers 3 at a time, health-check,
+   revoke the old value, and roll back on any failure. Then it mails what
+   happened. A typical run finishes a few minutes after the click.
+
+Only automatic keys are ever due. `never` keys (wallets, Stripe, signing) and
+manual keys stay on the manual list in the weekly mail.
+
+**Automatic rotation (paid add-on).** A team with `rotation_auto_approve` on
+skips step 2: its due runs are queued already approved and rotate on the next
+runner tick. It is off for every team by default. It is switched on per team by
+us when the add-on is bought; there is no self-serve toggle yet.
+
+```sh
+logicsrc teams rotate-keys profullstack --queue-due
+logicsrc teams rotation-approve profullstack <run-id>
+crontab: */5 * * * * $HOME/.local/bin/logicsrc-rotate --queue
+```
+
+API: `POST /api/credshare/teams/:slug/rotation/due` and
+`POST /api/credshare/teams/:slug/rotation/runs/:id/approve`.
+
 ## Built-in provider rotators
 
 Every rotator is two-phase: create the new credential, switch everything over,

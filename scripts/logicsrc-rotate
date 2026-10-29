@@ -5,6 +5,13 @@
 #   logicsrc-rotate               run per the config (dry run unless LOGICSRC_ROTATE_LIVE=1)
 #   logicsrc-rotate --dry-run     plan + report only, whatever the config says
 #   logicsrc-rotate --no-mail     print the report instead of mailing it
+#   logicsrc-rotate --queue       run the APPROVED queued runs now (a */5 cron), mail only if one ran
+#
+# 90-day policy: every weekly run first queues the automatic keys older than the
+# team's max age (90 days) as one run awaiting approval, and the mail links to
+# the Rotation page. An owner/admin clicks Approve; the --queue cron rotates it
+# within five minutes (3 sites at a time, health-checked, rolled back on failure).
+# Teams with the paid automatic rotation add-on skip the click.
 #
 # Rotates only what `rotate-keys --scheduled` allows unattended (non-disruptive
 # random secrets and overlapping provider rotators with known, healthy
@@ -45,11 +52,13 @@ MAX_SITES="${LOGICSRC_ROTATE_MAX_SITES:-5}"
 # Client sites are never part of a fleet sweep.
 EXCLUDE="${LOGICSRC_ROTATE_EXCLUDE:-tomahawkedison.com}"
 MAIL=1
+QUEUE=0
 for a in "$@"; do
   case "$a" in
     --dry-run) LIVE=0 ;;
+    --queue) QUEUE=1 ;;
     --no-mail) MAIL=0 ;;
-    -h|--help) sed -n 2,25p "$0"; exit 0 ;;
+    -h|--help) sed -n 2,33p "$0"; exit 0 ;;
     *) echo "unknown option $a" >&2; exit 2 ;;
   esac
 done
@@ -69,6 +78,36 @@ if [ "$LIVE" = 1 ] && [ "$avail_gb" -lt 6 ]; then
   LIVE=0
 fi
 
+if [ "$QUEUE" = 1 ]; then
+  # Low memory: leave approved runs queued for the next tick instead of restarting sites now.
+  [ "$avail_gb" -lt 6 ] && { echo "only ${avail_gb} GB available: approved runs wait for the next tick" >&2; exit 0; }
+  # Only runs an owner/admin approved in the app (or the paid auto-approve add-on queued) write anything.
+  QREPORT="$STATE/queue-$STAMP.json"
+  logicsrc teams rotate-keys "$TEAM" --from-queue --propagate "$ROOT" --approve --exclude-site "$EXCLUDE" --report "$QREPORT" --format json >/dev/null 2>"$STATE/queue-$STAMP.err" || status=$?
+  status="${status:-0}"
+  if [ -f "$QREPORT" ] && node -e 'process.exit(require(process.argv[1]).runs.length ? 0 : 1)' "$QREPORT"; then
+    QBODY="$STATE/queue-mail-$STAMP.txt"
+    node - "$QREPORT" >"$QBODY" <<'NODE'
+const r = require(process.argv[2]);
+const out = [`Approved rotation run(s) for team ${r.team}, ${r.at}`, ""];
+for (const run of r.runs) {
+  out.push(`Run ${run.id}: ${run.status} (${run.ran}), ${run.keys.length} key(s): ${run.summary}`);
+  for (const x of run.results) out.push(`  ${x.key}  ${x.status}${x.sites && x.sites.length ? `  sites: ${[...new Set(x.sites.map((s) => s.site))].join(" ")}` : ""}${x.error ? `  ${x.error}` : ""}`);
+}
+console.log(out.join("\n"));
+NODE
+    QSUBJECT="logicsrc rotation: approved run $(node -e 'const r=require(process.argv[1]);console.log(r.runs.map(x=>x.status).join(", "))' "$QREPORT")"
+    if [ "$MAIL" = 1 ]; then env -u RESEND_API_KEY mail send --via resend --to "$TO" --subject "$QSUBJECT" --file "$QBODY"; else cat "$QBODY"; fi
+  else
+    rm -f "$QREPORT" "$STATE/queue-$STAMP.err"
+  fi
+  exit "${status:-0}"
+fi
+
+# 90-day policy: queue the overdue automatic keys as one run awaiting approval (never rotates by itself).
+DUE="$STATE/due-$STAMP.json"
+logicsrc teams rotate-keys "$TEAM" --queue-due --format json >"$DUE" 2>>"$STATE/run-$STAMP.err" || echo '{}' >"$DUE"
+
 args=(teams rotate-keys "$TEAM" --scheduled --propagate "$ROOT" --max "$MAX" --max-sites "$MAX_SITES" --exclude-site "$EXCLUDE" --report "$REPORT" --format json)
 [ "$LIVE" = 1 ] && args+=(--approve)
 status=0
@@ -76,9 +115,19 @@ logicsrc "${args[@]}" >/dev/null 2>"$STATE/run-$STAMP.err" || status=$?
 # stderr holds vault names and counts only; keep it for the report.
 
 BODY="$STATE/mail-$STAMP.txt"
-node - "$REPORT" "$LIVE" "$status" "$STATE/run-$STAMP.err" >"$BODY" <<'NODE'
+node - "$REPORT" "$LIVE" "$status" "$STATE/run-$STAMP.err" "$DUE" "$TEAM" >"$BODY" <<'NODE'
 const fs = require("fs");
-const [file, live, status, errFile] = process.argv.slice(2);
+const [file, live, status, errFile, dueFile, team] = process.argv.slice(2);
+let due = {};
+try { due = JSON.parse(fs.readFileSync(dueFile, "utf8")); } catch {}
+const dueLines = [];
+if (due.run) {
+  dueLines.push(`${due.maxAgeDays}-DAY POLICY: ${due.run.keys.length} automatic key(s) older than ${due.maxAgeDays} days, run ${due.run.id} is ${due.run.status}.`);
+  if (due.run.status === "awaiting-approval") dueLines.push(`  Approve it: https://app.logicsrc.com/teams/${team}/rotation  (it rotates within 5 minutes of the click)`);
+  dueLines.push("");
+} else if (due.maxAgeDays) {
+  dueLines.push(`${due.maxAgeDays}-DAY POLICY: nothing is older than ${due.maxAgeDays} days.`, "");
+}
 let report;
 try {
   report = JSON.parse(fs.readFileSync(file, "utf8"));
@@ -89,7 +138,7 @@ try {
 }
 const R = report.results;
 const by = (s) => R.filter((r) => r.status === s);
-const out = [];
+const out = [...dueLines];
 const line = (s = "") => out.push(s);
 const where = (r) => `${(r.vaults || []).length} vault(s)${r.sites && r.sites.length ? `, sites: ${[...new Set(r.sites.map((s) => s.site))].join(" ")}` : ""}`;
 line(`Secret rotation ${live === "1" ? "LIVE run" : "DRY RUN (nothing changed)"} for team ${report.team}, ${report.at}`);
@@ -177,5 +226,5 @@ else
   cat "$BODY"
 fi
 # Keep 12 weeks of reports.
-find "$STATE" -maxdepth 1 -type f \( -name 'report-*.json' -o -name 'mail-*.txt' -o -name 'run-*.err' \) -mtime +84 -delete
+find "$STATE" -maxdepth 1 -type f \( -name 'report-*.json' -o -name 'mail-*.txt' -o -name 'run-*.err' -o -name 'due-*.json' -o -name 'queue-*' \) -mtime +84 -delete
 exit "$status"
