@@ -149,6 +149,7 @@ export const GUIDES: Array<{ slug: string; name: string }> = [
   { slug: "config", name: "Config" },
   { slug: "permissions", name: "Permissions" },
   { slug: "keyring", name: "Keyring" },
+  { slug: "rotation", name: "Rotating secrets" },
   { slug: "plugins", name: "Plugins" },
   { slug: "openontology-governance", name: "OpenOntology governance" },
   { slug: "openontology-interoperability", name: "OpenOntology interoperability" }

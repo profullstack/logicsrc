@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 import { spawnSync } from "node:child_process";
 import { readFileSync } from "node:fs";
+import { homedir } from "node:os";
+import { join } from "node:path";
 import { evaluateAccountPolicy, scoreAccountActionRisk } from "@logicsrc/account-core";
 import { Command } from "commander";
 import { createCredentialEngine, listCredentialProviders, logicsrcHome, type CredentialEndpoint } from "@logicsrc/plugin-credential-sharing";
@@ -949,6 +951,12 @@ teams
   .option("-k, --key <names>", "only these keys (comma-separated or repeated)", collectList)
   .option("--approve", "write the new values (dry run by default)")
   .option("--set-from-stdin", "store a value you rotated by hand (exactly one --key), everywhere the old value lives")
+  .option("--propagate [root]", "also rewrite, restart and health-check the sites holding the old value (default root ~/www); rolls back on failure")
+  .option("--scheduled", "unattended mode: only non-disruptive random secrets and two-phase provider rotators with known consumers")
+  .option("--max <n>", "stop after n live rotations")
+  .option("--exclude-site <sites>", "never rewrite or restart these sites; a value they hold is skipped (comma-separated or repeated)", collectList)
+  .option("--max-sites <n>", "with --scheduled: skip values read by more than n sites (default 5)")
+  .option("--report <file>", "also write the JSON results (never values) to this file, mode 600")
   .option("--format <format>", "table, json, or markdown", "table")
   .description("Rotate secret values: automatic ones are minted and written to every vault holding the old value; manual ones come back as steps.")
   .addHelpText(
@@ -959,19 +967,33 @@ Dry run first, then apply:
   logicsrc teams rotate-keys profullstack b1dz prod --approve   rotate one vault's automatic keys
   logicsrc teams rotate-keys profullstack --key SSH_ID_ED25519 --approve
   new-key | logicsrc teams rotate-keys profullstack b1dz prod --key RESEND_API_KEY --set-from-stdin --approve
+  logicsrc teams rotate-keys profullstack wx93 prod --key CRON_SECRET --propagate --approve
+  logicsrc teams rotate-keys profullstack --scheduled --propagate --approve --report r.json   (the weekly job)
+
+Provider rotators (method provider): resend, cloudflare-token, coinpay-api-key,
+coinpay-webhook-secret, vapid, postgres-role. Each mints the new credential,
+writes the vaults, redeploys consumers, health-checks them, and only then
+revokes the old one; any failure restores the old value everywhere.
+Runbook: https://logicsrc.com/docs/rotation
 
 Values never print. The same value stored in other vaults (same fingerprint) is
 rotated there too. Vaults you cannot decrypt are named and keep the OLD value.
 After rotating: redeploy the consumers, install new SSH public keys, revoke the old values.
 `
   )
-  .action((slug, project, env, options) =>
-    teamsRotateKeysAction(slug, { project, env, keys: options.key }, {
+  .action(async (slug, project, env, options) => {
+    await teamsRotateKeysAction(slug, { project, env, keys: options.key }, {
       approve: Boolean(options.approve),
       setFromStdin: Boolean(options.setFromStdin),
-      format: options.format as OutputFormat
-    })
-  );
+      format: options.format as OutputFormat,
+      propagate: options.propagate === undefined ? undefined : options.propagate === true ? join(homedir(), "www") : String(options.propagate),
+      scheduled: Boolean(options.scheduled),
+      max: options.max === undefined ? undefined : Number(options.max),
+      report: options.report,
+      excludeSites: options.excludeSite,
+      maxSites: options.maxSites === undefined ? undefined : Number(options.maxSites)
+    });
+  });
 
 teams
   .command("clean")

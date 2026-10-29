@@ -42,6 +42,7 @@ const GUIDE_SUBTITLES: Record<string, string> = {
   config: "Where config lives, and what each key does",
   permissions: "Explicit, scoped, auditable permission grants",
   keyring: "SSH keys and key pairs, end-to-end encrypted, with optional cloud sync",
+  rotation: "Rotate every key, password and token in your vaults: plan, rotate, redeploy, verify, revoke",
   plugins: "The plugin system, and the plugins that ship with it",
   "openontology-governance": "An agent proposes, a human applies",
   "openontology-interoperability": "Mapping to RDF, SHACL and PROV-O, and where it stops",
