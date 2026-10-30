@@ -1,4 +1,5 @@
 {
+  "id": "/",
   "name": "LogicSRC",
   "short_name": "LogicSRC",
   "description": "Open standards and schemas for human and AI agent coordination.",
@@ -8,6 +9,24 @@
   "background_color": "#f6f7f4",
   "theme_color": "#101418",
   "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
     {
       "src": "/icon.svg",
       "sizes": "any",
