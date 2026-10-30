@@ -12,7 +12,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import express from "express";
 
-import { splitVaultName, vaultPageBody, KEY_HELP } from "../src/lib/vault-page.mjs";
+import { bulkUnlockCard, splitVaultName, vaultPageBody, KEY_HELP } from "../src/lib/vault-page.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const { db, run, isPostgres } = await import("../src/db.mjs");
@@ -127,11 +127,31 @@ test("a non-member and an unknown vault both fall through to 404", async () => {
 test("the dashboard links each vault to its page", async () => {
   const app = await serve({ id: "u-ann", email: "ann@example.com" });
   try {
-    const { text } = await app.get("/dashboard");
+    const { text, headers } = await app.get("/dashboard");
     assert.match(text, /href="\/teams\/acme\/vaults\/v1"/);
+    assert.match(text, /id="vault-bulk"/);
+    assert.match(text, /src="\/vault-bulk\.js"/);
+    assert.equal(headers.get("cache-control"), "no-store");
   } finally {
     await app.close();
   }
+});
+
+test("bulk unlock is one identity-key form and warns that all accessible values load in-tab", () => {
+  const html = bulkUnlockCard();
+  assert.match(html, /name="key"/);
+  assert.match(html, /Unlock all vaults/);
+  assert.match(html, /all accessible secrets/);
+  assert.match(html, /nothing is saved on this device or sent to the server/);
+});
+
+test("bulk unlock fetches existing encrypted grants and does not persist the key", () => {
+  const script = readFileSync(join(here, "..", "public", "vault-bulk.js"), "utf8");
+  assert.match(script, /\/api\/credshare\/me\/grants/);
+  assert.match(script, /crypto_box_seal_open/);
+  assert.match(script, /crypto_secretbox_open_easy/);
+  assert.match(script, /cache: "no-store"/);
+  assert.doesNotMatch(script, /localStorage|sessionStorage/);
 });
 
 test("vault names split the way the CLI splits them", () => {

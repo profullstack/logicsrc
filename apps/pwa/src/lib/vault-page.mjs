@@ -31,6 +31,36 @@ node -p 'require(require("os").homedir()+"/.config/logicsrc/identity.json").keys
   </div>
 </details>`;
 
+/** Dashboard control for opening every vault granted to the signed-in person. */
+export function bulkUnlockCard() {
+  return `<section class="card" id="vault-bulk" style="margin-bottom:22px">
+    <div class="card-head"><span class="h">Unlock all vaults</span><span class="pill">one key · all teams</span></div>
+    <div class="card-body">
+      <p class="dim" style="margin-top:0;font-size:.88rem">Unlock every team vault granted to your account in one go. Your identity key and decrypted values stay in this browser tab; nothing is saved on this device or sent to the server.</p>
+      <div class="notice warn" style="margin-bottom:12px">This loads all accessible secrets into this tab's memory. Values stay masked until you reveal them.</div>
+      <form data-role="bulk-unlock" autocomplete="off">
+        <label class="field"><span>Your identity secret key or identity.json</span>
+          <input type="password" name="key" placeholder="paste once to open all granted vaults" spellcheck="false" autocomplete="off" required></label>
+        <button class="btn acid" style="font-size:1rem;padding:12px 22px">Unlock all vaults</button>
+      </form>
+      <div data-role="bulk-running" hidden>
+        <p data-role="bulk-progress" class="mono dim" aria-live="polite"></p>
+        <button class="btn danger" type="button" data-action="bulk-stop">Stop and lock</button>
+      </div>
+      <div data-role="bulk-results" hidden>
+        <p data-role="bulk-summary" class="dim" aria-live="polite"></p>
+        <label class="field"><span>Search team, vault, or secret name</span>
+          <input type="search" data-role="bulk-search" placeholder="e.g. NPM_TOKEN" autocomplete="off"></label>
+        <div class="table-scroll"><table><thead><tr><th>Team</th><th>Vault</th><th>Secret</th><th>Value</th><th></th></tr></thead><tbody data-role="bulk-rows"></tbody></table></div>
+        <button class="btn compact" type="button" data-action="bulk-more" hidden>Show more</button>
+        <button class="btn danger" type="button" data-action="bulk-lock" style="margin-top:12px">Lock all and clear</button>
+      </div>
+      <p data-role="bulk-status" class="mono" style="font-size:.82rem;margin-bottom:0;color:var(--danger,#c23a3a)" aria-live="polite"></p>
+      ${KEY_HELP}
+    </div>
+  </section>`;
+}
+
 function keyCard({ publicKey, hasGrant, grantCommand }) {
   if (!publicKey) {
     // No identity registered yet: offer to make one here. Only in this state --

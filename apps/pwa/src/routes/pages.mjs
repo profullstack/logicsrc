@@ -10,7 +10,7 @@ import { requireAuth, csrfInput, getCeremony, setCeremony, clearCeremony } from 
 import { ApiKeyError, createApiKey, keyCoversVault, listApiKeys, machineKeyOptions, revokeApiKey } from "../lib/apikey.mjs";
 import { requestOrigin } from "../lib/origin.mjs";
 import { CLI_HINT } from "../lib/cli-hint.mjs";
-import { vaultPageBody } from "../lib/vault-page.mjs";
+import { bulkUnlockCard, vaultPageBody } from "../lib/vault-page.mjs";
 import { keyFingerprint } from "../lib/keyfp.mjs";
 import { teamAudit } from "./credshare.mjs";
 import { config } from "../config.mjs";
@@ -119,12 +119,18 @@ export async function dashboardHandler(req, res) {
     ${ok ? `<div class="notice ok">${esc(ok)}${rotation ? " Vault grants were revoked; rotate affected vault keys before re-adding this person." : ""}</div>` : ""}
     ${err ? `<div class="notice err">${esc(err)}</div>` : ""}
     ${CLI_HINT(requestOrigin(req, config.origin))}
+    ${bulkUnlockCard()}
     ${cards || `<div class="card"><div class="card-body dim">You're not on any teams yet. Create one below or accept an invite.</div></div>`}
     <div class="card" style="margin-top:22px"><div class="card-head"><span class="h">New team</span></div>
       <div class="card-body"><form method="post" action="/teams" style="display:flex;gap:8px">${csrfInput(req)}
         <input name="slug" placeholder="team-slug" required style="flex:1"><button class="btn acid">Create team</button></form></div></div>
   </main>${footer}`;
-  res.type("html").send(page({ title: "LogicSRC ▸ teams", body, head: `<script src="/pins.js" defer></script>` }));
+  res.set("Cache-Control", "no-store");
+  res.type("html").send(page({
+    title: "LogicSRC ▸ teams",
+    body: `${body}<script src="/vendor/libsodium.js" defer></script><script src="/vendor/libsodium-wrappers.js" defer></script><script src="/vault-bulk.js" defer></script>`,
+    head: `<script src="/pins.js" defer></script>`
+  }));
 }
 
 pagesRouter.get("/dashboard", requireAuth, dashboardHandler);
