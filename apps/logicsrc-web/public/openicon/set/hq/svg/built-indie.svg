@@ -1,1 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#0B0A10"><title>built.indie.pit.world</title><g transform="translate(2 2) scale(0.3125)"><path d="M32 9 11 35h14v20h14V35h14z"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">built.indie</title>
+  <rect width="64" height="64" rx="14" fill="#0b0a10"/>
+  <path d="M32 9 11 35h14v20h14V35h14z" fill="#ff5c39"/>
+</svg>
