@@ -14,7 +14,7 @@
     "@logicsrc/cli": "workspace:*",
     "@profullstack/coinpay-onboard": "0.3.1",
     "@profullstack/key-rotation": "0.1.0",
-    "@profullstack/footer": "0.5.0",
+    "@profullstack/footer": "latest",
     "@profullstack/libsql-pg": "^0.1.4",
     "@profullstack/profile": "0.1.6",
     "@simplewebauthn/browser": "^14.0.0",
