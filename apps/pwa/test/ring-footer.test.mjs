@@ -1,16 +1,19 @@
-// The sign-in page carries the Profullstack footer (webring row + badges), from
-// the template bundled in the pinned package only: nothing is fetched at runtime.
+// The sign-in page carries the shared Profullstack footer (webring row + square badges)
+// from the package's bundled template only: nothing is fetched at runtime.
 import assert from "node:assert/strict";
 import test from "node:test";
 import { readFileSync } from "node:fs";
 
 import * as ringFooterModule from "../src/lib/ring-footer.mjs";
 
-test("the bundled footer links the ring and both badges for app.logicsrc.com", () => {
+test("the shared footer links the ring and both square badges for app.logicsrc.com", () => {
   const html = ringFooterModule.ringFooter();
   assert.match(html, /rssamplifier\.com\/ring\/profullstack/);
-  assert.match(html, /built\.indie\.pit\.world/);
-  assert.match(html, /pwamart\.com\/for\.svg\?site=https%3A%2F%2Fapp\.logicsrc\.com%2F|pwamart\.com\/for\.svg\?site=https:\/\/app\.logicsrc\.com\//);
+  assert.match(html, /href="https:\/\/built\.indie\.pit\.world\/for\?site=https:\/\/app\.logicsrc\.com\//);
+  assert.match(html, /src="https:\/\/logicsrc\.com\/openicon\/set\/hq\/svg\/built-indie\.svg"/);
+  assert.match(html, /href="https:\/\/pwamart\.com\/for\?site=https:\/\/app\.logicsrc\.com\//);
+  assert.match(html, /src="https:\/\/logicsrc\.com\/openicon\/set\/hq\/svg\/pwamart\.svg"/);
+  assert.match(html, /pfs-footer__badge--publisher img\{width:32px;height:32px/);
 });
 
 test("the footer cannot be swapped at runtime (no CDN refresh)", () => {
@@ -20,7 +23,7 @@ test("the footer cannot be swapped at runtime (no CDN refresh)", () => {
   assert.doesNotMatch(src, /footerHtml\(/);
 });
 
-test("the footer package is pinned to an exact version", () => {
+test("the footer package follows the shared latest release", () => {
   const pkg = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8"));
-  assert.match(pkg.dependencies["@profullstack/footer"], /^\d+\.\d+\.\d+$/);
+  assert.equal(pkg.dependencies["@profullstack/footer"], "latest");
 });
