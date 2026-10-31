@@ -252,6 +252,7 @@ By hand, in any editor, in five minutes. Or:
 
 - [OpenSkill](/docs/openskill): human skills, knowledge and occupations linked from the optional Skills section.
 - [OpenResume.md](/docs/openresume): what you have done, in the same spirit. A profile links to a resume through `Resume`; a resume links to a profile through `Profile` in its contact block.
+- [OpenPersona.md](/openpersona): an optional companion for an agent's role, spoken voice and conversational style; the profile page links to it.
 - [OpenBroadcast](/docs/openbroadcast) and [OpenGuest](/docs/openguest): the `Broadcast` and `Guest` sections, for matching hosts with guests.
 - [OpenJob](/docs/openjob): what the work is.
 - [OpenCreds](/opencreds): where the tokens behind the accounts are kept. A profile never contains a credential.

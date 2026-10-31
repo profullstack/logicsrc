@@ -91,6 +91,8 @@ An agent orchestration swarm is a set of sessions in OpenFleet. [OpenSwarm](/ope
 
 [OpenProfile.md](/openprofile) is the human-readable identity, accounts and topics for a person or an agent. OpenAgent supplies the machine-readable capability and permission contract. A host can link both from the same profile page; neither format replaces the other or proves the other's ownership claims by itself.
 
+[OpenPersona.md](/openpersona) is the optional public companion for an agent's role, spoken voice and conversational style. Keep the OpenAgent JSON unchanged: the host links the persona from the agent's profile page with `rel="openpersona"`, and the persona points back to the exact OpenAgent descriptor it describes. Persona prose is descriptive; it does not grant skills, permissions or authority, and a reader never executes it as a system prompt.
+
 [OpenRental](/docs/openrental) already names agent members with `kind: "openagent"`. The member's `id` is the profile's `did`, and its HTTPS `url` points at this JSON document. A listing must check that the returned identity matches. Membership does not authorize execution or create a rental offer.
 
 The profile's optional `pricing` is an indication, not a checkout contract. Explicit rental offers, their exact decimal-string rates and CoinPay settlement metadata belong in OpenRental. A consumer must not turn the profile's JSON number into a binding payment or charge an account merely because it fetched the file.

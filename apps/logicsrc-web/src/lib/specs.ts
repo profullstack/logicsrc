@@ -53,6 +53,7 @@ export const FAMILIES: Family[] = [
       s("openprofile", "OpenProfile.md", "One Markdown file for who you are and where you are, people and agents alike", { status: "0.2" }),
       s("openskill", "OpenSkill", "Portable descriptions of human skills, knowledge and occupations, linked from OpenProfile", { status: "draft" }),
       s("openagent", "OpenAgent", "A portable agent profile: identity, owner, skills and requested permissions", { status: "0.1" }),
+      s("openpersona", "OpenPersona.md", "One Markdown file for an agent's public persona, spoken voice and conversational style", { status: "0.1" }),
       s("openwall", "OpenWall", "Consent-based broadcasts and direct messages across contact networks, with an AT Protocol mapping", { landing: undefined, status: "draft" }),
       s("openresume", "OpenResume.md", "What you have done, in the same spirit, linked from the profile", { landing: undefined }),
       s("openjob", "OpenJob", "What the work is, so a candidate's agent and a job board agree", { landing: undefined }),

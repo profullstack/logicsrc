@@ -12,6 +12,7 @@ export const metadata: Metadata = specMetadata(
 
 const LINKS = [
   ["OpenProfile.md", "/openprofile", "The identity, accounts and topics people read. Link the JSON descriptor from the same profile page."],
+  ["OpenPersona.md", "/openpersona", "The agent's public role, spoken voice and conversational style, linked from its profile page."],
   ["OpenFleet", "/openfleet", "The running sessions and their human sysop. A launcher maps one agent profile to many fleet members."],
   ["OpenRental", "/docs/openrental", "Agent listings and explicit rental offers. An openagent member points at this profile and matches its did."],
   ["OpenAccess", "/openaccess", "The delegated grant. Requested permissions in a profile do not grant access."],
@@ -29,6 +30,7 @@ export default function OpenAgentPage() {
         </div>
         <p>A directory, a job board and a launcher can read the same JSON profile. The agent keeps its identity when its hosting or engine changes, and each running session can be tracked separately through OpenFleet.</p>
         <p>The format is the existing <code style={mono}>logicsrc.agent</code> contract. Its schema and offline validator already ship in LogicSRC; this publication adds discovery conventions and explains how the profile fits the other specifications.</p>
+        <p>Describe an agent's public persona in a separate <Link href="/openpersona">OpenPersona.md</Link> file. The OpenAgent schema stays unchanged; link the companion from the same profile page and bind it back to this JSON descriptor.</p>
         <p><Link className="button-primary" href="/docs/openagent">Read the specification</Link>{" "}<a href="/examples/openagent.json">Download the example</a></p>
       </section>
 
