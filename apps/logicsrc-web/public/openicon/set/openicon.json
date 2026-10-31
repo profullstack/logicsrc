@@ -1,7 +1,7 @@
 {
   "openicon": "0.1",
   "name": "OpenIcon",
-  "version": "2026-10-10",
+  "version": "2026-10-30",
   "license": "MIT",
   "homepage": "https://logicsrc.com/openicon",
   "made_by": "ai",
@@ -32,7 +32,8 @@
   "sources": {
     "nerd-fonts": "Nerd Fonts 3.4.0 glyph names (MIT)",
     "simple-icons": "Simple Icons 16.32.0 (CC0-1.0)",
-    "font-awesome": "Font Awesome Free 7.3.1 brands (CC-BY-4.0)"
+    "font-awesome": "Font Awesome Free 7.3.1 brands (CC-BY-4.0)",
+    "profullstack-services": "80 Profullstack property marks; source URLs are recorded per icon"
   },
   "categories": {
     "action": "Actions",
@@ -18315,6 +18316,4726 @@
         "hex": "#FF9900",
         "hex_source": "https://www.aboutamazon.com (Amazon smile orange)"
       }
+    },
+    {
+      "key": "b1dz",
+      "name": "b1dz.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "b1dz.com and its logo are trademarks of their owner. Use them to refer to b1dz.com, not to imply endorsement.",
+      "source": "profullstack-service:b1dz.com",
+      "source_url": "https://b1dz.com/favicon.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/b1dz.svg",
+      "png": "png/{size}/b1dz.png",
+      "tui": {
+        "unicode": "B",
+        "ascii": "b1d"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/b1dz.png",
+          "webp": "hq/webp/{size}/b1dz.webp",
+          "made_by": "human",
+          "svg": "hq/svg/b1dz.svg",
+          "hex": "#222222",
+          "hex_source": "https://b1dz.com/favicon.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/b1dz.png",
+          "webp": "styles/agentic-matte/webp/{size}/b1dz.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/b1dz.svg",
+          "hex": "#222222",
+          "hex_source": "https://b1dz.com/favicon.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/b1dz.png",
+          "webp": "styles/agentic-machined/webp/{size}/b1dz.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/b1dz.svg",
+          "hex": "#222222",
+          "hex_source": "https://b1dz.com/favicon.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/b1dz.png",
+          "webp": "styles/agentic-emissive/webp/{size}/b1dz.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/b1dz.svg",
+          "hex": "#222222",
+          "hex_source": "https://b1dz.com/favicon.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/b1dz.png",
+        "webp": "hq/webp/{size}/b1dz.webp",
+        "made_by": "human",
+        "svg": "hq/svg/b1dz.svg",
+        "hex": "#222222",
+        "hex_source": "https://b1dz.com/favicon.svg"
+      }
+    },
+    {
+      "key": "bl0ggers",
+      "name": "bl0ggers.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "bl0ggers.com and its logo are trademarks of their owner. Use them to refer to bl0ggers.com, not to imply endorsement.",
+      "source": "profullstack-service:bl0ggers.com",
+      "source_url": "https://bl0ggers.com/favicon.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/bl0ggers.svg",
+      "png": "png/{size}/bl0ggers.png",
+      "tui": {
+        "unicode": "B",
+        "ascii": "bl0"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/bl0ggers.png",
+          "webp": "hq/webp/{size}/bl0ggers.webp",
+          "made_by": "human",
+          "svg": "hq/svg/bl0ggers.svg",
+          "hex": "#0B0B0C",
+          "hex_source": "https://bl0ggers.com/favicon.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/bl0ggers.png",
+          "webp": "styles/agentic-matte/webp/{size}/bl0ggers.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/bl0ggers.svg",
+          "hex": "#0B0B0C",
+          "hex_source": "https://bl0ggers.com/favicon.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/bl0ggers.png",
+          "webp": "styles/agentic-machined/webp/{size}/bl0ggers.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/bl0ggers.svg",
+          "hex": "#0B0B0C",
+          "hex_source": "https://bl0ggers.com/favicon.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/bl0ggers.png",
+          "webp": "styles/agentic-emissive/webp/{size}/bl0ggers.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/bl0ggers.svg",
+          "hex": "#0B0B0C",
+          "hex_source": "https://bl0ggers.com/favicon.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/bl0ggers.png",
+        "webp": "hq/webp/{size}/bl0ggers.webp",
+        "made_by": "human",
+        "svg": "hq/svg/bl0ggers.svg",
+        "hex": "#0B0B0C",
+        "hex_source": "https://bl0ggers.com/favicon.svg"
+      }
+    },
+    {
+      "key": "brisk",
+      "name": "brisk.news",
+      "category": "brand",
+      "brand": true,
+      "trademark": "brisk.news and its logo are trademarks of their owner. Use them to refer to brisk.news, not to imply endorsement.",
+      "source": "profullstack-service:brisk.news",
+      "source_url": "https://brisk.news/favicon.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/brisk.svg",
+      "png": "png/{size}/brisk.png",
+      "tui": {
+        "unicode": "B",
+        "ascii": "bri"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/brisk.png",
+          "webp": "hq/webp/{size}/brisk.webp",
+          "made_by": "human",
+          "svg": "hq/svg/brisk.svg",
+          "hex": "#222222",
+          "hex_source": "https://brisk.news/favicon.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/brisk.png",
+          "webp": "styles/agentic-matte/webp/{size}/brisk.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/brisk.svg",
+          "hex": "#222222",
+          "hex_source": "https://brisk.news/favicon.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/brisk.png",
+          "webp": "styles/agentic-machined/webp/{size}/brisk.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/brisk.svg",
+          "hex": "#222222",
+          "hex_source": "https://brisk.news/favicon.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/brisk.png",
+          "webp": "styles/agentic-emissive/webp/{size}/brisk.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/brisk.svg",
+          "hex": "#222222",
+          "hex_source": "https://brisk.news/favicon.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/brisk.png",
+        "webp": "hq/webp/{size}/brisk.webp",
+        "made_by": "human",
+        "svg": "hq/svg/brisk.svg",
+        "hex": "#222222",
+        "hex_source": "https://brisk.news/favicon.svg"
+      }
+    },
+    {
+      "key": "c0mpute",
+      "name": "c0mpute.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "c0mpute.com and its logo are trademarks of their owner. Use them to refer to c0mpute.com, not to imply endorsement.",
+      "source": "profullstack-service:c0mpute.com",
+      "source_url": "https://c0mpute.com/icon-512.png",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/c0mpute.svg",
+      "png": "png/{size}/c0mpute.png",
+      "tui": {
+        "unicode": "C",
+        "ascii": "c0m"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/c0mpute.png",
+          "webp": "hq/webp/{size}/c0mpute.webp",
+          "made_by": "human",
+          "svg": "hq/svg/c0mpute.svg",
+          "hex": "#0F172A",
+          "hex_source": "https://c0mpute.com/icon-512.png"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/c0mpute.png",
+          "webp": "styles/agentic-matte/webp/{size}/c0mpute.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/c0mpute.svg",
+          "hex": "#0F172A",
+          "hex_source": "https://c0mpute.com/icon-512.png"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/c0mpute.png",
+          "webp": "styles/agentic-machined/webp/{size}/c0mpute.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/c0mpute.svg",
+          "hex": "#0F172A",
+          "hex_source": "https://c0mpute.com/icon-512.png"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/c0mpute.png",
+          "webp": "styles/agentic-emissive/webp/{size}/c0mpute.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/c0mpute.svg",
+          "hex": "#0F172A",
+          "hex_source": "https://c0mpute.com/icon-512.png"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/c0mpute.png",
+        "webp": "hq/webp/{size}/c0mpute.webp",
+        "made_by": "human",
+        "svg": "hq/svg/c0mpute.svg",
+        "hex": "#0F172A",
+        "hex_source": "https://c0mpute.com/icon-512.png"
+      }
+    },
+    {
+      "key": "c0ncerts",
+      "name": "c0ncerts.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "c0ncerts.com and its logo are trademarks of their owner. Use them to refer to c0ncerts.com, not to imply endorsement.",
+      "source": "profullstack-service:c0ncerts.com",
+      "source_url": "https://c0ncerts.com/favicon.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/c0ncerts.svg",
+      "png": "png/{size}/c0ncerts.png",
+      "tui": {
+        "unicode": "C",
+        "ascii": "c0n"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/c0ncerts.png",
+          "webp": "hq/webp/{size}/c0ncerts.webp",
+          "made_by": "human",
+          "svg": "hq/svg/c0ncerts.svg",
+          "hex": "#168C87",
+          "hex_source": "https://c0ncerts.com/favicon.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/c0ncerts.png",
+          "webp": "styles/agentic-matte/webp/{size}/c0ncerts.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/c0ncerts.svg",
+          "hex": "#168C87",
+          "hex_source": "https://c0ncerts.com/favicon.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/c0ncerts.png",
+          "webp": "styles/agentic-machined/webp/{size}/c0ncerts.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/c0ncerts.svg",
+          "hex": "#168C87",
+          "hex_source": "https://c0ncerts.com/favicon.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/c0ncerts.png",
+          "webp": "styles/agentic-emissive/webp/{size}/c0ncerts.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/c0ncerts.svg",
+          "hex": "#168C87",
+          "hex_source": "https://c0ncerts.com/favicon.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/c0ncerts.png",
+        "webp": "hq/webp/{size}/c0ncerts.webp",
+        "made_by": "human",
+        "svg": "hq/svg/c0ncerts.svg",
+        "hex": "#168C87",
+        "hex_source": "https://c0ncerts.com/favicon.svg"
+      }
+    },
+    {
+      "key": "c0upons",
+      "name": "c0upons.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "c0upons.com and its logo are trademarks of their owner. Use them to refer to c0upons.com, not to imply endorsement.",
+      "source": "profullstack-service:c0upons.com",
+      "source_url": "https://c0upons.com/favicon.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/c0upons.svg",
+      "png": "png/{size}/c0upons.png",
+      "tui": {
+        "unicode": "C",
+        "ascii": "c0u"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/c0upons.png",
+          "webp": "hq/webp/{size}/c0upons.webp",
+          "made_by": "human",
+          "svg": "hq/svg/c0upons.svg",
+          "hex": "#F97316",
+          "hex_source": "https://c0upons.com/favicon.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/c0upons.png",
+          "webp": "styles/agentic-matte/webp/{size}/c0upons.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/c0upons.svg",
+          "hex": "#F97316",
+          "hex_source": "https://c0upons.com/favicon.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/c0upons.png",
+          "webp": "styles/agentic-machined/webp/{size}/c0upons.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/c0upons.svg",
+          "hex": "#F97316",
+          "hex_source": "https://c0upons.com/favicon.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/c0upons.png",
+          "webp": "styles/agentic-emissive/webp/{size}/c0upons.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/c0upons.svg",
+          "hex": "#F97316",
+          "hex_source": "https://c0upons.com/favicon.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/c0upons.png",
+        "webp": "hq/webp/{size}/c0upons.webp",
+        "made_by": "human",
+        "svg": "hq/svg/c0upons.svg",
+        "hex": "#F97316",
+        "hex_source": "https://c0upons.com/favicon.svg"
+      }
+    },
+    {
+      "key": "coinpayportal",
+      "name": "coinpayportal.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "coinpayportal.com and its logo are trademarks of their owner. Use them to refer to coinpayportal.com, not to imply endorsement.",
+      "source": "profullstack-service:coinpayportal.com",
+      "source_url": "https://coinpayportal.com/icons/favicon.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/coinpayportal.svg",
+      "png": "png/{size}/coinpayportal.png",
+      "tui": {
+        "unicode": "C",
+        "ascii": "coi"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/coinpayportal.png",
+          "webp": "hq/webp/{size}/coinpayportal.webp",
+          "made_by": "human",
+          "svg": "hq/svg/coinpayportal.svg",
+          "hex": "#222222",
+          "hex_source": "https://coinpayportal.com/icons/favicon.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/coinpayportal.png",
+          "webp": "styles/agentic-matte/webp/{size}/coinpayportal.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/coinpayportal.svg",
+          "hex": "#222222",
+          "hex_source": "https://coinpayportal.com/icons/favicon.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/coinpayportal.png",
+          "webp": "styles/agentic-machined/webp/{size}/coinpayportal.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/coinpayportal.svg",
+          "hex": "#222222",
+          "hex_source": "https://coinpayportal.com/icons/favicon.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/coinpayportal.png",
+          "webp": "styles/agentic-emissive/webp/{size}/coinpayportal.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/coinpayportal.svg",
+          "hex": "#222222",
+          "hex_source": "https://coinpayportal.com/icons/favicon.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/coinpayportal.png",
+        "webp": "hq/webp/{size}/coinpayportal.webp",
+        "made_by": "human",
+        "svg": "hq/svg/coinpayportal.svg",
+        "hex": "#222222",
+        "hex_source": "https://coinpayportal.com/icons/favicon.svg"
+      }
+    },
+    {
+      "key": "crawlproof",
+      "name": "crawlproof.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "crawlproof.com and its logo are trademarks of their owner. Use them to refer to crawlproof.com, not to imply endorsement.",
+      "source": "profullstack-service:crawlproof.com",
+      "source_url": "https://crawlproof.com/favicon.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/crawlproof.svg",
+      "png": "png/{size}/crawlproof.png",
+      "tui": {
+        "unicode": "C",
+        "ascii": "cra"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/crawlproof.png",
+          "webp": "hq/webp/{size}/crawlproof.webp",
+          "made_by": "human",
+          "svg": "hq/svg/crawlproof.svg",
+          "hex": "#222222",
+          "hex_source": "https://crawlproof.com/favicon.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/crawlproof.png",
+          "webp": "styles/agentic-matte/webp/{size}/crawlproof.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/crawlproof.svg",
+          "hex": "#222222",
+          "hex_source": "https://crawlproof.com/favicon.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/crawlproof.png",
+          "webp": "styles/agentic-machined/webp/{size}/crawlproof.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/crawlproof.svg",
+          "hex": "#222222",
+          "hex_source": "https://crawlproof.com/favicon.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/crawlproof.png",
+          "webp": "styles/agentic-emissive/webp/{size}/crawlproof.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/crawlproof.svg",
+          "hex": "#222222",
+          "hex_source": "https://crawlproof.com/favicon.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/crawlproof.png",
+        "webp": "hq/webp/{size}/crawlproof.webp",
+        "made_by": "human",
+        "svg": "hq/svg/crawlproof.svg",
+        "hex": "#222222",
+        "hex_source": "https://crawlproof.com/favicon.svg"
+      }
+    },
+    {
+      "key": "d0rz",
+      "name": "d0rz.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "d0rz.com and its logo are trademarks of their owner. Use them to refer to d0rz.com, not to imply endorsement.",
+      "source": "profullstack-service:d0rz.com",
+      "source_url": "https://d0rz.com/favicon.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/d0rz.svg",
+      "png": "png/{size}/d0rz.png",
+      "tui": {
+        "unicode": "D",
+        "ascii": "d0r"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/d0rz.png",
+          "webp": "hq/webp/{size}/d0rz.webp",
+          "made_by": "human",
+          "svg": "hq/svg/d0rz.svg",
+          "hex": "#222222",
+          "hex_source": "https://d0rz.com/favicon.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/d0rz.png",
+          "webp": "styles/agentic-matte/webp/{size}/d0rz.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/d0rz.svg",
+          "hex": "#222222",
+          "hex_source": "https://d0rz.com/favicon.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/d0rz.png",
+          "webp": "styles/agentic-machined/webp/{size}/d0rz.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/d0rz.svg",
+          "hex": "#222222",
+          "hex_source": "https://d0rz.com/favicon.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/d0rz.png",
+          "webp": "styles/agentic-emissive/webp/{size}/d0rz.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/d0rz.svg",
+          "hex": "#222222",
+          "hex_source": "https://d0rz.com/favicon.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/d0rz.png",
+        "webp": "hq/webp/{size}/d0rz.webp",
+        "made_by": "human",
+        "svg": "hq/svg/d0rz.svg",
+        "hex": "#222222",
+        "hex_source": "https://d0rz.com/favicon.svg"
+      }
+    },
+    {
+      "key": "logicsrc",
+      "name": "logicsrc.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "logicsrc.com and its logo are trademarks of their owner. Use them to refer to logicsrc.com, not to imply endorsement.",
+      "source": "profullstack-service:logicsrc.com",
+      "source_url": "https://logicsrc.com/icon.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/logicsrc.svg",
+      "png": "png/{size}/logicsrc.png",
+      "tui": {
+        "unicode": "L",
+        "ascii": "log"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/logicsrc.png",
+          "webp": "hq/webp/{size}/logicsrc.webp",
+          "made_by": "human",
+          "svg": "hq/svg/logicsrc.svg",
+          "hex": "#101418",
+          "hex_source": "https://logicsrc.com/icon.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/logicsrc.png",
+          "webp": "styles/agentic-matte/webp/{size}/logicsrc.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/logicsrc.svg",
+          "hex": "#101418",
+          "hex_source": "https://logicsrc.com/icon.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/logicsrc.png",
+          "webp": "styles/agentic-machined/webp/{size}/logicsrc.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/logicsrc.svg",
+          "hex": "#101418",
+          "hex_source": "https://logicsrc.com/icon.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/logicsrc.png",
+          "webp": "styles/agentic-emissive/webp/{size}/logicsrc.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/logicsrc.svg",
+          "hex": "#101418",
+          "hex_source": "https://logicsrc.com/icon.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/logicsrc.png",
+        "webp": "hq/webp/{size}/logicsrc.webp",
+        "made_by": "human",
+        "svg": "hq/svg/logicsrc.svg",
+        "hex": "#101418",
+        "hex_source": "https://logicsrc.com/icon.svg"
+      }
+    },
+    {
+      "key": "marksyncr",
+      "name": "marksyncr.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "marksyncr.com and its logo are trademarks of their owner. Use them to refer to marksyncr.com, not to imply endorsement.",
+      "source": "profullstack-service:marksyncr.com",
+      "source_url": "https://marksyncr.com/favicon.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/marksyncr.svg",
+      "png": "png/{size}/marksyncr.png",
+      "tui": {
+        "unicode": "M",
+        "ascii": "mar"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/marksyncr.png",
+          "webp": "hq/webp/{size}/marksyncr.webp",
+          "made_by": "human",
+          "svg": "hq/svg/marksyncr.svg",
+          "hex": "#222222",
+          "hex_source": "https://marksyncr.com/favicon.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/marksyncr.png",
+          "webp": "styles/agentic-matte/webp/{size}/marksyncr.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/marksyncr.svg",
+          "hex": "#222222",
+          "hex_source": "https://marksyncr.com/favicon.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/marksyncr.png",
+          "webp": "styles/agentic-machined/webp/{size}/marksyncr.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/marksyncr.svg",
+          "hex": "#222222",
+          "hex_source": "https://marksyncr.com/favicon.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/marksyncr.png",
+          "webp": "styles/agentic-emissive/webp/{size}/marksyncr.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/marksyncr.svg",
+          "hex": "#222222",
+          "hex_source": "https://marksyncr.com/favicon.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/marksyncr.png",
+        "webp": "hq/webp/{size}/marksyncr.webp",
+        "made_by": "human",
+        "svg": "hq/svg/marksyncr.svg",
+        "hex": "#222222",
+        "hex_source": "https://marksyncr.com/favicon.svg"
+      }
+    },
+    {
+      "key": "bittorrented",
+      "name": "bittorrented.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "bittorrented.com and its logo are trademarks of their owner. Use them to refer to bittorrented.com, not to imply endorsement.",
+      "source": "profullstack-service:bittorrented.com",
+      "source_url": "https://bittorrented.com/favicon.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/bittorrented.svg",
+      "png": "png/{size}/bittorrented.png",
+      "tui": {
+        "unicode": "B",
+        "ascii": "bit"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/bittorrented.png",
+          "webp": "hq/webp/{size}/bittorrented.webp",
+          "made_by": "human",
+          "svg": "hq/svg/bittorrented.svg",
+          "hex": "#222222",
+          "hex_source": "https://bittorrented.com/favicon.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/bittorrented.png",
+          "webp": "styles/agentic-matte/webp/{size}/bittorrented.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/bittorrented.svg",
+          "hex": "#222222",
+          "hex_source": "https://bittorrented.com/favicon.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/bittorrented.png",
+          "webp": "styles/agentic-machined/webp/{size}/bittorrented.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/bittorrented.svg",
+          "hex": "#222222",
+          "hex_source": "https://bittorrented.com/favicon.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/bittorrented.png",
+          "webp": "styles/agentic-emissive/webp/{size}/bittorrented.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/bittorrented.svg",
+          "hex": "#222222",
+          "hex_source": "https://bittorrented.com/favicon.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/bittorrented.png",
+        "webp": "hq/webp/{size}/bittorrented.webp",
+        "made_by": "human",
+        "svg": "hq/svg/bittorrented.svg",
+        "hex": "#222222",
+        "hex_source": "https://bittorrented.com/favicon.svg"
+      }
+    },
+    {
+      "key": "naallo",
+      "name": "naallo.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "naallo.com and its logo are trademarks of their owner. Use them to refer to naallo.com, not to imply endorsement.",
+      "source": "profullstack-service:naallo.com",
+      "source_url": "https://naallo.com/favicon.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/naallo.svg",
+      "png": "png/{size}/naallo.png",
+      "tui": {
+        "unicode": "N",
+        "ascii": "naa"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/naallo.png",
+          "webp": "hq/webp/{size}/naallo.webp",
+          "made_by": "human",
+          "svg": "hq/svg/naallo.svg",
+          "hex": "#222222",
+          "hex_source": "https://naallo.com/favicon.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/naallo.png",
+          "webp": "styles/agentic-matte/webp/{size}/naallo.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/naallo.svg",
+          "hex": "#222222",
+          "hex_source": "https://naallo.com/favicon.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/naallo.png",
+          "webp": "styles/agentic-machined/webp/{size}/naallo.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/naallo.svg",
+          "hex": "#222222",
+          "hex_source": "https://naallo.com/favicon.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/naallo.png",
+          "webp": "styles/agentic-emissive/webp/{size}/naallo.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/naallo.svg",
+          "hex": "#222222",
+          "hex_source": "https://naallo.com/favicon.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/naallo.png",
+        "webp": "hq/webp/{size}/naallo.webp",
+        "made_by": "human",
+        "svg": "hq/svg/naallo.svg",
+        "hex": "#222222",
+        "hex_source": "https://naallo.com/favicon.svg"
+      }
+    },
+    {
+      "key": "pairux",
+      "name": "pairux.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "pairux.com and its logo are trademarks of their owner. Use them to refer to pairux.com, not to imply endorsement.",
+      "source": "profullstack-service:pairux.com",
+      "source_url": "https://pairux.com/favicon.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/pairux.svg",
+      "png": "png/{size}/pairux.png",
+      "tui": {
+        "unicode": "P",
+        "ascii": "pai"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/pairux.png",
+          "webp": "hq/webp/{size}/pairux.webp",
+          "made_by": "human",
+          "svg": "hq/svg/pairux.svg",
+          "hex": "#222222",
+          "hex_source": "https://pairux.com/favicon.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/pairux.png",
+          "webp": "styles/agentic-matte/webp/{size}/pairux.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/pairux.svg",
+          "hex": "#222222",
+          "hex_source": "https://pairux.com/favicon.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/pairux.png",
+          "webp": "styles/agentic-machined/webp/{size}/pairux.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/pairux.svg",
+          "hex": "#222222",
+          "hex_source": "https://pairux.com/favicon.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/pairux.png",
+          "webp": "styles/agentic-emissive/webp/{size}/pairux.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/pairux.svg",
+          "hex": "#222222",
+          "hex_source": "https://pairux.com/favicon.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/pairux.png",
+        "webp": "hq/webp/{size}/pairux.webp",
+        "made_by": "human",
+        "svg": "hq/svg/pairux.svg",
+        "hex": "#222222",
+        "hex_source": "https://pairux.com/favicon.svg"
+      }
+    },
+    {
+      "key": "phonenumbers",
+      "name": "phonenumbers.bot",
+      "category": "brand",
+      "brand": true,
+      "trademark": "phonenumbers.bot and its logo are trademarks of their owner. Use them to refer to phonenumbers.bot, not to imply endorsement.",
+      "source": "profullstack-service:phonenumbers.bot",
+      "source_url": "https://phonenumbers.bot/icons/favicon.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/phonenumbers.svg",
+      "png": "png/{size}/phonenumbers.png",
+      "tui": {
+        "unicode": "P",
+        "ascii": "pho"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/phonenumbers.png",
+          "webp": "hq/webp/{size}/phonenumbers.webp",
+          "made_by": "human",
+          "svg": "hq/svg/phonenumbers.svg",
+          "hex": "#222222",
+          "hex_source": "https://phonenumbers.bot/icons/favicon.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/phonenumbers.png",
+          "webp": "styles/agentic-matte/webp/{size}/phonenumbers.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/phonenumbers.svg",
+          "hex": "#222222",
+          "hex_source": "https://phonenumbers.bot/icons/favicon.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/phonenumbers.png",
+          "webp": "styles/agentic-machined/webp/{size}/phonenumbers.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/phonenumbers.svg",
+          "hex": "#222222",
+          "hex_source": "https://phonenumbers.bot/icons/favicon.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/phonenumbers.png",
+          "webp": "styles/agentic-emissive/webp/{size}/phonenumbers.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/phonenumbers.svg",
+          "hex": "#222222",
+          "hex_source": "https://phonenumbers.bot/icons/favicon.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/phonenumbers.png",
+        "webp": "hq/webp/{size}/phonenumbers.webp",
+        "made_by": "human",
+        "svg": "hq/svg/phonenumbers.svg",
+        "hex": "#222222",
+        "hex_source": "https://phonenumbers.bot/icons/favicon.svg"
+      }
+    },
+    {
+      "key": "postammo",
+      "name": "postammo.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "postammo.com and its logo are trademarks of their owner. Use them to refer to postammo.com, not to imply endorsement.",
+      "source": "profullstack-service:postammo.com",
+      "source_url": "https://postammo.com/favicon.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/postammo.svg",
+      "png": "png/{size}/postammo.png",
+      "tui": {
+        "unicode": "P",
+        "ascii": "pos"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/postammo.png",
+          "webp": "hq/webp/{size}/postammo.webp",
+          "made_by": "human",
+          "svg": "hq/svg/postammo.svg",
+          "hex": "#222222",
+          "hex_source": "https://postammo.com/favicon.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/postammo.png",
+          "webp": "styles/agentic-matte/webp/{size}/postammo.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/postammo.svg",
+          "hex": "#222222",
+          "hex_source": "https://postammo.com/favicon.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/postammo.png",
+          "webp": "styles/agentic-machined/webp/{size}/postammo.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/postammo.svg",
+          "hex": "#222222",
+          "hex_source": "https://postammo.com/favicon.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/postammo.png",
+          "webp": "styles/agentic-emissive/webp/{size}/postammo.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/postammo.svg",
+          "hex": "#222222",
+          "hex_source": "https://postammo.com/favicon.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/postammo.png",
+        "webp": "hq/webp/{size}/postammo.webp",
+        "made_by": "human",
+        "svg": "hq/svg/postammo.svg",
+        "hex": "#222222",
+        "hex_source": "https://postammo.com/favicon.svg"
+      }
+    },
+    {
+      "key": "profullstack",
+      "name": "profullstack.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "profullstack.com and its logo are trademarks of their owner. Use them to refer to profullstack.com, not to imply endorsement.",
+      "source": "profullstack-service:profullstack.com",
+      "source_url": "https://profullstack.com/media/profullstack-mark-dark.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/profullstack.svg",
+      "png": "png/{size}/profullstack.png",
+      "tui": {
+        "unicode": "P",
+        "ascii": "pro"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/profullstack.png",
+          "webp": "hq/webp/{size}/profullstack.webp",
+          "made_by": "human",
+          "svg": "hq/svg/profullstack.svg",
+          "hex": "#E02337",
+          "hex_source": "https://profullstack.com/media/profullstack-mark-dark.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/profullstack.png",
+          "webp": "styles/agentic-matte/webp/{size}/profullstack.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/profullstack.svg",
+          "hex": "#E02337",
+          "hex_source": "https://profullstack.com/media/profullstack-mark-dark.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/profullstack.png",
+          "webp": "styles/agentic-machined/webp/{size}/profullstack.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/profullstack.svg",
+          "hex": "#E02337",
+          "hex_source": "https://profullstack.com/media/profullstack-mark-dark.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/profullstack.png",
+          "webp": "styles/agentic-emissive/webp/{size}/profullstack.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/profullstack.svg",
+          "hex": "#E02337",
+          "hex_source": "https://profullstack.com/media/profullstack-mark-dark.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/profullstack.png",
+        "webp": "hq/webp/{size}/profullstack.webp",
+        "made_by": "human",
+        "svg": "hq/svg/profullstack.svg",
+        "hex": "#E02337",
+        "hex_source": "https://profullstack.com/media/profullstack-mark-dark.svg"
+      }
+    },
+    {
+      "key": "qaaas",
+      "name": "qaaas.dev",
+      "category": "brand",
+      "brand": true,
+      "trademark": "qaaas.dev and its logo are trademarks of their owner. Use them to refer to qaaas.dev, not to imply endorsement.",
+      "source": "profullstack-service:qaaas.dev",
+      "source_url": "https://qaaas.dev/icon-512.png",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/qaaas.svg",
+      "png": "png/{size}/qaaas.png",
+      "tui": {
+        "unicode": "Q",
+        "ascii": "qaa"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/qaaas.png",
+          "webp": "hq/webp/{size}/qaaas.webp",
+          "made_by": "human",
+          "svg": "hq/svg/qaaas.svg",
+          "hex": "#0B7A5C",
+          "hex_source": "https://qaaas.dev/icon-512.png"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/qaaas.png",
+          "webp": "styles/agentic-matte/webp/{size}/qaaas.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/qaaas.svg",
+          "hex": "#0B7A5C",
+          "hex_source": "https://qaaas.dev/icon-512.png"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/qaaas.png",
+          "webp": "styles/agentic-machined/webp/{size}/qaaas.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/qaaas.svg",
+          "hex": "#0B7A5C",
+          "hex_source": "https://qaaas.dev/icon-512.png"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/qaaas.png",
+          "webp": "styles/agentic-emissive/webp/{size}/qaaas.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/qaaas.svg",
+          "hex": "#0B7A5C",
+          "hex_source": "https://qaaas.dev/icon-512.png"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/qaaas.png",
+        "webp": "hq/webp/{size}/qaaas.webp",
+        "made_by": "human",
+        "svg": "hq/svg/qaaas.svg",
+        "hex": "#0B7A5C",
+        "hex_source": "https://qaaas.dev/icon-512.png"
+      }
+    },
+    {
+      "key": "qrypt-chat",
+      "name": "qrypt.chat",
+      "category": "brand",
+      "brand": true,
+      "trademark": "qrypt.chat and its logo are trademarks of their owner. Use them to refer to qrypt.chat, not to imply endorsement.",
+      "source": "profullstack-service:qrypt.chat",
+      "source_url": "https://qrypt.chat/favicon.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/qrypt-chat.svg",
+      "png": "png/{size}/qrypt-chat.png",
+      "tui": {
+        "unicode": "Q",
+        "ascii": "qry"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/qrypt-chat.png",
+          "webp": "hq/webp/{size}/qrypt-chat.webp",
+          "made_by": "human",
+          "svg": "hq/svg/qrypt-chat.svg",
+          "hex": "#222222",
+          "hex_source": "https://qrypt.chat/favicon.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/qrypt-chat.png",
+          "webp": "styles/agentic-matte/webp/{size}/qrypt-chat.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/qrypt-chat.svg",
+          "hex": "#222222",
+          "hex_source": "https://qrypt.chat/favicon.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/qrypt-chat.png",
+          "webp": "styles/agentic-machined/webp/{size}/qrypt-chat.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/qrypt-chat.svg",
+          "hex": "#222222",
+          "hex_source": "https://qrypt.chat/favicon.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/qrypt-chat.png",
+          "webp": "styles/agentic-emissive/webp/{size}/qrypt-chat.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/qrypt-chat.svg",
+          "hex": "#222222",
+          "hex_source": "https://qrypt.chat/favicon.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/qrypt-chat.png",
+        "webp": "hq/webp/{size}/qrypt-chat.webp",
+        "made_by": "human",
+        "svg": "hq/svg/qrypt-chat.svg",
+        "hex": "#222222",
+        "hex_source": "https://qrypt.chat/favicon.svg"
+      }
+    },
+    {
+      "key": "recipepdfs",
+      "name": "recipepdfs.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "recipepdfs.com and its logo are trademarks of their owner. Use them to refer to recipepdfs.com, not to imply endorsement.",
+      "source": "profullstack-service:recipepdfs.com",
+      "source_url": "https://recipepdfs.com/icon-512.png",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/recipepdfs.svg",
+      "png": "png/{size}/recipepdfs.png",
+      "tui": {
+        "unicode": "R",
+        "ascii": "rec"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/recipepdfs.png",
+          "webp": "hq/webp/{size}/recipepdfs.webp",
+          "made_by": "human",
+          "svg": "hq/svg/recipepdfs.svg",
+          "hex": "#5B3AA4",
+          "hex_source": "https://recipepdfs.com/icon-512.png"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/recipepdfs.png",
+          "webp": "styles/agentic-matte/webp/{size}/recipepdfs.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/recipepdfs.svg",
+          "hex": "#5B3AA4",
+          "hex_source": "https://recipepdfs.com/icon-512.png"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/recipepdfs.png",
+          "webp": "styles/agentic-machined/webp/{size}/recipepdfs.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/recipepdfs.svg",
+          "hex": "#5B3AA4",
+          "hex_source": "https://recipepdfs.com/icon-512.png"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/recipepdfs.png",
+          "webp": "styles/agentic-emissive/webp/{size}/recipepdfs.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/recipepdfs.svg",
+          "hex": "#5B3AA4",
+          "hex_source": "https://recipepdfs.com/icon-512.png"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/recipepdfs.png",
+        "webp": "hq/webp/{size}/recipepdfs.webp",
+        "made_by": "human",
+        "svg": "hq/svg/recipepdfs.svg",
+        "hex": "#5B3AA4",
+        "hex_source": "https://recipepdfs.com/icon-512.png"
+      }
+    },
+    {
+      "key": "saasrow",
+      "name": "saasrow.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "saasrow.com and its logo are trademarks of their owner. Use them to refer to saasrow.com, not to imply endorsement.",
+      "source": "profullstack-service:saasrow.com",
+      "source_url": "https://saasrow.com/icon-512.png",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/saasrow.svg",
+      "png": "png/{size}/saasrow.png",
+      "tui": {
+        "unicode": "S",
+        "ascii": "saa"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/saasrow.png",
+          "webp": "hq/webp/{size}/saasrow.webp",
+          "made_by": "human",
+          "svg": "hq/svg/saasrow.svg",
+          "hex": "#133844",
+          "hex_source": "https://saasrow.com/icon-512.png"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/saasrow.png",
+          "webp": "styles/agentic-matte/webp/{size}/saasrow.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/saasrow.svg",
+          "hex": "#133844",
+          "hex_source": "https://saasrow.com/icon-512.png"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/saasrow.png",
+          "webp": "styles/agentic-machined/webp/{size}/saasrow.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/saasrow.svg",
+          "hex": "#133844",
+          "hex_source": "https://saasrow.com/icon-512.png"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/saasrow.png",
+          "webp": "styles/agentic-emissive/webp/{size}/saasrow.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/saasrow.svg",
+          "hex": "#133844",
+          "hex_source": "https://saasrow.com/icon-512.png"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/saasrow.png",
+        "webp": "hq/webp/{size}/saasrow.webp",
+        "made_by": "human",
+        "svg": "hq/svg/saasrow.svg",
+        "hex": "#133844",
+        "hex_source": "https://saasrow.com/icon-512.png"
+      }
+    },
+    {
+      "key": "sh1pt",
+      "name": "sh1pt.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "sh1pt.com and its logo are trademarks of their owner. Use them to refer to sh1pt.com, not to imply endorsement.",
+      "source": "profullstack-service:sh1pt.com",
+      "source_url": "https://sh1pt.com/icon-512.png",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/sh1pt.svg",
+      "png": "png/{size}/sh1pt.png",
+      "tui": {
+        "unicode": "S",
+        "ascii": "sh1"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/sh1pt.png",
+          "webp": "hq/webp/{size}/sh1pt.webp",
+          "made_by": "human",
+          "svg": "hq/svg/sh1pt.svg",
+          "hex": "#17101F",
+          "hex_source": "https://sh1pt.com/icon-512.png"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/sh1pt.png",
+          "webp": "styles/agentic-matte/webp/{size}/sh1pt.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/sh1pt.svg",
+          "hex": "#17101F",
+          "hex_source": "https://sh1pt.com/icon-512.png"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/sh1pt.png",
+          "webp": "styles/agentic-machined/webp/{size}/sh1pt.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/sh1pt.svg",
+          "hex": "#17101F",
+          "hex_source": "https://sh1pt.com/icon-512.png"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/sh1pt.png",
+          "webp": "styles/agentic-emissive/webp/{size}/sh1pt.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/sh1pt.svg",
+          "hex": "#17101F",
+          "hex_source": "https://sh1pt.com/icon-512.png"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/sh1pt.png",
+        "webp": "hq/webp/{size}/sh1pt.webp",
+        "made_by": "human",
+        "svg": "hq/svg/sh1pt.svg",
+        "hex": "#17101F",
+        "hex_source": "https://sh1pt.com/icon-512.png"
+      }
+    },
+    {
+      "key": "smshub",
+      "name": "smshub.dev",
+      "category": "brand",
+      "brand": true,
+      "trademark": "smshub.dev and its logo are trademarks of their owner. Use them to refer to smshub.dev, not to imply endorsement.",
+      "source": "profullstack-service:smshub.dev",
+      "source_url": "https://smshub.dev/favicon.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/smshub.svg",
+      "png": "png/{size}/smshub.png",
+      "tui": {
+        "unicode": "S",
+        "ascii": "sms"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/smshub.png",
+          "webp": "hq/webp/{size}/smshub.webp",
+          "made_by": "human",
+          "svg": "hq/svg/smshub.svg",
+          "hex": "#222222",
+          "hex_source": "https://smshub.dev/favicon.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/smshub.png",
+          "webp": "styles/agentic-matte/webp/{size}/smshub.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/smshub.svg",
+          "hex": "#222222",
+          "hex_source": "https://smshub.dev/favicon.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/smshub.png",
+          "webp": "styles/agentic-machined/webp/{size}/smshub.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/smshub.svg",
+          "hex": "#222222",
+          "hex_source": "https://smshub.dev/favicon.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/smshub.png",
+          "webp": "styles/agentic-emissive/webp/{size}/smshub.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/smshub.svg",
+          "hex": "#222222",
+          "hex_source": "https://smshub.dev/favicon.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/smshub.png",
+        "webp": "hq/webp/{size}/smshub.webp",
+        "made_by": "human",
+        "svg": "hq/svg/smshub.svg",
+        "hex": "#222222",
+        "hex_source": "https://smshub.dev/favicon.svg"
+      }
+    },
+    {
+      "key": "threatcrush",
+      "name": "threatcrush.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "threatcrush.com and its logo are trademarks of their owner. Use them to refer to threatcrush.com, not to imply endorsement.",
+      "source": "profullstack-service:threatcrush.com",
+      "source_url": "https://threatcrush.com/favicon.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/threatcrush.svg",
+      "png": "png/{size}/threatcrush.png",
+      "tui": {
+        "unicode": "T",
+        "ascii": "thr"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/threatcrush.png",
+          "webp": "hq/webp/{size}/threatcrush.webp",
+          "made_by": "human",
+          "svg": "hq/svg/threatcrush.svg",
+          "hex": "#222222",
+          "hex_source": "https://threatcrush.com/favicon.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/threatcrush.png",
+          "webp": "styles/agentic-matte/webp/{size}/threatcrush.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/threatcrush.svg",
+          "hex": "#222222",
+          "hex_source": "https://threatcrush.com/favicon.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/threatcrush.png",
+          "webp": "styles/agentic-machined/webp/{size}/threatcrush.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/threatcrush.svg",
+          "hex": "#222222",
+          "hex_source": "https://threatcrush.com/favicon.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/threatcrush.png",
+          "webp": "styles/agentic-emissive/webp/{size}/threatcrush.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/threatcrush.svg",
+          "hex": "#222222",
+          "hex_source": "https://threatcrush.com/favicon.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/threatcrush.png",
+        "webp": "hq/webp/{size}/threatcrush.webp",
+        "made_by": "human",
+        "svg": "hq/svg/threatcrush.svg",
+        "hex": "#222222",
+        "hex_source": "https://threatcrush.com/favicon.svg"
+      }
+    },
+    {
+      "key": "ugig",
+      "name": "ugig.net",
+      "category": "brand",
+      "brand": true,
+      "trademark": "ugig.net and its logo are trademarks of their owner. Use them to refer to ugig.net, not to imply endorsement.",
+      "source": "profullstack-service:ugig.net",
+      "source_url": "https://ugig.net/favicon.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/ugig.svg",
+      "png": "png/{size}/ugig.png",
+      "tui": {
+        "unicode": "U",
+        "ascii": "ugi"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/ugig.png",
+          "webp": "hq/webp/{size}/ugig.webp",
+          "made_by": "human",
+          "svg": "hq/svg/ugig.svg",
+          "hex": "#222222",
+          "hex_source": "https://ugig.net/favicon.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/ugig.png",
+          "webp": "styles/agentic-matte/webp/{size}/ugig.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/ugig.svg",
+          "hex": "#222222",
+          "hex_source": "https://ugig.net/favicon.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/ugig.png",
+          "webp": "styles/agentic-machined/webp/{size}/ugig.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/ugig.svg",
+          "hex": "#222222",
+          "hex_source": "https://ugig.net/favicon.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/ugig.png",
+          "webp": "styles/agentic-emissive/webp/{size}/ugig.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/ugig.svg",
+          "hex": "#222222",
+          "hex_source": "https://ugig.net/favicon.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/ugig.png",
+        "webp": "hq/webp/{size}/ugig.webp",
+        "made_by": "human",
+        "svg": "hq/svg/ugig.svg",
+        "hex": "#222222",
+        "hex_source": "https://ugig.net/favicon.svg"
+      }
+    },
+    {
+      "key": "vu1nz",
+      "name": "vu1nz.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "vu1nz.com and its logo are trademarks of their owner. Use them to refer to vu1nz.com, not to imply endorsement.",
+      "source": "profullstack-service:vu1nz.com",
+      "source_url": "https://vu1nz.com/favicon.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/vu1nz.svg",
+      "png": "png/{size}/vu1nz.png",
+      "tui": {
+        "unicode": "V",
+        "ascii": "vu1"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/vu1nz.png",
+          "webp": "hq/webp/{size}/vu1nz.webp",
+          "made_by": "human",
+          "svg": "hq/svg/vu1nz.svg",
+          "hex": "#5865F2",
+          "hex_source": "https://vu1nz.com/favicon.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/vu1nz.png",
+          "webp": "styles/agentic-matte/webp/{size}/vu1nz.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/vu1nz.svg",
+          "hex": "#5865F2",
+          "hex_source": "https://vu1nz.com/favicon.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/vu1nz.png",
+          "webp": "styles/agentic-machined/webp/{size}/vu1nz.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/vu1nz.svg",
+          "hex": "#5865F2",
+          "hex_source": "https://vu1nz.com/favicon.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/vu1nz.png",
+          "webp": "styles/agentic-emissive/webp/{size}/vu1nz.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/vu1nz.svg",
+          "hex": "#5865F2",
+          "hex_source": "https://vu1nz.com/favicon.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/vu1nz.png",
+        "webp": "hq/webp/{size}/vu1nz.webp",
+        "made_by": "human",
+        "svg": "hq/svg/vu1nz.svg",
+        "hex": "#5865F2",
+        "hex_source": "https://vu1nz.com/favicon.svg"
+      }
+    },
+    {
+      "key": "weedforcrypto",
+      "name": "weedforcrypto.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "weedforcrypto.com and its logo are trademarks of their owner. Use them to refer to weedforcrypto.com, not to imply endorsement.",
+      "source": "profullstack-service:weedforcrypto.com",
+      "source_url": "https://weedforcrypto.com/icon.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/weedforcrypto.svg",
+      "png": "png/{size}/weedforcrypto.png",
+      "tui": {
+        "unicode": "W",
+        "ascii": "wee"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/weedforcrypto.png",
+          "webp": "hq/webp/{size}/weedforcrypto.webp",
+          "made_by": "human",
+          "svg": "hq/svg/weedforcrypto.svg",
+          "hex": "#18181B",
+          "hex_source": "https://weedforcrypto.com/icon.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/weedforcrypto.png",
+          "webp": "styles/agentic-matte/webp/{size}/weedforcrypto.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/weedforcrypto.svg",
+          "hex": "#18181B",
+          "hex_source": "https://weedforcrypto.com/icon.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/weedforcrypto.png",
+          "webp": "styles/agentic-machined/webp/{size}/weedforcrypto.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/weedforcrypto.svg",
+          "hex": "#18181B",
+          "hex_source": "https://weedforcrypto.com/icon.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/weedforcrypto.png",
+          "webp": "styles/agentic-emissive/webp/{size}/weedforcrypto.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/weedforcrypto.svg",
+          "hex": "#18181B",
+          "hex_source": "https://weedforcrypto.com/icon.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/weedforcrypto.png",
+        "webp": "hq/webp/{size}/weedforcrypto.webp",
+        "made_by": "human",
+        "svg": "hq/svg/weedforcrypto.svg",
+        "hex": "#18181B",
+        "hex_source": "https://weedforcrypto.com/icon.svg"
+      }
+    },
+    {
+      "key": "tronbrowser",
+      "name": "tronbrowser.dev",
+      "category": "brand",
+      "brand": true,
+      "trademark": "tronbrowser.dev and its logo are trademarks of their owner. Use them to refer to tronbrowser.dev, not to imply endorsement.",
+      "source": "profullstack-service:tronbrowser.dev",
+      "source_url": "https://tronbrowser.dev/favicon.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/tronbrowser.svg",
+      "png": "png/{size}/tronbrowser.png",
+      "tui": {
+        "unicode": "T",
+        "ascii": "tro"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/tronbrowser.png",
+          "webp": "hq/webp/{size}/tronbrowser.webp",
+          "made_by": "human",
+          "svg": "hq/svg/tronbrowser.svg",
+          "hex": "#222222",
+          "hex_source": "https://tronbrowser.dev/favicon.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/tronbrowser.png",
+          "webp": "styles/agentic-matte/webp/{size}/tronbrowser.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/tronbrowser.svg",
+          "hex": "#222222",
+          "hex_source": "https://tronbrowser.dev/favicon.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/tronbrowser.png",
+          "webp": "styles/agentic-machined/webp/{size}/tronbrowser.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/tronbrowser.svg",
+          "hex": "#222222",
+          "hex_source": "https://tronbrowser.dev/favicon.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/tronbrowser.png",
+          "webp": "styles/agentic-emissive/webp/{size}/tronbrowser.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/tronbrowser.svg",
+          "hex": "#222222",
+          "hex_source": "https://tronbrowser.dev/favicon.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/tronbrowser.png",
+        "webp": "hq/webp/{size}/tronbrowser.webp",
+        "made_by": "human",
+        "svg": "hq/svg/tronbrowser.svg",
+        "hex": "#222222",
+        "hex_source": "https://tronbrowser.dev/favicon.svg"
+      }
+    },
+    {
+      "key": "goingbroke",
+      "name": "goingbroke.now",
+      "category": "brand",
+      "brand": true,
+      "trademark": "goingbroke.now and its logo are trademarks of their owner. Use them to refer to goingbroke.now, not to imply endorsement.",
+      "source": "profullstack-service:goingbroke.now",
+      "source_url": "https://goingbroke.now/icon-512.png",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/goingbroke.svg",
+      "png": "png/{size}/goingbroke.png",
+      "tui": {
+        "unicode": "G",
+        "ascii": "goi"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/goingbroke.png",
+          "webp": "hq/webp/{size}/goingbroke.webp",
+          "made_by": "human",
+          "svg": "hq/svg/goingbroke.svg",
+          "hex": "#B93636",
+          "hex_source": "https://goingbroke.now/icon-512.png"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/goingbroke.png",
+          "webp": "styles/agentic-matte/webp/{size}/goingbroke.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/goingbroke.svg",
+          "hex": "#B93636",
+          "hex_source": "https://goingbroke.now/icon-512.png"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/goingbroke.png",
+          "webp": "styles/agentic-machined/webp/{size}/goingbroke.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/goingbroke.svg",
+          "hex": "#B93636",
+          "hex_source": "https://goingbroke.now/icon-512.png"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/goingbroke.png",
+          "webp": "styles/agentic-emissive/webp/{size}/goingbroke.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/goingbroke.svg",
+          "hex": "#B93636",
+          "hex_source": "https://goingbroke.now/icon-512.png"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/goingbroke.png",
+        "webp": "hq/webp/{size}/goingbroke.webp",
+        "made_by": "human",
+        "svg": "hq/svg/goingbroke.svg",
+        "hex": "#B93636",
+        "hex_source": "https://goingbroke.now/icon-512.png"
+      }
+    },
+    {
+      "key": "infernetprotocol",
+      "name": "infernetprotocol.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "infernetprotocol.com and its logo are trademarks of their owner. Use them to refer to infernetprotocol.com, not to imply endorsement.",
+      "source": "profullstack-service:infernetprotocol.com",
+      "source_url": "https://infernetprotocol.com/favicon.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/infernetprotocol.svg",
+      "png": "png/{size}/infernetprotocol.png",
+      "tui": {
+        "unicode": "I",
+        "ascii": "inf"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/infernetprotocol.png",
+          "webp": "hq/webp/{size}/infernetprotocol.webp",
+          "made_by": "human",
+          "svg": "hq/svg/infernetprotocol.svg",
+          "hex": "#222222",
+          "hex_source": "https://infernetprotocol.com/favicon.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/infernetprotocol.png",
+          "webp": "styles/agentic-matte/webp/{size}/infernetprotocol.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/infernetprotocol.svg",
+          "hex": "#222222",
+          "hex_source": "https://infernetprotocol.com/favicon.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/infernetprotocol.png",
+          "webp": "styles/agentic-machined/webp/{size}/infernetprotocol.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/infernetprotocol.svg",
+          "hex": "#222222",
+          "hex_source": "https://infernetprotocol.com/favicon.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/infernetprotocol.png",
+          "webp": "styles/agentic-emissive/webp/{size}/infernetprotocol.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/infernetprotocol.svg",
+          "hex": "#222222",
+          "hex_source": "https://infernetprotocol.com/favicon.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/infernetprotocol.png",
+        "webp": "hq/webp/{size}/infernetprotocol.webp",
+        "made_by": "human",
+        "svg": "hq/svg/infernetprotocol.svg",
+        "hex": "#222222",
+        "hex_source": "https://infernetprotocol.com/favicon.svg"
+      }
+    },
+    {
+      "key": "moshcode",
+      "name": "moshcode.sh",
+      "category": "brand",
+      "brand": true,
+      "trademark": "moshcode.sh and its logo are trademarks of their owner. Use them to refer to moshcode.sh, not to imply endorsement.",
+      "source": "profullstack-service:moshcode.sh",
+      "source_url": "https://moshcode.sh/icon-512.png",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/moshcode.svg",
+      "png": "png/{size}/moshcode.png",
+      "tui": {
+        "unicode": "M",
+        "ascii": "mos"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/moshcode.png",
+          "webp": "hq/webp/{size}/moshcode.webp",
+          "made_by": "human",
+          "svg": "hq/svg/moshcode.svg",
+          "hex": "#C1FF72",
+          "hex_source": "https://moshcode.sh/icon-512.png"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/moshcode.png",
+          "webp": "styles/agentic-matte/webp/{size}/moshcode.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/moshcode.svg",
+          "hex": "#C1FF72",
+          "hex_source": "https://moshcode.sh/icon-512.png"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/moshcode.png",
+          "webp": "styles/agentic-machined/webp/{size}/moshcode.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/moshcode.svg",
+          "hex": "#C1FF72",
+          "hex_source": "https://moshcode.sh/icon-512.png"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/moshcode.png",
+          "webp": "styles/agentic-emissive/webp/{size}/moshcode.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/moshcode.svg",
+          "hex": "#C1FF72",
+          "hex_source": "https://moshcode.sh/icon-512.png"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/moshcode.png",
+        "webp": "hq/webp/{size}/moshcode.webp",
+        "made_by": "human",
+        "svg": "hq/svg/moshcode.svg",
+        "hex": "#C1FF72",
+        "hex_source": "https://moshcode.sh/icon-512.png"
+      }
+    },
+    {
+      "key": "moshcoding",
+      "name": "moshcoding.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "moshcoding.com and its logo are trademarks of their owner. Use them to refer to moshcoding.com, not to imply endorsement.",
+      "source": "profullstack-service:moshcoding.com",
+      "source_url": "https://moshcoding.com/icon-512.png",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/moshcoding.svg",
+      "png": "png/{size}/moshcoding.png",
+      "tui": {
+        "unicode": "M",
+        "ascii": "mos"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/moshcoding.png",
+          "webp": "hq/webp/{size}/moshcoding.webp",
+          "made_by": "human",
+          "svg": "hq/svg/moshcoding.svg",
+          "hex": "#2A3302",
+          "hex_source": "https://moshcoding.com/icon-512.png"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/moshcoding.png",
+          "webp": "styles/agentic-matte/webp/{size}/moshcoding.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/moshcoding.svg",
+          "hex": "#2A3302",
+          "hex_source": "https://moshcoding.com/icon-512.png"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/moshcoding.png",
+          "webp": "styles/agentic-machined/webp/{size}/moshcoding.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/moshcoding.svg",
+          "hex": "#2A3302",
+          "hex_source": "https://moshcoding.com/icon-512.png"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/moshcoding.png",
+          "webp": "styles/agentic-emissive/webp/{size}/moshcoding.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/moshcoding.svg",
+          "hex": "#2A3302",
+          "hex_source": "https://moshcoding.com/icon-512.png"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/moshcoding.png",
+        "webp": "hq/webp/{size}/moshcoding.webp",
+        "made_by": "human",
+        "svg": "hq/svg/moshcoding.svg",
+        "hex": "#2A3302",
+        "hex_source": "https://moshcoding.com/icon-512.png"
+      }
+    },
+    {
+      "key": "aiornot",
+      "name": "aiornot.vote",
+      "category": "brand",
+      "brand": true,
+      "trademark": "aiornot.vote and its logo are trademarks of their owner. Use them to refer to aiornot.vote, not to imply endorsement.",
+      "source": "profullstack-service:aiornot.vote",
+      "source_url": "https://aiornot.vote/icon-512.png",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/aiornot.svg",
+      "png": "png/{size}/aiornot.png",
+      "tui": {
+        "unicode": "A",
+        "ascii": "aio"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/aiornot.png",
+          "webp": "hq/webp/{size}/aiornot.webp",
+          "made_by": "human",
+          "svg": "hq/svg/aiornot.svg",
+          "hex": "#212033",
+          "hex_source": "https://aiornot.vote/icon-512.png"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/aiornot.png",
+          "webp": "styles/agentic-matte/webp/{size}/aiornot.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/aiornot.svg",
+          "hex": "#212033",
+          "hex_source": "https://aiornot.vote/icon-512.png"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/aiornot.png",
+          "webp": "styles/agentic-machined/webp/{size}/aiornot.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/aiornot.svg",
+          "hex": "#212033",
+          "hex_source": "https://aiornot.vote/icon-512.png"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/aiornot.png",
+          "webp": "styles/agentic-emissive/webp/{size}/aiornot.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/aiornot.svg",
+          "hex": "#212033",
+          "hex_source": "https://aiornot.vote/icon-512.png"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/aiornot.png",
+        "webp": "hq/webp/{size}/aiornot.webp",
+        "made_by": "human",
+        "svg": "hq/svg/aiornot.svg",
+        "hex": "#212033",
+        "hex_source": "https://aiornot.vote/icon-512.png"
+      }
+    },
+    {
+      "key": "advis0r",
+      "name": "advis0r.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "advis0r.com and its logo are trademarks of their owner. Use them to refer to advis0r.com, not to imply endorsement.",
+      "source": "profullstack-service:advis0r.com",
+      "source_url": "https://advis0r.com/icon.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/advis0r.svg",
+      "png": "png/{size}/advis0r.png",
+      "tui": {
+        "unicode": "A",
+        "ascii": "adv"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/advis0r.png",
+          "webp": "hq/webp/{size}/advis0r.webp",
+          "made_by": "human",
+          "svg": "hq/svg/advis0r.svg",
+          "hex": "#0A0E14",
+          "hex_source": "https://advis0r.com/icon.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/advis0r.png",
+          "webp": "styles/agentic-matte/webp/{size}/advis0r.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/advis0r.svg",
+          "hex": "#0A0E14",
+          "hex_source": "https://advis0r.com/icon.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/advis0r.png",
+          "webp": "styles/agentic-machined/webp/{size}/advis0r.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/advis0r.svg",
+          "hex": "#0A0E14",
+          "hex_source": "https://advis0r.com/icon.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/advis0r.png",
+          "webp": "styles/agentic-emissive/webp/{size}/advis0r.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/advis0r.svg",
+          "hex": "#0A0E14",
+          "hex_source": "https://advis0r.com/icon.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/advis0r.png",
+        "webp": "hq/webp/{size}/advis0r.webp",
+        "made_by": "human",
+        "svg": "hq/svg/advis0r.svg",
+        "hex": "#0A0E14",
+        "hex_source": "https://advis0r.com/icon.svg"
+      }
+    },
+    {
+      "key": "spl00f",
+      "name": "spl00f.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "spl00f.com and its logo are trademarks of their owner. Use them to refer to spl00f.com, not to imply endorsement.",
+      "source": "profullstack-service:spl00f.com",
+      "source_url": "https://cigarunderground.org/apple-touch-icon.png",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/spl00f.svg",
+      "png": "png/{size}/spl00f.png",
+      "tui": {
+        "unicode": "S",
+        "ascii": "spl"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/spl00f.png",
+          "webp": "hq/webp/{size}/spl00f.webp",
+          "made_by": "human",
+          "svg": "hq/svg/spl00f.svg",
+          "hex": "#A17D4C",
+          "hex_source": "https://cigarunderground.org/apple-touch-icon.png"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/spl00f.png",
+          "webp": "styles/agentic-matte/webp/{size}/spl00f.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/spl00f.svg",
+          "hex": "#A17D4C",
+          "hex_source": "https://cigarunderground.org/apple-touch-icon.png"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/spl00f.png",
+          "webp": "styles/agentic-machined/webp/{size}/spl00f.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/spl00f.svg",
+          "hex": "#A17D4C",
+          "hex_source": "https://cigarunderground.org/apple-touch-icon.png"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/spl00f.png",
+          "webp": "styles/agentic-emissive/webp/{size}/spl00f.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/spl00f.svg",
+          "hex": "#A17D4C",
+          "hex_source": "https://cigarunderground.org/apple-touch-icon.png"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/spl00f.png",
+        "webp": "hq/webp/{size}/spl00f.webp",
+        "made_by": "human",
+        "svg": "hq/svg/spl00f.svg",
+        "hex": "#A17D4C",
+        "hex_source": "https://cigarunderground.org/apple-touch-icon.png"
+      }
+    },
+    {
+      "key": "bbs-profullstack",
+      "name": "bbs.profullstack.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "bbs.profullstack.com and its logo are trademarks of their owner. Use them to refer to bbs.profullstack.com, not to imply endorsement.",
+      "source": "profullstack-service:bbs.profullstack.com",
+      "source_url": "https://profullstack.com/media/profullstack-mark-dark.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/bbs-profullstack.svg",
+      "png": "png/{size}/bbs-profullstack.png",
+      "tui": {
+        "unicode": "B",
+        "ascii": "bbs"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/bbs-profullstack.png",
+          "webp": "hq/webp/{size}/bbs-profullstack.webp",
+          "made_by": "human",
+          "svg": "hq/svg/bbs-profullstack.svg",
+          "hex": "#E02337",
+          "hex_source": "https://profullstack.com/media/profullstack-mark-dark.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/bbs-profullstack.png",
+          "webp": "styles/agentic-matte/webp/{size}/bbs-profullstack.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/bbs-profullstack.svg",
+          "hex": "#E02337",
+          "hex_source": "https://profullstack.com/media/profullstack-mark-dark.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/bbs-profullstack.png",
+          "webp": "styles/agentic-machined/webp/{size}/bbs-profullstack.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/bbs-profullstack.svg",
+          "hex": "#E02337",
+          "hex_source": "https://profullstack.com/media/profullstack-mark-dark.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/bbs-profullstack.png",
+          "webp": "styles/agentic-emissive/webp/{size}/bbs-profullstack.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/bbs-profullstack.svg",
+          "hex": "#E02337",
+          "hex_source": "https://profullstack.com/media/profullstack-mark-dark.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/bbs-profullstack.png",
+        "webp": "hq/webp/{size}/bbs-profullstack.webp",
+        "made_by": "human",
+        "svg": "hq/svg/bbs-profullstack.svg",
+        "hex": "#E02337",
+        "hex_source": "https://profullstack.com/media/profullstack-mark-dark.svg"
+      }
+    },
+    {
+      "key": "outreachgraph",
+      "name": "outreachgraph.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "outreachgraph.com and its logo are trademarks of their owner. Use them to refer to outreachgraph.com, not to imply endorsement.",
+      "source": "profullstack-service:outreachgraph.com",
+      "source_url": "https://outreachgraph.com/favicon.png",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/outreachgraph.svg",
+      "png": "png/{size}/outreachgraph.png",
+      "tui": {
+        "unicode": "O",
+        "ascii": "out"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/outreachgraph.png",
+          "webp": "hq/webp/{size}/outreachgraph.webp",
+          "made_by": "human",
+          "svg": "hq/svg/outreachgraph.svg",
+          "hex": "#00B1FC",
+          "hex_source": "https://outreachgraph.com/favicon.png"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/outreachgraph.png",
+          "webp": "styles/agentic-matte/webp/{size}/outreachgraph.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/outreachgraph.svg",
+          "hex": "#00B1FC",
+          "hex_source": "https://outreachgraph.com/favicon.png"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/outreachgraph.png",
+          "webp": "styles/agentic-machined/webp/{size}/outreachgraph.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/outreachgraph.svg",
+          "hex": "#00B1FC",
+          "hex_source": "https://outreachgraph.com/favicon.png"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/outreachgraph.png",
+          "webp": "styles/agentic-emissive/webp/{size}/outreachgraph.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/outreachgraph.svg",
+          "hex": "#00B1FC",
+          "hex_source": "https://outreachgraph.com/favicon.png"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/outreachgraph.png",
+        "webp": "hq/webp/{size}/outreachgraph.webp",
+        "made_by": "human",
+        "svg": "hq/svg/outreachgraph.svg",
+        "hex": "#00B1FC",
+        "hex_source": "https://outreachgraph.com/favicon.png"
+      }
+    },
+    {
+      "key": "reeleel",
+      "name": "reeleel.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "reeleel.com and its logo are trademarks of their owner. Use them to refer to reeleel.com, not to imply endorsement.",
+      "source": "profullstack-service:reeleel.com",
+      "source_url": "https://reeleel.com/brand/apple-touch-icon.png",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/reeleel.svg",
+      "png": "png/{size}/reeleel.png",
+      "tui": {
+        "unicode": "R",
+        "ascii": "ree"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/reeleel.png",
+          "webp": "hq/webp/{size}/reeleel.webp",
+          "made_by": "human",
+          "svg": "hq/svg/reeleel.svg",
+          "hex": "#004C99",
+          "hex_source": "https://reeleel.com/brand/apple-touch-icon.png"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/reeleel.png",
+          "webp": "styles/agentic-matte/webp/{size}/reeleel.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/reeleel.svg",
+          "hex": "#004C99",
+          "hex_source": "https://reeleel.com/brand/apple-touch-icon.png"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/reeleel.png",
+          "webp": "styles/agentic-machined/webp/{size}/reeleel.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/reeleel.svg",
+          "hex": "#004C99",
+          "hex_source": "https://reeleel.com/brand/apple-touch-icon.png"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/reeleel.png",
+          "webp": "styles/agentic-emissive/webp/{size}/reeleel.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/reeleel.svg",
+          "hex": "#004C99",
+          "hex_source": "https://reeleel.com/brand/apple-touch-icon.png"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/reeleel.png",
+        "webp": "hq/webp/{size}/reeleel.webp",
+        "made_by": "human",
+        "svg": "hq/svg/reeleel.svg",
+        "hex": "#004C99",
+        "hex_source": "https://reeleel.com/brand/apple-touch-icon.png"
+      }
+    },
+    {
+      "key": "rssamplifier",
+      "name": "rssamplifier.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "rssamplifier.com and its logo are trademarks of their owner. Use them to refer to rssamplifier.com, not to imply endorsement.",
+      "source": "profullstack-service:rssamplifier.com",
+      "source_url": "https://rssamplifier.com/favicon.png",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/rssamplifier.svg",
+      "png": "png/{size}/rssamplifier.png",
+      "tui": {
+        "unicode": "R",
+        "ascii": "rss"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/rssamplifier.png",
+          "webp": "hq/webp/{size}/rssamplifier.webp",
+          "made_by": "human",
+          "svg": "hq/svg/rssamplifier.svg",
+          "hex": "#FF8E01",
+          "hex_source": "https://rssamplifier.com/favicon.png"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/rssamplifier.png",
+          "webp": "styles/agentic-matte/webp/{size}/rssamplifier.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/rssamplifier.svg",
+          "hex": "#FF8E01",
+          "hex_source": "https://rssamplifier.com/favicon.png"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/rssamplifier.png",
+          "webp": "styles/agentic-machined/webp/{size}/rssamplifier.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/rssamplifier.svg",
+          "hex": "#FF8E01",
+          "hex_source": "https://rssamplifier.com/favicon.png"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/rssamplifier.png",
+          "webp": "styles/agentic-emissive/webp/{size}/rssamplifier.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/rssamplifier.svg",
+          "hex": "#FF8E01",
+          "hex_source": "https://rssamplifier.com/favicon.png"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/rssamplifier.png",
+        "webp": "hq/webp/{size}/rssamplifier.webp",
+        "made_by": "human",
+        "svg": "hq/svg/rssamplifier.svg",
+        "hex": "#FF8E01",
+        "hex_source": "https://rssamplifier.com/favicon.png"
+      }
+    },
+    {
+      "key": "bufferoverride",
+      "name": "bufferoverride.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "bufferoverride.com and its logo are trademarks of their owner. Use them to refer to bufferoverride.com, not to imply endorsement.",
+      "source": "profullstack-service:bufferoverride.com",
+      "source_url": "https://bufferoverride.com/icon.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/bufferoverride.svg",
+      "png": "png/{size}/bufferoverride.png",
+      "tui": {
+        "unicode": "B",
+        "ascii": "buf"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/bufferoverride.png",
+          "webp": "hq/webp/{size}/bufferoverride.webp",
+          "made_by": "human",
+          "svg": "hq/svg/bufferoverride.svg",
+          "hex": "#4169FF",
+          "hex_source": "https://bufferoverride.com/icon.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/bufferoverride.png",
+          "webp": "styles/agentic-matte/webp/{size}/bufferoverride.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/bufferoverride.svg",
+          "hex": "#4169FF",
+          "hex_source": "https://bufferoverride.com/icon.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/bufferoverride.png",
+          "webp": "styles/agentic-machined/webp/{size}/bufferoverride.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/bufferoverride.svg",
+          "hex": "#4169FF",
+          "hex_source": "https://bufferoverride.com/icon.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/bufferoverride.png",
+          "webp": "styles/agentic-emissive/webp/{size}/bufferoverride.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/bufferoverride.svg",
+          "hex": "#4169FF",
+          "hex_source": "https://bufferoverride.com/icon.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/bufferoverride.png",
+        "webp": "hq/webp/{size}/bufferoverride.webp",
+        "made_by": "human",
+        "svg": "hq/svg/bufferoverride.svg",
+        "hex": "#4169FF",
+        "hex_source": "https://bufferoverride.com/icon.svg"
+      }
+    },
+    {
+      "key": "tipoffwatch",
+      "name": "tipoffwatch.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "tipoffwatch.com and its logo are trademarks of their owner. Use them to refer to tipoffwatch.com, not to imply endorsement.",
+      "source": "profullstack-service:tipoffwatch.com",
+      "source_url": "https://tipoffwatch.com/logo.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/tipoffwatch.svg",
+      "png": "png/{size}/tipoffwatch.png",
+      "tui": {
+        "unicode": "T",
+        "ascii": "tip"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/tipoffwatch.png",
+          "webp": "hq/webp/{size}/tipoffwatch.webp",
+          "made_by": "human",
+          "svg": "hq/svg/tipoffwatch.svg",
+          "hex": "#381507",
+          "hex_source": "https://tipoffwatch.com/logo.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/tipoffwatch.png",
+          "webp": "styles/agentic-matte/webp/{size}/tipoffwatch.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/tipoffwatch.svg",
+          "hex": "#381507",
+          "hex_source": "https://tipoffwatch.com/logo.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/tipoffwatch.png",
+          "webp": "styles/agentic-machined/webp/{size}/tipoffwatch.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/tipoffwatch.svg",
+          "hex": "#381507",
+          "hex_source": "https://tipoffwatch.com/logo.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/tipoffwatch.png",
+          "webp": "styles/agentic-emissive/webp/{size}/tipoffwatch.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/tipoffwatch.svg",
+          "hex": "#381507",
+          "hex_source": "https://tipoffwatch.com/logo.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/tipoffwatch.png",
+        "webp": "hq/webp/{size}/tipoffwatch.webp",
+        "made_by": "human",
+        "svg": "hq/svg/tipoffwatch.svg",
+        "hex": "#381507",
+        "hex_source": "https://tipoffwatch.com/logo.svg"
+      }
+    },
+    {
+      "key": "genrewatch",
+      "name": "genrewatch.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "genrewatch.com and its logo are trademarks of their owner. Use them to refer to genrewatch.com, not to imply endorsement.",
+      "source": "profullstack-service:genrewatch.com",
+      "source_url": "https://genrewatch.com/logo.png",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/genrewatch.svg",
+      "png": "png/{size}/genrewatch.png",
+      "tui": {
+        "unicode": "G",
+        "ascii": "gen"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/genrewatch.png",
+          "webp": "hq/webp/{size}/genrewatch.webp",
+          "made_by": "human",
+          "svg": "hq/svg/genrewatch.svg",
+          "hex": "#4E47D2",
+          "hex_source": "https://genrewatch.com/logo.png"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/genrewatch.png",
+          "webp": "styles/agentic-matte/webp/{size}/genrewatch.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/genrewatch.svg",
+          "hex": "#4E47D2",
+          "hex_source": "https://genrewatch.com/logo.png"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/genrewatch.png",
+          "webp": "styles/agentic-machined/webp/{size}/genrewatch.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/genrewatch.svg",
+          "hex": "#4E47D2",
+          "hex_source": "https://genrewatch.com/logo.png"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/genrewatch.png",
+          "webp": "styles/agentic-emissive/webp/{size}/genrewatch.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/genrewatch.svg",
+          "hex": "#4E47D2",
+          "hex_source": "https://genrewatch.com/logo.png"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/genrewatch.png",
+        "webp": "hq/webp/{size}/genrewatch.webp",
+        "made_by": "human",
+        "svg": "hq/svg/genrewatch.svg",
+        "hex": "#4E47D2",
+        "hex_source": "https://genrewatch.com/logo.png"
+      }
+    },
+    {
+      "key": "p0dcasters",
+      "name": "p0dcasters.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "p0dcasters.com and its logo are trademarks of their owner. Use them to refer to p0dcasters.com, not to imply endorsement.",
+      "source": "profullstack-service:p0dcasters.com",
+      "source_url": "https://p0dcasters.com/logo.png",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/p0dcasters.svg",
+      "png": "png/{size}/p0dcasters.png",
+      "tui": {
+        "unicode": "P",
+        "ascii": "p0d"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/p0dcasters.png",
+          "webp": "hq/webp/{size}/p0dcasters.webp",
+          "made_by": "human",
+          "svg": "hq/svg/p0dcasters.svg",
+          "hex": "#00051B",
+          "hex_source": "https://p0dcasters.com/logo.png"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/p0dcasters.png",
+          "webp": "styles/agentic-matte/webp/{size}/p0dcasters.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/p0dcasters.svg",
+          "hex": "#00051B",
+          "hex_source": "https://p0dcasters.com/logo.png"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/p0dcasters.png",
+          "webp": "styles/agentic-machined/webp/{size}/p0dcasters.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/p0dcasters.svg",
+          "hex": "#00051B",
+          "hex_source": "https://p0dcasters.com/logo.png"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/p0dcasters.png",
+          "webp": "styles/agentic-emissive/webp/{size}/p0dcasters.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/p0dcasters.svg",
+          "hex": "#00051B",
+          "hex_source": "https://p0dcasters.com/logo.png"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/p0dcasters.png",
+        "webp": "hq/webp/{size}/p0dcasters.webp",
+        "made_by": "human",
+        "svg": "hq/svg/p0dcasters.svg",
+        "hex": "#00051B",
+        "hex_source": "https://p0dcasters.com/logo.png"
+      }
+    },
+    {
+      "key": "d3vices",
+      "name": "d3vices.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "d3vices.com and its logo are trademarks of their owner. Use them to refer to d3vices.com, not to imply endorsement.",
+      "source": "profullstack-service:d3vices.com",
+      "source_url": "https://d3vices.com/icons/apple-touch-icon-180x180.png",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/d3vices.svg",
+      "png": "png/{size}/d3vices.png",
+      "tui": {
+        "unicode": "D",
+        "ascii": "d3v"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/d3vices.png",
+          "webp": "hq/webp/{size}/d3vices.webp",
+          "made_by": "human",
+          "svg": "hq/svg/d3vices.svg",
+          "hex": "#00C5FC",
+          "hex_source": "https://d3vices.com/icons/apple-touch-icon-180x180.png"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/d3vices.png",
+          "webp": "styles/agentic-matte/webp/{size}/d3vices.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/d3vices.svg",
+          "hex": "#00C5FC",
+          "hex_source": "https://d3vices.com/icons/apple-touch-icon-180x180.png"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/d3vices.png",
+          "webp": "styles/agentic-machined/webp/{size}/d3vices.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/d3vices.svg",
+          "hex": "#00C5FC",
+          "hex_source": "https://d3vices.com/icons/apple-touch-icon-180x180.png"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/d3vices.png",
+          "webp": "styles/agentic-emissive/webp/{size}/d3vices.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/d3vices.svg",
+          "hex": "#00C5FC",
+          "hex_source": "https://d3vices.com/icons/apple-touch-icon-180x180.png"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/d3vices.png",
+        "webp": "hq/webp/{size}/d3vices.webp",
+        "made_by": "human",
+        "svg": "hq/svg/d3vices.svg",
+        "hex": "#00C5FC",
+        "hex_source": "https://d3vices.com/icons/apple-touch-icon-180x180.png"
+      }
+    },
+    {
+      "key": "diskpush",
+      "name": "diskpush.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "diskpush.com and its logo are trademarks of their owner. Use them to refer to diskpush.com, not to imply endorsement.",
+      "source": "profullstack-service:diskpush.com",
+      "source_url": "https://diskpush.com/favicon.png",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/diskpush.svg",
+      "png": "png/{size}/diskpush.png",
+      "tui": {
+        "unicode": "D",
+        "ascii": "dis"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/diskpush.png",
+          "webp": "hq/webp/{size}/diskpush.webp",
+          "made_by": "human",
+          "svg": "hq/svg/diskpush.svg",
+          "hex": "#0059FF",
+          "hex_source": "https://diskpush.com/favicon.png"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/diskpush.png",
+          "webp": "styles/agentic-matte/webp/{size}/diskpush.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/diskpush.svg",
+          "hex": "#0059FF",
+          "hex_source": "https://diskpush.com/favicon.png"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/diskpush.png",
+          "webp": "styles/agentic-machined/webp/{size}/diskpush.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/diskpush.svg",
+          "hex": "#0059FF",
+          "hex_source": "https://diskpush.com/favicon.png"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/diskpush.png",
+          "webp": "styles/agentic-emissive/webp/{size}/diskpush.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/diskpush.svg",
+          "hex": "#0059FF",
+          "hex_source": "https://diskpush.com/favicon.png"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/diskpush.png",
+        "webp": "hq/webp/{size}/diskpush.webp",
+        "made_by": "human",
+        "svg": "hq/svg/diskpush.svg",
+        "hex": "#0059FF",
+        "hex_source": "https://diskpush.com/favicon.png"
+      }
+    },
+    {
+      "key": "hqtui",
+      "name": "hqtui.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "hqtui.com and its logo are trademarks of their owner. Use them to refer to hqtui.com, not to imply endorsement.",
+      "source": "profullstack-service:hqtui.com",
+      "source_url": "https://hqtui.com/favicon.png",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/hqtui.svg",
+      "png": "png/{size}/hqtui.png",
+      "tui": {
+        "unicode": "H",
+        "ascii": "hqt"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/hqtui.png",
+          "webp": "hq/webp/{size}/hqtui.webp",
+          "made_by": "human",
+          "svg": "hq/svg/hqtui.svg",
+          "hex": "#000D22",
+          "hex_source": "https://hqtui.com/favicon.png"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/hqtui.png",
+          "webp": "styles/agentic-matte/webp/{size}/hqtui.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/hqtui.svg",
+          "hex": "#000D22",
+          "hex_source": "https://hqtui.com/favicon.png"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/hqtui.png",
+          "webp": "styles/agentic-machined/webp/{size}/hqtui.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/hqtui.svg",
+          "hex": "#000D22",
+          "hex_source": "https://hqtui.com/favicon.png"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/hqtui.png",
+          "webp": "styles/agentic-emissive/webp/{size}/hqtui.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/hqtui.svg",
+          "hex": "#000D22",
+          "hex_source": "https://hqtui.com/favicon.png"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/hqtui.png",
+        "webp": "hq/webp/{size}/hqtui.webp",
+        "made_by": "human",
+        "svg": "hq/svg/hqtui.svg",
+        "hex": "#000D22",
+        "hex_source": "https://hqtui.com/favicon.png"
+      }
+    },
+    {
+      "key": "chovy",
+      "name": "chovy.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "chovy.com and its logo are trademarks of their owner. Use them to refer to chovy.com, not to imply endorsement.",
+      "source": "profullstack-service:chovy.com",
+      "source_url": "https://chovy.com/favicon.png",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/chovy.svg",
+      "png": "png/{size}/chovy.png",
+      "tui": {
+        "unicode": "C",
+        "ascii": "cho"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/chovy.png",
+          "webp": "hq/webp/{size}/chovy.webp",
+          "made_by": "human",
+          "svg": "hq/svg/chovy.svg",
+          "hex": "#374466",
+          "hex_source": "https://chovy.com/favicon.png"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/chovy.png",
+          "webp": "styles/agentic-matte/webp/{size}/chovy.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/chovy.svg",
+          "hex": "#374466",
+          "hex_source": "https://chovy.com/favicon.png"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/chovy.png",
+          "webp": "styles/agentic-machined/webp/{size}/chovy.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/chovy.svg",
+          "hex": "#374466",
+          "hex_source": "https://chovy.com/favicon.png"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/chovy.png",
+          "webp": "styles/agentic-emissive/webp/{size}/chovy.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/chovy.svg",
+          "hex": "#374466",
+          "hex_source": "https://chovy.com/favicon.png"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/chovy.png",
+        "webp": "hq/webp/{size}/chovy.webp",
+        "made_by": "human",
+        "svg": "hq/svg/chovy.svg",
+        "hex": "#374466",
+        "hex_source": "https://chovy.com/favicon.png"
+      }
+    },
+    {
+      "key": "nichedb",
+      "name": "nichedb.dev",
+      "category": "brand",
+      "brand": true,
+      "trademark": "nichedb.dev and its logo are trademarks of their owner. Use them to refer to nichedb.dev, not to imply endorsement.",
+      "source": "profullstack-service:nichedb.dev",
+      "source_url": "https://nichedb.dev/favicon.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/nichedb.svg",
+      "png": "png/{size}/nichedb.png",
+      "tui": {
+        "unicode": "N",
+        "ascii": "nic"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/nichedb.png",
+          "webp": "hq/webp/{size}/nichedb.webp",
+          "made_by": "human",
+          "svg": "hq/svg/nichedb.svg",
+          "hex": "#03090D",
+          "hex_source": "https://nichedb.dev/favicon.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/nichedb.png",
+          "webp": "styles/agentic-matte/webp/{size}/nichedb.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/nichedb.svg",
+          "hex": "#03090D",
+          "hex_source": "https://nichedb.dev/favicon.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/nichedb.png",
+          "webp": "styles/agentic-machined/webp/{size}/nichedb.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/nichedb.svg",
+          "hex": "#03090D",
+          "hex_source": "https://nichedb.dev/favicon.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/nichedb.png",
+          "webp": "styles/agentic-emissive/webp/{size}/nichedb.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/nichedb.svg",
+          "hex": "#03090D",
+          "hex_source": "https://nichedb.dev/favicon.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/nichedb.png",
+        "webp": "hq/webp/{size}/nichedb.webp",
+        "made_by": "human",
+        "svg": "hq/svg/nichedb.svg",
+        "hex": "#03090D",
+        "hex_source": "https://nichedb.dev/favicon.svg"
+      }
+    },
+    {
+      "key": "readm3",
+      "name": "readm3.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "readm3.com and its logo are trademarks of their owner. Use them to refer to readm3.com, not to imply endorsement.",
+      "source": "profullstack-service:readm3.com",
+      "source_url": "https://readm3.com/favicon.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/readm3.svg",
+      "png": "png/{size}/readm3.png",
+      "tui": {
+        "unicode": "R",
+        "ascii": "rea"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/readm3.png",
+          "webp": "hq/webp/{size}/readm3.webp",
+          "made_by": "human",
+          "svg": "hq/svg/readm3.svg",
+          "hex": "#05070A",
+          "hex_source": "https://readm3.com/favicon.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/readm3.png",
+          "webp": "styles/agentic-matte/webp/{size}/readm3.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/readm3.svg",
+          "hex": "#05070A",
+          "hex_source": "https://readm3.com/favicon.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/readm3.png",
+          "webp": "styles/agentic-machined/webp/{size}/readm3.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/readm3.svg",
+          "hex": "#05070A",
+          "hex_source": "https://readm3.com/favicon.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/readm3.png",
+          "webp": "styles/agentic-emissive/webp/{size}/readm3.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/readm3.svg",
+          "hex": "#05070A",
+          "hex_source": "https://readm3.com/favicon.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/readm3.png",
+        "webp": "hq/webp/{size}/readm3.webp",
+        "made_by": "human",
+        "svg": "hq/svg/readm3.svg",
+        "hex": "#05070A",
+        "hex_source": "https://readm3.com/favicon.svg"
+      }
+    },
+    {
+      "key": "watchnews",
+      "name": "watchnews.now",
+      "category": "brand",
+      "brand": true,
+      "trademark": "watchnews.now and its logo are trademarks of their owner. Use them to refer to watchnews.now, not to imply endorsement.",
+      "source": "profullstack-service:watchnews.now",
+      "source_url": "https://watchnews.now/logo.png",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/watchnews.svg",
+      "png": "png/{size}/watchnews.png",
+      "tui": {
+        "unicode": "W",
+        "ascii": "wat"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/watchnews.png",
+          "webp": "hq/webp/{size}/watchnews.webp",
+          "made_by": "human",
+          "svg": "hq/svg/watchnews.svg",
+          "hex": "#CDD1D8",
+          "hex_source": "https://watchnews.now/logo.png"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/watchnews.png",
+          "webp": "styles/agentic-matte/webp/{size}/watchnews.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/watchnews.svg",
+          "hex": "#CDD1D8",
+          "hex_source": "https://watchnews.now/logo.png"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/watchnews.png",
+          "webp": "styles/agentic-machined/webp/{size}/watchnews.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/watchnews.svg",
+          "hex": "#CDD1D8",
+          "hex_source": "https://watchnews.now/logo.png"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/watchnews.png",
+          "webp": "styles/agentic-emissive/webp/{size}/watchnews.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/watchnews.svg",
+          "hex": "#CDD1D8",
+          "hex_source": "https://watchnews.now/logo.png"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/watchnews.png",
+        "webp": "hq/webp/{size}/watchnews.webp",
+        "made_by": "human",
+        "svg": "hq/svg/watchnews.svg",
+        "hex": "#CDD1D8",
+        "hex_source": "https://watchnews.now/logo.png"
+      }
+    },
+    {
+      "key": "nixamp",
+      "name": "nixamp.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "nixamp.com and its logo are trademarks of their owner. Use them to refer to nixamp.com, not to imply endorsement.",
+      "source": "profullstack-service:nixamp.com",
+      "source_url": "https://nixamp.com/icons/icon-512.png",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/nixamp.svg",
+      "png": "png/{size}/nixamp.png",
+      "tui": {
+        "unicode": "N",
+        "ascii": "nix"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/nixamp.png",
+          "webp": "hq/webp/{size}/nixamp.webp",
+          "made_by": "human",
+          "svg": "hq/svg/nixamp.svg",
+          "hex": "#4DFF8E",
+          "hex_source": "https://nixamp.com/icons/icon-512.png"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/nixamp.png",
+          "webp": "styles/agentic-matte/webp/{size}/nixamp.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/nixamp.svg",
+          "hex": "#4DFF8E",
+          "hex_source": "https://nixamp.com/icons/icon-512.png"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/nixamp.png",
+          "webp": "styles/agentic-machined/webp/{size}/nixamp.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/nixamp.svg",
+          "hex": "#4DFF8E",
+          "hex_source": "https://nixamp.com/icons/icon-512.png"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/nixamp.png",
+          "webp": "styles/agentic-emissive/webp/{size}/nixamp.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/nixamp.svg",
+          "hex": "#4DFF8E",
+          "hex_source": "https://nixamp.com/icons/icon-512.png"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/nixamp.png",
+        "webp": "hq/webp/{size}/nixamp.webp",
+        "made_by": "human",
+        "svg": "hq/svg/nixamp.svg",
+        "hex": "#4DFF8E",
+        "hex_source": "https://nixamp.com/icons/icon-512.png"
+      }
+    },
+    {
+      "key": "agenticjobs",
+      "name": "agenticjobs.work",
+      "category": "brand",
+      "brand": true,
+      "trademark": "agenticjobs.work and its logo are trademarks of their owner. Use them to refer to agenticjobs.work, not to imply endorsement.",
+      "source": "profullstack-service:agenticjobs.work",
+      "source_url": "https://agenticjobs.work/assets/icon.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/agenticjobs.svg",
+      "png": "png/{size}/agenticjobs.png",
+      "tui": {
+        "unicode": "A",
+        "ascii": "age"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/agenticjobs.png",
+          "webp": "hq/webp/{size}/agenticjobs.webp",
+          "made_by": "human",
+          "svg": "hq/svg/agenticjobs.svg",
+          "hex": "#1F5C45",
+          "hex_source": "https://agenticjobs.work/assets/icon.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/agenticjobs.png",
+          "webp": "styles/agentic-matte/webp/{size}/agenticjobs.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/agenticjobs.svg",
+          "hex": "#1F5C45",
+          "hex_source": "https://agenticjobs.work/assets/icon.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/agenticjobs.png",
+          "webp": "styles/agentic-machined/webp/{size}/agenticjobs.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/agenticjobs.svg",
+          "hex": "#1F5C45",
+          "hex_source": "https://agenticjobs.work/assets/icon.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/agenticjobs.png",
+          "webp": "styles/agentic-emissive/webp/{size}/agenticjobs.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/agenticjobs.svg",
+          "hex": "#1F5C45",
+          "hex_source": "https://agenticjobs.work/assets/icon.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/agenticjobs.png",
+        "webp": "hq/webp/{size}/agenticjobs.webp",
+        "made_by": "human",
+        "svg": "hq/svg/agenticjobs.svg",
+        "hex": "#1F5C45",
+        "hex_source": "https://agenticjobs.work/assets/icon.svg"
+      }
+    },
+    {
+      "key": "nightcell7",
+      "name": "nightcell7.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "nightcell7.com and its logo are trademarks of their owner. Use them to refer to nightcell7.com, not to imply endorsement.",
+      "source": "profullstack-service:nightcell7.com",
+      "source_url": "https://nightcell7.com/favicon.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/nightcell7.svg",
+      "png": "png/{size}/nightcell7.png",
+      "tui": {
+        "unicode": "N",
+        "ascii": "nig"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/nightcell7.png",
+          "webp": "hq/webp/{size}/nightcell7.webp",
+          "made_by": "human",
+          "svg": "hq/svg/nightcell7.svg",
+          "hex": "#07090C",
+          "hex_source": "https://nightcell7.com/favicon.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/nightcell7.png",
+          "webp": "styles/agentic-matte/webp/{size}/nightcell7.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/nightcell7.svg",
+          "hex": "#07090C",
+          "hex_source": "https://nightcell7.com/favicon.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/nightcell7.png",
+          "webp": "styles/agentic-machined/webp/{size}/nightcell7.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/nightcell7.svg",
+          "hex": "#07090C",
+          "hex_source": "https://nightcell7.com/favicon.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/nightcell7.png",
+          "webp": "styles/agentic-emissive/webp/{size}/nightcell7.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/nightcell7.svg",
+          "hex": "#07090C",
+          "hex_source": "https://nightcell7.com/favicon.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/nightcell7.png",
+        "webp": "hq/webp/{size}/nightcell7.webp",
+        "made_by": "human",
+        "svg": "hq/svg/nightcell7.svg",
+        "hex": "#07090C",
+        "hex_source": "https://nightcell7.com/favicon.svg"
+      }
+    },
+    {
+      "key": "r4ck",
+      "name": "r4ck.dev",
+      "category": "brand",
+      "brand": true,
+      "trademark": "r4ck.dev and its logo are trademarks of their owner. Use them to refer to r4ck.dev, not to imply endorsement.",
+      "source": "profullstack-service:r4ck.dev",
+      "source_url": "https://r4ck.dev/icons/icon-512.png",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/r4ck.svg",
+      "png": "png/{size}/r4ck.png",
+      "tui": {
+        "unicode": "R",
+        "ascii": "r4c"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/r4ck.png",
+          "webp": "hq/webp/{size}/r4ck.webp",
+          "made_by": "human",
+          "svg": "hq/svg/r4ck.svg",
+          "hex": "#353B49",
+          "hex_source": "https://r4ck.dev/icons/icon-512.png"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/r4ck.png",
+          "webp": "styles/agentic-matte/webp/{size}/r4ck.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/r4ck.svg",
+          "hex": "#353B49",
+          "hex_source": "https://r4ck.dev/icons/icon-512.png"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/r4ck.png",
+          "webp": "styles/agentic-machined/webp/{size}/r4ck.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/r4ck.svg",
+          "hex": "#353B49",
+          "hex_source": "https://r4ck.dev/icons/icon-512.png"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/r4ck.png",
+          "webp": "styles/agentic-emissive/webp/{size}/r4ck.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/r4ck.svg",
+          "hex": "#353B49",
+          "hex_source": "https://r4ck.dev/icons/icon-512.png"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/r4ck.png",
+        "webp": "hq/webp/{size}/r4ck.webp",
+        "made_by": "human",
+        "svg": "hq/svg/r4ck.svg",
+        "hex": "#353B49",
+        "hex_source": "https://r4ck.dev/icons/icon-512.png"
+      }
+    },
+    {
+      "key": "mediaanalyzer",
+      "name": "mediaanalyzer.pro",
+      "category": "brand",
+      "brand": true,
+      "trademark": "mediaanalyzer.pro and its logo are trademarks of their owner. Use them to refer to mediaanalyzer.pro, not to imply endorsement.",
+      "source": "profullstack-service:mediaanalyzer.pro",
+      "source_url": "https://mediaanalyzer.pro/icon.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/mediaanalyzer.svg",
+      "png": "png/{size}/mediaanalyzer.png",
+      "tui": {
+        "unicode": "M",
+        "ascii": "med"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/mediaanalyzer.png",
+          "webp": "hq/webp/{size}/mediaanalyzer.webp",
+          "made_by": "human",
+          "svg": "hq/svg/mediaanalyzer.svg",
+          "hex": "#6D4BD8",
+          "hex_source": "https://mediaanalyzer.pro/icon.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/mediaanalyzer.png",
+          "webp": "styles/agentic-matte/webp/{size}/mediaanalyzer.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/mediaanalyzer.svg",
+          "hex": "#6D4BD8",
+          "hex_source": "https://mediaanalyzer.pro/icon.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/mediaanalyzer.png",
+          "webp": "styles/agentic-machined/webp/{size}/mediaanalyzer.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/mediaanalyzer.svg",
+          "hex": "#6D4BD8",
+          "hex_source": "https://mediaanalyzer.pro/icon.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/mediaanalyzer.png",
+          "webp": "styles/agentic-emissive/webp/{size}/mediaanalyzer.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/mediaanalyzer.svg",
+          "hex": "#6D4BD8",
+          "hex_source": "https://mediaanalyzer.pro/icon.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/mediaanalyzer.png",
+        "webp": "hq/webp/{size}/mediaanalyzer.webp",
+        "made_by": "human",
+        "svg": "hq/svg/mediaanalyzer.svg",
+        "hex": "#6D4BD8",
+        "hex_source": "https://mediaanalyzer.pro/icon.svg"
+      }
+    },
+    {
+      "key": "demo-movie",
+      "name": "demo.movie",
+      "category": "brand",
+      "brand": true,
+      "trademark": "demo.movie and its logo are trademarks of their owner. Use them to refer to demo.movie, not to imply endorsement.",
+      "source": "profullstack-service:demo.movie",
+      "source_url": "https://demo.movie/icons/icon-512.png",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/demo-movie.svg",
+      "png": "png/{size}/demo-movie.png",
+      "tui": {
+        "unicode": "D",
+        "ascii": "dem"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/demo-movie.png",
+          "webp": "hq/webp/{size}/demo-movie.webp",
+          "made_by": "human",
+          "svg": "hq/svg/demo-movie.svg",
+          "hex": "#FE4C4D",
+          "hex_source": "https://demo.movie/icons/icon-512.png"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/demo-movie.png",
+          "webp": "styles/agentic-matte/webp/{size}/demo-movie.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/demo-movie.svg",
+          "hex": "#FE4C4D",
+          "hex_source": "https://demo.movie/icons/icon-512.png"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/demo-movie.png",
+          "webp": "styles/agentic-machined/webp/{size}/demo-movie.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/demo-movie.svg",
+          "hex": "#FE4C4D",
+          "hex_source": "https://demo.movie/icons/icon-512.png"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/demo-movie.png",
+          "webp": "styles/agentic-emissive/webp/{size}/demo-movie.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/demo-movie.svg",
+          "hex": "#FE4C4D",
+          "hex_source": "https://demo.movie/icons/icon-512.png"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/demo-movie.png",
+        "webp": "hq/webp/{size}/demo-movie.webp",
+        "made_by": "human",
+        "svg": "hq/svg/demo-movie.svg",
+        "hex": "#FE4C4D",
+        "hex_source": "https://demo.movie/icons/icon-512.png"
+      }
+    },
+    {
+      "key": "bg0ne",
+      "name": "bg0ne.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "bg0ne.com and its logo are trademarks of their owner. Use them to refer to bg0ne.com, not to imply endorsement.",
+      "source": "profullstack-service:bg0ne.com",
+      "source_url": "https://bg0ne.com/icon-512.png",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/bg0ne.svg",
+      "png": "png/{size}/bg0ne.png",
+      "tui": {
+        "unicode": "B",
+        "ascii": "bg0"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/bg0ne.png",
+          "webp": "hq/webp/{size}/bg0ne.webp",
+          "made_by": "human",
+          "svg": "hq/svg/bg0ne.svg",
+          "hex": "#171331",
+          "hex_source": "https://bg0ne.com/icon-512.png"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/bg0ne.png",
+          "webp": "styles/agentic-matte/webp/{size}/bg0ne.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/bg0ne.svg",
+          "hex": "#171331",
+          "hex_source": "https://bg0ne.com/icon-512.png"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/bg0ne.png",
+          "webp": "styles/agentic-machined/webp/{size}/bg0ne.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/bg0ne.svg",
+          "hex": "#171331",
+          "hex_source": "https://bg0ne.com/icon-512.png"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/bg0ne.png",
+          "webp": "styles/agentic-emissive/webp/{size}/bg0ne.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/bg0ne.svg",
+          "hex": "#171331",
+          "hex_source": "https://bg0ne.com/icon-512.png"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/bg0ne.png",
+        "webp": "hq/webp/{size}/bg0ne.webp",
+        "made_by": "human",
+        "svg": "hq/svg/bg0ne.svg",
+        "hex": "#171331",
+        "hex_source": "https://bg0ne.com/icon-512.png"
+      }
+    },
+    {
+      "key": "meshhook",
+      "name": "meshhook.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "meshhook.com and its logo are trademarks of their owner. Use them to refer to meshhook.com, not to imply endorsement.",
+      "source": "profullstack-service:meshhook.com",
+      "source_url": "https://meshhook.com/favicon.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/meshhook.svg",
+      "png": "png/{size}/meshhook.png",
+      "tui": {
+        "unicode": "M",
+        "ascii": "mes"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/meshhook.png",
+          "webp": "hq/webp/{size}/meshhook.webp",
+          "made_by": "human",
+          "svg": "hq/svg/meshhook.svg",
+          "hex": "#222222",
+          "hex_source": "https://meshhook.com/favicon.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/meshhook.png",
+          "webp": "styles/agentic-matte/webp/{size}/meshhook.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/meshhook.svg",
+          "hex": "#222222",
+          "hex_source": "https://meshhook.com/favicon.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/meshhook.png",
+          "webp": "styles/agentic-machined/webp/{size}/meshhook.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/meshhook.svg",
+          "hex": "#222222",
+          "hex_source": "https://meshhook.com/favicon.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/meshhook.png",
+          "webp": "styles/agentic-emissive/webp/{size}/meshhook.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/meshhook.svg",
+          "hex": "#222222",
+          "hex_source": "https://meshhook.com/favicon.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/meshhook.png",
+        "webp": "hq/webp/{size}/meshhook.webp",
+        "made_by": "human",
+        "svg": "hq/svg/meshhook.svg",
+        "hex": "#222222",
+        "hex_source": "https://meshhook.com/favicon.svg"
+      }
+    },
+    {
+      "key": "vipvap",
+      "name": "vipvap.xyz",
+      "category": "brand",
+      "brand": true,
+      "trademark": "vipvap.xyz and its logo are trademarks of their owner. Use them to refer to vipvap.xyz, not to imply endorsement.",
+      "source": "profullstack-service:vipvap.xyz",
+      "source_url": "https://vipvap.xyz/favicon.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/vipvap.svg",
+      "png": "png/{size}/vipvap.png",
+      "tui": {
+        "unicode": "V",
+        "ascii": "vip"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/vipvap.png",
+          "webp": "hq/webp/{size}/vipvap.webp",
+          "made_by": "human",
+          "svg": "hq/svg/vipvap.svg",
+          "hex": "#222222",
+          "hex_source": "https://vipvap.xyz/favicon.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/vipvap.png",
+          "webp": "styles/agentic-matte/webp/{size}/vipvap.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/vipvap.svg",
+          "hex": "#222222",
+          "hex_source": "https://vipvap.xyz/favicon.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/vipvap.png",
+          "webp": "styles/agentic-machined/webp/{size}/vipvap.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/vipvap.svg",
+          "hex": "#222222",
+          "hex_source": "https://vipvap.xyz/favicon.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/vipvap.png",
+          "webp": "styles/agentic-emissive/webp/{size}/vipvap.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/vipvap.svg",
+          "hex": "#222222",
+          "hex_source": "https://vipvap.xyz/favicon.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/vipvap.png",
+        "webp": "hq/webp/{size}/vipvap.webp",
+        "made_by": "human",
+        "svg": "hq/svg/vipvap.svg",
+        "hex": "#222222",
+        "hex_source": "https://vipvap.xyz/favicon.svg"
+      }
+    },
+    {
+      "key": "complymist",
+      "name": "complymist.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "complymist.com and its logo are trademarks of their owner. Use them to refer to complymist.com, not to imply endorsement.",
+      "source": "profullstack-service:complymist.com",
+      "source_url": "https://complymist.com/favicon.ico?favicon.2vob68tjqpejf.ico",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/complymist.svg",
+      "png": "png/{size}/complymist.png",
+      "tui": {
+        "unicode": "C",
+        "ascii": "com"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/complymist.png",
+          "webp": "hq/webp/{size}/complymist.webp",
+          "made_by": "human",
+          "svg": "hq/svg/complymist.svg",
+          "hex": "#AEAEAE",
+          "hex_source": "https://complymist.com/favicon.ico?favicon.2vob68tjqpejf.ico"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/complymist.png",
+          "webp": "styles/agentic-matte/webp/{size}/complymist.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/complymist.svg",
+          "hex": "#AEAEAE",
+          "hex_source": "https://complymist.com/favicon.ico?favicon.2vob68tjqpejf.ico"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/complymist.png",
+          "webp": "styles/agentic-machined/webp/{size}/complymist.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/complymist.svg",
+          "hex": "#AEAEAE",
+          "hex_source": "https://complymist.com/favicon.ico?favicon.2vob68tjqpejf.ico"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/complymist.png",
+          "webp": "styles/agentic-emissive/webp/{size}/complymist.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/complymist.svg",
+          "hex": "#AEAEAE",
+          "hex_source": "https://complymist.com/favicon.ico?favicon.2vob68tjqpejf.ico"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/complymist.png",
+        "webp": "hq/webp/{size}/complymist.webp",
+        "made_by": "human",
+        "svg": "hq/svg/complymist.svg",
+        "hex": "#AEAEAE",
+        "hex_source": "https://complymist.com/favicon.ico?favicon.2vob68tjqpejf.ico"
+      }
+    },
+    {
+      "key": "typeheard",
+      "name": "typeheard.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "typeheard.com and its logo are trademarks of their owner. Use them to refer to typeheard.com, not to imply endorsement.",
+      "source": "profullstack-service:typeheard.com",
+      "source_url": "https://typeheard.com/icons/apple-touch-icon-180x180.png",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/typeheard.svg",
+      "png": "png/{size}/typeheard.png",
+      "tui": {
+        "unicode": "T",
+        "ascii": "typ"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/typeheard.png",
+          "webp": "hq/webp/{size}/typeheard.webp",
+          "made_by": "human",
+          "svg": "hq/svg/typeheard.svg",
+          "hex": "#C83A25",
+          "hex_source": "https://typeheard.com/icons/apple-touch-icon-180x180.png"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/typeheard.png",
+          "webp": "styles/agentic-matte/webp/{size}/typeheard.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/typeheard.svg",
+          "hex": "#C83A25",
+          "hex_source": "https://typeheard.com/icons/apple-touch-icon-180x180.png"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/typeheard.png",
+          "webp": "styles/agentic-machined/webp/{size}/typeheard.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/typeheard.svg",
+          "hex": "#C83A25",
+          "hex_source": "https://typeheard.com/icons/apple-touch-icon-180x180.png"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/typeheard.png",
+          "webp": "styles/agentic-emissive/webp/{size}/typeheard.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/typeheard.svg",
+          "hex": "#C83A25",
+          "hex_source": "https://typeheard.com/icons/apple-touch-icon-180x180.png"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/typeheard.png",
+        "webp": "hq/webp/{size}/typeheard.webp",
+        "made_by": "human",
+        "svg": "hq/svg/typeheard.svg",
+        "hex": "#C83A25",
+        "hex_source": "https://typeheard.com/icons/apple-touch-icon-180x180.png"
+      }
+    },
+    {
+      "key": "pwamart",
+      "name": "pwamart.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "pwamart.com and its logo are trademarks of their owner. Use them to refer to pwamart.com, not to imply endorsement.",
+      "source": "profullstack-service:pwamart.com",
+      "source_url": "https://pwamart.com/icon.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/pwamart.svg",
+      "png": "png/{size}/pwamart.png",
+      "tui": {
+        "unicode": "P",
+        "ascii": "pwa"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/pwamart.png",
+          "webp": "hq/webp/{size}/pwamart.webp",
+          "made_by": "human",
+          "svg": "hq/svg/pwamart.svg",
+          "hex": "#16211D",
+          "hex_source": "https://pwamart.com/icon.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/pwamart.png",
+          "webp": "styles/agentic-matte/webp/{size}/pwamart.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/pwamart.svg",
+          "hex": "#16211D",
+          "hex_source": "https://pwamart.com/icon.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/pwamart.png",
+          "webp": "styles/agentic-machined/webp/{size}/pwamart.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/pwamart.svg",
+          "hex": "#16211D",
+          "hex_source": "https://pwamart.com/icon.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/pwamart.png",
+          "webp": "styles/agentic-emissive/webp/{size}/pwamart.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/pwamart.svg",
+          "hex": "#16211D",
+          "hex_source": "https://pwamart.com/icon.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/pwamart.png",
+        "webp": "hq/webp/{size}/pwamart.webp",
+        "made_by": "human",
+        "svg": "hq/svg/pwamart.svg",
+        "hex": "#16211D",
+        "hex_source": "https://pwamart.com/icon.svg"
+      }
+    },
+    {
+      "key": "tleehealth",
+      "name": "tleehealth.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "tleehealth.com and its logo are trademarks of their owner. Use them to refer to tleehealth.com, not to imply endorsement.",
+      "source": "profullstack-service:tleehealth.com",
+      "source_url": "https://tleehealth.com/icon.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/tleehealth.svg",
+      "png": "png/{size}/tleehealth.png",
+      "tui": {
+        "unicode": "T",
+        "ascii": "tle"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/tleehealth.png",
+          "webp": "hq/webp/{size}/tleehealth.webp",
+          "made_by": "human",
+          "svg": "hq/svg/tleehealth.svg",
+          "hex": "#0A0D0C",
+          "hex_source": "https://tleehealth.com/icon.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/tleehealth.png",
+          "webp": "styles/agentic-matte/webp/{size}/tleehealth.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/tleehealth.svg",
+          "hex": "#0A0D0C",
+          "hex_source": "https://tleehealth.com/icon.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/tleehealth.png",
+          "webp": "styles/agentic-machined/webp/{size}/tleehealth.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/tleehealth.svg",
+          "hex": "#0A0D0C",
+          "hex_source": "https://tleehealth.com/icon.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/tleehealth.png",
+          "webp": "styles/agentic-emissive/webp/{size}/tleehealth.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/tleehealth.svg",
+          "hex": "#0A0D0C",
+          "hex_source": "https://tleehealth.com/icon.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/tleehealth.png",
+        "webp": "hq/webp/{size}/tleehealth.webp",
+        "made_by": "human",
+        "svg": "hq/svg/tleehealth.svg",
+        "hex": "#0A0D0C",
+        "hex_source": "https://tleehealth.com/icon.svg"
+      }
+    },
+    {
+      "key": "hqterm",
+      "name": "hqterm.sh",
+      "category": "brand",
+      "brand": true,
+      "trademark": "hqterm.sh and its logo are trademarks of their owner. Use them to refer to hqterm.sh, not to imply endorsement.",
+      "source": "profullstack-service:hqterm.sh",
+      "source_url": "https://hqterm.sh/icon-512.png",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/hqterm.svg",
+      "png": "png/{size}/hqterm.png",
+      "tui": {
+        "unicode": "H",
+        "ascii": "hqt"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/hqterm.png",
+          "webp": "hq/webp/{size}/hqterm.webp",
+          "made_by": "human",
+          "svg": "hq/svg/hqterm.svg",
+          "hex": "#7AA2F7",
+          "hex_source": "https://hqterm.sh/icon-512.png"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/hqterm.png",
+          "webp": "styles/agentic-matte/webp/{size}/hqterm.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/hqterm.svg",
+          "hex": "#7AA2F7",
+          "hex_source": "https://hqterm.sh/icon-512.png"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/hqterm.png",
+          "webp": "styles/agentic-machined/webp/{size}/hqterm.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/hqterm.svg",
+          "hex": "#7AA2F7",
+          "hex_source": "https://hqterm.sh/icon-512.png"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/hqterm.png",
+          "webp": "styles/agentic-emissive/webp/{size}/hqterm.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/hqterm.svg",
+          "hex": "#7AA2F7",
+          "hex_source": "https://hqterm.sh/icon-512.png"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/hqterm.png",
+        "webp": "hq/webp/{size}/hqterm.webp",
+        "made_by": "human",
+        "svg": "hq/svg/hqterm.svg",
+        "hex": "#7AA2F7",
+        "hex_source": "https://hqterm.sh/icon-512.png"
+      }
+    },
+    {
+      "key": "wx93",
+      "name": "wx93.me",
+      "category": "brand",
+      "brand": true,
+      "trademark": "wx93.me and its logo are trademarks of their owner. Use them to refer to wx93.me, not to imply endorsement.",
+      "source": "profullstack-service:wx93.me",
+      "source_url": "https://wx93.me/icons/icon-512.png",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/wx93.svg",
+      "png": "png/{size}/wx93.png",
+      "tui": {
+        "unicode": "W",
+        "ascii": "wx9"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/wx93.png",
+          "webp": "hq/webp/{size}/wx93.webp",
+          "made_by": "human",
+          "svg": "hq/svg/wx93.svg",
+          "hex": "#3A4B1C",
+          "hex_source": "https://wx93.me/icons/icon-512.png"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/wx93.png",
+          "webp": "styles/agentic-matte/webp/{size}/wx93.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/wx93.svg",
+          "hex": "#3A4B1C",
+          "hex_source": "https://wx93.me/icons/icon-512.png"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/wx93.png",
+          "webp": "styles/agentic-machined/webp/{size}/wx93.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/wx93.svg",
+          "hex": "#3A4B1C",
+          "hex_source": "https://wx93.me/icons/icon-512.png"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/wx93.png",
+          "webp": "styles/agentic-emissive/webp/{size}/wx93.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/wx93.svg",
+          "hex": "#3A4B1C",
+          "hex_source": "https://wx93.me/icons/icon-512.png"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/wx93.png",
+        "webp": "hq/webp/{size}/wx93.webp",
+        "made_by": "human",
+        "svg": "hq/svg/wx93.svg",
+        "hex": "#3A4B1C",
+        "hex_source": "https://wx93.me/icons/icon-512.png"
+      }
+    },
+    {
+      "key": "sysops",
+      "name": "sysops.ceo",
+      "category": "brand",
+      "brand": true,
+      "trademark": "sysops.ceo and its logo are trademarks of their owner. Use them to refer to sysops.ceo, not to imply endorsement.",
+      "source": "profullstack-service:sysops.ceo",
+      "source_url": "https://profullstack.com/media/profullstack-mark-dark.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/sysops.svg",
+      "png": "png/{size}/sysops.png",
+      "tui": {
+        "unicode": "S",
+        "ascii": "sys"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/sysops.png",
+          "webp": "hq/webp/{size}/sysops.webp",
+          "made_by": "human",
+          "svg": "hq/svg/sysops.svg",
+          "hex": "#E02337",
+          "hex_source": "https://profullstack.com/media/profullstack-mark-dark.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/sysops.png",
+          "webp": "styles/agentic-matte/webp/{size}/sysops.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/sysops.svg",
+          "hex": "#E02337",
+          "hex_source": "https://profullstack.com/media/profullstack-mark-dark.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/sysops.png",
+          "webp": "styles/agentic-machined/webp/{size}/sysops.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/sysops.svg",
+          "hex": "#E02337",
+          "hex_source": "https://profullstack.com/media/profullstack-mark-dark.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/sysops.png",
+          "webp": "styles/agentic-emissive/webp/{size}/sysops.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/sysops.svg",
+          "hex": "#E02337",
+          "hex_source": "https://profullstack.com/media/profullstack-mark-dark.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/sysops.png",
+        "webp": "hq/webp/{size}/sysops.webp",
+        "made_by": "human",
+        "svg": "hq/svg/sysops.svg",
+        "hex": "#E02337",
+        "hex_source": "https://profullstack.com/media/profullstack-mark-dark.svg"
+      }
+    },
+    {
+      "key": "datamart",
+      "name": "datamart.help",
+      "category": "brand",
+      "brand": true,
+      "trademark": "datamart.help and its logo are trademarks of their owner. Use them to refer to datamart.help, not to imply endorsement.",
+      "source": "profullstack-service:datamart.help",
+      "source_url": "https://datamart.help/apple-icon?73aeb26313d1da3e",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/datamart.svg",
+      "png": "png/{size}/datamart.png",
+      "tui": {
+        "unicode": "D",
+        "ascii": "dat"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/datamart.png",
+          "webp": "hq/webp/{size}/datamart.webp",
+          "made_by": "human",
+          "svg": "hq/svg/datamart.svg",
+          "hex": "#0F6B5C",
+          "hex_source": "https://datamart.help/apple-icon?73aeb26313d1da3e"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/datamart.png",
+          "webp": "styles/agentic-matte/webp/{size}/datamart.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/datamart.svg",
+          "hex": "#0F6B5C",
+          "hex_source": "https://datamart.help/apple-icon?73aeb26313d1da3e"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/datamart.png",
+          "webp": "styles/agentic-machined/webp/{size}/datamart.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/datamart.svg",
+          "hex": "#0F6B5C",
+          "hex_source": "https://datamart.help/apple-icon?73aeb26313d1da3e"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/datamart.png",
+          "webp": "styles/agentic-emissive/webp/{size}/datamart.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/datamart.svg",
+          "hex": "#0F6B5C",
+          "hex_source": "https://datamart.help/apple-icon?73aeb26313d1da3e"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/datamart.png",
+        "webp": "hq/webp/{size}/datamart.webp",
+        "made_by": "human",
+        "svg": "hq/svg/datamart.svg",
+        "hex": "#0F6B5C",
+        "hex_source": "https://datamart.help/apple-icon?73aeb26313d1da3e"
+      }
+    },
+    {
+      "key": "hdtilt",
+      "name": "hdtilt.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "hdtilt.com and its logo are trademarks of their owner. Use them to refer to hdtilt.com, not to imply endorsement.",
+      "source": "profullstack-service:hdtilt.com",
+      "source_url": "https://hdtilt.com/icon.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/hdtilt.svg",
+      "png": "png/{size}/hdtilt.png",
+      "tui": {
+        "unicode": "H",
+        "ascii": "hdt"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/hdtilt.png",
+          "webp": "hq/webp/{size}/hdtilt.webp",
+          "made_by": "human",
+          "svg": "hq/svg/hdtilt.svg",
+          "hex": "#0B0F14",
+          "hex_source": "https://hdtilt.com/icon.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/hdtilt.png",
+          "webp": "styles/agentic-matte/webp/{size}/hdtilt.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/hdtilt.svg",
+          "hex": "#0B0F14",
+          "hex_source": "https://hdtilt.com/icon.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/hdtilt.png",
+          "webp": "styles/agentic-machined/webp/{size}/hdtilt.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/hdtilt.svg",
+          "hex": "#0B0F14",
+          "hex_source": "https://hdtilt.com/icon.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/hdtilt.png",
+          "webp": "styles/agentic-emissive/webp/{size}/hdtilt.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/hdtilt.svg",
+          "hex": "#0B0F14",
+          "hex_source": "https://hdtilt.com/icon.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/hdtilt.png",
+        "webp": "hq/webp/{size}/hdtilt.webp",
+        "made_by": "human",
+        "svg": "hq/svg/hdtilt.svg",
+        "hex": "#0B0F14",
+        "hex_source": "https://hdtilt.com/icon.svg"
+      }
+    },
+    {
+      "key": "ringhuman",
+      "name": "ringhuman.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "ringhuman.com and its logo are trademarks of their owner. Use them to refer to ringhuman.com, not to imply endorsement.",
+      "source": "profullstack-service:ringhuman.com",
+      "source_url": "https://ringhuman.com/icon-512.png",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/ringhuman.svg",
+      "png": "png/{size}/ringhuman.png",
+      "tui": {
+        "unicode": "R",
+        "ascii": "rin"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/ringhuman.png",
+          "webp": "hq/webp/{size}/ringhuman.webp",
+          "made_by": "human",
+          "svg": "hq/svg/ringhuman.svg",
+          "hex": "#6F263B",
+          "hex_source": "https://ringhuman.com/icon-512.png"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/ringhuman.png",
+          "webp": "styles/agentic-matte/webp/{size}/ringhuman.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/ringhuman.svg",
+          "hex": "#6F263B",
+          "hex_source": "https://ringhuman.com/icon-512.png"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/ringhuman.png",
+          "webp": "styles/agentic-machined/webp/{size}/ringhuman.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/ringhuman.svg",
+          "hex": "#6F263B",
+          "hex_source": "https://ringhuman.com/icon-512.png"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/ringhuman.png",
+          "webp": "styles/agentic-emissive/webp/{size}/ringhuman.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/ringhuman.svg",
+          "hex": "#6F263B",
+          "hex_source": "https://ringhuman.com/icon-512.png"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/ringhuman.png",
+        "webp": "hq/webp/{size}/ringhuman.webp",
+        "made_by": "human",
+        "svg": "hq/svg/ringhuman.svg",
+        "hex": "#6F263B",
+        "hex_source": "https://ringhuman.com/icon-512.png"
+      }
+    },
+    {
+      "key": "airdpx",
+      "name": "airdpx.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "airdpx.com and its logo are trademarks of their owner. Use them to refer to airdpx.com, not to imply endorsement.",
+      "source": "profullstack-service:airdpx.com",
+      "source_url": "https://airdpx.com/favicon.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/airdpx.svg",
+      "png": "png/{size}/airdpx.png",
+      "tui": {
+        "unicode": "A",
+        "ascii": "air"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/airdpx.png",
+          "webp": "hq/webp/{size}/airdpx.webp",
+          "made_by": "human",
+          "svg": "hq/svg/airdpx.svg",
+          "hex": "#0B57B8",
+          "hex_source": "https://airdpx.com/favicon.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/airdpx.png",
+          "webp": "styles/agentic-matte/webp/{size}/airdpx.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/airdpx.svg",
+          "hex": "#0B57B8",
+          "hex_source": "https://airdpx.com/favicon.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/airdpx.png",
+          "webp": "styles/agentic-machined/webp/{size}/airdpx.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/airdpx.svg",
+          "hex": "#0B57B8",
+          "hex_source": "https://airdpx.com/favicon.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/airdpx.png",
+          "webp": "styles/agentic-emissive/webp/{size}/airdpx.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/airdpx.svg",
+          "hex": "#0B57B8",
+          "hex_source": "https://airdpx.com/favicon.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/airdpx.png",
+        "webp": "hq/webp/{size}/airdpx.webp",
+        "made_by": "human",
+        "svg": "hq/svg/airdpx.svg",
+        "hex": "#0B57B8",
+        "hex_source": "https://airdpx.com/favicon.svg"
+      }
+    },
+    {
+      "key": "submitfleet",
+      "name": "submitfleet.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "submitfleet.com and its logo are trademarks of their owner. Use them to refer to submitfleet.com, not to imply endorsement.",
+      "source": "profullstack-service:submitfleet.com",
+      "source_url": "https://submitfleet.com/assets/icon.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/submitfleet.svg",
+      "png": "png/{size}/submitfleet.png",
+      "tui": {
+        "unicode": "S",
+        "ascii": "sub"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/submitfleet.png",
+          "webp": "hq/webp/{size}/submitfleet.webp",
+          "made_by": "human",
+          "svg": "hq/svg/submitfleet.svg",
+          "hex": "#0B6E4F",
+          "hex_source": "https://submitfleet.com/assets/icon.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/submitfleet.png",
+          "webp": "styles/agentic-matte/webp/{size}/submitfleet.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/submitfleet.svg",
+          "hex": "#0B6E4F",
+          "hex_source": "https://submitfleet.com/assets/icon.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/submitfleet.png",
+          "webp": "styles/agentic-machined/webp/{size}/submitfleet.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/submitfleet.svg",
+          "hex": "#0B6E4F",
+          "hex_source": "https://submitfleet.com/assets/icon.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/submitfleet.png",
+          "webp": "styles/agentic-emissive/webp/{size}/submitfleet.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/submitfleet.svg",
+          "hex": "#0B6E4F",
+          "hex_source": "https://submitfleet.com/assets/icon.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/submitfleet.png",
+        "webp": "hq/webp/{size}/submitfleet.webp",
+        "made_by": "human",
+        "svg": "hq/svg/submitfleet.svg",
+        "hex": "#0B6E4F",
+        "hex_source": "https://submitfleet.com/assets/icon.svg"
+      }
+    },
+    {
+      "key": "ch4nnels",
+      "name": "ch4nnels.com",
+      "category": "brand",
+      "brand": true,
+      "trademark": "ch4nnels.com and its logo are trademarks of their owner. Use them to refer to ch4nnels.com, not to imply endorsement.",
+      "source": "profullstack-service:ch4nnels.com",
+      "source_url": "https://ch4nnels.com/favicon.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/ch4nnels.svg",
+      "png": "png/{size}/ch4nnels.png",
+      "tui": {
+        "unicode": "C",
+        "ascii": "ch4"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/ch4nnels.png",
+          "webp": "hq/webp/{size}/ch4nnels.webp",
+          "made_by": "human",
+          "svg": "hq/svg/ch4nnels.svg",
+          "hex": "#0B0D12",
+          "hex_source": "https://ch4nnels.com/favicon.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/ch4nnels.png",
+          "webp": "styles/agentic-matte/webp/{size}/ch4nnels.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/ch4nnels.svg",
+          "hex": "#0B0D12",
+          "hex_source": "https://ch4nnels.com/favicon.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/ch4nnels.png",
+          "webp": "styles/agentic-machined/webp/{size}/ch4nnels.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/ch4nnels.svg",
+          "hex": "#0B0D12",
+          "hex_source": "https://ch4nnels.com/favicon.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/ch4nnels.png",
+          "webp": "styles/agentic-emissive/webp/{size}/ch4nnels.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/ch4nnels.svg",
+          "hex": "#0B0D12",
+          "hex_source": "https://ch4nnels.com/favicon.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/ch4nnels.png",
+        "webp": "hq/webp/{size}/ch4nnels.webp",
+        "made_by": "human",
+        "svg": "hq/svg/ch4nnels.svg",
+        "hex": "#0B0D12",
+        "hex_source": "https://ch4nnels.com/favicon.svg"
+      }
+    },
+    {
+      "key": "pit-world",
+      "name": "pit.world",
+      "category": "brand",
+      "brand": true,
+      "trademark": "pit.world and its logo are trademarks of their owner. Use them to refer to pit.world, not to imply endorsement.",
+      "source": "profullstack-service:pit.world",
+      "source_url": "https://pit.world/favicon.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/pit-world.svg",
+      "png": "png/{size}/pit-world.png",
+      "tui": {
+        "unicode": "P",
+        "ascii": "pit"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/pit-world.png",
+          "webp": "hq/webp/{size}/pit-world.webp",
+          "made_by": "human",
+          "svg": "hq/svg/pit-world.svg",
+          "hex": "#050505",
+          "hex_source": "https://pit.world/favicon.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/pit-world.png",
+          "webp": "styles/agentic-matte/webp/{size}/pit-world.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/pit-world.svg",
+          "hex": "#050505",
+          "hex_source": "https://pit.world/favicon.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/pit-world.png",
+          "webp": "styles/agentic-machined/webp/{size}/pit-world.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/pit-world.svg",
+          "hex": "#050505",
+          "hex_source": "https://pit.world/favicon.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/pit-world.png",
+          "webp": "styles/agentic-emissive/webp/{size}/pit-world.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/pit-world.svg",
+          "hex": "#050505",
+          "hex_source": "https://pit.world/favicon.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/pit-world.png",
+        "webp": "hq/webp/{size}/pit-world.webp",
+        "made_by": "human",
+        "svg": "hq/svg/pit-world.svg",
+        "hex": "#050505",
+        "hex_source": "https://pit.world/favicon.svg"
+      }
+    },
+    {
+      "key": "ad-network",
+      "name": "ad.network.pit.world",
+      "category": "brand",
+      "brand": true,
+      "trademark": "ad.network.pit.world and its logo are trademarks of their owner. Use them to refer to ad.network.pit.world, not to imply endorsement.",
+      "source": "profullstack-service:ad.network.pit.world",
+      "source_url": "https://ad.network.pit.world/favicon.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/ad-network.svg",
+      "png": "png/{size}/ad-network.png",
+      "tui": {
+        "unicode": "A",
+        "ascii": "adn"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/ad-network.png",
+          "webp": "hq/webp/{size}/ad-network.webp",
+          "made_by": "human",
+          "svg": "hq/svg/ad-network.svg",
+          "hex": "#07090C",
+          "hex_source": "https://ad.network.pit.world/favicon.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/ad-network.png",
+          "webp": "styles/agentic-matte/webp/{size}/ad-network.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/ad-network.svg",
+          "hex": "#07090C",
+          "hex_source": "https://ad.network.pit.world/favicon.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/ad-network.png",
+          "webp": "styles/agentic-machined/webp/{size}/ad-network.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/ad-network.svg",
+          "hex": "#07090C",
+          "hex_source": "https://ad.network.pit.world/favicon.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/ad-network.png",
+          "webp": "styles/agentic-emissive/webp/{size}/ad-network.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/ad-network.svg",
+          "hex": "#07090C",
+          "hex_source": "https://ad.network.pit.world/favicon.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/ad-network.png",
+        "webp": "hq/webp/{size}/ad-network.webp",
+        "made_by": "human",
+        "svg": "hq/svg/ad-network.svg",
+        "hex": "#07090C",
+        "hex_source": "https://ad.network.pit.world/favicon.svg"
+      }
+    },
+    {
+      "key": "built-indie",
+      "name": "built.indie.pit.world",
+      "category": "brand",
+      "brand": true,
+      "trademark": "built.indie.pit.world and its logo are trademarks of their owner. Use them to refer to built.indie.pit.world, not to imply endorsement.",
+      "source": "profullstack-service:built.indie.pit.world",
+      "source_url": "https://built.indie.pit.world/favicon.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/built-indie.svg",
+      "png": "png/{size}/built-indie.png",
+      "tui": {
+        "unicode": "B",
+        "ascii": "bui"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/built-indie.png",
+          "webp": "hq/webp/{size}/built-indie.webp",
+          "made_by": "human",
+          "svg": "hq/svg/built-indie.svg",
+          "hex": "#0B0A10",
+          "hex_source": "https://built.indie.pit.world/favicon.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/built-indie.png",
+          "webp": "styles/agentic-matte/webp/{size}/built-indie.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/built-indie.svg",
+          "hex": "#0B0A10",
+          "hex_source": "https://built.indie.pit.world/favicon.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/built-indie.png",
+          "webp": "styles/agentic-machined/webp/{size}/built-indie.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/built-indie.svg",
+          "hex": "#0B0A10",
+          "hex_source": "https://built.indie.pit.world/favicon.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/built-indie.png",
+          "webp": "styles/agentic-emissive/webp/{size}/built-indie.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/built-indie.svg",
+          "hex": "#0B0A10",
+          "hex_source": "https://built.indie.pit.world/favicon.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/built-indie.png",
+        "webp": "hq/webp/{size}/built-indie.webp",
+        "made_by": "human",
+        "svg": "hq/svg/built-indie.svg",
+        "hex": "#0B0A10",
+        "hex_source": "https://built.indie.pit.world/favicon.svg"
+      }
+    },
+    {
+      "key": "pay-agent",
+      "name": "pay.agent.pit.world",
+      "category": "brand",
+      "brand": true,
+      "trademark": "pay.agent.pit.world and its logo are trademarks of their owner. Use them to refer to pay.agent.pit.world, not to imply endorsement.",
+      "source": "profullstack-service:pay.agent.pit.world",
+      "source_url": "https://pay.agent.pit.world/favicon.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/pay-agent.svg",
+      "png": "png/{size}/pay-agent.png",
+      "tui": {
+        "unicode": "P",
+        "ascii": "pay"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/pay-agent.png",
+          "webp": "hq/webp/{size}/pay-agent.webp",
+          "made_by": "human",
+          "svg": "hq/svg/pay-agent.svg",
+          "hex": "#07090C",
+          "hex_source": "https://pay.agent.pit.world/favicon.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/pay-agent.png",
+          "webp": "styles/agentic-matte/webp/{size}/pay-agent.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/pay-agent.svg",
+          "hex": "#07090C",
+          "hex_source": "https://pay.agent.pit.world/favicon.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/pay-agent.png",
+          "webp": "styles/agentic-machined/webp/{size}/pay-agent.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/pay-agent.svg",
+          "hex": "#07090C",
+          "hex_source": "https://pay.agent.pit.world/favicon.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/pay-agent.png",
+          "webp": "styles/agentic-emissive/webp/{size}/pay-agent.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/pay-agent.svg",
+          "hex": "#07090C",
+          "hex_source": "https://pay.agent.pit.world/favicon.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/pay-agent.png",
+        "webp": "hq/webp/{size}/pay-agent.webp",
+        "made_by": "human",
+        "svg": "hq/svg/pay-agent.svg",
+        "hex": "#07090C",
+        "hex_source": "https://pay.agent.pit.world/favicon.svg"
+      }
+    },
+    {
+      "key": "family-ancestry",
+      "name": "family.ancestry.pit.world",
+      "category": "brand",
+      "brand": true,
+      "trademark": "family.ancestry.pit.world and its logo are trademarks of their owner. Use them to refer to family.ancestry.pit.world, not to imply endorsement.",
+      "source": "profullstack-service:family.ancestry.pit.world",
+      "source_url": "https://family.ancestry.pit.world/favicon.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/family-ancestry.svg",
+      "png": "png/{size}/family-ancestry.png",
+      "tui": {
+        "unicode": "F",
+        "ascii": "fam"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/family-ancestry.png",
+          "webp": "hq/webp/{size}/family-ancestry.webp",
+          "made_by": "human",
+          "svg": "hq/svg/family-ancestry.svg",
+          "hex": "#2F5D43",
+          "hex_source": "https://family.ancestry.pit.world/favicon.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/family-ancestry.png",
+          "webp": "styles/agentic-matte/webp/{size}/family-ancestry.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/family-ancestry.svg",
+          "hex": "#2F5D43",
+          "hex_source": "https://family.ancestry.pit.world/favicon.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/family-ancestry.png",
+          "webp": "styles/agentic-machined/webp/{size}/family-ancestry.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/family-ancestry.svg",
+          "hex": "#2F5D43",
+          "hex_source": "https://family.ancestry.pit.world/favicon.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/family-ancestry.png",
+          "webp": "styles/agentic-emissive/webp/{size}/family-ancestry.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/family-ancestry.svg",
+          "hex": "#2F5D43",
+          "hex_source": "https://family.ancestry.pit.world/favicon.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/family-ancestry.png",
+        "webp": "hq/webp/{size}/family-ancestry.webp",
+        "made_by": "human",
+        "svg": "hq/svg/family-ancestry.svg",
+        "hex": "#2F5D43",
+        "hex_source": "https://family.ancestry.pit.world/favicon.svg"
+      }
+    },
+    {
+      "key": "seo-rank",
+      "name": "seo.rank.pit.world",
+      "category": "brand",
+      "brand": true,
+      "trademark": "seo.rank.pit.world and its logo are trademarks of their owner. Use them to refer to seo.rank.pit.world, not to imply endorsement.",
+      "source": "profullstack-service:seo.rank.pit.world",
+      "source_url": "https://profullstack.com/media/profullstack-mark-dark.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/seo-rank.svg",
+      "png": "png/{size}/seo-rank.png",
+      "tui": {
+        "unicode": "S",
+        "ascii": "seo"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/seo-rank.png",
+          "webp": "hq/webp/{size}/seo-rank.webp",
+          "made_by": "human",
+          "svg": "hq/svg/seo-rank.svg",
+          "hex": "#E02337",
+          "hex_source": "https://profullstack.com/media/profullstack-mark-dark.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/seo-rank.png",
+          "webp": "styles/agentic-matte/webp/{size}/seo-rank.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/seo-rank.svg",
+          "hex": "#E02337",
+          "hex_source": "https://profullstack.com/media/profullstack-mark-dark.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/seo-rank.png",
+          "webp": "styles/agentic-machined/webp/{size}/seo-rank.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/seo-rank.svg",
+          "hex": "#E02337",
+          "hex_source": "https://profullstack.com/media/profullstack-mark-dark.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/seo-rank.png",
+          "webp": "styles/agentic-emissive/webp/{size}/seo-rank.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/seo-rank.svg",
+          "hex": "#E02337",
+          "hex_source": "https://profullstack.com/media/profullstack-mark-dark.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/seo-rank.png",
+        "webp": "hq/webp/{size}/seo-rank.webp",
+        "made_by": "human",
+        "svg": "hq/svg/seo-rank.svg",
+        "hex": "#E02337",
+        "hex_source": "https://profullstack.com/media/profullstack-mark-dark.svg"
+      }
+    },
+    {
+      "key": "cigarunderground",
+      "name": "cigarunderground.org",
+      "category": "brand",
+      "brand": true,
+      "trademark": "cigarunderground.org and its logo are trademarks of their owner. Use them to refer to cigarunderground.org, not to imply endorsement.",
+      "source": "profullstack-service:cigarunderground.org",
+      "source_url": "https://cigarunderground.org/favicon.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/cigarunderground.svg",
+      "png": "png/{size}/cigarunderground.png",
+      "tui": {
+        "unicode": "C",
+        "ascii": "cig"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/cigarunderground.png",
+          "webp": "hq/webp/{size}/cigarunderground.webp",
+          "made_by": "human",
+          "svg": "hq/svg/cigarunderground.svg",
+          "hex": "#14100C",
+          "hex_source": "https://cigarunderground.org/favicon.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/cigarunderground.png",
+          "webp": "styles/agentic-matte/webp/{size}/cigarunderground.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/cigarunderground.svg",
+          "hex": "#14100C",
+          "hex_source": "https://cigarunderground.org/favicon.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/cigarunderground.png",
+          "webp": "styles/agentic-machined/webp/{size}/cigarunderground.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/cigarunderground.svg",
+          "hex": "#14100C",
+          "hex_source": "https://cigarunderground.org/favicon.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/cigarunderground.png",
+          "webp": "styles/agentic-emissive/webp/{size}/cigarunderground.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/cigarunderground.svg",
+          "hex": "#14100C",
+          "hex_source": "https://cigarunderground.org/favicon.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/cigarunderground.png",
+        "webp": "hq/webp/{size}/cigarunderground.webp",
+        "made_by": "human",
+        "svg": "hq/svg/cigarunderground.svg",
+        "hex": "#14100C",
+        "hex_source": "https://cigarunderground.org/favicon.svg"
+      }
+    },
+    {
+      "key": "search-peptides",
+      "name": "search.peptides.pit.world",
+      "category": "brand",
+      "brand": true,
+      "trademark": "search.peptides.pit.world and its logo are trademarks of their owner. Use them to refer to search.peptides.pit.world, not to imply endorsement.",
+      "source": "profullstack-service:search.peptides.pit.world",
+      "source_url": "https://search.peptides.pit.world/favicon.svg",
+      "license": "Profullstack, Inc. service mark",
+      "made_by": "human",
+      "svg": "svg/search-peptides.svg",
+      "png": "png/{size}/search-peptides.png",
+      "tui": {
+        "unicode": "S",
+        "ascii": "sea"
+      },
+      "styles": {
+        "hq": {
+          "png": "hq/png/{size}/search-peptides.png",
+          "webp": "hq/webp/{size}/search-peptides.webp",
+          "made_by": "human",
+          "svg": "hq/svg/search-peptides.svg",
+          "hex": "#0B0D12",
+          "hex_source": "https://search.peptides.pit.world/favicon.svg"
+        },
+        "agentic-matte": {
+          "png": "styles/agentic-matte/png/{size}/search-peptides.png",
+          "webp": "styles/agentic-matte/webp/{size}/search-peptides.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-matte/svg/search-peptides.svg",
+          "hex": "#0B0D12",
+          "hex_source": "https://search.peptides.pit.world/favicon.svg"
+        },
+        "agentic-machined": {
+          "png": "styles/agentic-machined/png/{size}/search-peptides.png",
+          "webp": "styles/agentic-machined/webp/{size}/search-peptides.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-machined/svg/search-peptides.svg",
+          "hex": "#0B0D12",
+          "hex_source": "https://search.peptides.pit.world/favicon.svg"
+        },
+        "agentic-emissive": {
+          "png": "styles/agentic-emissive/png/{size}/search-peptides.png",
+          "webp": "styles/agentic-emissive/webp/{size}/search-peptides.webp",
+          "made_by": "human",
+          "svg": "styles/agentic-emissive/svg/search-peptides.svg",
+          "hex": "#0B0D12",
+          "hex_source": "https://search.peptides.pit.world/favicon.svg"
+        }
+      },
+      "hq": {
+        "png": "hq/png/{size}/search-peptides.png",
+        "webp": "hq/webp/{size}/search-peptides.webp",
+        "made_by": "human",
+        "svg": "hq/svg/search-peptides.svg",
+        "hex": "#0B0D12",
+        "hex_source": "https://search.peptides.pit.world/favicon.svg"
+      }
     }
   ],
   "styles": [
@@ -18349,8 +23070,8 @@
       "ai_provider": "OpenAI",
       "ai_prompt_url": "hq/style.txt",
       "coverage": {
-        "total": 372,
-        "done": 372
+        "total": 452,
+        "done": 452
       }
     },
     "agentic-matte": {
@@ -18377,8 +23098,8 @@
       "ai_provider": "OpenAI",
       "ai_prompt_url": "styles/agentic-matte/style.txt",
       "coverage": {
-        "total": 372,
-        "done": 372
+        "total": 452,
+        "done": 452
       }
     },
     "agentic-machined": {
@@ -18405,8 +23126,8 @@
       "ai_provider": "OpenAI",
       "ai_prompt_url": "styles/agentic-machined/style.txt",
       "coverage": {
-        "total": 372,
-        "done": 372
+        "total": 452,
+        "done": 452
       }
     },
     "agentic-emissive": {
@@ -18433,8 +23154,8 @@
       "ai_provider": "OpenAI",
       "ai_prompt_url": "styles/agentic-emissive/style.txt",
       "coverage": {
-        "total": 372,
-        "done": 372
+        "total": 452,
+        "done": 452
       }
     }
   },
@@ -18462,8 +23183,8 @@
     "ai_provider": "OpenAI",
     "ai_prompt_url": "hq/style.txt",
     "coverage": {
-      "total": 372,
-      "done": 372
+      "total": 452,
+      "done": 452
     }
   }
 }
