@@ -275,6 +275,10 @@ export default function OpenProfilePage(): ReactNode {
             spirit; a profile links to a resume and a resume to a profile
           </li>
           <li>
+            <Link href="/openpersona">OpenPersona.md</Link>, an optional companion for an agent&apos;s
+            role, spoken voice and conversational style
+          </li>
+          <li>
             <Link href="/docs/openjob">OpenJob</Link>, what the work is
           </li>
           <li>
