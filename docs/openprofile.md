@@ -2,7 +2,7 @@
 
 OpenProfile.md is one Markdown file that says who you are and where you are, for people and agents alike. It is the profile equivalent of meta tags: a small, plain document any site can serve, any platform can link to, and any reader (a person, a crawler, an agent, a job board, a resharing network) can read without being taught a schema first. It is maintained by Profullstack, Inc. as part of the LogicSRC open-standards surface.
 
-Status: **0.4**. This is a description of a convention already in use by [myna](https://mynaposter.com) and [agenticjobs](https://agenticjobs.work), published so others can serve and read the same file.
+Status: **0.5**. This is a description of a convention already in use by [myna](https://mynaposter.com) and [agenticjobs](https://agenticjobs.work), published so others can serve and read the same file.
 
 Slug: `openprofile`
 
@@ -113,7 +113,7 @@ There are nine, and every one of them degrades rather than fails.
 - `Web`: your home page. `Website`, `Homepage` and `Site` are accepted aliases and mean the same; a writer uses `Web`. Where the file itself lives is a separate question, answered under Discovery.
 - `Email`, `Location`, `Timezone`, `Languages`: kept as written.
 - `Gender`: kept as written. `woman`, `man` and `non-binary` are the words in common use, and any other word is kept too. It may sit here or under Match, and means the same in both; a reader takes whichever it finds first.
-- `Voice`: how a machine should sound when it speaks for you. `female`, `male`, or a provider's voice id kept as written (`Telnyx.KokoroTTS.am_adam`, `ElevenLabs.Premade.Rachel`). A platform that reads your words aloud (a phone room reading a chat line, a screen reader for your posts) chooses from `Voice`, then `Gender`, then `Pronouns`, and never from a name, a photo or another site. Absent all three, it picks one and keeps picking the same one for you.
+- `Voice`: a compact voice preference, such as `female`, `male`, or a provider voice id (`kokoro:af_sarah`). The optional `## Voice` section below carries detailed speech preferences. `Gender` and `Pronouns` describe you; readers do not use them to guess a synthetic voice. If no voice preference is stated, a reader chooses a stable default and keeps using it.
 - `Avatar`: an image URL.
 - `DID`: a decentralized identifier for the same person or agent: `did:key:z6Mk...`, `did:web:example.com`, or an AT Protocol `did:plc:...`. Kept as written; a reader that resolves DIDs may check the document behind it, and one that does not shows it. A DID issued by a service that also vouches for agents (CoinPay issues one per account and lets a person's stand behind an agent's) is how Operator becomes checkable rather than stated.
 - `Pay`: where money for you goes. A [CAIP-10](https://github.com/ChainAgnostic/CAIPs/blob/main/CAIPs/caip-10.md) account (`eip155:8453:0x...`), a bare address, a Lightning address, or a payment page URL. Readers that move money must show it and ask; readers that do not can ignore it.
@@ -123,7 +123,7 @@ Values that look like an email address or a URL become links; anything else stay
 
 **3. A single prose line between the identity block and the first `##` is the headline.** One line. It is the bio a directory shows next to your name. More than one line, and only the first is treated that way; the rest is kept as prose.
 
-**4. `##` opens a section.** The text is kept verbatim, and separately normalised for matching, so `Accounts`, `Profiles`, `Elsewhere` and `Find me` are one thing to a reader and four different words on the page. The normalised names in common use are `accounts`, `topics`, `reshare`, `operator`, `match`, `photos`, `broadcast`, `guest`, `links`, `about`, `projects`, `services` and `contact`. `Broadcast` and `Guest` are specified on their own as [OpenBroadcast](/docs/openbroadcast) and [OpenGuest](/docs/openguest): the show a person hosts and the appearances a person offers, matched against each other. `Dating`, `Matching`, `Partner` and `Looking for` normalise to `match`. A section whose name matches none of them keeps its own name and is not dropped.
+**4. `##` opens a section.** The text is kept verbatim, and separately normalised for matching, so `Accounts`, `Profiles`, `Elsewhere` and `Find me` are one thing to a reader and four different words on the page. The normalised names in common use are `accounts`, `topics`, `reshare`, `operator`, `match`, `photos`, `voice`, `broadcast`, `guest`, `links`, `about`, `projects`, `services` and `contact`. `Broadcast` and `Guest` are specified on their own as [OpenBroadcast](/docs/openbroadcast) and [OpenGuest](/docs/openguest): the show a person hosts and the appearances a person offers, matched against each other. `Dating`, `Matching`, `Partner` and `Looking for` normalise to `match`. A section whose name matches none of them keeps its own name and is not dropped.
 
 **5. Every bullet under Accounts is one account, and the URL is the identity.** `[Bluesky](https://bsky.app/profile/ada.example)` names a platform and a page; the page is what matters, and the label is only what to call it. `bluesky: ada.example` and `https://bsky.app/profile/ada.example` on a line of their own are accepted too. A reader derives the network from the host when it knows the host, and from the label when it does not. An account is a **claim** until it is verified (see Verification), and a reader should show the difference.
 
@@ -182,6 +182,33 @@ The optional `## Skills` section carries human capabilities, knowledge and occup
 These are claims by the profile owner. Optional evidence, self-assessed level and last-used date can sit under a third-level heading for the skill, as described in OpenSkill. A concept definition does not establish a person's proficiency, employment or professional license. An occupation does not imply every associated skill. Unknown and unmapped labels remain valid, and readers retain this section even when they cannot interpret it. These capability descriptions do not install executable agent skills or authorize actions.
 
 [Browse the initial concepts](/openprofile/skills). This draft extension adds no required fields and does not change the existing discovery or verification rules.
+
+## Voice
+
+The optional `## Voice` section says how an agent, person or organization prefers its words to sound when spoken. It describes voice output, not the profile owner's identity. Every field is optional; readers keep fields they do not understand and never fill a missing value from a name, avatar, identity `Gender`, `Pronouns`, or another site.
+
+```markdown
+## Voice
+
+- **Language**: English
+- **Locale**: en-US
+- **Accent**: General American
+- **Voice gender**: feminine
+- **Engine**: kokoro
+- **Voice**: af_sarah
+- **Persona**: Warm, confident and concise
+- **Pronunciation**: Profullstack is pronounced "pro-full-stack"
+- **Rate**: 1.0
+```
+
+- `Language` is the spoken language by name or language tag. `Locale` is a BCP-47 tag such as `en-US` or `fr-CA`; it is the clearest language-and-region preference when both are present.
+- `Accent` is self-described, such as `General American`, `Québécois French`, or `no preference`. It is not inferred from `Locale` or location.
+- `Voice gender` or `Presentation` is the requested sound presentation: `female`, `male`, `feminine`, `masculine`, `androgynous`, `neutral`, `non-binary`, `other`, or a provider's term. It is not the owner's gender. A reader preserves the exact wording and uses it only to select a suitable available voice.
+- `Engine` names a speech engine or provider (`piper`, `kokoro`, or another value). `Voice` is that engine's voice id. A reader honors both when supported, then honors `Voice` in the identity block, then uses a stable default. It does not substitute a paid or unavailable provider without telling the user.
+- `Persona` describes speaking style (for example, measured, playful, formal or reassuring). It is delivery guidance, not a claim about personality or authority.
+- `Pronunciation` contains optional names or terms with a preferred spelling, respelling or phonetic form. `Rate` is a provider-neutral speed multiplier, where `1.0` is normal pace; unsupported values are kept and ignored.
+
+Voice fields do not authorize a reader to impersonate a real person, clone a voice, or speak on the owner's behalf. A platform that reads profile text aloud uses the preference for synthesis only.
 
 ## Discovery
 
@@ -267,6 +294,7 @@ By hand, in any editor, in five minutes. Or:
 | 0.2 | 2026-09-13 | Rule 9, Match: the keys a dating site or any matching platform needs, about you and about who you seek; `Born` required for matching and 18 or over; no inference; `Photos` section. |
 | 0.3 | 2026-09-13 | `Gender` and `Voice` in the identity block: how a machine should sound when it speaks for you, and the order a reader chooses in (`Voice`, `Gender`, `Pronouns`, never a name or a photo). First reader: nixamp's party line reading trollbox lines to callers. |
 | 0.4 | 2026-10-06 | `Emoji`, `Pronouns` and `Web` are default fields, in the example and in every reader's structured view. `Emoji`: one grapheme or an OpenEmoji shortcode, your mark next to your name. `Pronouns`: shown as written, used in the third person, never inferred. `Website`, `Homepage` and `Site` are aliases of `Web`. |
+| 0.5 | 2026-11-01 | Add the optional `## Voice` section for spoken language, BCP-47 locale, self-described accent, voice presentation, engine, voice id, persona, pronunciation and speaking rate. Separate voice presentation from identity gender and pronouns; readers do not infer speech preferences from identity. |
 
 ## License
 
