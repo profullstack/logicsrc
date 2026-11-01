@@ -5,6 +5,8 @@ import { config } from "../config.mjs";
 import { token } from "../lib/crypto.mjs";
 import { createSession, setCeremony, getCeremony, clearCeremony, takeNext } from "../lib/session.mjs";
 import { userByCoinpay, createUserForCoinpay } from "../lib/users.mjs";
+import { profiles } from "../lib/profile.mjs";
+import { saveOpenProfileContact } from "@profullstack/profile";
 
 export const coinpayRouter = Router();
 
@@ -59,6 +61,13 @@ coinpayRouter.get("/auth/coinpay/callback", async (req, res) => {
 
     let user = await userByCoinpay(sub);
     if (!user) user = await createUserForCoinpay(sub, info.name || info.username);
+    if (typeof info.openprofile_url === "string") {
+      try {
+        await saveOpenProfileContact(profiles, String(user.id), info.openprofile_url);
+      } catch (e) {
+        console.warn("[coinpay] OpenProfile import skipped:", e instanceof Error ? e.message : e);
+      }
+    }
     await createSession(res, user.id);
     res.redirect(takeNext(req, res) || "/");
   } catch (e) {

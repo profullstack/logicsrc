@@ -336,10 +336,11 @@ pagesRouter.get("/settings", requireAuth, async (req, res) => {
     <div class="card" style="margin-bottom:20px"><div class="card-head"><span class="h">Your details</span></div>
       <div class="card-body">
         <form method="post" action="/settings/profile">${csrfInput(req)}
-          ${renderProfileFields({ values: profileValues, required: ["first_name", "last_name"], idPrefix: "account-" })}
+        ${renderProfileFields({ values: profileValues, required: ["first_name", "last_name"], idPrefix: "account-", importOpenProfile: true })}
           <button class="btn">Save details</button>
         </form>
       </div></div>
+      <script src="/vendor/profile-enhance.js" defer></script>
     <div class="card"><div class="card-head"><span class="h">API keys</span></div>
       <div class="card-body">
         <p class="dim" style="font-size:.85rem;margin-top:0">A <b>person</b> key acts as you; <code>logicsrc login</code> makes one for you. A <b>machine</b> key is for a deploy box or CI: one team, the vaults you list, read-only unless you say otherwise, its own identity key. After the box runs one command with it, grant it a vault from the vault page or with <code>logicsrc teams grant &lt;team&gt; &lt;project&gt; &lt;env&gt; --key &lt;name&gt;</code>.</p>
