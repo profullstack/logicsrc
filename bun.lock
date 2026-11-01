@@ -87,7 +87,7 @@
         "@profullstack/footer": "latest",
         "@profullstack/key-rotation": "0.1.0",
         "@profullstack/libsql-pg": "^0.1.4",
-        "@profullstack/profile": "0.1.7",
+        "@profullstack/profile": "0.1.8",
         "@simplewebauthn/browser": "^14.0.0",
         "@simplewebauthn/server": "^14.0.3",
         "cookie-parser": "^1.4.7",
@@ -775,7 +775,7 @@
 
     "@profullstack/openprofile": ["@profullstack/openprofile@0.2.0", "", {}, "sha512-cdFsBbfRXurvy5KqHDNcKXxurK2s/YlfVgnILFRpVl2hq3860rExqDee8IfsFGxw5cPdqGv2fxUxtek1Xy2U5Q=="],
 
-    "@profullstack/profile": ["@profullstack/profile@0.1.7", "", { "dependencies": { "@profullstack/openprofile": "^0.2.0" }, "peerDependencies": { "@libsql/client": ">=0.6.0", "postgres": "^3.4.0", "react": ">=18" }, "optionalPeers": ["@libsql/client", "postgres", "react"], "bin": { "profile": "src/cli.js" } }, "sha512-N7UkypkkY2JkSBKzmdmyy6+DCoxI048qUZQksEjSRwSIyy4mjU9H1qW4yhZD+LJBhTEupgJv//Uxwhiy2FuGmA=="],
+    "@profullstack/profile": ["@profullstack/profile@0.1.8", "", { "dependencies": { "@profullstack/openprofile": "^0.2.0" }, "peerDependencies": { "@libsql/client": ">=0.6.0", "postgres": "^3.4.0", "react": ">=18" }, "optionalPeers": ["@libsql/client", "postgres", "react"], "bin": { "profile": "src/cli.js" } }, "sha512-MQ/AGGM++NZEbjMglRlEvjCrmsL46CXDz2GKb510eMBEKUik1cwix9ag20gakYrrVCaB5mNcNCMYon53vwDTfw=="],
 
     "@profullstack/referrals": ["@profullstack/referrals@0.1.0", "", { "peerDependencies": { "react": ">=18" }, "optionalPeers": ["react"] }, "sha512-u66SdBVpsv3kc0N+NWISPoYD5vjCERyv5wfD07iSkZwQeC2IA+ihX5jNA4e7Xr+Y4AUvxLycG+3b4VaROqzgRg=="],
 
@@ -1454,8 +1454,6 @@
     "@inquirer/external-editor/iconv-lite": ["iconv-lite@0.7.3", "", { "dependencies": { "safer-buffer": ">= 2.1.2 < 3.0.0" } }, "sha512-IKXpvIzjnC9XTAUbVBcMfGS0EPaIXtW6v+zr+RRp+hqULEpo0owZax6wyRwPOJbWbzjYspQwusTsfVr0ifh4uQ=="],
 
     "@logicsrc/openmcp/@profullstack/footer": ["@profullstack/footer@0.2.6", "", { "peerDependencies": { "react": ">=18" }, "optionalPeers": ["react"], "bin": { "profullstack-footer": "bin/profullstack-footer.js" } }, "sha512-BKwbDszAc7e0mYIBiPjgr/5WS8WyDt8IW718s/zW/8pCWOIB1BGwSNs6fmImRSo5kqIjQKUVbXp22jZQ5GEipA=="],
-
-    "@logicsrc/web/@profullstack/footer": ["@profullstack/footer@0.6.11", "", { "peerDependencies": { "react": ">=18" }, "optionalPeers": ["react"], "bin": { "profullstack-footer": "bin/profullstack-footer.js" } }, "sha512-9khfQbBM2p5cqMqUg8+K1atF2muYWA0AQaVI6C8gH6Cl+D+7Wc2zeaPmtDMque8HZzA3tdaqoCAAUfsufaL17Q=="],
 
     "@modelcontextprotocol/sdk/content-type": ["content-type@1.0.5", "", {}, "sha512-nTjqfcBFEipKdXCv4YDQWCfmcLZKm81ldF0pAopTvyrFGVbcR6P/VAAd5G7N+0tTr8QqiU0tFadD6FK4NtJwOA=="],
 
