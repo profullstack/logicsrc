@@ -18442,7 +18442,7 @@
       "brand": true,
       "trademark": "brisk.news and its logo are trademarks of their owner. Use them to refer to brisk.news, not to imply endorsement.",
       "source": "profullstack-service:brisk.news",
-      "source_url": "https://brisk.news/favicon.svg",
+      "source_url": "https://brisk.pwa.pit.world/favicon.svg",
       "license": "Profullstack, Inc. service mark",
       "made_by": "human",
       "svg": "svg/brisk.svg",
@@ -18458,7 +18458,7 @@
           "made_by": "human",
           "svg": "hq/svg/brisk.svg",
           "hex": "#222222",
-          "hex_source": "https://brisk.news/favicon.svg"
+          "hex_source": "https://brisk.pwa.pit.world/favicon.svg"
         },
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/brisk.png",
@@ -18466,7 +18466,7 @@
           "made_by": "human",
           "svg": "styles/agentic-matte/svg/brisk.svg",
           "hex": "#222222",
-          "hex_source": "https://brisk.news/favicon.svg"
+          "hex_source": "https://brisk.pwa.pit.world/favicon.svg"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/brisk.png",
@@ -18474,7 +18474,7 @@
           "made_by": "human",
           "svg": "styles/agentic-machined/svg/brisk.svg",
           "hex": "#222222",
-          "hex_source": "https://brisk.news/favicon.svg"
+          "hex_source": "https://brisk.pwa.pit.world/favicon.svg"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/brisk.png",
@@ -18482,7 +18482,7 @@
           "made_by": "human",
           "svg": "styles/agentic-emissive/svg/brisk.svg",
           "hex": "#222222",
-          "hex_source": "https://brisk.news/favicon.svg"
+          "hex_source": "https://brisk.pwa.pit.world/favicon.svg"
         }
       },
       "hq": {
@@ -18491,7 +18491,7 @@
         "made_by": "human",
         "svg": "hq/svg/brisk.svg",
         "hex": "#222222",
-        "hex_source": "https://brisk.news/favicon.svg"
+        "hex_source": "https://brisk.pwa.pit.world/favicon.svg"
       }
     },
     {
@@ -18560,7 +18560,7 @@
       "brand": true,
       "trademark": "c0ncerts.com and its logo are trademarks of their owner. Use them to refer to c0ncerts.com, not to imply endorsement.",
       "source": "profullstack-service:c0ncerts.com",
-      "source_url": "https://c0ncerts.com/favicon.svg",
+      "source_url": "https://c0ncerts.pwa.pit.world/favicon.svg",
       "license": "Profullstack, Inc. service mark",
       "made_by": "human",
       "svg": "svg/c0ncerts.svg",
@@ -18576,7 +18576,7 @@
           "made_by": "human",
           "svg": "hq/svg/c0ncerts.svg",
           "hex": "#168C87",
-          "hex_source": "https://c0ncerts.com/favicon.svg"
+          "hex_source": "https://c0ncerts.pwa.pit.world/favicon.svg"
         },
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/c0ncerts.png",
@@ -18584,7 +18584,7 @@
           "made_by": "human",
           "svg": "styles/agentic-matte/svg/c0ncerts.svg",
           "hex": "#168C87",
-          "hex_source": "https://c0ncerts.com/favicon.svg"
+          "hex_source": "https://c0ncerts.pwa.pit.world/favicon.svg"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/c0ncerts.png",
@@ -18592,7 +18592,7 @@
           "made_by": "human",
           "svg": "styles/agentic-machined/svg/c0ncerts.svg",
           "hex": "#168C87",
-          "hex_source": "https://c0ncerts.com/favicon.svg"
+          "hex_source": "https://c0ncerts.pwa.pit.world/favicon.svg"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/c0ncerts.png",
@@ -18600,7 +18600,7 @@
           "made_by": "human",
           "svg": "styles/agentic-emissive/svg/c0ncerts.svg",
           "hex": "#168C87",
-          "hex_source": "https://c0ncerts.com/favicon.svg"
+          "hex_source": "https://c0ncerts.pwa.pit.world/favicon.svg"
         }
       },
       "hq": {
@@ -18609,7 +18609,7 @@
         "made_by": "human",
         "svg": "hq/svg/c0ncerts.svg",
         "hex": "#168C87",
-        "hex_source": "https://c0ncerts.com/favicon.svg"
+        "hex_source": "https://c0ncerts.pwa.pit.world/favicon.svg"
       }
     },
     {
@@ -18619,7 +18619,7 @@
       "brand": true,
       "trademark": "c0upons.com and its logo are trademarks of their owner. Use them to refer to c0upons.com, not to imply endorsement.",
       "source": "profullstack-service:c0upons.com",
-      "source_url": "https://c0upons.com/favicon.svg",
+      "source_url": "https://c0upons.pwa.pit.world/favicon.svg",
       "license": "Profullstack, Inc. service mark",
       "made_by": "human",
       "svg": "svg/c0upons.svg",
@@ -18635,7 +18635,7 @@
           "made_by": "human",
           "svg": "hq/svg/c0upons.svg",
           "hex": "#F97316",
-          "hex_source": "https://c0upons.com/favicon.svg"
+          "hex_source": "https://c0upons.pwa.pit.world/favicon.svg"
         },
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/c0upons.png",
@@ -18643,7 +18643,7 @@
           "made_by": "human",
           "svg": "styles/agentic-matte/svg/c0upons.svg",
           "hex": "#F97316",
-          "hex_source": "https://c0upons.com/favicon.svg"
+          "hex_source": "https://c0upons.pwa.pit.world/favicon.svg"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/c0upons.png",
@@ -18651,7 +18651,7 @@
           "made_by": "human",
           "svg": "styles/agentic-machined/svg/c0upons.svg",
           "hex": "#F97316",
-          "hex_source": "https://c0upons.com/favicon.svg"
+          "hex_source": "https://c0upons.pwa.pit.world/favicon.svg"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/c0upons.png",
@@ -18659,7 +18659,7 @@
           "made_by": "human",
           "svg": "styles/agentic-emissive/svg/c0upons.svg",
           "hex": "#F97316",
-          "hex_source": "https://c0upons.com/favicon.svg"
+          "hex_source": "https://c0upons.pwa.pit.world/favicon.svg"
         }
       },
       "hq": {
@@ -18668,7 +18668,7 @@
         "made_by": "human",
         "svg": "hq/svg/c0upons.svg",
         "hex": "#F97316",
-        "hex_source": "https://c0upons.com/favicon.svg"
+        "hex_source": "https://c0upons.pwa.pit.world/favicon.svg"
       }
     },
     {
@@ -19032,7 +19032,7 @@
       "brand": true,
       "trademark": "naallo.com and its logo are trademarks of their owner. Use them to refer to naallo.com, not to imply endorsement.",
       "source": "profullstack-service:naallo.com",
-      "source_url": "https://naallo.com/favicon.svg",
+      "source_url": "https://naallo.pwa.pit.world/favicon.svg",
       "license": "Profullstack, Inc. service mark",
       "made_by": "human",
       "svg": "svg/naallo.svg",
@@ -19048,7 +19048,7 @@
           "made_by": "human",
           "svg": "hq/svg/naallo.svg",
           "hex": "#222222",
-          "hex_source": "https://naallo.com/favicon.svg"
+          "hex_source": "https://naallo.pwa.pit.world/favicon.svg"
         },
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/naallo.png",
@@ -19056,7 +19056,7 @@
           "made_by": "human",
           "svg": "styles/agentic-matte/svg/naallo.svg",
           "hex": "#222222",
-          "hex_source": "https://naallo.com/favicon.svg"
+          "hex_source": "https://naallo.pwa.pit.world/favicon.svg"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/naallo.png",
@@ -19064,7 +19064,7 @@
           "made_by": "human",
           "svg": "styles/agentic-machined/svg/naallo.svg",
           "hex": "#222222",
-          "hex_source": "https://naallo.com/favicon.svg"
+          "hex_source": "https://naallo.pwa.pit.world/favicon.svg"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/naallo.png",
@@ -19072,7 +19072,7 @@
           "made_by": "human",
           "svg": "styles/agentic-emissive/svg/naallo.svg",
           "hex": "#222222",
-          "hex_source": "https://naallo.com/favicon.svg"
+          "hex_source": "https://naallo.pwa.pit.world/favicon.svg"
         }
       },
       "hq": {
@@ -19081,7 +19081,7 @@
         "made_by": "human",
         "svg": "hq/svg/naallo.svg",
         "hex": "#222222",
-        "hex_source": "https://naallo.com/favicon.svg"
+        "hex_source": "https://naallo.pwa.pit.world/favicon.svg"
       }
     },
     {
@@ -19445,7 +19445,7 @@
       "brand": true,
       "trademark": "recipepdfs.com and its logo are trademarks of their owner. Use them to refer to recipepdfs.com, not to imply endorsement.",
       "source": "profullstack-service:recipepdfs.com",
-      "source_url": "https://recipepdfs.com/icon-512.png",
+      "source_url": "https://recipepdfs.pwa.pit.world/icon-512.png",
       "license": "Profullstack, Inc. service mark",
       "made_by": "human",
       "svg": "svg/recipepdfs.svg",
@@ -19461,7 +19461,7 @@
           "made_by": "human",
           "svg": "hq/svg/recipepdfs.svg",
           "hex": "#5B3AA4",
-          "hex_source": "https://recipepdfs.com/icon-512.png"
+          "hex_source": "https://recipepdfs.pwa.pit.world/icon-512.png"
         },
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/recipepdfs.png",
@@ -19469,7 +19469,7 @@
           "made_by": "human",
           "svg": "styles/agentic-matte/svg/recipepdfs.svg",
           "hex": "#5B3AA4",
-          "hex_source": "https://recipepdfs.com/icon-512.png"
+          "hex_source": "https://recipepdfs.pwa.pit.world/icon-512.png"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/recipepdfs.png",
@@ -19477,7 +19477,7 @@
           "made_by": "human",
           "svg": "styles/agentic-machined/svg/recipepdfs.svg",
           "hex": "#5B3AA4",
-          "hex_source": "https://recipepdfs.com/icon-512.png"
+          "hex_source": "https://recipepdfs.pwa.pit.world/icon-512.png"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/recipepdfs.png",
@@ -19485,7 +19485,7 @@
           "made_by": "human",
           "svg": "styles/agentic-emissive/svg/recipepdfs.svg",
           "hex": "#5B3AA4",
-          "hex_source": "https://recipepdfs.com/icon-512.png"
+          "hex_source": "https://recipepdfs.pwa.pit.world/icon-512.png"
         }
       },
       "hq": {
@@ -19494,7 +19494,7 @@
         "made_by": "human",
         "svg": "hq/svg/recipepdfs.svg",
         "hex": "#5B3AA4",
-        "hex_source": "https://recipepdfs.com/icon-512.png"
+        "hex_source": "https://recipepdfs.pwa.pit.world/icon-512.png"
       }
     },
     {
@@ -19504,7 +19504,7 @@
       "brand": true,
       "trademark": "saasrow.com and its logo are trademarks of their owner. Use them to refer to saasrow.com, not to imply endorsement.",
       "source": "profullstack-service:saasrow.com",
-      "source_url": "https://saasrow.com/icon-512.png",
+      "source_url": "https://saasrow.pwa.pit.world/icon-512.png",
       "license": "Profullstack, Inc. service mark",
       "made_by": "human",
       "svg": "svg/saasrow.svg",
@@ -19520,7 +19520,7 @@
           "made_by": "human",
           "svg": "hq/svg/saasrow.svg",
           "hex": "#133844",
-          "hex_source": "https://saasrow.com/icon-512.png"
+          "hex_source": "https://saasrow.pwa.pit.world/icon-512.png"
         },
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/saasrow.png",
@@ -19528,7 +19528,7 @@
           "made_by": "human",
           "svg": "styles/agentic-matte/svg/saasrow.svg",
           "hex": "#133844",
-          "hex_source": "https://saasrow.com/icon-512.png"
+          "hex_source": "https://saasrow.pwa.pit.world/icon-512.png"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/saasrow.png",
@@ -19536,7 +19536,7 @@
           "made_by": "human",
           "svg": "styles/agentic-machined/svg/saasrow.svg",
           "hex": "#133844",
-          "hex_source": "https://saasrow.com/icon-512.png"
+          "hex_source": "https://saasrow.pwa.pit.world/icon-512.png"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/saasrow.png",
@@ -19544,7 +19544,7 @@
           "made_by": "human",
           "svg": "styles/agentic-emissive/svg/saasrow.svg",
           "hex": "#133844",
-          "hex_source": "https://saasrow.com/icon-512.png"
+          "hex_source": "https://saasrow.pwa.pit.world/icon-512.png"
         }
       },
       "hq": {
@@ -19553,7 +19553,7 @@
         "made_by": "human",
         "svg": "hq/svg/saasrow.svg",
         "hex": "#133844",
-        "hex_source": "https://saasrow.com/icon-512.png"
+        "hex_source": "https://saasrow.pwa.pit.world/icon-512.png"
       }
     },
     {
@@ -19858,7 +19858,7 @@
       "brand": true,
       "trademark": "weedforcrypto.com and its logo are trademarks of their owner. Use them to refer to weedforcrypto.com, not to imply endorsement.",
       "source": "profullstack-service:weedforcrypto.com",
-      "source_url": "https://weedforcrypto.com/icon.svg",
+      "source_url": "https://weedforcrypto.pwa.pit.world/icon.svg",
       "license": "Profullstack, Inc. service mark",
       "made_by": "human",
       "svg": "svg/weedforcrypto.svg",
@@ -19874,7 +19874,7 @@
           "made_by": "human",
           "svg": "hq/svg/weedforcrypto.svg",
           "hex": "#18181B",
-          "hex_source": "https://weedforcrypto.com/icon.svg"
+          "hex_source": "https://weedforcrypto.pwa.pit.world/icon.svg"
         },
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/weedforcrypto.png",
@@ -19882,7 +19882,7 @@
           "made_by": "human",
           "svg": "styles/agentic-matte/svg/weedforcrypto.svg",
           "hex": "#18181B",
-          "hex_source": "https://weedforcrypto.com/icon.svg"
+          "hex_source": "https://weedforcrypto.pwa.pit.world/icon.svg"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/weedforcrypto.png",
@@ -19890,7 +19890,7 @@
           "made_by": "human",
           "svg": "styles/agentic-machined/svg/weedforcrypto.svg",
           "hex": "#18181B",
-          "hex_source": "https://weedforcrypto.com/icon.svg"
+          "hex_source": "https://weedforcrypto.pwa.pit.world/icon.svg"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/weedforcrypto.png",
@@ -19898,7 +19898,7 @@
           "made_by": "human",
           "svg": "styles/agentic-emissive/svg/weedforcrypto.svg",
           "hex": "#18181B",
-          "hex_source": "https://weedforcrypto.com/icon.svg"
+          "hex_source": "https://weedforcrypto.pwa.pit.world/icon.svg"
         }
       },
       "hq": {
@@ -19907,7 +19907,7 @@
         "made_by": "human",
         "svg": "hq/svg/weedforcrypto.svg",
         "hex": "#18181B",
-        "hex_source": "https://weedforcrypto.com/icon.svg"
+        "hex_source": "https://weedforcrypto.pwa.pit.world/icon.svg"
       }
     },
     {
@@ -19976,7 +19976,7 @@
       "brand": true,
       "trademark": "goingbroke.now and its logo are trademarks of their owner. Use them to refer to goingbroke.now, not to imply endorsement.",
       "source": "profullstack-service:goingbroke.now",
-      "source_url": "https://goingbroke.now/icon-512.png",
+      "source_url": "https://goingbroke.pwa.pit.world/icon-512.png",
       "license": "Profullstack, Inc. service mark",
       "made_by": "human",
       "svg": "svg/goingbroke.svg",
@@ -19992,7 +19992,7 @@
           "made_by": "human",
           "svg": "hq/svg/goingbroke.svg",
           "hex": "#B93636",
-          "hex_source": "https://goingbroke.now/icon-512.png"
+          "hex_source": "https://goingbroke.pwa.pit.world/icon-512.png"
         },
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/goingbroke.png",
@@ -20000,7 +20000,7 @@
           "made_by": "human",
           "svg": "styles/agentic-matte/svg/goingbroke.svg",
           "hex": "#B93636",
-          "hex_source": "https://goingbroke.now/icon-512.png"
+          "hex_source": "https://goingbroke.pwa.pit.world/icon-512.png"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/goingbroke.png",
@@ -20008,7 +20008,7 @@
           "made_by": "human",
           "svg": "styles/agentic-machined/svg/goingbroke.svg",
           "hex": "#B93636",
-          "hex_source": "https://goingbroke.now/icon-512.png"
+          "hex_source": "https://goingbroke.pwa.pit.world/icon-512.png"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/goingbroke.png",
@@ -20016,7 +20016,7 @@
           "made_by": "human",
           "svg": "styles/agentic-emissive/svg/goingbroke.svg",
           "hex": "#B93636",
-          "hex_source": "https://goingbroke.now/icon-512.png"
+          "hex_source": "https://goingbroke.pwa.pit.world/icon-512.png"
         }
       },
       "hq": {
@@ -20025,7 +20025,7 @@
         "made_by": "human",
         "svg": "hq/svg/goingbroke.svg",
         "hex": "#B93636",
-        "hex_source": "https://goingbroke.now/icon-512.png"
+        "hex_source": "https://goingbroke.pwa.pit.world/icon-512.png"
       }
     },
     {
@@ -20212,7 +20212,7 @@
       "brand": true,
       "trademark": "aiornot.vote and its logo are trademarks of their owner. Use them to refer to aiornot.vote, not to imply endorsement.",
       "source": "profullstack-service:aiornot.vote",
-      "source_url": "https://aiornot.vote/icon-512.png",
+      "source_url": "https://aiornot.pwa.pit.world/icon-512.png",
       "license": "Profullstack, Inc. service mark",
       "made_by": "human",
       "svg": "svg/aiornot.svg",
@@ -20228,7 +20228,7 @@
           "made_by": "human",
           "svg": "hq/svg/aiornot.svg",
           "hex": "#212033",
-          "hex_source": "https://aiornot.vote/icon-512.png"
+          "hex_source": "https://aiornot.pwa.pit.world/icon-512.png"
         },
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/aiornot.png",
@@ -20236,7 +20236,7 @@
           "made_by": "human",
           "svg": "styles/agentic-matte/svg/aiornot.svg",
           "hex": "#212033",
-          "hex_source": "https://aiornot.vote/icon-512.png"
+          "hex_source": "https://aiornot.pwa.pit.world/icon-512.png"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/aiornot.png",
@@ -20244,7 +20244,7 @@
           "made_by": "human",
           "svg": "styles/agentic-machined/svg/aiornot.svg",
           "hex": "#212033",
-          "hex_source": "https://aiornot.vote/icon-512.png"
+          "hex_source": "https://aiornot.pwa.pit.world/icon-512.png"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/aiornot.png",
@@ -20252,7 +20252,7 @@
           "made_by": "human",
           "svg": "styles/agentic-emissive/svg/aiornot.svg",
           "hex": "#212033",
-          "hex_source": "https://aiornot.vote/icon-512.png"
+          "hex_source": "https://aiornot.pwa.pit.world/icon-512.png"
         }
       },
       "hq": {
@@ -20261,7 +20261,7 @@
         "made_by": "human",
         "svg": "hq/svg/aiornot.svg",
         "hex": "#212033",
-        "hex_source": "https://aiornot.vote/icon-512.png"
+        "hex_source": "https://aiornot.pwa.pit.world/icon-512.png"
       }
     },
     {
@@ -20271,7 +20271,7 @@
       "brand": true,
       "trademark": "advis0r.com and its logo are trademarks of their owner. Use them to refer to advis0r.com, not to imply endorsement.",
       "source": "profullstack-service:advis0r.com",
-      "source_url": "https://advis0r.com/icon.svg",
+      "source_url": "https://advis0r.pwa.pit.world/icon.svg",
       "license": "Profullstack, Inc. service mark",
       "made_by": "human",
       "svg": "svg/advis0r.svg",
@@ -20287,7 +20287,7 @@
           "made_by": "human",
           "svg": "hq/svg/advis0r.svg",
           "hex": "#0A0E14",
-          "hex_source": "https://advis0r.com/icon.svg"
+          "hex_source": "https://advis0r.pwa.pit.world/icon.svg"
         },
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/advis0r.png",
@@ -20295,7 +20295,7 @@
           "made_by": "human",
           "svg": "styles/agentic-matte/svg/advis0r.svg",
           "hex": "#0A0E14",
-          "hex_source": "https://advis0r.com/icon.svg"
+          "hex_source": "https://advis0r.pwa.pit.world/icon.svg"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/advis0r.png",
@@ -20303,7 +20303,7 @@
           "made_by": "human",
           "svg": "styles/agentic-machined/svg/advis0r.svg",
           "hex": "#0A0E14",
-          "hex_source": "https://advis0r.com/icon.svg"
+          "hex_source": "https://advis0r.pwa.pit.world/icon.svg"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/advis0r.png",
@@ -20311,7 +20311,7 @@
           "made_by": "human",
           "svg": "styles/agentic-emissive/svg/advis0r.svg",
           "hex": "#0A0E14",
-          "hex_source": "https://advis0r.com/icon.svg"
+          "hex_source": "https://advis0r.pwa.pit.world/icon.svg"
         }
       },
       "hq": {
@@ -20320,7 +20320,7 @@
         "made_by": "human",
         "svg": "hq/svg/advis0r.svg",
         "hex": "#0A0E14",
-        "hex_source": "https://advis0r.com/icon.svg"
+        "hex_source": "https://advis0r.pwa.pit.world/icon.svg"
       }
     },
     {
@@ -20330,7 +20330,7 @@
       "brand": true,
       "trademark": "spl00f.com and its logo are trademarks of their owner. Use them to refer to spl00f.com, not to imply endorsement.",
       "source": "profullstack-service:spl00f.com",
-      "source_url": "https://cigarunderground.org/apple-touch-icon.png",
+      "source_url": "https://cigarunderground.pwa.pit.world/apple-touch-icon.png",
       "license": "Profullstack, Inc. service mark",
       "made_by": "human",
       "svg": "svg/spl00f.svg",
@@ -20346,7 +20346,7 @@
           "made_by": "human",
           "svg": "hq/svg/spl00f.svg",
           "hex": "#A17D4C",
-          "hex_source": "https://cigarunderground.org/apple-touch-icon.png"
+          "hex_source": "https://cigarunderground.pwa.pit.world/apple-touch-icon.png"
         },
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/spl00f.png",
@@ -20354,7 +20354,7 @@
           "made_by": "human",
           "svg": "styles/agentic-matte/svg/spl00f.svg",
           "hex": "#A17D4C",
-          "hex_source": "https://cigarunderground.org/apple-touch-icon.png"
+          "hex_source": "https://cigarunderground.pwa.pit.world/apple-touch-icon.png"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/spl00f.png",
@@ -20362,7 +20362,7 @@
           "made_by": "human",
           "svg": "styles/agentic-machined/svg/spl00f.svg",
           "hex": "#A17D4C",
-          "hex_source": "https://cigarunderground.org/apple-touch-icon.png"
+          "hex_source": "https://cigarunderground.pwa.pit.world/apple-touch-icon.png"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/spl00f.png",
@@ -20370,7 +20370,7 @@
           "made_by": "human",
           "svg": "styles/agentic-emissive/svg/spl00f.svg",
           "hex": "#A17D4C",
-          "hex_source": "https://cigarunderground.org/apple-touch-icon.png"
+          "hex_source": "https://cigarunderground.pwa.pit.world/apple-touch-icon.png"
         }
       },
       "hq": {
@@ -20379,7 +20379,7 @@
         "made_by": "human",
         "svg": "hq/svg/spl00f.svg",
         "hex": "#A17D4C",
-        "hex_source": "https://cigarunderground.org/apple-touch-icon.png"
+        "hex_source": "https://cigarunderground.pwa.pit.world/apple-touch-icon.png"
       }
     },
     {
@@ -20861,7 +20861,7 @@
       "brand": true,
       "trademark": "d3vices.com and its logo are trademarks of their owner. Use them to refer to d3vices.com, not to imply endorsement.",
       "source": "profullstack-service:d3vices.com",
-      "source_url": "https://d3vices.com/icons/apple-touch-icon-180x180.png",
+      "source_url": "https://d3vices.pwa.pit.world/icons/apple-touch-icon-180x180.png",
       "license": "Profullstack, Inc. service mark",
       "made_by": "human",
       "svg": "svg/d3vices.svg",
@@ -20877,7 +20877,7 @@
           "made_by": "human",
           "svg": "hq/svg/d3vices.svg",
           "hex": "#00C5FC",
-          "hex_source": "https://d3vices.com/icons/apple-touch-icon-180x180.png"
+          "hex_source": "https://d3vices.pwa.pit.world/icons/apple-touch-icon-180x180.png"
         },
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/d3vices.png",
@@ -20885,7 +20885,7 @@
           "made_by": "human",
           "svg": "styles/agentic-matte/svg/d3vices.svg",
           "hex": "#00C5FC",
-          "hex_source": "https://d3vices.com/icons/apple-touch-icon-180x180.png"
+          "hex_source": "https://d3vices.pwa.pit.world/icons/apple-touch-icon-180x180.png"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/d3vices.png",
@@ -20893,7 +20893,7 @@
           "made_by": "human",
           "svg": "styles/agentic-machined/svg/d3vices.svg",
           "hex": "#00C5FC",
-          "hex_source": "https://d3vices.com/icons/apple-touch-icon-180x180.png"
+          "hex_source": "https://d3vices.pwa.pit.world/icons/apple-touch-icon-180x180.png"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/d3vices.png",
@@ -20901,7 +20901,7 @@
           "made_by": "human",
           "svg": "styles/agentic-emissive/svg/d3vices.svg",
           "hex": "#00C5FC",
-          "hex_source": "https://d3vices.com/icons/apple-touch-icon-180x180.png"
+          "hex_source": "https://d3vices.pwa.pit.world/icons/apple-touch-icon-180x180.png"
         }
       },
       "hq": {
@@ -20910,7 +20910,7 @@
         "made_by": "human",
         "svg": "hq/svg/d3vices.svg",
         "hex": "#00C5FC",
-        "hex_source": "https://d3vices.com/icons/apple-touch-icon-180x180.png"
+        "hex_source": "https://d3vices.pwa.pit.world/icons/apple-touch-icon-180x180.png"
       }
     },
     {
@@ -21333,7 +21333,7 @@
       "brand": true,
       "trademark": "agenticjobs.work and its logo are trademarks of their owner. Use them to refer to agenticjobs.work, not to imply endorsement.",
       "source": "profullstack-service:agenticjobs.work",
-      "source_url": "https://agenticjobs.work/assets/icon.svg",
+      "source_url": "https://agenticjobs.pwa.pit.world/assets/icon.svg",
       "license": "Profullstack, Inc. service mark",
       "made_by": "human",
       "svg": "svg/agenticjobs.svg",
@@ -21349,7 +21349,7 @@
           "made_by": "human",
           "svg": "hq/svg/agenticjobs.svg",
           "hex": "#1F5C45",
-          "hex_source": "https://agenticjobs.work/assets/icon.svg"
+          "hex_source": "https://agenticjobs.pwa.pit.world/assets/icon.svg"
         },
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/agenticjobs.png",
@@ -21357,7 +21357,7 @@
           "made_by": "human",
           "svg": "styles/agentic-matte/svg/agenticjobs.svg",
           "hex": "#1F5C45",
-          "hex_source": "https://agenticjobs.work/assets/icon.svg"
+          "hex_source": "https://agenticjobs.pwa.pit.world/assets/icon.svg"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/agenticjobs.png",
@@ -21365,7 +21365,7 @@
           "made_by": "human",
           "svg": "styles/agentic-machined/svg/agenticjobs.svg",
           "hex": "#1F5C45",
-          "hex_source": "https://agenticjobs.work/assets/icon.svg"
+          "hex_source": "https://agenticjobs.pwa.pit.world/assets/icon.svg"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/agenticjobs.png",
@@ -21373,7 +21373,7 @@
           "made_by": "human",
           "svg": "styles/agentic-emissive/svg/agenticjobs.svg",
           "hex": "#1F5C45",
-          "hex_source": "https://agenticjobs.work/assets/icon.svg"
+          "hex_source": "https://agenticjobs.pwa.pit.world/assets/icon.svg"
         }
       },
       "hq": {
@@ -21382,7 +21382,7 @@
         "made_by": "human",
         "svg": "hq/svg/agenticjobs.svg",
         "hex": "#1F5C45",
-        "hex_source": "https://agenticjobs.work/assets/icon.svg"
+        "hex_source": "https://agenticjobs.pwa.pit.world/assets/icon.svg"
       }
     },
     {
@@ -21628,7 +21628,7 @@
       "brand": true,
       "trademark": "bg0ne.com and its logo are trademarks of their owner. Use them to refer to bg0ne.com, not to imply endorsement.",
       "source": "profullstack-service:bg0ne.com",
-      "source_url": "https://bg0ne.com/icon-512.png",
+      "source_url": "https://bg0ne.pwa.pit.world/icon-512.png",
       "license": "Profullstack, Inc. service mark",
       "made_by": "human",
       "svg": "svg/bg0ne.svg",
@@ -21644,7 +21644,7 @@
           "made_by": "human",
           "svg": "hq/svg/bg0ne.svg",
           "hex": "#171331",
-          "hex_source": "https://bg0ne.com/icon-512.png"
+          "hex_source": "https://bg0ne.pwa.pit.world/icon-512.png"
         },
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/bg0ne.png",
@@ -21652,7 +21652,7 @@
           "made_by": "human",
           "svg": "styles/agentic-matte/svg/bg0ne.svg",
           "hex": "#171331",
-          "hex_source": "https://bg0ne.com/icon-512.png"
+          "hex_source": "https://bg0ne.pwa.pit.world/icon-512.png"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/bg0ne.png",
@@ -21660,7 +21660,7 @@
           "made_by": "human",
           "svg": "styles/agentic-machined/svg/bg0ne.svg",
           "hex": "#171331",
-          "hex_source": "https://bg0ne.com/icon-512.png"
+          "hex_source": "https://bg0ne.pwa.pit.world/icon-512.png"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/bg0ne.png",
@@ -21668,7 +21668,7 @@
           "made_by": "human",
           "svg": "styles/agentic-emissive/svg/bg0ne.svg",
           "hex": "#171331",
-          "hex_source": "https://bg0ne.com/icon-512.png"
+          "hex_source": "https://bg0ne.pwa.pit.world/icon-512.png"
         }
       },
       "hq": {
@@ -21677,7 +21677,7 @@
         "made_by": "human",
         "svg": "hq/svg/bg0ne.svg",
         "hex": "#171331",
-        "hex_source": "https://bg0ne.com/icon-512.png"
+        "hex_source": "https://bg0ne.pwa.pit.world/icon-512.png"
       }
     },
     {
@@ -21864,7 +21864,7 @@
       "brand": true,
       "trademark": "typeheard.com and its logo are trademarks of their owner. Use them to refer to typeheard.com, not to imply endorsement.",
       "source": "profullstack-service:typeheard.com",
-      "source_url": "https://typeheard.com/icons/apple-touch-icon-180x180.png",
+      "source_url": "https://typeheard.pwa.pit.world/icons/apple-touch-icon-180x180.png",
       "license": "Profullstack, Inc. service mark",
       "made_by": "human",
       "svg": "svg/typeheard.svg",
@@ -21880,7 +21880,7 @@
           "made_by": "human",
           "svg": "hq/svg/typeheard.svg",
           "hex": "#C83A25",
-          "hex_source": "https://typeheard.com/icons/apple-touch-icon-180x180.png"
+          "hex_source": "https://typeheard.pwa.pit.world/icons/apple-touch-icon-180x180.png"
         },
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/typeheard.png",
@@ -21888,7 +21888,7 @@
           "made_by": "human",
           "svg": "styles/agentic-matte/svg/typeheard.svg",
           "hex": "#C83A25",
-          "hex_source": "https://typeheard.com/icons/apple-touch-icon-180x180.png"
+          "hex_source": "https://typeheard.pwa.pit.world/icons/apple-touch-icon-180x180.png"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/typeheard.png",
@@ -21896,7 +21896,7 @@
           "made_by": "human",
           "svg": "styles/agentic-machined/svg/typeheard.svg",
           "hex": "#C83A25",
-          "hex_source": "https://typeheard.com/icons/apple-touch-icon-180x180.png"
+          "hex_source": "https://typeheard.pwa.pit.world/icons/apple-touch-icon-180x180.png"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/typeheard.png",
@@ -21904,7 +21904,7 @@
           "made_by": "human",
           "svg": "styles/agentic-emissive/svg/typeheard.svg",
           "hex": "#C83A25",
-          "hex_source": "https://typeheard.com/icons/apple-touch-icon-180x180.png"
+          "hex_source": "https://typeheard.pwa.pit.world/icons/apple-touch-icon-180x180.png"
         }
       },
       "hq": {
@@ -21913,7 +21913,7 @@
         "made_by": "human",
         "svg": "hq/svg/typeheard.svg",
         "hex": "#C83A25",
-        "hex_source": "https://typeheard.com/icons/apple-touch-icon-180x180.png"
+        "hex_source": "https://typeheard.pwa.pit.world/icons/apple-touch-icon-180x180.png"
       }
     },
     {
@@ -21982,7 +21982,7 @@
       "brand": true,
       "trademark": "tleehealth.com and its logo are trademarks of their owner. Use them to refer to tleehealth.com, not to imply endorsement.",
       "source": "profullstack-service:tleehealth.com",
-      "source_url": "https://tleehealth.com/icon.svg",
+      "source_url": "https://tleehealth.pwa.pit.world/icon.svg",
       "license": "Profullstack, Inc. service mark",
       "made_by": "human",
       "svg": "svg/tleehealth.svg",
@@ -21998,7 +21998,7 @@
           "made_by": "human",
           "svg": "hq/svg/tleehealth.svg",
           "hex": "#0A0D0C",
-          "hex_source": "https://tleehealth.com/icon.svg"
+          "hex_source": "https://tleehealth.pwa.pit.world/icon.svg"
         },
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/tleehealth.png",
@@ -22006,7 +22006,7 @@
           "made_by": "human",
           "svg": "styles/agentic-matte/svg/tleehealth.svg",
           "hex": "#0A0D0C",
-          "hex_source": "https://tleehealth.com/icon.svg"
+          "hex_source": "https://tleehealth.pwa.pit.world/icon.svg"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/tleehealth.png",
@@ -22014,7 +22014,7 @@
           "made_by": "human",
           "svg": "styles/agentic-machined/svg/tleehealth.svg",
           "hex": "#0A0D0C",
-          "hex_source": "https://tleehealth.com/icon.svg"
+          "hex_source": "https://tleehealth.pwa.pit.world/icon.svg"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/tleehealth.png",
@@ -22022,7 +22022,7 @@
           "made_by": "human",
           "svg": "styles/agentic-emissive/svg/tleehealth.svg",
           "hex": "#0A0D0C",
-          "hex_source": "https://tleehealth.com/icon.svg"
+          "hex_source": "https://tleehealth.pwa.pit.world/icon.svg"
         }
       },
       "hq": {
@@ -22031,7 +22031,7 @@
         "made_by": "human",
         "svg": "hq/svg/tleehealth.svg",
         "hex": "#0A0D0C",
-        "hex_source": "https://tleehealth.com/icon.svg"
+        "hex_source": "https://tleehealth.pwa.pit.world/icon.svg"
       }
     },
     {
@@ -22218,7 +22218,7 @@
       "brand": true,
       "trademark": "datamart.help and its logo are trademarks of their owner. Use them to refer to datamart.help, not to imply endorsement.",
       "source": "profullstack-service:datamart.help",
-      "source_url": "https://datamart.help/apple-icon?73aeb26313d1da3e",
+      "source_url": "https://datamart.pwa.pit.world/apple-icon?73aeb26313d1da3e",
       "license": "Profullstack, Inc. service mark",
       "made_by": "human",
       "svg": "svg/datamart.svg",
@@ -22234,7 +22234,7 @@
           "made_by": "human",
           "svg": "hq/svg/datamart.svg",
           "hex": "#0F6B5C",
-          "hex_source": "https://datamart.help/apple-icon?73aeb26313d1da3e"
+          "hex_source": "https://datamart.pwa.pit.world/apple-icon?73aeb26313d1da3e"
         },
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/datamart.png",
@@ -22242,7 +22242,7 @@
           "made_by": "human",
           "svg": "styles/agentic-matte/svg/datamart.svg",
           "hex": "#0F6B5C",
-          "hex_source": "https://datamart.help/apple-icon?73aeb26313d1da3e"
+          "hex_source": "https://datamart.pwa.pit.world/apple-icon?73aeb26313d1da3e"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/datamart.png",
@@ -22250,7 +22250,7 @@
           "made_by": "human",
           "svg": "styles/agentic-machined/svg/datamart.svg",
           "hex": "#0F6B5C",
-          "hex_source": "https://datamart.help/apple-icon?73aeb26313d1da3e"
+          "hex_source": "https://datamart.pwa.pit.world/apple-icon?73aeb26313d1da3e"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/datamart.png",
@@ -22258,7 +22258,7 @@
           "made_by": "human",
           "svg": "styles/agentic-emissive/svg/datamart.svg",
           "hex": "#0F6B5C",
-          "hex_source": "https://datamart.help/apple-icon?73aeb26313d1da3e"
+          "hex_source": "https://datamart.pwa.pit.world/apple-icon?73aeb26313d1da3e"
         }
       },
       "hq": {
@@ -22267,7 +22267,7 @@
         "made_by": "human",
         "svg": "hq/svg/datamart.svg",
         "hex": "#0F6B5C",
-        "hex_source": "https://datamart.help/apple-icon?73aeb26313d1da3e"
+        "hex_source": "https://datamart.pwa.pit.world/apple-icon?73aeb26313d1da3e"
       }
     },
     {
@@ -22336,7 +22336,7 @@
       "brand": true,
       "trademark": "ringhuman.com and its logo are trademarks of their owner. Use them to refer to ringhuman.com, not to imply endorsement.",
       "source": "profullstack-service:ringhuman.com",
-      "source_url": "https://ringhuman.com/icon-512.png",
+      "source_url": "https://ringhuman.pwa.pit.world/icon-512.png",
       "license": "Profullstack, Inc. service mark",
       "made_by": "human",
       "svg": "svg/ringhuman.svg",
@@ -22352,7 +22352,7 @@
           "made_by": "human",
           "svg": "hq/svg/ringhuman.svg",
           "hex": "#6F263B",
-          "hex_source": "https://ringhuman.com/icon-512.png"
+          "hex_source": "https://ringhuman.pwa.pit.world/icon-512.png"
         },
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/ringhuman.png",
@@ -22360,7 +22360,7 @@
           "made_by": "human",
           "svg": "styles/agentic-matte/svg/ringhuman.svg",
           "hex": "#6F263B",
-          "hex_source": "https://ringhuman.com/icon-512.png"
+          "hex_source": "https://ringhuman.pwa.pit.world/icon-512.png"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/ringhuman.png",
@@ -22368,7 +22368,7 @@
           "made_by": "human",
           "svg": "styles/agentic-machined/svg/ringhuman.svg",
           "hex": "#6F263B",
-          "hex_source": "https://ringhuman.com/icon-512.png"
+          "hex_source": "https://ringhuman.pwa.pit.world/icon-512.png"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/ringhuman.png",
@@ -22376,7 +22376,7 @@
           "made_by": "human",
           "svg": "styles/agentic-emissive/svg/ringhuman.svg",
           "hex": "#6F263B",
-          "hex_source": "https://ringhuman.com/icon-512.png"
+          "hex_source": "https://ringhuman.pwa.pit.world/icon-512.png"
         }
       },
       "hq": {
@@ -22385,7 +22385,7 @@
         "made_by": "human",
         "svg": "hq/svg/ringhuman.svg",
         "hex": "#6F263B",
-        "hex_source": "https://ringhuman.com/icon-512.png"
+        "hex_source": "https://ringhuman.pwa.pit.world/icon-512.png"
       }
     },
     {
@@ -22454,7 +22454,7 @@
       "brand": true,
       "trademark": "submitfleet.com and its logo are trademarks of their owner. Use them to refer to submitfleet.com, not to imply endorsement.",
       "source": "profullstack-service:submitfleet.com",
-      "source_url": "https://submitfleet.com/assets/icon.svg",
+      "source_url": "https://submitfleet.pwa.pit.world/assets/icon.svg",
       "license": "Profullstack, Inc. service mark",
       "made_by": "human",
       "svg": "svg/submitfleet.svg",
@@ -22470,7 +22470,7 @@
           "made_by": "human",
           "svg": "hq/svg/submitfleet.svg",
           "hex": "#0B6E4F",
-          "hex_source": "https://submitfleet.com/assets/icon.svg"
+          "hex_source": "https://submitfleet.pwa.pit.world/assets/icon.svg"
         },
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/submitfleet.png",
@@ -22478,7 +22478,7 @@
           "made_by": "human",
           "svg": "styles/agentic-matte/svg/submitfleet.svg",
           "hex": "#0B6E4F",
-          "hex_source": "https://submitfleet.com/assets/icon.svg"
+          "hex_source": "https://submitfleet.pwa.pit.world/assets/icon.svg"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/submitfleet.png",
@@ -22486,7 +22486,7 @@
           "made_by": "human",
           "svg": "styles/agentic-machined/svg/submitfleet.svg",
           "hex": "#0B6E4F",
-          "hex_source": "https://submitfleet.com/assets/icon.svg"
+          "hex_source": "https://submitfleet.pwa.pit.world/assets/icon.svg"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/submitfleet.png",
@@ -22494,7 +22494,7 @@
           "made_by": "human",
           "svg": "styles/agentic-emissive/svg/submitfleet.svg",
           "hex": "#0B6E4F",
-          "hex_source": "https://submitfleet.com/assets/icon.svg"
+          "hex_source": "https://submitfleet.pwa.pit.world/assets/icon.svg"
         }
       },
       "hq": {
@@ -22503,7 +22503,7 @@
         "made_by": "human",
         "svg": "hq/svg/submitfleet.svg",
         "hex": "#0B6E4F",
-        "hex_source": "https://submitfleet.com/assets/icon.svg"
+        "hex_source": "https://submitfleet.pwa.pit.world/assets/icon.svg"
       }
     },
     {
@@ -22926,7 +22926,7 @@
       "brand": true,
       "trademark": "cigarunderground.org and its logo are trademarks of their owner. Use them to refer to cigarunderground.org, not to imply endorsement.",
       "source": "profullstack-service:cigarunderground.org",
-      "source_url": "https://cigarunderground.org/favicon.svg",
+      "source_url": "https://cigarunderground.pwa.pit.world/favicon.svg",
       "license": "Profullstack, Inc. service mark",
       "made_by": "human",
       "svg": "svg/cigarunderground.svg",
@@ -22942,7 +22942,7 @@
           "made_by": "human",
           "svg": "hq/svg/cigarunderground.svg",
           "hex": "#14100C",
-          "hex_source": "https://cigarunderground.org/favicon.svg"
+          "hex_source": "https://cigarunderground.pwa.pit.world/favicon.svg"
         },
         "agentic-matte": {
           "png": "styles/agentic-matte/png/{size}/cigarunderground.png",
@@ -22950,7 +22950,7 @@
           "made_by": "human",
           "svg": "styles/agentic-matte/svg/cigarunderground.svg",
           "hex": "#14100C",
-          "hex_source": "https://cigarunderground.org/favicon.svg"
+          "hex_source": "https://cigarunderground.pwa.pit.world/favicon.svg"
         },
         "agentic-machined": {
           "png": "styles/agentic-machined/png/{size}/cigarunderground.png",
@@ -22958,7 +22958,7 @@
           "made_by": "human",
           "svg": "styles/agentic-machined/svg/cigarunderground.svg",
           "hex": "#14100C",
-          "hex_source": "https://cigarunderground.org/favicon.svg"
+          "hex_source": "https://cigarunderground.pwa.pit.world/favicon.svg"
         },
         "agentic-emissive": {
           "png": "styles/agentic-emissive/png/{size}/cigarunderground.png",
@@ -22966,7 +22966,7 @@
           "made_by": "human",
           "svg": "styles/agentic-emissive/svg/cigarunderground.svg",
           "hex": "#14100C",
-          "hex_source": "https://cigarunderground.org/favicon.svg"
+          "hex_source": "https://cigarunderground.pwa.pit.world/favicon.svg"
         }
       },
       "hq": {
@@ -22975,7 +22975,7 @@
         "made_by": "human",
         "svg": "hq/svg/cigarunderground.svg",
         "hex": "#14100C",
-        "hex_source": "https://cigarunderground.org/favicon.svg"
+        "hex_source": "https://cigarunderground.pwa.pit.world/favicon.svg"
       }
     },
     {

@@ -1,6 +1,6 @@
 # OpenObject
 
-OpenObject is a bucket you can mount. It is one file a store serves about the object storage it runs, one record for a bucket, one record per object, and the rules that turn a pile of rented disks into a place where keyed objects are kept at a stated redundancy, verified every period, repaired when a disk fails, and read back by path from anywhere. The disks are [OpenDisk](/opendisk) disks paid under [OpenSwarm](/openswarm) leases; the bytes on them are `ipfile` ciphertext the owner alone can read; the store is whoever keeps the index and posts the offers. It is maintained by Profullstack, Inc. as part of the LogicSRC open-standards surface, with [d1sks.com](https://d1sks.com) as the reference store, running every bucket at three replicas by default.
+OpenObject is a bucket you can mount. It is one file a store serves about the object storage it runs, one record for a bucket, one record per object, and the rules that turn a pile of rented disks into a place where keyed objects are kept at a stated redundancy, verified every period, repaired when a disk fails, and read back by path from anywhere. The disks are [OpenDisk](/opendisk) disks paid under [OpenSwarm](/openswarm) leases; the bytes on them are `ipfile` ciphertext the owner alone can read; the store is whoever keeps the index and posts the offers. It is maintained by Profullstack, Inc. as part of the LogicSRC open-standards surface, with [d1sks.com](https://d1sks.pwa.pit.world) as the reference store, running every bucket at three replicas by default.
 
 Status: **0.1**. A description of the shape a store, a client and a mount agree on, published so a bucket can move between stores and a disk can hold objects for any of them.
 
@@ -14,7 +14,7 @@ What none of them says is what an application needs: a bucket with a name, a tho
 
 ## Terms
 
-- A **store** is the service that keeps a bucket's index, places its objects on disks, watches their proofs and repairs them. It is a gateway, not a holder; it may hold nothing itself. [d1sks.com](https://d1sks.com) is the reference. Its **descriptor** is the file it serves about itself.
+- A **store** is the service that keeps a bucket's index, places its objects on disks, watches their proofs and repairs them. It is a gateway, not a holder; it may hold nothing itself. [d1sks.com](https://d1sks.pwa.pit.world) is the reference. Its **descriptor** is the file it serves about itself.
 - A **bucket** is a named set of objects under one key, with one placement policy. The bucket key signs the index.
 - An **object** is bytes under a **key**, where a key is a UTF-8 path such as `photos/2026/09/a.jpg`. An object has **revisions**; the newest is what a plain read returns.
 - A **disk** is an OpenDisk disk. A **holder** is a disk holding one object under a `paid2seed` lease.
@@ -29,19 +29,19 @@ A store serves a JSON document at `/.well-known/openobject.json` on its own orig
 ```json
 {
   "name": "d1sks.com",
-  "web": "https://d1sks.com",
+  "web": "https://d1sks.pwa.pit.world",
   "operator": "https://profullstack.com/.well-known/openprofile.md",
   "key": "ed25519:7c02e4a19f5d3b8c6e1a0f4d7b2c9e8a5f3d1c0b4e7a6f9d2c5b8e1a4f7d0c3b",
-  "api": "https://d1sks.com/openobject/v1",
-  "hubs": ["https://d1sks.com/api/openswarm", "https://bittorrented.com/api/openswarm"],
-  "disks": "https://d1sks.com/api/disks",
+  "api": "https://d1sks.pwa.pit.world/openobject/v1",
+  "hubs": ["https://d1sks.pwa.pit.world/api/openswarm", "https://bittorrented.com/api/openswarm"],
+  "disks": "https://d1sks.pwa.pit.world/api/disks",
   "developer": {
     "cli": {
       "name": "ip",
-      "install": { "curl": "curl -fsSL https://d1sks.com/install.sh | sh" },
-      "docs": "https://d1sks.com/docs/cli"
+      "install": { "curl": "curl -fsSL https://d1sks.pwa.pit.world/install.sh | sh" },
+      "docs": "https://d1sks.pwa.pit.world/docs/cli"
     },
-    "api_docs": "https://d1sks.com/docs/openobject"
+    "api_docs": "https://d1sks.pwa.pit.world/docs/openobject"
   },
   "updated": "2026-09-21T06:00:00Z",
   "policies": [
@@ -61,7 +61,7 @@ A store serves a JSON document at `/.well-known/openobject.json` on its own orig
   "capacity": { "free_gib": 184000, "disks": 412 },
   "accepts": { "encryption": ["owner", "store"], "versioning": true, "public_reads": true, "mounts": ["fuse", "nfs", "webdav", "s3"] },
   "proof": { "every_hours": 6, "repair_within_hours": 24 },
-  "record": { "source": "https://d1sks.com/api/openswarm/pay2seed/requesters/ed25519:7c02…0c3b", "buckets": 1930, "objects": 41200000, "lost": 0, "since": "2026-09-13T00:00:00Z" },
+  "record": { "source": "https://d1sks.pwa.pit.world/api/openswarm/pay2seed/requesters/ed25519:7c02…0c3b", "buckets": 1930, "objects": 41200000, "lost": 0, "since": "2026-09-13T00:00:00Z" },
   "s3": "https://s3.d1sks.com"
 }
 ```
@@ -100,13 +100,13 @@ A bucket is a record the store keeps at `<api>/b/<bucket>` and the owner may kee
   "id": "ed25519:3a9f0c2e7d1b5a8c4f6e2d0b9a7c1e3f5d8b0a2c4e6f8d1b3a5c7e9f0d2b4a6c",
   "name": "photos",
   "owner": "https://ana.example/.well-known/openprofile.md",
-  "store": "https://d1sks.com/openobject/v1",
+  "store": "https://d1sks.pwa.pit.world/openobject/v1",
   "policy": { "id": "3x", "mode": "replicas", "replicas": 3, "min_operators": 3, "min_countries": 2 },
   "encryption": { "by": "owner", "box": "x25519:4c40…18c3" },
   "versioning": { "keep": 10, "days": 90 },
   "public": false,
   "index": "ed25519:3a9f…4a6c/index",
-  "budget": { "hub": "https://d1sks.com/api/openswarm", "payment": { "network": "eip155:8453" } },
+  "budget": { "hub": "https://d1sks.pwa.pit.world/api/openswarm", "payment": { "network": "eip155:8453" } },
   "created": "2026-09-13T10:00:00Z",
   "updated": "2026-09-21T06:14:02Z",
   "sigs": [{ "alg": "ed25519", "key": "ed25519:3a9f…4a6c", "sig": "…" }]

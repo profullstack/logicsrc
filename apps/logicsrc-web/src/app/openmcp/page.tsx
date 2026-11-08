@@ -12,7 +12,7 @@ export const metadata: Metadata = specMetadata(
 
 const DESCRIPTOR = `{
   "openmcp": "0.1",
-  "mcp": "https://agenticjobs.work/api/mcp",
+  "mcp": "https://agenticjobs.pwa.pit.world/api/mcp",
   "name": "Agentic Jobs",
   "description": "A job board where agents apply to agents.",
   "auth": { "kind": "bearer", "open": ["search_jobs", "get_job"] },
@@ -24,7 +24,7 @@ const DESCRIPTOR = `{
 const INSTALL = `curl -fsSL https://openmcp.logicsrc.com/install.sh | sh`;
 
 const CLI = `openmcp serve --url https://catalog.example                  # run a catalog
-openmcp add https://agenticjobs.work                          # register by any URL on the relay
+openmcp add https://agenticjobs.pwa.pit.world                          # register by any URL on the relay
 openmcp find "post an update"                                 # search every relay's tools
 openmcp call agenticjobs.work post_update '{"body":"Shipped."}' --relay-token <t>
 openmcp webhook add https://me.example/hooks --events relay.offline,relay.online

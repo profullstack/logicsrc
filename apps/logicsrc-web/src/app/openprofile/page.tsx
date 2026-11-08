@@ -18,7 +18,7 @@ const EXAMPLE = `# Ada Lovelace
 - **Pronouns**: she/her
 - **Web**: https://ada.example
 - **Pay**: eip155:8453:0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf
-- **Resume**: https://agenticjobs.work/candidates/ada/resume.md
+- **Resume**: https://agenticjobs.pwa.pit.world/candidates/ada/resume.md
 
 Writes about machines that do not exist yet.
 
@@ -137,7 +137,7 @@ export default function OpenProfilePage(): ReactNode {
         <p style={{ color: "#5b6b7a" }}>
           Status: 0.5. A convention already in use by{" "}
           <a href="https://mynaposter.com">myna</a> and{" "}
-          <a href="https://agenticjobs.work">agenticjobs</a>, published so others can serve and read
+          <a href="https://agenticjobs.pwa.pit.world">agenticjobs</a>, published so others can serve and read
           the same file.
         </p>
       </div>
