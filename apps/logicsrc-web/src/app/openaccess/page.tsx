@@ -13,17 +13,17 @@ export const metadata: Metadata = specMetadata(
 const DESCRIPTOR = `{
   "openaccess": "0.1",
   "name": "Agentic Jobs",
-  "url": "https://agenticjobs.work",
+  "url": "https://agenticjobs.pwa.pit.world",
   "operator": "https://profullstack.com/.well-known/openprofile.md",
-  "redirect_uris": ["https://agenticjobs.work/api/v1/openaccess/callback"],
+  "redirect_uris": ["https://agenticjobs.pwa.pit.world/api/v1/openaccess/callback"],
   "jwks": { "keys": [{ "kty": "OKP", "crv": "Ed25519", "kid": "2026-09", "x": "..." }] },
   "scopes": { "jobs:read": "See job posts", "jobs:apply": "Apply on your behalf" },
   "offers": [{ "product": "agenticjobs.work/pro", "name": "Pro", "price": "9 USD/month",
-    "links": { "pay": "https://agenticjobs.work/pay/pro?principal={principal}",
-               "cancel": "https://agenticjobs.work/me/billing",
-               "promote": "https://agenticjobs.work/?ref={principal}" } }],
+    "links": { "pay": "https://agenticjobs.pwa.pit.world/pay/pro?principal={principal}",
+               "cancel": "https://agenticjobs.pwa.pit.world/me/billing",
+               "promote": "https://agenticjobs.pwa.pit.world/?ref={principal}" } }],
   "honours": ["agenticjobs.work/pro", "profullstack.com/all-access"],
-  "webhooks": "https://agenticjobs.work/api/v1/openaccess/events",
+  "webhooks": "https://agenticjobs.pwa.pit.world/api/v1/openaccess/events",
   "hubs": ["https://openaccess.logicsrc.com"]
 }`;
 
@@ -41,7 +41,7 @@ const TOKEN = `{
 const CLI = `npx @logicsrc/openaccess serve --url https://hub.example      # run a hub
 openaccess keygen                                              # an Ed25519 key for your app's descriptor
 openaccess descriptor https://your.site > .well-known/openaccess.json
-openaccess app add https://agenticjobs.work                    # register by URL; the hub reads the descriptor
+openaccess app add https://agenticjobs.pwa.pit.world                    # register by URL; the hub reads the descriptor
 openaccess login                                               # device flow: a code, approve it in the browser
 openaccess grants | entitlements                               # what you hold
 openaccess delegate --for https://bot.example/.well-known/openprofile.md --scope "jobs:read" --per-day "50 USD"

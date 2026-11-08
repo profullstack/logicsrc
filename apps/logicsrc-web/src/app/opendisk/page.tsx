@@ -14,7 +14,7 @@ const DESCRIPTOR = `{
   "name": "seeder-a41e, Falkenstein",
   "operator": "https://seeder-a41e.example/.well-known/openprofile.md",
   "key": "ed25519:a41e…7b0a",
-  "hubs": ["https://bittorrented.com/api/openswarm", "https://d1sks.com/api/openswarm"],
+  "hubs": ["https://bittorrented.com/api/openswarm", "https://d1sks.pwa.pit.world/api/openswarm"],
   "capacity": { "total_gib": 3726, "free_gib": 2210 },
   "price": { "currency": "USD", "per_gib_month": 0.12, "per_gib_transfer": 0.004, "max_gib": 2000, "max_days": 365 },
   "location": { "regions": ["fsn1"], "countries": ["DE"] },
@@ -74,7 +74,7 @@ export default function OpenDiskPage(): ReactNode {
           before it posts.
         </p>
         <p style={{ color: "#5b6b7a" }}>
-          Status: 0.1. <a href="https://d1sks.com">d1sks.com</a> is the reference marketplace: every
+          Status: 0.1. <a href="https://d1sks.pwa.pit.world">d1sks.com</a> is the reference marketplace: every
           descriptor it has read, standing pulled from the hubs each disk names, and an offer form that
           posts to the disk&apos;s hub. Every disk is also a hosting offer in the{" "}
           <Link href="/openserver">OpenServer</Link> sense, listed as one at nichedb.dev.
@@ -177,7 +177,7 @@ export default function OpenDiskPage(): ReactNode {
             marketplaces, the OpenServer mapping
           </li>
           <li>
-            <a href="https://d1sks.com">d1sks.com</a>: the reference marketplace
+            <a href="https://d1sks.pwa.pit.world">d1sks.com</a>: the reference marketplace
           </li>
           <li>
             <Link href="/openswarm">OpenSwarm</Link>: pay2seed for the offer, paid2seed for leases and

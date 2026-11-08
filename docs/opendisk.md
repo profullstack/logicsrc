@@ -1,6 +1,6 @@
 # OpenDisk
 
-OpenDisk is one file a machine serves about the disk it will rent: how much is free, what a GiB-month costs, where the box is, what it will hold, how it proves it is still holding it, and where it is paid. A requester reads the disk's own file instead of a marketplace's listing, a directory lists every disk that serves one, and a peer with a spare terabyte is on the market by putting a file at a URL. It is the web-facing door onto an [OpenSwarm](/openswarm) `paid2seed` seeder, and it is what a peer-to-peer storage market is made of. It is maintained by Profullstack, Inc. as part of the LogicSRC open-standards surface, with [d1sks.com](https://d1sks.com) as the reference marketplace.
+OpenDisk is one file a machine serves about the disk it will rent: how much is free, what a GiB-month costs, where the box is, what it will hold, how it proves it is still holding it, and where it is paid. A requester reads the disk's own file instead of a marketplace's listing, a directory lists every disk that serves one, and a peer with a spare terabyte is on the market by putting a file at a URL. It is the web-facing door onto an [OpenSwarm](/openswarm) `paid2seed` seeder, and it is what a peer-to-peer storage market is made of. It is maintained by Profullstack, Inc. as part of the LogicSRC open-standards surface, with [d1sks.com](https://d1sks.pwa.pit.world) as the reference marketplace.
 
 Status: **0.1**. A description of a file a marketplace will read, published so a peer can serve one and any directory can read it.
 
@@ -17,7 +17,7 @@ Every other rentable thing has a listing. `/.well-known/` is where a host says t
 - A **disk** is capacity somebody will rent: a peer's spare drive, a seedbox, a storage node, a provider's storage plan. Its **descriptor** is the file it serves about itself.
 - The **seeder** is the OpenSwarm identity that takes leases for the disk and is paid. One disk, one seeder key.
 - A **requester** is whoever wants bytes kept, as `pay2seed` defines it: a publisher, a person with a backup, an agent.
-- A **marketplace** is a directory of disks that also fronts a hub, so a requester can read a disk and post the offer in one place. [d1sks.com](https://d1sks.com) is the reference.
+- A **marketplace** is a directory of disks that also fronts a hub, so a requester can read a disk and post the offer in one place. [d1sks.com](https://d1sks.pwa.pit.world) is the reference.
 - A **reader** is anything that reads a descriptor: a marketplace, a requester's client, a person's terminal, an agent.
 
 ## The descriptor
@@ -30,12 +30,12 @@ A disk serves a JSON document at `/.well-known/opendisk.json` on its own origin.
   "web": "https://seeder-a41e.example",
   "operator": "https://seeder-a41e.example/.well-known/openprofile.md",
   "key": "ed25519:a41e7f0c2d9b8e5a6f3c1d4e7b0a9f8c5d2e1b4a7c0f3e6d9b2a5c8e1f4d7b0a",
-  "hubs": ["https://bittorrented.com/api/openswarm", "https://d1sks.com/api/openswarm"],
+  "hubs": ["https://bittorrented.com/api/openswarm", "https://d1sks.pwa.pit.world/api/openswarm"],
   "developer": {
     "cli": {
       "name": "ip",
-      "install": { "curl": "curl -fsSL https://d1sks.com/install.sh | sh" },
-      "docs": "https://d1sks.com/docs/cli"
+      "install": { "curl": "curl -fsSL https://d1sks.pwa.pit.world/install.sh | sh" },
+      "docs": "https://d1sks.pwa.pit.world/docs/cli"
     }
   },
   "updated": "2026-09-13T06:00:00Z",
@@ -136,7 +136,7 @@ A marketplace reading descriptors:
 5. **Marks a disk gone, not deleted**, when its descriptor stops answering, and shows the leases it still holds until they end.
 6. **Reports absence as absence.** An unstated operator is unstated. An unstated `accepts` means the disk will say when the offer arrives.
 
-[d1sks.com](https://d1sks.com) is the reference marketplace: a directory of every OpenDisk descriptor it has read, standing pulled from the hubs each disk names, and an offer form that posts to the disk's hub. [nichedb.dev](https://nichedb.dev) lists every disk in its hosting collection as an OpenServer offer, by the mapping below.
+[d1sks.com](https://d1sks.pwa.pit.world) is the reference marketplace: a directory of every OpenDisk descriptor it has read, standing pulled from the hubs each disk names, and an offer form that posts to the disk's hub. [nichedb.dev](https://nichedb.dev) lists every disk in its hosting collection as an OpenServer offer, by the mapping below.
 
 ## As an OpenServer offer
 

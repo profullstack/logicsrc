@@ -26,14 +26,14 @@ A relay serves a JSON document at `/.well-known/openmcp.json` on its own origin.
 ```json
 {
   "openmcp": "0.1",
-  "mcp": "https://agenticjobs.work/api/mcp",
+  "mcp": "https://agenticjobs.pwa.pit.world/api/mcp",
   "name": "Agentic Jobs",
   "description": "A job board where agents apply to agents, with a person at both ends.",
-  "url": "https://agenticjobs.work",
-  "auth": { "kind": "bearer", "url": "https://agenticjobs.work/me/tokens", "open": ["search_jobs", "get_job"] },
+  "url": "https://agenticjobs.pwa.pit.world",
+  "auth": { "kind": "bearer", "url": "https://agenticjobs.pwa.pit.world/me/tokens", "open": ["search_jobs", "get_job"] },
   "tags": ["jobs", "hiring", "agents"],
   "operator": "https://logicsrc.com/.well-known/openprofile.md",
-  "webhooks": "https://agenticjobs.work/api/v1/webhooks",
+  "webhooks": "https://agenticjobs.pwa.pit.world/api/v1/webhooks",
   "tools": ["search_jobs", "get_job", "apply_to_job", "post_update"],
   "catalogs": ["https://openmcp.logicsrc.com"]
 }
@@ -69,7 +69,7 @@ A catalog holds no credentials for any relay. The probe is unauthenticated, so a
 ```json
 {
   "id": "agenticjobs.work",
-  "source": "https://agenticjobs.work/.well-known/openmcp.json",
+  "source": "https://agenticjobs.pwa.pit.world/.well-known/openmcp.json",
   "descriptor": { "...": "as served" },
   "tools": [{ "name": "search_jobs", "description": "...", "inputSchema": { "...": "..." } }],
   "server": { "name": "agenticjobs", "version": "0.15.0", "protocolVersion": "2025-06-18" },
@@ -151,7 +151,7 @@ A conforming client:
 
 ## Serving one
 
-By hand, or `openmcp descriptor <mcp url>` prints a template. [agenticjobs](https://agenticjobs.work), [tsbb](https://tsbb.dev) and [myna](https://mynaposter.com) serve one. The reference catalog runs on Node 24 with one SQLite file: `openmcp serve`.
+By hand, or `openmcp descriptor <mcp url>` prints a template. [agenticjobs](https://agenticjobs.pwa.pit.world), [tsbb](https://tsbb.pwa.pit.world) and [myna](https://mynaposter.com) serve one. The reference catalog runs on Node 24 with one SQLite file: `openmcp serve`.
 
 ## The reference implementation
 

@@ -14,9 +14,9 @@ const DESCRIPTOR = `{
   "name": "d1sks.com",
   "operator": "https://profullstack.com/.well-known/openprofile.md",
   "key": "ed25519:7c02…0c3b",
-  "api": "https://d1sks.com/openobject/v1",
-  "hubs": ["https://d1sks.com/api/openswarm"],
-  "disks": "https://d1sks.com/api/disks",
+  "api": "https://d1sks.pwa.pit.world/openobject/v1",
+  "hubs": ["https://d1sks.pwa.pit.world/api/openswarm"],
+  "disks": "https://d1sks.pwa.pit.world/api/disks",
   "policies": [
     { "id": "3x", "mode": "replicas", "replicas": 3, "min_operators": 3, "min_countries": 2, "default": true },
     { "id": "rs-10-4", "mode": "erasure", "k": 10, "parity": 4, "min_operators": 14 }
@@ -25,7 +25,7 @@ const DESCRIPTOR = `{
   "capacity": { "free_gib": 184000, "disks": 412 },
   "accepts": { "encryption": ["owner", "store"], "mounts": ["fuse", "nfs", "webdav", "s3"] },
   "proof": { "every_hours": 6, "repair_within_hours": 24 },
-  "record": { "source": "https://d1sks.com/api/openswarm/pay2seed/requesters/ed25519:7c02…0c3b", "lost": 0 }
+  "record": { "source": "https://d1sks.pwa.pit.world/api/openswarm/pay2seed/requesters/ed25519:7c02…0c3b", "lost": 0 }
 }`;
 
 const OBJECT = `{
@@ -92,7 +92,7 @@ export default function OpenObjectPage(): ReactNode {
           store is the same bucket at another.
         </p>
         <p style={{ color: "#5b6b7a" }}>
-          Status: 0.1. <a href="https://d1sks.com">d1sks.com</a> is the reference store, running every
+          Status: 0.1. <a href="https://d1sks.pwa.pit.world">d1sks.com</a> is the reference store, running every
           bucket at three replicas on three operators in two countries by default. Every store is also
           a storage offer in the <Link href="/openserver">OpenServer</Link> sense. An{" "}
           <Link href="/openslice">OpenSlice</Link> slice mounts a bucket as its disk.
@@ -211,7 +211,7 @@ export default function OpenObjectPage(): ReactNode {
             object, placement, repair, the API, mounting, S3, the OpenServer mapping, c0mpute
           </li>
           <li>
-            <a href="https://d1sks.com">d1sks.com</a>: the reference store, three replicas by default
+            <a href="https://d1sks.pwa.pit.world">d1sks.com</a>: the reference store, three replicas by default
           </li>
           <li>
             <Link href="/opendisk">OpenDisk</Link>: the disks a store places onto;{" "}

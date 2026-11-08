@@ -32,9 +32,9 @@ An app serves a JSON document at `/.well-known/openaccess.json` on its own origi
 {
   "openaccess": "0.1",
   "name": "Agentic Jobs",
-  "url": "https://agenticjobs.work",
+  "url": "https://agenticjobs.pwa.pit.world",
   "operator": "https://profullstack.com/.well-known/openprofile.md",
-  "redirect_uris": ["https://agenticjobs.work/api/v1/openaccess/callback"],
+  "redirect_uris": ["https://agenticjobs.pwa.pit.world/api/v1/openaccess/callback"],
   "jwks": { "keys": [{ "kty": "OKP", "crv": "Ed25519", "kid": "2026-09", "x": "..." }] },
   "scopes": {
     "jobs:read": "See job posts and applicants",
@@ -47,16 +47,16 @@ An app serves a JSON document at `/.well-known/openaccess.json` on its own origi
       "name": "Pro",
       "price": "9 USD/month",
       "links": {
-        "pay": "https://agenticjobs.work/pay/pro?principal={principal}",
-        "cancel": "https://agenticjobs.work/me/billing",
-        "manage": "https://agenticjobs.work/me/billing",
-        "upgrade": "https://agenticjobs.work/pay/team?principal={principal}",
-        "promote": "https://agenticjobs.work/?ref={principal}"
+        "pay": "https://agenticjobs.pwa.pit.world/pay/pro?principal={principal}",
+        "cancel": "https://agenticjobs.pwa.pit.world/me/billing",
+        "manage": "https://agenticjobs.pwa.pit.world/me/billing",
+        "upgrade": "https://agenticjobs.pwa.pit.world/pay/team?principal={principal}",
+        "promote": "https://agenticjobs.pwa.pit.world/?ref={principal}"
       }
     }
   ],
   "honours": ["agenticjobs.work/pro", "profullstack.com/all-access"],
-  "webhooks": "https://agenticjobs.work/api/v1/openaccess/events",
+  "webhooks": "https://agenticjobs.pwa.pit.world/api/v1/openaccess/events",
   "hubs": ["https://openaccess.logicsrc.com"]
 }
 ```
@@ -121,7 +121,7 @@ The child's scopes are a subset of the parent's, its limits no larger, its expir
 ```
 POST /v1/entitlements
 Authorization: Bearer <client assertion, private_key_jwt>
-{ "sub": "oa_7f3c...", "product": "agenticjobs.work/pro", "status": "active", "period": { "start": "2026-09-12T00:00:00Z", "end": "2026-10-12T00:00:00Z" }, "receipt": "https://agenticjobs.work/receipts/inv_991" }
+{ "sub": "oa_7f3c...", "product": "agenticjobs.work/pro", "status": "active", "period": { "start": "2026-09-12T00:00:00Z", "end": "2026-10-12T00:00:00Z" }, "receipt": "https://agenticjobs.pwa.pit.world/receipts/inv_991" }
 ```
 
 The hub records it, tells every app that honours the product, and from then on every token it issues to such an app carries the product in `entitlements`. The seller alone can change an entitlement's status. When the person cancels from the hub, the hub sends the seller `entitlement.cancel_requested` and shows the person the seller's `cancel` link; the entitlement stays active until the seller reports otherwise, because the seller has the money and the terms.
@@ -203,7 +203,7 @@ A conforming app:
 
 ## Serving one
 
-By hand, or `openaccess descriptor https://your.site` prints a template and `openaccess keygen` makes the key it names. [agenticjobs](https://agenticjobs.work) is first in line. The reference hub runs on Node 24 with one SQLite file: `npx @logicsrc/openaccess serve`.
+By hand, or `openaccess descriptor https://your.site` prints a template and `openaccess keygen` makes the key it names. [agenticjobs](https://agenticjobs.pwa.pit.world) is first in line. The reference hub runs on Node 24 with one SQLite file: `npx @logicsrc/openaccess serve`.
 
 ## Related standards
 
