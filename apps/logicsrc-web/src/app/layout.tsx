@@ -73,6 +73,14 @@ export default function RootLayout({ children }: { children: ReactNode }): React
         <link rel="openprofile" href={`${SITE_URL}/.well-known/openprofile.md`} />
         {/* OpenStack.md discovery (/openstack, rule 9): what this site is built on. */}
         <link rel="openstack" href={`${SITE_URL}/.well-known/openstack.md`} />
+        {/* WebMCP (@profullstack/webmcp): site_info and open_page for the AI agent in the
+            visitor's browser. No-op where the browser has no WebMCP. */}
+        <script
+          type="module"
+          data-webmcp=""
+          src="https://cdn.jsdelivr.net/npm/@profullstack/webmcp@0/src/embed.js"
+          data-pages='{"specs":"/specs","docs":"/docs","pricing":"/pricing","openmcp":"/openmcp","openagent":"/openagent","openprofile":"/openprofile","blog":"/blog","about":"/about"}'
+        />
       </head>
       <body>
         <script
