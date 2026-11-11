@@ -180,6 +180,19 @@ export interface RemoteRotationRun {
   summary: string | null;
 }
 
+/** One secret sealed to an external app (see apps/pwa/src/routes/app-grants.mjs). */
+export interface AppGrant {
+  id: string;
+  app_name: string;
+  origin: string;
+  key_name: string;
+  vault_id: string;
+  source_name: string;
+  fingerprint: string;
+  recipient: { format: string; app: string; scope: string; user_id: string; inbox_public_key: string };
+  status: string;
+}
+
 export class TeamClient {
   private readonly apiUrl: string;
   private token?: string;
@@ -191,6 +204,16 @@ export class TeamClient {
 
   setToken(token: string): void {
     this.token = token;
+  }
+
+  /** App grants holding a value (by fingerprint) in vaults this identity can open. */
+  listAppGrants(fingerprint: string): Promise<{ grants: AppGrant[] }> {
+    return this.requestAt(`/api/v1/app-grants?fingerprint=${encodeURIComponent(fingerprint)}`, "GET");
+  }
+
+  /** Hand an app the re-sealed value after a rotation (ciphertext only). */
+  deliverAppGrant(grantId: string, sealed: string, fingerprint: string): Promise<{ ok: boolean; delivered: boolean; error?: string }> {
+    return this.requestAt(`/api/v1/app-grants/${encodeURIComponent(grantId)}/deliveries`, "POST", { sealed, fingerprint });
   }
 
   private request<T>(method: string, path: string, body?: unknown): Promise<T> {
