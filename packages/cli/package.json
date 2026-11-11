@@ -35,6 +35,7 @@
     "@logicsrc/validators": "file:../validators",
     "@profullstack/hqtui": "^0.11.1",
     "@profullstack/logicsrc-mcp": "file:../logicsrc-mcp",
+    "@profullstack/sealed-secrets": "0.1.1",
     "commander": "^15.0.0"
   },
   "devDependencies": {

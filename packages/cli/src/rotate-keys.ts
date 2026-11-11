@@ -13,6 +13,7 @@ import {
   type RemoteSecret,
   type TeamClient
 } from "@logicsrc/plugin-credential-sharing";
+import { createSealer } from "@profullstack/sealed-secrets";
 import { print, printColumns, type OutputFormat } from "./format.js";
 import { authedClient, splitVaultName, vaultName } from "./teams.js";
 import {
@@ -339,6 +340,47 @@ export interface RotationResult {
   disruptive?: string;
   note?: string;
   error?: string;
+  /** Apps that hold this value through a logicsrc app grant, and whether each got the new one. */
+  apps?: string[];
+}
+
+/**
+ * After a rotation, every app holding the OLD value through an app grant gets
+ * the new one, sealed here to that app's inbox key (the server sees ciphertext).
+ * Each grant reads the value from its own vault and name, so a per-vault
+ * rewrite (URLs) reaches the right app. Never throws: a failure is reported.
+ */
+export async function resealAppGrants(team: Pick<Loaded, "client" | "vaults" | "dek">, oldFingerprint: string): Promise<string[]> {
+  const client = team.client as TeamClient & { listAppGrants?: TeamClient["listAppGrants"] };
+  if (typeof client.listAppGrants !== "function") return [];
+  let grants;
+  try {
+    ({ grants } = await client.listAppGrants(oldFingerprint));
+  } catch (err) {
+    return [`app grants not checked: ${(err as Error).message}`];
+  }
+  const out: string[] = [];
+  for (const g of grants) {
+    const label = `${new URL(g.origin).host}:${g.key_name}`;
+    try {
+      const vault = team.vaults.find((v) => v.id === g.vault_id);
+      if (!vault) {
+        out.push(`${label} not updated (no access to its vault)`);
+        continue;
+      }
+      const { secrets } = await client.listSecrets(vault.id);
+      const s = secrets.find((x) => x.name === g.source_name);
+      if (!s || s.fingerprint === oldFingerprint) continue;
+      const value = await decryptValue({ nonce: s.nonce, ciphertext: s.ciphertext }, await team.dek(vault));
+      const sealer = createSealer({ app: g.recipient.app, scope: g.recipient.scope });
+      const entry = await sealer.sealToInbox(g.recipient.inbox_public_key, { [g.key_name]: value }, g.recipient.user_id);
+      const r = await client.deliverAppGrant(g.id, `sealed:v2:${JSON.stringify(entry)}`, s.fingerprint);
+      out.push(r.delivered ? `${label} updated` : `${label} sealed, app offline (${r.error ?? "no answer"})`);
+    } catch (err) {
+      out.push(`${label} failed: ${(err as Error).message}`);
+    }
+  }
+  return out;
 }
 
 async function readStdin(): Promise<string> {
@@ -664,6 +706,7 @@ export async function teamsRotateKeysAction(slug: string, filter: RotationFilter
       if (stdinValue === undefined && (spec?.method === "random" || spec?.method === "provider" || spec?.method === "desktop")) {
         const r = await rotateTwoPhase(team, p, targets, base, options, deps);
         if (r.status === "rotated" || r.status === "rolled-back") live++;
+        if (r.status === "rotated") r.apps = await resealAppGrants(team, p.fingerprint);
         results.push(r);
         continue;
       }
@@ -702,7 +745,7 @@ export async function teamsRotateKeysAction(slug: string, filter: RotationFilter
         const { applied } = await team.client.putSecrets(vault.id, upserts, []);
         for (const name of applied) written.push(`${vault.name}:${name}`);
       }
-      results.push({ ...base, status: "rotated", written, publicKey: replacement.publicKey });
+      results.push({ ...base, status: "rotated", written, publicKey: replacement.publicKey, apps: await resealAppGrants(team, p.fingerprint) });
     } catch (err) {
       // A login wall or a person at the desk is not a failure: that key waits, the others go on.
       const status = err instanceof DesktopError && (err.code === "needs-login" || err.code === "busy") ? err.code : "failed";
@@ -725,7 +768,8 @@ export async function teamsRotateKeysAction(slug: string, filter: RotationFilter
         next: r.status === "todo" ? (r.error ?? r.url ?? "see --format json") : r.error ?? r.note ?? ""
       }))
     );
-    for (const r of results.filter((x) => x.publicKey)) console.error(`\n${r.key} new public key (install it, remove the old one):\n${r.publicKey}`);
+    for (const r of results.filter((x) => x.apps?.length)) console.error(`${r.key} apps: ${r.apps!.join("; ")}`);
+        for (const r of results.filter((x) => x.publicKey)) console.error(`\n${r.key} new public key (install it, remove the old one):\n${r.publicKey}`);
     const todo = results.filter((r) => r.status === "todo").length;
     const waiting = results.filter((r) => r.status === "needs-login" || r.status === "busy");
     if (waiting.length) console.error(`\n${waiting.length} desktop key(s) waiting: ${waiting.map((r) => `${r.key} (${r.status})`).join(", ")}. Sign in in the desktop's agent browser / wait until the desk is free, then run again.`);

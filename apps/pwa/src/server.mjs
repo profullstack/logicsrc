@@ -10,6 +10,7 @@ import { authRouter } from "./routes/auth.mjs";
 import { passkeyRouter } from "./routes/passkey.mjs";
 import { coinpayRouter } from "./routes/coinpay.mjs";
 import { credshareRouter } from "./routes/credshare.mjs";
+import { appGrantsRouter } from "./routes/app-grants.mjs";
 import { rotationRouter } from "./routes/rotation.mjs";
 import { autoRotationRouter } from "./routes/auto-rotation.mjs";
 import { sweepAutoRotation } from "./lib/auto-rotation.mjs";
@@ -61,6 +62,10 @@ const sodiumWrappers = requireHere.resolve("libsodium-wrappers");
 const sodiumCore = createRequire(sodiumWrappers).resolve("libsodium");
 app.get("/vendor/libsodium.js", (_req, res) => res.sendFile(sodiumCore));
 app.get("/vendor/libsodium-wrappers.js", (_req, res) => res.sendFile(sodiumWrappers));
+// @profullstack/sealed-secrets for app grants (public/app-grant.js): plain ESM over
+// WebCrypto, served as its own src/ so the browser seals exactly as the apps open.
+const sealedSecretsSrc = path.join(path.dirname(requireHere.resolve("@profullstack/sealed-secrets/package.json")), "src");
+app.use("/vendor/sealed-secrets", express.static(sealedSecretsSrc, { maxAge: "1h", index: false }));
 // The signup profile's progressive enhancement, as a file: the CSP allows no inline script.
 app.get("/vendor/profile-enhance.js", (_req, res) => res.type("application/javascript").set("Cache-Control", "public, max-age=3600").send(PROFILE_ENHANCE_SCRIPT));
 
@@ -82,6 +87,7 @@ app.use(authRouter);      // GET / (+ /auth/login|register|logout)
 app.use(passkeyRouter);
 app.use(coinpayRouter);
 app.use(credshareRouter); // /api/credshare/* (session or lsk_ Bearer)
+app.use(appGrantsRouter); // /grant consent, /apps, /api/v1/app-grants/* (keys sealed to external apps)
 app.use(autoRotationRouter); // paid automatic rotation: CoinPay checkout + /api/coinpay/webhook
 app.use(rotationRouter);  // /api/credshare/teams/:slug/rotation* + /teams/:slug/rotation (plan + run queue, never values)
 app.use(apiKeysRouter);   // /api/keys (session or a person's lsk_ key; never a machine key)

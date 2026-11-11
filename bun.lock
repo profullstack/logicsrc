@@ -88,6 +88,7 @@
         "@profullstack/key-rotation": "0.1.0",
         "@profullstack/libsql-pg": "^0.1.4",
         "@profullstack/profile": "0.1.8",
+        "@profullstack/sealed-secrets": "0.1.1",
         "@simplewebauthn/browser": "^14.0.0",
         "@simplewebauthn/server": "^14.0.3",
         "cookie-parser": "^1.4.7",
@@ -176,6 +177,7 @@
         "@logicsrc/validators": "file:../validators",
         "@profullstack/hqtui": "^0.11.1",
         "@profullstack/logicsrc-mcp": "file:../logicsrc-mcp",
+        "@profullstack/sealed-secrets": "0.1.1",
         "commander": "^15.0.0",
       },
       "devDependencies": {
@@ -780,6 +782,8 @@
     "@profullstack/profile": ["@profullstack/profile@0.1.8", "", { "dependencies": { "@profullstack/openprofile": "^0.2.0" }, "peerDependencies": { "@libsql/client": ">=0.6.0", "postgres": "^3.4.0", "react": ">=18" }, "optionalPeers": ["@libsql/client", "postgres", "react"], "bin": { "profile": "src/cli.js" } }, "sha512-MQ/AGGM++NZEbjMglRlEvjCrmsL46CXDz2GKb510eMBEKUik1cwix9ag20gakYrrVCaB5mNcNCMYon53vwDTfw=="],
 
     "@profullstack/referrals": ["@profullstack/referrals@0.1.0", "", { "peerDependencies": { "react": ">=18" }, "optionalPeers": ["react"] }, "sha512-u66SdBVpsv3kc0N+NWISPoYD5vjCERyv5wfD07iSkZwQeC2IA+ihX5jNA4e7Xr+Y4AUvxLycG+3b4VaROqzgRg=="],
+
+    "@profullstack/sealed-secrets": ["@profullstack/sealed-secrets@0.1.1", "", {}, "sha512-HQH7PlWDGmKhJYkVyVwH5GBoRjP0+ndHcXCJLYuv+/4VuICOMNDnLGw8UdG8CsbGZIuI6X8nS99mTl7CaOMKXw=="],
 
     "@profullstack/stack": ["@profullstack/stack@0.5.0", "", { "dependencies": { "@profullstack/emailer": "^1.0.1", "@profullstack/form-guard": "^0.1.1", "@profullstack/referrals": "^0.1.0" }, "peerDependencies": { "@supabase/ssr": ">=0.5.0", "next": ">=13.0.0", "react": ">=18.0.0" }, "optionalPeers": ["@supabase/ssr", "next", "react"] }, "sha512-LbXovIhyzLEq+a+y3q8KWC+jN1tJjvSoUiFEhpiEBisQn5U+iutIGHDgg16Lul74kQaFZeFlbp7CMPAVJ8KL6g=="],
 
