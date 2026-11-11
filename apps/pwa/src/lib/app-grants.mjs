@@ -150,7 +150,16 @@ export function signWebhook(secret, id, ts, body) {
 }
 
 /** POST one event to the app. Returns { ok, status?, error? }; never throws. */
-export async function sendWebhook(url, secret, payload, { fetchImpl = fetch } = {}) {
+export async function sendWebhook(url, secret, payload, { fetchImpl = fetch, allowLocal = false } = {}) {
+  // Re-checked on every delivery: a host that resolved publicly at consent time
+  // may point inside our network by the time a rotation fires.
+  if (!allowLocal) {
+    try {
+      await assertPublicHost(new URL(url).hostname);
+    } catch (e) {
+      return { ok: false, error: e.message };
+    }
+  }
   const body = JSON.stringify(payload);
   const id = `msg_${randomBytes(12).toString("hex")}`;
   const ts = Math.floor(Date.now() / 1000);

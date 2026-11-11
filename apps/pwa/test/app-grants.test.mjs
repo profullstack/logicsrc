@@ -185,3 +185,11 @@ test("an unknown nonce or a bad manifest is refused", async () => {
   manifests.set("nonce-badhook-0001", { ...manifest(), webhook_url: "https://elsewhere.test/hook" });
   assert.equal((await open("nonce-badhook-0001")).status, 502);
 });
+
+test("a webhook host that now resolves privately gets no delivery", async () => {
+  const { sendWebhook } = await import("../src/lib/app-grants.mjs");
+  let called = false;
+  const r = await sendWebhook("https://localhost.localdomain./hook", "s".repeat(40), {}, { fetchImpl: async () => ((called = true), new Response("ok")) });
+  assert.equal(r.ok, false);
+  assert.equal(called, false);
+});

@@ -76,7 +76,7 @@ async function deliver(grants, type, sealedById = {}) {
       recipient_user_id: parseJson(g.recipient, {})?.user_id ?? null,
       ...(sealedById[g.id] ? { sealed: sealedById[g.id] } : {}),
     };
-    const r = await sendWebhook(g.webhook_url, g.webhook_secret, payload, { fetchImpl });
+    const r = await sendWebhook(g.webhook_url, g.webhook_secret, payload, { fetchImpl, allowLocal: ALLOW_LOCAL });
     await run(`UPDATE app_grants SET last_delivered_at = ?, last_error = ? WHERE id = ?`, [r.ok ? Date.now() : g.last_delivered_at ?? null, r.ok ? null : r.error, g.id]);
     out.push({ grant_id: g.id, key_name: g.key_name, delivered: r.ok, ...(r.ok ? {} : { error: r.error }) });
   }
