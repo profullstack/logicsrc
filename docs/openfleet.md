@@ -88,7 +88,7 @@ The record moshcode should have written for the first piece of the swarm in the 
 | `depth` | | How far below the sysop this member sits. Absent means 0. Members of a swarm are their parent's depth plus one, and never above `ceiling.depth`. |
 | `engine` | | The program that runs and can kill this session, lowercase. A sysop tool stops a member through this. |
 | `session` | | The engine's own handle for this session when the starter knows one that differs from `member`: a tmux target, a pid for `claude -p`. Absent means the same as `member`, or that the engine will supply it in `member.start`. The join key to the engine's roster. |
-| `host` | | The hostname this member runs on. Absent means the host the record was read on. Must be in `ceiling.hosts` when that key is set. |
+| `host` | | The hostname this member runs on. Absent means the host the record was read on. Must be in `ceiling.hosts` when that key is set. Any name the sysop's [OpenDevice](/docs/opendevice) inventory gives the machine (its `id`, a hostname or one of its `aliases`) names the same host. |
 | `cwd` | | The working directory the member started in, absolute. |
 | `started` | | When the starter wrote this record and told the engine to start, ISO 8601 UTC. The `at` of the ledger's `member.start` is the authoritative start time. |
 | `approvals` | | `native` or `bypass`. Absent means `native`. `bypass` is allowed only when `ceiling.approvals` is `bypass`. This is the field a sysop tool marks in the tree. |
@@ -102,7 +102,7 @@ The ceiling's keys, as they read on an opened fleet:
 | `budget` | uncapped | `<amount> <currency>` (ISO 4217, or a CAIP-19 asset id), the way [OpenAccess](/openaccess) writes a money limit, or `<n> tokens`, this spec's own unit. The most the members under this ceiling may spend in total, summed from `member.spend`. |
 | `depth` | 1 | The deepest member allowed. 1 means a root member may spawn swarms, and the members of those swarms may not spawn. |
 | `fan_out` | the engine's default | The most members one swarm under this ceiling may hold. |
-| `hosts` | the host the ceiling was set on | Hostnames members may run on. |
+| `hosts` | the host the ceiling was set on | Hostnames members may run on. With an OpenDevice inventory at hand, a reader resolves each entry and `host` to a device before comparing, so `seed2` and `vienna` match when they are the same box; without one it compares the strings as written. |
 | `until` | no deadline | ISO 8601 UTC time after which every member under this ceiling is stopped. |
 
 **How a ceiling is read.** A fleet's ceiling is whole: the latest `fleet.cap` whose target is the fleet, else `fleet.open`, else the implicit fleet's. A ceiling in `swarm.spawn`, or in a `fleet.cap` whose target is a swarm, holds only the keys that were narrowed, and a key absent there is inherited. A member's effective ceiling is the fleet's, merged key by key with the ceiling of each `swarm.spawn` on the path down to it, with the latest `fleet.cap` for any swarm on that path applied last. That merged object is what the record's `ceiling` carries. In the implicit fleet, `approvals` enters the merge at the root: each root member's own approvals, from the flags it was started with, and `native` for a root that carries `orphan`.
@@ -260,6 +260,7 @@ Three ship: `logicsrc fleet` in `@logicsrc/openfleet` 0.1.0 (logicsrc CLI 0.3.0)
 | Version | Date | Change |
 |---|---|---|
 | 0.1 | 2026-09-13 | First publication: fleet and swarm, the record, the environment, claiming and deriving, the ledger's eight events, five sysop verbs, fifteen rules, the worked example, what Claude Code and moshcode each add. Same day: `logicsrc fleet` and the Claude Code hooks ship in `@logicsrc/openfleet` 0.1.0, `moshcode swarm` and `moshcode fleet` in moshcode 0.99.0. |
+| 0.2 | 2026-11-15 | Hosts may be named by any OpenDevice `id`, hostname or alias; readers with an inventory resolve before comparing `host` against `ceiling.hosts`. Additive; string comparison stays correct. |
 
 ## License
 

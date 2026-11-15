@@ -54,6 +54,12 @@ An operator serves or hands over a JSON document. Published, it lives at `/.well
       "profile": "server",
       "role": "shared app box",
       "hostnames": ["app1.northwind.example"],
+      "aliases": ["app1", "seed3"],
+      "access": [
+        { "name": "app1", "user": "deploy", "auth": "key", "key": "SHA256:Qe1vT0pGq8...", "identity_file": "~/.ssh/id_ed25519", "sudo": true, "gives": "shell" },
+        { "name": "app1-root", "user": "root", "port": 2202, "auth": "key", "secret": "vault:northwind/app1/ROOT_KEY", "gives": "root" }
+      ],
+      "notes": "Root ssh only from the office allowlist. Do not restart the database during business hours.",
       "addresses": { "ipv4": ["203.0.113.10"], "ipv6": ["2001:db8::10"] },
       "provider": {
         "name": "Example Racks",
@@ -117,13 +123,16 @@ The rules, and every one degrades:
 2. **`id`** is stable for as long as the device is the same machine. It is the dedupe key: a reader that sees the same inventory and `id` tomorrow updates its row. Absent, the reader derives one from `name`. A rebuilt box on a new IP with the same job keeps its `id`; a second box doing the same job gets its own.
 3. **`profile`** is `server`, `desktop`, `phone`, `tablet` or `other`. Absent means `server` when the device has `hostnames` or `addresses`, `other` when it has neither. Each profile's own keys are in its section below.
 4. **`hostnames`** are names that resolve to the device. **`addresses`** are its public `ipv4` and `ipv6` addresses. Private addresses (RFC 1918, CGNAT, link-local, a tailnet's) go under `private` inside `addresses` and are never collected by an observer.
-5. **`provider`** is who the device is rented from. `offer` names the [OpenServer](/docs/openserver) offer it was bought as, by the provider's descriptor URL and the offer's `id`, so a reader can show the provider's own specs and price beside the operator's. `account` is the operator's own reference at the provider, an order number or a contract, never a credential.
-6. **`location`** is where the device is: `country` an ISO 3166-1 alpha-2 code, `region` in the operator's words. A phone or a laptop states it only if its owner wants it stated; an observer never infers a personal device's location.
-7. **`hardware`** uses OpenServer's units unchanged: `vcpu`, `cores`, `ram_mb`, `vram_mb`, `arch`, and `storage` as a list of `{type, size_gb}`.
-8. **`os`** is `name`, `version`, and for client profiles `patch`, the security patch level as the device reports it (`YYYY-MM-DD`).
-9. **`status`** is `active`, `standby`, `retired` or `unknown`. A retired device stays in the file with its cost ended, so last month's books still add up. Absent means `active`.
-10. **`updated`** is when the inventory last changed; ISO 8601. **`currency`** is the default for every `cost` that states none.
-11. **Unknown keys are kept.** An operator says more than this document names, and a reader passes it through.
+5. **`aliases`** are the other names people and agents call the device: nicknames, old names, role names like `seed2`, short ssh names. Plain strings, unique within the inventory and never equal to another device's `id`. They need not resolve in DNS. A reader looking a device up by name tries `id`, then `hostnames`, then `aliases`, and lists the device under every one, so "which box is seed2" has one answer. A name that moves to another box comes off the old device's `aliases` in the same edit.
+6. **`access`** is how to get in: a list of entries, each one what an `ssh_config` `Host` block says. `name` is the short name a client uses (`ssh <name>`), unique within the inventory; `protocol` is `ssh` (absent means `ssh`), `mosh`, `rdp`, `vnc`, `https` or another URI scheme; `host` is the address or hostname to dial (absent means the first of `hostnames`, then `addresses`); `port` (absent means the protocol's default); `user`; `auth` is `key`, `password`, `certificate`, `agent` or `none`; `key` is the public key fingerprint the server accepts (`SHA256:...`) and `identity_file` the client-side path a reader would use; `secret` is where a password or private key is kept, as a vault reference, a password-manager item or a URL behind the reader's own credential; `jump` is the `name` of another entry to go through (`ProxyJump`); `sudo` is `true`, `false` or `nopasswd`; `gives` is what the entry lands in (`shell`, `root`, an app, a menu); `note` is free text. A reader can write an `ssh_config` from the `ssh` entries alone. **Credentials never appear inline:** no password, private key or token in the file, only the reference in `secret`, so the same inventory can go to a reader who holds none of them.
+7. **`notes`** is free text about the device for the people and agents who run it: what is special, what not to touch, what is pending. Never a credential.
+8. **`provider`** is who the device is rented from. `offer` names the [OpenServer](/docs/openserver) offer it was bought as, by the provider's descriptor URL and the offer's `id`, so a reader can show the provider's own specs and price beside the operator's. `account` is the operator's own reference at the provider, an order number or a contract, never a credential.
+9. **`location`** is where the device is: `country` an ISO 3166-1 alpha-2 code, `region` in the operator's words. A phone or a laptop states it only if its owner wants it stated; an observer never infers a personal device's location.
+10. **`hardware`** uses OpenServer's units unchanged: `vcpu`, `cores`, `ram_mb`, `vram_mb`, `arch`, and `storage` as a list of `{type, size_gb}`.
+11. **`os`** is `name`, `version`, and for client profiles `patch`, the security patch level as the device reports it (`YYYY-MM-DD`).
+12. **`status`** is `active`, `standby`, `retired` or `unknown`. A retired device stays in the file with its cost ended, so last month's books still add up. Absent means `active`.
+13. **`updated`** is when the inventory last changed; ISO 8601. **`currency`** is the default for every `cost` that states none.
+14. **Unknown keys are kept.** An operator says more than this document names, and a reader passes it through.
 
 ## Cost
 
@@ -196,7 +205,7 @@ A published inventory is a claim by the operator; that it came from the operator
 
 ## What is deliberately absent
 
-**No credentials.** No passwords, keys, tokens or API secrets, ever. `account` is an order number, not a login.
+**No credentials.** No passwords, private keys, tokens or API secrets, ever. `account` is an order number, not a login. `access` says how to connect and where the secret is kept (`secret`, a reference), and a public key fingerprint is not a secret. A published inventory at `/.well-known/opendevice.json` leaves out `access` and `notes` entirely: they map the way in.
 
 **No live stats.** Load, memory in use and uptime belong to the fleet agent that reports them every few seconds. The inventory is what the device is, not how it is doing.
 
@@ -223,6 +232,7 @@ A published inventory is a claim by the operator; that it came from the operator
 | Version | Date | Change |
 |---|---|---|
 | 0.1 | 2026-10-28 | First publication: the inventory, five profiles, the cost block and its matching rule, public metadata and its bound. |
+| 0.2 | 2026-11-15 | `aliases` (the other names a device goes by; lookup order id, hostnames, aliases), `access` (how to connect, shaped like an `ssh_config` Host block, credentials by reference only) and `notes`. Additive; a 0.1 reader keeps them as unknown keys. |
 
 ## License
 
