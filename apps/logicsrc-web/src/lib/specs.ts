@@ -82,7 +82,7 @@ export const FAMILIES: Family[] = [
     blurb:
       "A provider, a merchant, a scanner or a relay already keeps a table of what it sells or found. Each of these is that table, exported at /.well-known/<slug>.json in a shape every reader agrees on, verified by the origin it came from. Directories such as nichedb.dev read the file; the publisher stays the author.",
     specs: [
-      s("opendevice", "OpenDevice", "One file an operator keeps about the machines they run: what each is, where it runs, what it costs, what the internet sees", { status: "0.1" }),
+      s("opendevice", "OpenDevice", "One file an operator keeps about the machines they run: what each is, where it runs, what it costs, what the internet sees", { status: "0.2" }),
       s("opendesktop", "OpenDesktop", "The desktop profile: desktops, laptops and workstations, model, patch level and vendor support dates", { parent: "opendevice", landing: undefined, status: "0.1" }),
       s("openphone", "OpenPhone", "The phone profile: model, patch level against the vendor's latest, and a line's cost, never the number", { parent: "opendevice", landing: undefined, status: "0.1" }),
       s("opentablet", "OpenTablet", "The tablet profile: model, cellular radio, patch level and vendor support dates", { parent: "opendevice", landing: undefined, status: "0.1" }),
