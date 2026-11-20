@@ -2,7 +2,7 @@
 
 OpenProfile.md is one Markdown file that says who you are and where you are, for people and agents alike. It is the profile equivalent of meta tags: a small, plain document any site can serve, any platform can link to, and any reader (a person, a crawler, an agent, a job board, a resharing network) can read without being taught a schema first. It is maintained by Profullstack, Inc. as part of the LogicSRC open-standards surface.
 
-Status: **0.5**. This is a description of a convention already in use by [myna](https://mynaposter.com) and [agenticjobs](https://agenticjobs.pwa.pit.world), published so others can serve and read the same file.
+Status: **0.6**. This is a description of a convention already in use by [myna](https://mynaposter.com) and [agenticjobs](https://agenticjobs.pwa.pit.world), published so others can serve and read the same file.
 
 Slug: `openprofile`
 
@@ -23,6 +23,9 @@ The pieces already exist. `rel="me"` proves two pages belong to the same person.
 - **Pronouns**: she/her
 - **Web**: https://ada.example
 - **Email**: ada@example.com
+- **Languages**: English (native), French (fluent), Italian (basic)
+- **Accent**: London English
+- **Dialect**: British English
 - **Avatar**: https://ada.example/ada.png
 - **Pay**: eip155:8453:0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf
 - **Resume**: https://agenticjobs.pwa.pit.world/candidates/ada/resume.md
@@ -111,7 +114,12 @@ There are nine, and every one of them degrades rather than fails.
 - `Emoji`: one emoji that is your mark, shown next to your name the way a chat app shows a status emoji or a directory shows a favicon. One grapheme as written (`🔭`, `🏳️‍🌈`, `👩🏽‍💻`), or an [OpenEmoji](/docs/openemoji) shortcode (`:telescope:`), which a reader resolves to the emoji and may draw as the OpenEmoji artwork. A reader shows the first grapheme and ignores the rest; it never uses it as a name or a handle.
 - `Pronouns`: how to refer to you, as written: `she/her`, `he/him`, `they/them`, `it/its`, more than one (`she/they`), or a sentence (`any`, `ask me`, `use my name`). A reader shows it next to the name, uses it when it writes about you in the third person, and never infers it from a name, a photo or `Gender`. Absent means unstated, and a reader that must refer to you uses your name or `they`.
 - `Web`: your home page. `Website`, `Homepage` and `Site` are accepted aliases and mean the same; a writer uses `Web`. Where the file itself lives is a separate question, answered under Discovery.
-- `Email`, `Location`, `Timezone`, `Languages`: kept as written.
+- `Email`, `Location`, `Timezone`: kept as written.
+- `Languages`: the languages you speak or write, comma-separated, the one you use most first. Each is a name (`English`, `Cantonese`, `American Sign Language`) or a [BCP-47](https://www.rfc-editor.org/info/bcp47) tag (`en`, `yue`, `ase`, `pt-BR`), with an optional level in parentheses: `native`, `fluent`, `conversational`, `basic`, `learning`, or any other word, kept as written. `Language` is accepted as an alias for a single language; a writer uses `Languages`. A reader that needs one language takes the first; a reader that compares two profiles matches names and tags loosely, so `Portuguese`, `pt` and `pt-BR` share a language.
+- `Accent`: how you sound when you speak, self-described and kept as written: `Scottish`, `Texan`, `Nigerian English`, `Parisian French`, `non-native, Polish`. One line; more than one language may each be named (`English: Irish; Spanish: Castilian`).
+- `Dialect`: the variety of a language you speak, self-described, as a name (`Swiss German`, `Hokkien`, `Egyptian Arabic`, `Brazilian Portuguese`) or a BCP-47 tag with region, script or variant subtags (`de-CH`, `nan`, `arz`, `pt-BR`, `ca-valencia`). The same per-language form as `Accent` works when you speak more than one.
+
+  `Languages`, `Accent` and `Dialect` describe you, the way `Pronouns` does, and follow the same rule: shown as written, used to help (pick a caption or transcription model, a translator, an interviewer or a support agent who shares a language, a matching platform's "speaks" filter), and **never inferred** from `Location`, `Timezone`, a name, a photo, `Ethnicity`, a recording of your voice or another site. Absent means unstated. A reader never ranks, refuses or scores a person by accent or dialect; a platform that filters on language filters on `Languages` only, and only where the person published it. They say nothing about how a machine should sound for you; that is the `Voice` key and the `## Voice` section.
 - `Gender`: kept as written. `woman`, `man` and `non-binary` are the words in common use, and any other word is kept too. It may sit here or under Match, and means the same in both; a reader takes whichever it finds first.
 - `Voice`: a compact voice preference, such as `female`, `male`, or a provider voice id (`kokoro:af_sarah`). The optional `## Voice` section below carries detailed speech preferences. `Gender` and `Pronouns` describe you; readers do not use them to guess a synthetic voice. If no voice preference is stated, a reader chooses a stable default and keeps using it.
 - `Avatar`: an image URL.
@@ -193,6 +201,7 @@ The optional `## Voice` section says how an agent, person or organization prefer
 - **Language**: English
 - **Locale**: en-US
 - **Accent**: General American
+- **Dialect**: American English
 - **Voice gender**: feminine
 - **Engine**: kokoro
 - **Voice**: af_sarah
@@ -203,6 +212,8 @@ The optional `## Voice` section says how an agent, person or organization prefer
 
 - `Language` is the spoken language by name or language tag. `Locale` is a BCP-47 tag such as `en-US` or `fr-CA`; it is the clearest language-and-region preference when both are present.
 - `Accent` is self-described, such as `General American`, `Québécois French`, or `no preference`. It is not inferred from `Locale` or location.
+- `Dialect` is the language variety the voice should speak, by name (`Mexican Spanish`, `Cantonese`, `Scottish English`) or BCP-47 tag (`es-MX`, `yue`, `en-GB-scotland`). It governs word choice, spelling and grammar as well as sound, so a reader that writes the text it reads aloud (an agent drafting a reply, a translator) honors it in the text too. When both are present, `Locale` and `Dialect` should agree; if they do not, the reader uses `Dialect` for the words and `Locale` to choose the voice, and does not guess one from the other.
+- Absent a `## Voice` section, a reader may use the identity block's first `Languages` entry as the spoken language, because the person wrote it. It never copies the identity `Accent` or `Dialect` into a synthetic voice: mimicking someone's accent is an impersonation the person did not ask for. Those carry over only when they are written here.
 - `Voice gender` or `Presentation` is the requested sound presentation: `female`, `male`, `feminine`, `masculine`, `androgynous`, `neutral`, `non-binary`, `other`, or a provider's term. It is not the owner's gender. A reader preserves the exact wording and uses it only to select a suitable available voice.
 - `Engine` names a speech engine or provider (`piper`, `kokoro`, or another value). `Voice` is that engine's voice id. A reader honors both when supported, then honors `Voice` in the identity block, then uses a stable default. It does not substitute a paid or unavailable provider without telling the user.
 - `Persona` describes speaking style (for example, measured, playful, formal or reassuring). It is delivery guidance, not a claim about personality or authority.
@@ -253,7 +264,7 @@ Two profiles that link to each other through Operator and through an account are
 
 **No structured topic taxonomy.** Topics are the words people wrote, and so are Match values.
 
-**No inference.** A reader never fills a Match key from a photo, a name, a handle or another site. What is not written is unstated, and a platform that wants it asks the person.
+**No inference.** A reader never fills a Match key, a language, an accent or a dialect from a photo, a name, a handle, a location, a voice or another site. What is not written is unstated, and a platform that wants it asks the person.
 
 **No JSON.** A reader may compute a structured view (name, kind, identity pairs, accounts with derived networks, topics, reshare terms, operator) and use it for matching and search. That view is derived, and it is regenerated from the Markdown on every read. **The Markdown is the canonical copy.** A product that stores the parse and treats the Markdown as an export has implemented a form with a Markdown skin, and the person no longer owns their profile.
 
@@ -295,6 +306,7 @@ By hand, in any editor, in five minutes. Or:
 | 0.3 | 2026-09-13 | `Gender` and `Voice` in the identity block: how a machine should sound when it speaks for you, and the order a reader chooses in (`Voice`, `Gender`, `Pronouns`, never a name or a photo). First reader: nixamp's party line reading trollbox lines to callers. |
 | 0.4 | 2026-10-06 | `Emoji`, `Pronouns` and `Web` are default fields, in the example and in every reader's structured view. `Emoji`: one grapheme or an OpenEmoji shortcode, your mark next to your name. `Pronouns`: shown as written, used in the third person, never inferred. `Website`, `Homepage` and `Site` are aliases of `Web`. |
 | 0.5 | 2026-11-01 | Add the optional `## Voice` section for spoken language, BCP-47 locale, self-described accent, voice presentation, engine, voice id, persona, pronunciation and speaking rate. Separate voice presentation from identity gender and pronouns; readers do not infer speech preferences from identity. |
+| 0.6 | 2026-11-20 | `Languages`, `Accent` and `Dialect` in the identity block: the languages you speak (names or BCP-47 tags, most-used first, optional level), and your self-described accent and dialect, shown as written and never inferred; nothing ranks or refuses a person by accent or dialect. `Dialect` in the `## Voice` section, governing the words as well as the sound. The identity accent and dialect never become a synthetic voice unless written under Voice. |
 
 ## License
 
