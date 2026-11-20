@@ -7,7 +7,7 @@ import { mono, pre, table, td, th } from "../openontology/ui";
 
 export const metadata: Metadata = specMetadata(
   "/openprofile",
-  "OpenProfile.md is one Markdown file that says who you are and where you are, for people and agents alike: identity, accounts, topics, voice preferences, reshare terms and the operator behind an agent. Served at /.well-known/openprofile.md, linked with rel=\"openprofile\", verified by linking back."
+  "OpenProfile.md is one Markdown file that says who you are and where you are, for people and agents alike: identity, languages, accent and dialect, accounts, topics, voice preferences, reshare terms and the operator behind an agent. Served at /.well-known/openprofile.md, linked with rel=\"openprofile\", verified by linking back."
 );
 
 const EXAMPLE = `# Ada Lovelace
@@ -17,6 +17,9 @@ const EXAMPLE = `# Ada Lovelace
 - **Emoji**: 🔭
 - **Pronouns**: she/her
 - **Web**: https://ada.example
+- **Languages**: English (native), French (fluent), Italian (basic)
+- **Accent**: London English
+- **Dialect**: British English
 - **Pay**: eip155:8453:0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf
 - **Resume**: https://agenticjobs.pwa.pit.world/candidates/ada/resume.md
 
@@ -78,6 +81,7 @@ const VOICE = `## Voice
 - **Language**: English
 - **Locale**: en-US
 - **Accent**: General American
+- **Dialect**: American English
 - **Voice gender**: feminine
 - **Engine**: kokoro
 - **Voice**: af_sarah
@@ -87,7 +91,7 @@ const VOICE = `## Voice
 
 const RULES: Array<[string, string]> = [
   ["One # heading", "It is the name. More than one and the first wins; none and the reader says it has no name."],
-  ["The identity block", "The bullet list under the name. Kind, Handle, Emoji, Pronouns, Web (Website is an alias), Email, Avatar, Pay, Resume are understood; unknown keys are kept as written."],
+  ["The identity block", "The bullet list under the name. Kind, Handle, Emoji, Pronouns, Web (Website is an alias), Email, Languages, Accent, Dialect, Avatar, Pay, Resume are understood; unknown keys are kept as written. Languages are names or BCP-47 tags, most-used first, with an optional level; Accent and Dialect are self-described, shown as written and never inferred, and nothing ranks or refuses a person by them."],
   ["The headline", "One prose line between the block and the first ##. It is the bio a directory shows next to the name."],
   ["## opens a section", "Kept verbatim and normalised for matching: accounts, topics, reshare, operator, voice, links, about, projects, services, contact. Unknown sections are kept."],
   ["Accounts", "One bullet per account and the URL is the identity. The network is derived from the host. An account is a claim until the page links back."],
@@ -95,7 +99,7 @@ const RULES: Array<[string, string]> = [
   ["Reshare", "What you will amplify for others and what it costs: Networks, Topics, Not, Rate, Limit. No section means no offer."],
   ["Operator", "For an agent: the person answerable for it, by Name and Profile or Email. Chains are followed a few hops and reported."],
   ["Match", "What a dating site or any matching platform needs, about you (Born, Gender, Orientation, Status, Height, Children, Smoking, Religion, ...) and who you seek (Seeking, For, Ages, Distance, Not). Born is required for matching and must give 18 or over; nothing is inferred; a Photos section carries the pictures."],
-  ["Voice", "Optional speech preferences: spoken language, BCP-47 locale, self-described accent, voice gender or presentation, engine, voice id, persona, pronunciation and rate. None are inferred from identity gender or pronouns."]
+  ["Voice", "Optional speech preferences: spoken language, BCP-47 locale, self-described accent, dialect (which shapes the words as well as the sound), voice gender or presentation, engine, voice id, persona, pronunciation and rate. None are inferred from identity gender or pronouns, and the identity accent and dialect never become a synthetic voice unless written here."]
 ];
 
 const DISCOVERY: Array<[string, string, string]> = [
@@ -109,7 +113,7 @@ const ABSENT: Array<[string, string]> = [
   ["No schema version", "Readers ignore what they do not recognise, so a file written today reads in five years."],
   ["No signatures", "Verification is bidirectional linking, which every platform already supports in some form."],
   ["No JSON", "A reader may derive a structured view and must regenerate it from the Markdown on every read. The Markdown is the canonical copy."],
-  ["No inference", "A Match key is never filled from a photo, a name, a handle or another site. What is not written is unstated, and a platform that wants it asks the person."]
+  ["No inference", "A Match key, a language, an accent or a dialect is never filled from a photo, a name, a handle, a location, a voice or another site. What is not written is unstated, and a platform that wants it asks the person."]
 ];
 
 export default function OpenProfilePage(): ReactNode {
@@ -135,7 +139,7 @@ export default function OpenProfilePage(): ReactNode {
           copied between tools.
         </p>
         <p style={{ color: "#5b6b7a" }}>
-          Status: 0.5. A convention already in use by{" "}
+          Status: 0.6. A convention already in use by{" "}
           <a href="https://mynaposter.com">myna</a> and{" "}
           <a href="https://agenticjobs.pwa.pit.world">agenticjobs</a>, published so others can serve and read
           the same file.
