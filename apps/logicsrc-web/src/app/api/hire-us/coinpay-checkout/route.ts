@@ -1,5 +1,6 @@
 import type { NextRequest } from "next/server";
 import { json } from "@/lib/http";
+import { COINPAY_UA } from "@/lib/coinpay-ua";
 import { COINPAY_SESSION_COOKIE, parseJson, verifySession } from "@/lib/coinpay";
 import { HIRE_US_PRODUCT } from "@/lib/coinpay-webhook";
 import { hireUsCheckoutStore } from "@/lib/hire-us-payments";
@@ -75,7 +76,8 @@ export async function POST(request: NextRequest) {
       method: "POST",
       headers: {
         authorization: `Bearer ${apiKey}`,
-        "content-type": "application/json"
+        "content-type": "application/json",
+        "user-agent": COINPAY_UA
       },
       body: JSON.stringify({
         amount: amountUsdDue,

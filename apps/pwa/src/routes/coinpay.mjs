@@ -2,6 +2,7 @@
 import { Router } from "express";
 import crypto from "node:crypto";
 import { config } from "../config.mjs";
+import { COINPAY_UA } from "../lib/coinpay-ua.mjs";
 import { token } from "../lib/crypto.mjs";
 import { createSession, setCeremony, getCeremony, clearCeremony, takeNext } from "../lib/session.mjs";
 import { userByCoinpay, createUserForCoinpay } from "../lib/users.mjs";
@@ -39,7 +40,7 @@ coinpayRouter.get("/auth/coinpay/callback", async (req, res) => {
   try {
     const tokenRes = await fetch(config.coinpay.oauth.tokenUrl, {
       method: "POST",
-      headers: { "content-type": "application/x-www-form-urlencoded" },
+      headers: { "content-type": "application/x-www-form-urlencoded", "user-agent": COINPAY_UA },
       body: new URLSearchParams({
         grant_type: "authorization_code",
         code: String(req.query.code),
@@ -52,7 +53,7 @@ coinpayRouter.get("/auth/coinpay/callback", async (req, res) => {
     const tok = await tokenRes.json();
 
     const infoRes = await fetch(config.coinpay.oauth.userinfoUrl, {
-      headers: { authorization: `Bearer ${tok.access_token}` },
+      headers: { authorization: `Bearer ${tok.access_token}`, "user-agent": COINPAY_UA },
     });
     if (!infoRes.ok) throw new Error(`userinfo ${infoRes.status}`);
     const info = await infoRes.json();

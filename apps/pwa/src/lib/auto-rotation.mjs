@@ -8,6 +8,7 @@
 // rotation_auto_paid_until NULL with the switch on means it was flipped by hand
 // (a comp): it never expires and a payment does not cap it.
 import { CoinPay, readWebhook } from "@profullstack/coinpay-onboard";
+import { COINPAY_UA } from "./coinpay-ua.mjs";
 import { createAutoRotation, sqlStore, resendMailer, DAY_MS } from "@profullstack/key-rotation";
 import { get, all, run } from "../db.mjs";
 import { config } from "../config.mjs";
@@ -33,11 +34,19 @@ export const store = sqlStore({
   ),
 });
 
+/**
+ * coinpay-onboard 0.3.x has no userAgent option, so name this app on every
+ * CoinPay call through its fetch hook (CoinPay's logs and throttle key on it).
+ */
+export function coinpayFetch(url, init = {}) {
+  return fetch(url, { ...init, headers: { ...(init.headers ?? {}), "user-agent": COINPAY_UA } });
+}
+
 /** A CoinPay client on app.logicsrc.com's business key. */
 export function coinpayClient(env = process.env) {
   const token = env.COINPAY_API_KEY;
   if (!token) throw new Error("COINPAY_API_KEY is not configured");
-  return new CoinPay({ token, base: env.COINPAY_API_URL || undefined });
+  return new CoinPay({ token, base: env.COINPAY_API_URL || undefined, fetch: coinpayFetch });
 }
 
 /** The module bound to this app; `origin` only changes the links (tests). */

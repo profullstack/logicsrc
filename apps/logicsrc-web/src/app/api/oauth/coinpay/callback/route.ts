@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { json } from "@/lib/http";
+import { COINPAY_UA } from "@/lib/coinpay-ua";
 import {
   COINPAY_OAUTH_STATE_COOKIE,
   COINPAY_SESSION_COOKIE,
@@ -49,7 +50,7 @@ export async function GET(request: NextRequest) {
   try {
     const tokenResponse = await fetch(new URL("/api/oauth/token", config.issuer), {
       method: "POST",
-      headers: { "content-type": "application/x-www-form-urlencoded" },
+      headers: { "content-type": "application/x-www-form-urlencoded", "user-agent": COINPAY_UA },
       body: new URLSearchParams({
         grant_type: "authorization_code",
         code,
@@ -70,7 +71,7 @@ export async function GET(request: NextRequest) {
     }
 
     const userResponse = await fetch(new URL("/api/oauth/userinfo", config.issuer), {
-      headers: { authorization: `Bearer ${tokenPayload.access_token}` }
+      headers: { authorization: `Bearer ${tokenPayload.access_token}`, "user-agent": COINPAY_UA }
     });
     const userText = await userResponse.text();
     const userInfo = userResponse.ok ? parseJson(userText) : {};
