@@ -1,12 +1,14 @@
 import { createHash, createHmac, pbkdf2Sync } from "node:crypto";
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import {
   cloudflareTokenRotator,
   coinpayApiKeyRotator,
+  coinpayLoginError,
   coinpayWebhookSecretRotator,
   newVapidPair,
   postgresRoleRotator,
   resendRotator,
+  resetCoinpaySessions,
   rewriteUrls,
   scramVerifier,
   vapidRotator,
@@ -127,17 +129,22 @@ describe("cloudflare-token", () => {
 });
 
 describe("coinpay", () => {
+  beforeEach(() => resetCoinpaySessions());
   const legacy = "cp_live_legacyAAAAAAAAAAAAAAAA";
-  function coinpay() {
-    const state = { legacy, scoped: new Map<string, any>(), regenerated: 0, webhook: "whsec_old_xxxxxxxxxxxx" };
+  function coinpay(opts: { login?: { status: number; body?: any } } = {}) {
+    const state = { legacy, scoped: new Map<string, any>(), regenerated: 0, webhook: "whsec_old_xxxxxxxxxxxx", logins: 0, session: "session-jwt" };
     const { fetch, calls } = fakeFetch((m, url, auth, body) => {
       const p = url.pathname;
-      if (p === "/api/auth/login") return body.password === "pw" ? { status: 200, body: { success: true, token: "session-jwt" } } : { status: 401 };
+      if (p === "/api/auth/login") {
+        state.logins++;
+        if (opts.login) return opts.login;
+        return body.password === "pw" ? { status: 200, body: { success: true, token: state.session } } : { status: 401 };
+      }
       if (p === "/api/businesses" && m === "GET") {
-        const ok = auth === state.legacy || [...state.scoped.values()].some((k) => k.raw === auth && !k.revoked_at) || auth === "session-jwt";
+        const ok = auth === state.legacy || [...state.scoped.values()].some((k) => k.raw === auth && !k.revoked_at) || auth === state.session;
         return ok ? { status: 200, body: { success: true, businesses: [{ id: "b1", api_key: state.legacy, webhook_secret: state.webhook }] } } : { status: 401 };
       }
-      if (auth !== "session-jwt") return { status: 401 };
+      if (auth !== state.session) return { status: 401 };
       if (p === "/api/businesses/b1/api-keys" && m === "POST") {
         const id = `k${state.scoped.size + 1}`;
         state.scoped.set(id, { id, raw: `cp_live_scoped${id}BBBBBBBBBB`, scopes: body.scopes, prefix: `cp_live_scoped${id}`.slice(0, 16) });
@@ -201,6 +208,81 @@ describe("coinpay", () => {
     expect(minted.value).toBe("whsec_new_yyyyyyyyyyyy");
     expect(state.webhook).toBe(minted.value);
     expect(await minted.rollback()).toMatch(/cannot restore/);
+  });
+
+  it("logs in once for a whole run of many keys (preflight + mint each)", async () => {
+    const { state, fetch, calls } = coinpay();
+    let old = legacy;
+    for (let i = 0; i < 25; i++) {
+      const c = ctx({ key: `COINPAY_API_KEY_${i}`, oldValue: old, fetch, env });
+      expect(await coinpayApiKeyRotator.preflight(c)).toBeNull();
+      old = (await coinpayApiKeyRotator.mint(c)).value;
+      const w = ctx({ key: `COINPAY_WEBHOOK_SECRET_${i}`, oldValue: state.webhook, vaultValues: { COINPAY_API_KEY: legacy }, fetch, env });
+      expect(await coinpayWebhookSecretRotator.preflight(w)).toBeNull();
+      await coinpayWebhookSecretRotator.mint(w);
+    }
+    expect(state.logins).toBe(1);
+    expect(calls.filter((c) => c.path === "/api/auth/login")).toHaveLength(1);
+  });
+
+  it("concurrent preflights share one login", async () => {
+    const { state, fetch } = coinpay();
+    const results = await Promise.all(Array.from({ length: 50 }, () => coinpayApiKeyRotator.preflight(ctx({ oldValue: legacy, fetch, env }))));
+    expect(results.every((r) => r === null)).toBe(true);
+    expect(state.logins).toBe(1);
+  });
+
+  it("a 401 on the shared session logs in again once and retries", async () => {
+    const { state, fetch } = coinpay();
+    const c = ctx({ key: "COINPAY_API_KEY", oldValue: legacy, fetch, env });
+    expect(await coinpayApiKeyRotator.preflight(c)).toBeNull();
+    expect(state.logins).toBe(1);
+    state.session = "session-jwt-2"; // the first session expired server side
+    const minted = await coinpayApiKeyRotator.mint(c);
+    expect(minted.value).toBe("cp_live_scopedk1BBBBBBBBBB");
+    expect(state.logins).toBe(2);
+    // the refreshed session is reused by later calls
+    await minted.revokeOld();
+    await coinpayApiKeyRotator.mint(ctx({ key: "COINPAY_API_KEY", oldValue: minted.value, fetch, env }));
+    expect(state.logins).toBe(2);
+  });
+
+  it("does not re-login a COINPAY_ROTATE_TOKEN", async () => {
+    const { state, fetch } = coinpay();
+    state.session = "other";
+    const c = ctx({ key: "COINPAY_API_KEY", oldValue: legacy, fetch, env: { COINPAY_ROTATE_URL: "https://coinpay.test", COINPAY_ROTATE_TOKEN: "session-jwt" } });
+    await expect(coinpayApiKeyRotator.mint(c)).rejects.toThrow(/HTTP 401/);
+    expect(state.logins).toBe(0);
+  });
+
+  it("a failed login is reported as its real cause, once per run, without the password", async () => {
+    for (const [status, re] of [
+      [401, /CoinPay login rejected \(wrong COINPAY_ROTATE_EMAIL\/PASSWORD\)/],
+      [429, /rate limited.*retry later/],
+      [402, /throttled by the site's paywall \(rate limit/],
+      [503, /CoinPay login failed: HTTP 503 down for maintenance/]
+    ] as const) {
+      resetCoinpaySessions();
+      const { state, fetch } = coinpay({ login: { status, body: { error: status === 503 ? "down for maintenance" : "nope" } } });
+      for (let i = 0; i < 5; i++) {
+        const why = await coinpayApiKeyRotator.preflight(ctx({ oldValue: legacy, fetch, env }));
+        expect(why).toMatch(re);
+        expect(why).not.toMatch(/needs a CoinPay merchant session/);
+        expect(why).not.toContain("pw");
+        const w = await coinpayWebhookSecretRotator.preflight(ctx({ vaultValues: { COINPAY_API_KEY: legacy }, fetch, env }));
+        expect(w).toMatch(re);
+      }
+      await expect(coinpayApiKeyRotator.mint(ctx({ oldValue: legacy, fetch, env }))).rejects.toThrow(re);
+      expect(state.logins).toBe(1);
+    }
+  });
+
+  it("maps login statuses to messages", () => {
+    expect(coinpayLoginError(401, "")).toBe("CoinPay login rejected (wrong COINPAY_ROTATE_EMAIL/PASSWORD)");
+    expect(coinpayLoginError(429, "")).toMatch(/rate limited, retry later|rate limited \(HTTP 429\), retry later/);
+    expect(coinpayLoginError(402, "")).toMatch(/paywall/);
+    expect(coinpayLoginError(500, "<html>\n  oops  </html>")).toBe("CoinPay login failed: HTTP 500 <html> oops </html>");
+    expect(coinpayLoginError(500, JSON.stringify({ message: "boom" }))).toBe("CoinPay login failed: HTTP 500 boom");
   });
 });
 

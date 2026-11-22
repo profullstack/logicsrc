@@ -205,17 +205,102 @@ function coinpayBase(ctx: RotatorContext): string {
   return (ctx.env.COINPAY_ROTATE_URL || ctx.env.COINPAY_API_URL || "https://coinpayportal.com").replace(/\/+$/, "").replace(/\/api$/, "");
 }
 
-/** A merchant session: COINPAY_ROTATE_TOKEN, or log in with COINPAY_ROTATE_EMAIL + COINPAY_ROTATE_PASSWORD. */
-async function coinpaySession(ctx: RotatorContext): Promise<string | null> {
-  if (ctx.env.COINPAY_ROTATE_TOKEN) return ctx.env.COINPAY_ROTATE_TOKEN;
-  if (!ctx.env.COINPAY_ROTATE_EMAIL || !ctx.env.COINPAY_ROTATE_PASSWORD) return null;
-  const res = await ctx.fetch(`${coinpayBase(ctx)}/api/auth/login`, {
-    method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify({ email: ctx.env.COINPAY_ROTATE_EMAIL, password: ctx.env.COINPAY_ROTATE_PASSWORD })
-  });
-  const body = (await res.json().catch(() => null)) as any;
-  return res.ok && body?.token ? String(body.token) : null;
+/** Result of getting a merchant session: a bearer token, or why there is none. */
+type CoinpaySession = { token: string; fromLogin: boolean } | { error: string };
+
+const NO_SESSION = "needs a CoinPay merchant session: set COINPAY_ROTATE_TOKEN, or COINPAY_ROTATE_EMAIL + COINPAY_ROTATE_PASSWORD";
+
+/**
+ * One login per run, shared by every preflight and mint (keyed by base URL +
+ * email). A run over a few hundred CoinPay keys used to POST /api/auth/login
+ * for each one; coinpayportal limits sign-in to 10/min per address, so all but
+ * the first few failed. Failures are cached too: retrying a rejected or
+ * rate-limited login per key only makes the limit worse.
+ */
+const coinpaySessions = new Map<string, Promise<CoinpaySession>>();
+
+/** Forget cached CoinPay sessions (tests, or a long-lived process starting a new run). */
+export function resetCoinpaySessions(): void {
+  coinpaySessions.clear();
+}
+
+function sessionKey(ctx: RotatorContext): string {
+  return `${coinpayBase(ctx)}\n${ctx.env.COINPAY_ROTATE_EMAIL ?? ""}`;
+}
+
+/** Maps a failed /api/auth/login response to a message that names the real cause. Never includes credentials. */
+export function coinpayLoginError(status: number, bodyText: string): string {
+  if (status === 401) return "CoinPay login rejected (wrong COINPAY_ROTATE_EMAIL/PASSWORD)";
+  if (status === 429) return "CoinPay login rate limited (HTTP 429), retry later";
+  if (status === 402) return "CoinPay login throttled by the site's paywall (rate limit, HTTP 402), retry later";
+  let msg = "";
+  try {
+    const b = JSON.parse(bodyText);
+    msg = String(b?.error ?? b?.message ?? "");
+  } catch {
+    msg = bodyText;
+  }
+  msg = msg.replace(/\s+/g, " ").trim().slice(0, 160);
+  return `CoinPay login failed: HTTP ${status}${msg ? ` ${msg}` : ""}`;
+}
+
+async function coinpayLogin(ctx: RotatorContext): Promise<CoinpaySession> {
+  let res: Response;
+  try {
+    res = await ctx.fetch(`${coinpayBase(ctx)}/api/auth/login`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ email: ctx.env.COINPAY_ROTATE_EMAIL, password: ctx.env.COINPAY_ROTATE_PASSWORD })
+    });
+  } catch (e) {
+    return { error: `CoinPay login failed: ${e instanceof Error ? e.message : String(e)}`.slice(0, 200) };
+  }
+  const text = await res.text().catch(() => "");
+  if (!res.ok) return { error: coinpayLoginError(res.status, text) };
+  let body: any = null;
+  try {
+    body = JSON.parse(text);
+  } catch {
+    /* handled below */
+  }
+  return body?.token ? { token: String(body.token), fromLogin: true } : { error: `CoinPay login failed: HTTP ${res.status} with no token in the response` };
+}
+
+/** A merchant session: COINPAY_ROTATE_TOKEN, or one memoized login with COINPAY_ROTATE_EMAIL + COINPAY_ROTATE_PASSWORD. */
+async function coinpaySession(ctx: RotatorContext, opts: { fresh?: boolean } = {}): Promise<CoinpaySession> {
+  if (ctx.env.COINPAY_ROTATE_TOKEN) return { token: ctx.env.COINPAY_ROTATE_TOKEN, fromLogin: false };
+  if (!ctx.env.COINPAY_ROTATE_EMAIL || !ctx.env.COINPAY_ROTATE_PASSWORD) return { error: NO_SESSION };
+  const k = sessionKey(ctx);
+  let p = opts.fresh ? undefined : coinpaySessions.get(k);
+  if (!p) {
+    p = coinpayLogin(ctx);
+    coinpaySessions.set(k, p);
+  }
+  return p;
+}
+
+async function requireSession(ctx: RotatorContext): Promise<string> {
+  const s = await coinpaySession(ctx);
+  if ("error" in s) throw new RotatorError(s.error);
+  return s.token;
+}
+
+/**
+ * A call authenticated with the merchant session. A 401 means the shared
+ * session expired mid-run: log in again once (for every caller holding the
+ * stale token) and retry. A COINPAY_ROTATE_TOKEN is used as given.
+ */
+async function sessionCall(ctx: RotatorContext, url: string, init: RequestInit): Promise<{ status: number; body: any }> {
+  const s = await coinpaySession(ctx);
+  if ("error" in s) throw new RotatorError(s.error);
+  const r = await call(ctx, url, { ...init, token: s.token });
+  if (r.status !== 401 || !s.fromLogin) return r;
+  const k = sessionKey(ctx);
+  const cur = await coinpaySessions.get(k);
+  // Someone else may already have refreshed it; only log in again if the cache still holds the token that failed.
+  const next = cur && "token" in cur && cur.token !== s.token ? cur : await coinpaySession(ctx, { fresh: true });
+  if ("error" in next) throw new RotatorError(next.error);
+  return call(ctx, url, { ...init, token: next.token });
 }
 
 /** The business that owns a key: GET /api/businesses accepts the key itself and lists the owner's businesses. */
@@ -238,12 +323,12 @@ export const coinpayApiKeyRotator: ProviderRotator = {
   title: "CoinPay business API key",
   overlap: true,
   async preflight(ctx) {
-    if (!(await coinpaySession(ctx))) return "needs a CoinPay merchant session: set COINPAY_ROTATE_TOKEN, or COINPAY_ROTATE_EMAIL + COINPAY_ROTATE_PASSWORD (owner of the business)";
+    const s = await coinpaySession(ctx);
+    if ("error" in s) return s.error === NO_SESSION ? `${NO_SESSION} (owner of the business)` : s.error;
     return null;
   },
   async mint(ctx) {
-    const session = await coinpaySession(ctx);
-    if (!session) throw new RotatorError("no CoinPay merchant session");
+    await requireSession(ctx);
     const base = coinpayBase(ctx);
     const r = await call(ctx, `${base}/api/businesses`, { method: "GET", token: ctx.oldValue });
     if (r.status !== 200) fail("CoinPay: the old key does not authenticate", r);
@@ -253,7 +338,7 @@ export const coinpayApiKeyRotator: ProviderRotator = {
     if (!business) {
       const prefix = ctx.oldValue.startsWith("cp_live_") ? ctx.oldValue.slice(0, 16) : "";
       for (const b of businesses) {
-        const k = await call(ctx, `${base}/api/businesses/${b.id}/api-keys`, { method: "GET", token: session });
+        const k = await sessionCall(ctx, `${base}/api/businesses/${b.id}/api-keys`, { method: "GET" });
         const hit = (k.body?.keys ?? []).find((x: any) => !x.revoked_at && prefix && x.prefix === prefix);
         if (hit) {
           business = b;
@@ -264,9 +349,8 @@ export const coinpayApiKeyRotator: ProviderRotator = {
     }
     if (!business) throw new RotatorError("CoinPay: no business of this merchant owns the key (wrong COINPAY_ROTATE_* account?)");
     const name = `logicsrc ${ctx.key.toLowerCase()} ${day(ctx.now)}`;
-    const created = await call(ctx, `${base}/api/businesses/${business.id}/api-keys`, {
+    const created = await sessionCall(ctx, `${base}/api/businesses/${business.id}/api-keys`, {
       method: "POST",
-      token: session,
       body: JSON.stringify({ name, scopes: scoped?.scopes?.length ? scoped.scopes : ["*"] })
     });
     if (created.status !== 201 && created.status !== 200) fail("CoinPay create scoped key", created);
@@ -278,13 +362,13 @@ export const coinpayApiKeyRotator: ProviderRotator = {
       state: { businessId: String(business.id), keyId: newId },
       async revokeOld() {
         const d = scoped
-          ? await call(ctx, `${base}/api/businesses/${business.id}/api-keys/${scoped.id}`, { method: "DELETE", token: session })
-          : await call(ctx, `${base}/api/businesses/${business.id}/api-key`, { method: "POST", token: session });
+          ? await sessionCall(ctx, `${base}/api/businesses/${business.id}/api-keys/${scoped.id}`, { method: "DELETE" })
+          : await sessionCall(ctx, `${base}/api/businesses/${business.id}/api-key`, { method: "POST" });
         if (d.status >= 300 && d.status !== 404) fail("CoinPay revoke old key", d);
         return undefined;
       },
       async rollback() {
-        const d = await call(ctx, `${base}/api/businesses/${business.id}/api-keys/${newId}`, { method: "DELETE", token: session });
+        const d = await sessionCall(ctx, `${base}/api/businesses/${business.id}/api-keys/${newId}`, { method: "DELETE" });
         return d.status < 300 || d.status === 404 ? undefined : `revoke the new CoinPay key "${name}" by hand (HTTP ${d.status})`;
       }
     };
@@ -301,19 +385,20 @@ export const coinpayWebhookSecretRotator: ProviderRotator = {
   title: "CoinPay webhook secret",
   overlap: false,
   async preflight(ctx) {
-    if (!(await coinpaySession(ctx))) return "needs a CoinPay merchant session: set COINPAY_ROTATE_TOKEN, or COINPAY_ROTATE_EMAIL + COINPAY_ROTATE_PASSWORD";
+    const s = await coinpaySession(ctx);
+    if ("error" in s) return s.error;
     if (!findApiKey(ctx)) return "no CoinPay API key in the same vault to find the business with";
     return null;
   },
   async mint(ctx) {
-    const session = await coinpaySession(ctx);
     const apiKey = findApiKey(ctx);
-    if (!session || !apiKey) throw new RotatorError("needs a CoinPay merchant session and the vault's CoinPay API key");
+    if (!apiKey) throw new RotatorError("needs the vault's CoinPay API key to find the business with");
+    await requireSession(ctx);
     const base = coinpayBase(ctx);
     const r = await call(ctx, `${base}/api/businesses`, { method: "GET", token: apiKey });
     const business = (r.body?.businesses ?? []).find((b: any) => b.webhook_secret === ctx.oldValue);
     if (!business) throw new RotatorError("CoinPay: no business has this webhook secret");
-    const g = await call(ctx, `${base}/api/businesses/${business.id}/webhook-secret`, { method: "POST", token: session });
+    const g = await sessionCall(ctx, `${base}/api/businesses/${business.id}/webhook-secret`, { method: "POST" });
     if (g.status !== 200) fail("CoinPay regenerate webhook secret", g);
     const value = String(g.body?.secret ?? "");
     if (!value) throw new RotatorError("CoinPay regenerate webhook secret: no secret in the response");
