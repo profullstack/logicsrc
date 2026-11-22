@@ -196,7 +196,11 @@ health-check, then revoke the old one.
 - Keys: `COINPAY_API_KEY`, `COINPAYPORTAL_API_KEY`, `COINPAY_*_API_KEY`,
   `COINPAY_X402_KEY`.
 - Needs a merchant session for the business owner: `COINPAY_ROTATE_TOKEN`, or
-  `COINPAY_ROTATE_EMAIL` + `COINPAY_ROTATE_PASSWORD`.
+  `COINPAY_ROTATE_EMAIL` + `COINPAY_ROTATE_PASSWORD`. With email + password the
+  CLI logs in once per run and every CoinPay key reuses that session (sign-in
+  is limited to 10/min per address); a 401 mid-run logs in again once. A failed
+  login is reported as its cause: wrong credentials (401), rate limited (429),
+  or the site's paywall throttle (402).
 - Mint: the old key finds its business (`GET /api/businesses`), then `POST
   /api/businesses/<id>/api-keys` creates a scoped key with the old key's scopes
   (`*` for the legacy key). Old and new both work.
