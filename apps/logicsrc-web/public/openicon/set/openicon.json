@@ -33,7 +33,7 @@
     "nerd-fonts": "Nerd Fonts 3.4.0 glyph names (MIT)",
     "simple-icons": "Simple Icons 16.32.0 (CC0-1.0)",
     "font-awesome": "Font Awesome Free 7.3.1 brands (CC-BY-4.0)",
-    "profullstack-services": "80 Profullstack property marks; source URLs are recorded per icon"
+    "profullstack-services": "79 Profullstack property marks; source URLs are recorded per icon"
   },
   "categories": {
     "action": "Actions",
@@ -19793,65 +19793,6 @@
       }
     },
     {
-      "key": "vu1nz",
-      "name": "vu1nz.com",
-      "category": "brand",
-      "brand": true,
-      "trademark": "vu1nz.com and its logo are trademarks of their owner. Use them to refer to vu1nz.com, not to imply endorsement.",
-      "source": "profullstack-service:vu1nz.com",
-      "source_url": "https://vu1nz.com/favicon.svg",
-      "license": "Profullstack, Inc. service mark",
-      "made_by": "human",
-      "svg": "svg/vu1nz.svg",
-      "png": "png/{size}/vu1nz.png",
-      "tui": {
-        "unicode": "V",
-        "ascii": "vu1"
-      },
-      "styles": {
-        "hq": {
-          "png": "hq/png/{size}/vu1nz.png",
-          "webp": "hq/webp/{size}/vu1nz.webp",
-          "made_by": "human",
-          "svg": "hq/svg/vu1nz.svg",
-          "hex": "#5865F2",
-          "hex_source": "https://vu1nz.com/favicon.svg"
-        },
-        "agentic-matte": {
-          "png": "styles/agentic-matte/png/{size}/vu1nz.png",
-          "webp": "styles/agentic-matte/webp/{size}/vu1nz.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-matte/svg/vu1nz.svg",
-          "hex": "#5865F2",
-          "hex_source": "https://vu1nz.com/favicon.svg"
-        },
-        "agentic-machined": {
-          "png": "styles/agentic-machined/png/{size}/vu1nz.png",
-          "webp": "styles/agentic-machined/webp/{size}/vu1nz.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-machined/svg/vu1nz.svg",
-          "hex": "#5865F2",
-          "hex_source": "https://vu1nz.com/favicon.svg"
-        },
-        "agentic-emissive": {
-          "png": "styles/agentic-emissive/png/{size}/vu1nz.png",
-          "webp": "styles/agentic-emissive/webp/{size}/vu1nz.webp",
-          "made_by": "human",
-          "svg": "styles/agentic-emissive/svg/vu1nz.svg",
-          "hex": "#5865F2",
-          "hex_source": "https://vu1nz.com/favicon.svg"
-        }
-      },
-      "hq": {
-        "png": "hq/png/{size}/vu1nz.png",
-        "webp": "hq/webp/{size}/vu1nz.webp",
-        "made_by": "human",
-        "svg": "hq/svg/vu1nz.svg",
-        "hex": "#5865F2",
-        "hex_source": "https://vu1nz.com/favicon.svg"
-      }
-    },
-    {
       "key": "weedforcrypto",
       "name": "weedforcrypto.com",
       "category": "brand",
@@ -23070,8 +23011,8 @@
       "ai_provider": "OpenAI",
       "ai_prompt_url": "hq/style.txt",
       "coverage": {
-        "total": 452,
-        "done": 452
+        "total": 451,
+        "done": 451
       }
     },
     "agentic-matte": {
@@ -23098,8 +23039,8 @@
       "ai_provider": "OpenAI",
       "ai_prompt_url": "styles/agentic-matte/style.txt",
       "coverage": {
-        "total": 452,
-        "done": 452
+        "total": 451,
+        "done": 451
       }
     },
     "agentic-machined": {
@@ -23126,8 +23067,8 @@
       "ai_provider": "OpenAI",
       "ai_prompt_url": "styles/agentic-machined/style.txt",
       "coverage": {
-        "total": 452,
-        "done": 452
+        "total": 451,
+        "done": 451
       }
     },
     "agentic-emissive": {
@@ -23154,8 +23095,8 @@
       "ai_provider": "OpenAI",
       "ai_prompt_url": "styles/agentic-emissive/style.txt",
       "coverage": {
-        "total": 452,
-        "done": 452
+        "total": 451,
+        "done": 451
       }
     }
   },
@@ -23183,8 +23124,8 @@
     "ai_provider": "OpenAI",
     "ai_prompt_url": "hq/style.txt",
     "coverage": {
-      "total": 452,
-      "done": 452
+      "total": 451,
+      "done": 451
     }
   }
 }
