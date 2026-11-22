@@ -24,6 +24,7 @@ import { profileRouter } from "./lib/profile.mjs";
 import { descriptor } from "@profullstack/footer";
 import { RING_FOOTER_OPTIONS } from "./lib/ring-footer.mjs";
 import { securityHeaders } from "./lib/security-headers.mjs";
+import { robotsTxt, siteOrigin, sitemapXml } from "./lib/seo.mjs";
 import { PROFILE_ENHANCE_SCRIPT } from "@profullstack/profile";
 
 const app = express();
@@ -73,7 +74,11 @@ app.get("/vendor/profile-enhance.js", (_req, res) => res.type("application/javas
 app.get("/.well-known/openwebring.json", (_req, res) =>
   res.json(descriptor({ site: RING_FOOTER_OPTIONS.site, name: "LogicSRC credentials" })));
 
-app.get("/healthz", (_req, res) => res.json({ ok: true, env: config.env }));
+// Crawlers: only the public sign-in and sign-up pages, on whichever host was asked.
+app.get("/robots.txt", (req, res) => res.type("text/plain").set("Cache-Control", "public, max-age=3600").send(robotsTxt(siteOrigin(req, config.origin))));
+app.get("/sitemap.xml", (req, res) => res.type("application/xml").set("Cache-Control", "public, max-age=3600").send(sitemapXml(siteOrigin(req, config.origin))));
+
+app.get("/healthz",(_req, res) => res.json({ ok: true, env: config.env }));
 
 // The keyring share link (/k/<token>.json|.keys): public, CORS-open, no session
 // (mounted before the session middleware so it never sets a cookie on a cacheable answer).
