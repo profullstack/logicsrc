@@ -1,4 +1,5 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
+import { COINPAY_UA } from "./coinpay-ua";
 
 // Server-side CoinPay + session helpers, ported from the legacy server.js so the
 // Next API routes keep identical behavior (eligibility-driven payment rails,
@@ -48,7 +49,7 @@ export async function fetchMerchantEligibility(
     const url = new URL("/api/payments/merchant-eligibility", apiUrl);
     url.searchParams.set("merchant_id", merchantId);
     const response = await fetch(url, {
-      headers: { authorization: `Bearer ${apiKey ?? ""}` }
+      headers: { authorization: `Bearer ${apiKey ?? ""}`, "user-agent": COINPAY_UA }
     });
     const text = await response.text();
     const payload = parseJson(text);

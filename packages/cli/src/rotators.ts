@@ -1,6 +1,7 @@
 import { createHash, createHmac, generateKeyPairSync, pbkdf2Sync, randomBytes } from "node:crypto";
 import { spawnSync } from "node:child_process";
 import { generateRandomSecret } from "./rotation-catalog.js";
+import { localVersion } from "./update.js";
 
 /**
  * Built-in rotators for `method: "provider"`. Each one is two-phase:
@@ -61,11 +62,14 @@ export class RotatorError extends Error {}
 
 const day = (d: Date) => d.toISOString().slice(0, 10);
 
+/** Names this CLI on every provider call, so CoinPay's logs and throttle can tell it apart from the apps. */
+export const ROTATOR_USER_AGENT = `logicsrc-cli/${localVersion()} (+https://logicsrc.com)`;
+
 async function call(ctx: RotatorContext, url: string, init: RequestInit & { token: string }): Promise<{ status: number; body: any }> {
   const { token, headers, ...rest } = init;
   const res = await ctx.fetch(url, {
     ...rest,
-    headers: { authorization: `Bearer ${token}`, "content-type": "application/json", accept: "application/json", ...(headers as Record<string, string> | undefined) }
+    headers: { "user-agent": ROTATOR_USER_AGENT, authorization: `Bearer ${token}`, "content-type": "application/json", accept: "application/json", ...(headers as Record<string, string> | undefined) }
   });
   const text = await res.text();
   let body: any = null;
@@ -249,7 +253,7 @@ async function coinpayLogin(ctx: RotatorContext): Promise<CoinpaySession> {
   try {
     res = await ctx.fetch(`${coinpayBase(ctx)}/api/auth/login`, {
       method: "POST",
-      headers: { "content-type": "application/json" },
+      headers: { "content-type": "application/json", "user-agent": ROTATOR_USER_AGENT },
       body: JSON.stringify({ email: ctx.env.COINPAY_ROTATE_EMAIL, password: ctx.env.COINPAY_ROTATE_PASSWORD })
     });
   } catch (e) {
